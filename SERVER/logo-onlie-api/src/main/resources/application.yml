@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: logo
+  profiles:
+    active: dev
+
+server:
+  port: 9001
+  servlet:
+    context-path: /logo
+
+#HEALTH CHECK CONFIG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 9001
+    servlet:
+      context-path: /
+    ssl:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+
+#PAGEHELPER CONFIG
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: false
+  params: count=countSql
+  auto-runtime-dialect: true
+
+#MYBATIS CONFIG
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

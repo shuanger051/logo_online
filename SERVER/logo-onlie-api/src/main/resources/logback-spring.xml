@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty name="log.root_level" source="logging.root.level" defaultValue="info"/>
+    <springProperty name="log.max_file_size" source="logging.logback.rollingpolicy.max-file-size"  defaultValue="250MB"/>
+    <springProperty name="log.max_history" source="logging.logback.rollingpolicy.max-history" defaultValue="7"/>
+    <springProperty name="log.total_size_cap" source="logging.logback.rollingpolicy.total-size-cap" defaultValue="1GB"/>
+    <springProperty name="log.clean_history_on_start" source="logging.logback.rollingpolicy.clean-history-on-start" defaultValue="false"/>
+    <springProperty name="log.path" source="logging.root.path" defaultValue="./logs" />
+
+    <contextName>gps_server</contextName>
+    <property name="log.root.level" value="${log.root_level}"/> <!-- 日志级别 -->
+    <property name="log.other.level" value="${log.root_level}"/> <!-- 其他日志级别 -->
+    <property name="log.base" value="${log.path}"/> <!-- 日志路径，这里是相对路径，web项目eclipse下会输出到eclipse的安装目录下，如果部署到linux上的tomcat下，会输出到tomcat/bin目录 下 -->
+    <property name="log.moduleName" value="${log.moduleName}"/>  <!-- 模块名称， 影响日志配置名，日志文件名 -->
+    <property name="log.max.size" value="${log.max_file_size}"/> <!-- 日志文件大小,超过这个大小将被压缩 -->
+
+    <!-- 日志打印格式 -->
+    <property name="log.patter" value="[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level],[%X{traceid}],[%X{merreqip}],%logger{96}, [%line] - %msg%n"/>
+    <property name="console.log.patter" value="%boldWhite([%date{yyyy-MM-dd HH:mm:ss.SSS}]) %green([%thread]) %highlight([%-5level]) %yellow([%X{traceid}] [%X{merreqip}]) %boldMagenta([%logger{96}-%line])  %cyan(%msg%n)"/>
+
+
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+    <!--包名输出缩进对齐-->
+    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+
+    <!--控制台输出 -->
+    <appender name="StdoutAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${console.log.patter}</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 时间滚动输出 level为 DEBUG 日志 -->
+    <appender name="ConsoleAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${log.base}/Console.log</file>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset> <!-- 设置字符集 -->
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${log.base}/console/console-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 系统启动日志 -->
+    <root level="${log.root_level}">
+        <appender-ref ref="StdoutAppender"/>
+        <!-- 输出全部日志信息 -->
+        <appender-ref ref="ConsoleAppender" />
+    </root>
+
+</configuration>

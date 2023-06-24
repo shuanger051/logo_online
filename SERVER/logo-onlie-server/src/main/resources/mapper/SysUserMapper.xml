@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.SysUserMapper">
+
+    <!-- 系统用户表 -->
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysUserDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="login_count" property="loginCount" jdbcType="INTEGER"/>
+        <result column="error_time" property="errorTime" jdbcType="VARCHAR"/>
+        <result column="error_count" property="errorCount" jdbcType="INTEGER"/>
+        <result column="error_ip" property="errorIp" jdbcType="VARCHAR"/>
+        <result column="reset_key" property="resetKey" jdbcType="VARCHAR"/>
+        <result column="error_count" property="errorCount" jdbcType="VARCHAR"/>
+        <result column="reset_pwd" property="resetPwd" jdbcType="VARCHAR"/>
+        <result column="activation" property="activation" jdbcType="VARCHAR"/>
+        <result column="activation_code" property="activationCode" jdbcType="VARCHAR"/>
+        <result column="is_admin" property="isAdmin" jdbcType="VARCHAR"/>
+        <result column="is_disabled" property="isDisabled" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,	user_name, email,register_time, register_ip,last_login_time,last_login_ip, login_count,is_admin,is_disabled, create_time,update_time
+    </sql>
+
+    <!-- 查询entity实体类信息集合 -->
+    <select id="getSysUserList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        SELECT <include refid="Base_Column_List" /> FROM t_sys_user
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="userName !=null and userName !=''">AND user_name = #{userName}</if>
+            <if test="email !=null and email !=''">AND email = #{email}</if>
+            <if test="isAdmin !=null and isAdmin !=''">AND is_admin = #{isAdmin}</if>
+            <if test="isDisabled !=null and isDisabled !=''">AND is_disabled = #{isDisabled}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            create_time desc
+        </trim>
+    </select>
+
+    <!-- 登录查询 -->
+    <select id="login" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName} and password = #{password}
+    </select>
+
+</mapper>

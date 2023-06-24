@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.7.6</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.qinghua.website</groupId>
+  <artifactId>logo</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>logo-onlie-server</module>
+    <module>logo-onlie-api</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.compiler.version>1.8</java.compiler.version>
+    <!-- MAVEN PLUGINS -->
+    <maven.assembly.version>3.2.0</maven.assembly.version>
+    <compiler.plugin.version>3.5.1</compiler.plugin.version>
+    <war.plugin.version>3.2.3</war.plugin.version>
+    <jar.plugin.version>3.1.2</jar.plugin.version>
+    <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+
+    <maven.plugin.war.version>2.5</maven.plugin.war.version>
+    <beanutils.version>1.9.3</beanutils.version>
+    <commons-lang3.version>3.8.1</commons-lang3.version>
+    <commons-io.version>1.3.2</commons-io.version>
+    <commons-fileupload.version>1.3.2</commons-fileupload.version>
+    <commons-io-excel.version>2.5</commons-io-excel.version>
+    <sonwflake.version>1.1</sonwflake.version>
+    <mybatis.version>1.3.2</mybatis.version>
+    <mysql.version>8.0.21</mysql.version>
+    <pagehelper.version>1.4.2</pagehelper.version>
+    <shiro.version>1.4.0-RC2</shiro.version>
+    <pdfbox.version>2.0.5</pdfbox.version>
+    <ansj_seg.version>5.1.1</ansj_seg.version>
+    <nlp-lang.version>1.7.2</nlp-lang.version>
+    <io.jsonwebtoken.jjwt.version>0.7.0</io.jsonwebtoken.jjwt.version>
+    <hazelcast.version>3.10.4</hazelcast.version>
+  </properties>
+
+</project>
