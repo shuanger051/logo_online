@@ -29,7 +29,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,	user_name, email,register_time, register_ip,last_login_time,last_login_ip, login_count,is_admin,is_disabled, create_time,update_time
+        id,	user_name, email,register_time, register_ip,last_login_time,last_login_ip, login_count,is_admin,is_disabled,error_count,error_ip,error_time create_time,update_time
     </sql>
 
     <!-- 查询entity实体类信息集合 -->
@@ -50,5 +50,62 @@
     <select id="login" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserDTO">
         SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName} and password = #{password}
     </select>
+
+    <!-- 更新登录相关操作 -->
+    <update id="updateLoginSuccess" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="lastLoginTime !=null">last_login_Time = #{lastLoginTime},</if>
+            <if test="lastLoginIp !=null and lastLoginIp !='' ">last_login_ip = #{lastLoginIp},</if>
+            <if test="loginCount !=null">login_count = #{loginCount},</if>
+            error_count = 0,
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新登录相关操作 -->
+    <update id="updateLoginFail" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="lastLoginTime !=null">last_login_Time = #{lastLoginTime},</if>
+            <if test="lastLoginIp !=null and lastLoginIp !='' ">last_login_ip = #{lastLoginIp},</if>
+            <if test="loginCount !=null">login_count = #{loginCount},</if>
+            <if test="errorCount !=null">error_count = #{errorCount},</if>
+            <if test="errorTime !=null">error_time = #{errorTime},</if>
+            <if test="errorIp !=null and errorIp != '' ">error_ip = #{errorIp},</if>
+            <if test="isDisabled !=null and isDisabled != '' ">is_disabled = #{isDisabled},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--<insert id="save" parameterType="com.zealdee.iot.iotwebservice.domain.EntityDTO">
+        INSERT INTO t_entity_msg_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entityImei !=null and entityImei !='' ">entity_imei,</if>
+            <if test="msgCode !=null and msgCode !=''">msg_code,</if>
+            <if test="returnCode !=null and returnCode != ''">return_code,</if>
+            <if test="expectStatus !=null and expectStatus != ''">expect_status,</if>
+            <if test="entityType !=null and entityType != ''">entity_type,</if>
+            <if test="systemCode !=null and systemCode != ''">system_code,</if>
+            send_time,
+            <if test="callbackUrl !=null and callbackUrl != ''">callback_url,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entityImei !=null and entityImei !=''">#{entityImei},</if>
+            <if test="msgCode !=null and msgCode !=''">#{msgCode},</if>
+            <if test="returnCode !=null and returnCode != ''">#{returnCode},</if>
+            <if test="expectStatus !=null and expectStatus != ''">#{expectStatus},</if>
+            <if test="entityType !=null and entityType != ''">#{entityType},</if>
+            <if test="systemCode !=null and systemCode != ''">#{systemCode},</if>
+            NOW(),
+            <if test="callbackUrl !=null and callbackUrl != ''">#{callbackUrl},</if>
+            NOW()
+        </trim>
+    </insert>-->
+
+
 
 </mapper>

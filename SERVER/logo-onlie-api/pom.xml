@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>logo-onlie-api</artifactId>
     <name>logo-onlie-api</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- 业务service -->

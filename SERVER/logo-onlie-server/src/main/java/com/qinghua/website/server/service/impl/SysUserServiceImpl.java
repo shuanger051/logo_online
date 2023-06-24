@@ -37,4 +37,21 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserMapper.login(login);
     }
 
+    /**
+     * 更新登录相关信息
+     * @return
+     */
+    public void updateLoginSuccess(SysUserDTO updateLogin){
+        sysUserMapper.updateLoginSuccess(updateLogin);
+    }
+
+    /**
+     * 更新登录相关信息
+     * @param updateLogin
+     */
+    public void updateLoginFail(SysUserDTO updateLogin){
+        sysUserMapper.updateLoginFail(updateLogin);
+    }
+
+
 }

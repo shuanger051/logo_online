@@ -7,6 +7,7 @@ import com.qinghua.website.api.controller.io.SysUserIO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysUserVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
+import com.qinghua.website.api.utils.IpUtil;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.SysUserDTO;
@@ -20,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseResult<Object> login(@Validated LoginIO loginIO, HttpServletRequest request){
+    public ResponseResult<Object> login(@Validated @RequestBody LoginIO loginIO, HttpServletRequest request){
         //校验验证码有效性 TODO
         String password = RSACryptoHelper.decrypt(loginIO.getPassword());
         return ResponseResult.success(userNameLogin(loginIO.getUserName(), password,request));
@@ -67,7 +69,7 @@ public class SysUserController {
      * @return
      */
     public Boolean userNameLogin(String userName,String password, HttpServletRequest request){
-        String pwd = StringUtils.upperCase(MD5Util.toMD5String(password));
+        String pwd = StringUtils.lowerCase(MD5Util.toMD5String(password));
         SysUserDTO loginDTO = new SysUserDTO();
         loginDTO.setUserName(userName);
         loginDTO.setPassword(pwd);
@@ -76,10 +78,16 @@ public class SysUserController {
         SysUserDTO resUser = sysUserService.login(loginDTO);
 
         if(null != resUser){
-            //判定账户状态是否为锁定，锁定的账户不允许登录 TODO
-            if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0")){
-                //更新登录次数 TODO
-                //若当日错误次数未满3次，则自动清空错误次数为0 TODO
+            log.info("[消息:]用户{}正在执行登录操作",userName);
+            //判定账户状态是否为锁定，锁定的账户不允许登录,且错误登录次数不得大于3次
+            if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0") && resUser.getErrorCount() <= 3){
+                //更新登录次数，最后登录时间，更新时间,错误次数为0
+                SysUserDTO loginUpdateInfo = new SysUserDTO();
+                loginUpdateInfo.setId(resUser.getId());
+                loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
+                loginUpdateInfo.setLoginCount(resUser.getLoginCount()+1);
+                loginUpdateInfo.setLastLoginTime(new Date());
+                sysUserService.updateLoginSuccess(loginUpdateInfo);
                 //将用户数据写入session TODO
                 //SessionUser user = new SessionUser();
                 //setUserSession(user,request);
@@ -88,7 +96,22 @@ public class SysUserController {
                 throw new BizException(SysConstant.LOGIN_ERROR_10002.getMsg(),SysConstant.LOGIN_ERROR_10002.getCode());
             }
         }else{
-            //账号密码不合法 TODO 更新错误次数，IP，时间，若错误次数达到3次则同时将账户状态变更为锁定
+            //账号密码不合法，更新错误次数，IP，时间，若错误次数达到3次则同时将账户状态变更为锁定
+            //更新登录次数，最后登录时间，更新时间,错误次数为0
+            SysUserDTO loginUpdateInfo = new SysUserDTO();
+            loginUpdateInfo.setId(resUser.getId());
+            loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
+            loginUpdateInfo.setLoginCount(resUser.getLoginCount()==null? 1 :resUser.getLoginCount()+1);
+            loginUpdateInfo.setLastLoginTime(new Date());
+            loginUpdateInfo.setErrorCount(resUser.getErrorCount()+1);
+            loginUpdateInfo.setErrorTime(new Date());
+            loginUpdateInfo.setErrorIp(IpUtil.getRemoteAddr(request));
+
+            if(resUser.getErrorCount()+1==3){
+                loginUpdateInfo.setIsDisabled("1");
+            }
+
+            sysUserService.updateLoginFail(loginUpdateInfo);
             return Boolean.FALSE;
         }
     }

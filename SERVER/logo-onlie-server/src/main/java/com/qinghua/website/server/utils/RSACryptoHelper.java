@@ -32,10 +32,10 @@ public final class RSACryptoHelper {
      * @param content
      * @return
      */
-    public static final String encrypt(String content){
+    public static final String encrypt(String content,String publicKey){
         byte[] decodedData = new byte[0];
         try {
-            decodedData = RSACoder.encryptByPublicKey(content.getBytes("utf-8"),CryptoCache.getRASPublicKey());
+            decodedData = RSACoder.encryptByPublicKey(content.getBytes("utf-8"),publicKey);
         } catch (Exception e) {
             throw new BizException(SysConstant.RSA_ERROR_10001.getMsg(), SysConstant.RSA_ERROR_10001.getCode());
         }

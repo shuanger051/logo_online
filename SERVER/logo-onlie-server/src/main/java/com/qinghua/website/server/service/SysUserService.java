@@ -19,4 +19,16 @@ public interface SysUserService {
      */
     public SysUserDTO login(SysUserDTO loginUser);
 
+    /**
+     * 更新系统用户登录操作信息
+     * @return
+     */
+    public void updateLoginSuccess(SysUserDTO loginUpdate);
+
+    /**
+     * 更新系统用户登录操作信息
+     * @param loginUpdate
+     */
+    public void updateLoginFail(SysUserDTO loginUpdate);
+
 }

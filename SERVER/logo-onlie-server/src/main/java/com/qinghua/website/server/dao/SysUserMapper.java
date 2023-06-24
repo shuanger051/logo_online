@@ -22,4 +22,16 @@ public interface SysUserMapper {
      */
     public SysUserDTO login(SysUserDTO bean);
 
+    /**
+     * 更新登录相关操作
+     * @param bean
+     */
+    public void updateLoginSuccess(SysUserDTO bean);
+
+    /**
+     * 更新登录相关操作
+     * @param bean
+     */
+    public void updateLoginFail(SysUserDTO bean);
+
 }
