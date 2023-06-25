@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.SysDictMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysDictDTO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dict_key" jdbcType="VARCHAR" property="dictKey"/>
+        <result column="dict_name" jdbcType="VARCHAR" property="dictName"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, dict_key, dict_name, create_time, update_time
+    </sql>
+
+    <select id="getDictById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from t_sys_dict_entry
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 查询 -->
+    <select id="getDictList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysDictDTO">
+        select
+            <include refid="BaseColumnList"/>
+        from
+            t_sys_dict_entry
+        <trim prefix="where" prefixOverrides="and">
+            <if test="dictKey != null and dictKey !='' ">and dict_key = #{dictKey}</if>
+            <if test="dictName != null and dictName !=''  ">and dict_name like concat('%',#{dictName},'%')</if>
+        </trim>
+        <if test=" sort =='' ">order by id desc</if>
+        <if test=" sort !='' and sort!=null and order !='' and order!=null ">sort #{order}</if>
+    </select>
+
+    <!-- 查询数据字典编码或数据字典名称是否存在 -->
+    <select id="getSysDictByDictKeyOrDictNameList" parameterType="com.qinghua.website.server.domain.SysDictDTO" resultMap="BaseResultMap">
+        select
+            <include refid="BaseColumnList" />
+        from t_sys_dict_entry
+            where dict_key = #{dictKey} or dict_name = #{dictName}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="saveDict" parameterType="com.qinghua.website.server.domain.SysDictDTO">
+        insert into t_sys_dict_entry(
+        <trim suffix="" suffixOverrides=",">
+            <if test="dictKey != null and dictKey !='' ">dict_key,</if>
+            <if test="dictName != null and dictName !=''  ">dict_name,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="dictKey != null and dictKey !='' ">#{dictKey},</if>
+            <if test="dictName != null and dictName !=''  ">#{dictName},</if>
+            #{createTime}
+        </trim>
+        )
+    </insert>
+
+    <!-- 修改 -->
+    <update id="updateDictById" parameterType="com.qinghua.website.server.domain.SysDictDTO">
+        update t_sys_dict_entry set
+        <trim suffix="" suffixOverrides=",">
+            <if test="dictKey != null and dictKey !='' ">dict_key = #{dictKey},</if>
+            <if test="dictName != null and dictName !=''  ">dict_name = #{dictName},</if>
+            update_time = #{updateTime}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDictById" parameterType="java.lang.Long">
+        delete from t_sys_dict_entry where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

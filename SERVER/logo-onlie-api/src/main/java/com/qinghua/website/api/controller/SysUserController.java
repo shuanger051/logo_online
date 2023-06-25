@@ -2,8 +2,11 @@ package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
+import com.hazelcast.util.Preconditions;
+import com.qinghua.website.api.common.SessionUser;
 import com.qinghua.website.api.controller.io.LoginIO;
-import com.qinghua.website.api.controller.io.SysUserIO;
+import com.qinghua.website.api.controller.io.SysUserQueryIO;
+import com.qinghua.website.api.controller.io.SysUserUpdateIO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysUserVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
@@ -22,9 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,12 +37,12 @@ public class SysUserController {
 
     /**
      * 分页查询系统用户信息集合
-     * @param sysUserIO
+     * @param sysUserQueryIO
      * @return
      */
     @GetMapping("/getSysUserList")
-    public ResponseResult<Object> getSysUserList(@Validated SysUserIO sysUserIO){
-        SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserIO,SysUserDTO.class);
+    public ResponseResult<Object> getSysUserList(@Validated SysUserQueryIO sysUserQueryIO){
+        SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserQueryIO,SysUserDTO.class);
         PageInfo<SysUserDTO> pageList =  sysUserService.getSysUserList(queryDTO);
         List<SysUserVO> sysUserVOList =  BeanToolsUtil.copyAsList(pageList.getList(),SysUserVO.class);
         PageListVO<SysUserVO> resp = new PageListVO<>();
@@ -74,6 +75,10 @@ public class SysUserController {
         loginDTO.setUserName(userName);
         loginDTO.setPassword(pwd);
 
+        //校验账号是否存在
+        boolean userCheck = sysUserService.checkSysUserIsExist(userName);
+        Preconditions.checkTrue(userCheck, "账号信息非法!");
+
         //根据账号密码校验用户合法性
         SysUserDTO resUser = sysUserService.login(loginDTO);
 
@@ -81,6 +86,7 @@ public class SysUserController {
             log.info("[消息:]用户{}正在执行登录操作",userName);
             //判定账户状态是否为锁定，锁定的账户不允许登录,且错误登录次数不得大于3次
             if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0") && resUser.getErrorCount() <= 3){
+                log.info("[消息：] 用户{}登录成功",userName);
                 //更新登录次数，最后登录时间，更新时间,错误次数为0
                 SysUserDTO loginUpdateInfo = new SysUserDTO();
                 loginUpdateInfo.setId(resUser.getId());
@@ -88,16 +94,16 @@ public class SysUserController {
                 loginUpdateInfo.setLoginCount(resUser.getLoginCount()+1);
                 loginUpdateInfo.setLastLoginTime(new Date());
                 sysUserService.updateLoginSuccess(loginUpdateInfo);
-                //将用户数据写入session TODO
-                //SessionUser user = new SessionUser();
-                //setUserSession(user,request);
+                //将用户数据写入session
+                SessionUser user = new SessionUser();
+                request.getSession().setAttribute(SessionUser.SEESION_USER,user);
                 return Boolean.TRUE;
             }else{
                 throw new BizException(SysConstant.LOGIN_ERROR_10002.getMsg(),SysConstant.LOGIN_ERROR_10002.getCode());
             }
         }else{
-            //账号密码不合法，更新错误次数，IP，时间，若错误次数达到3次则同时将账户状态变更为锁定
-            //更新登录次数，最后登录时间，更新时间,错误次数为0
+            log.info("[消息：] 用户{}用户密码不匹配,错误次数为{}",resUser.getUserName(),resUser.getErrorCount()+1);
+            //账号密码不合法，更新错误次数，IP,登录次数，最后登录时间，更新时间,错误次数为0，若错误次数达到3次则同时将账户状态变更为锁定,
             SysUserDTO loginUpdateInfo = new SysUserDTO();
             loginUpdateInfo.setId(resUser.getId());
             loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
@@ -116,5 +122,23 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 系统用户登出
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    public ResponseResult<Object> logout(HttpServletRequest request){
+        SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
+        log.info("[消息：]用户{}正在执行退出操作!",user.getUserName());
+        request.getSession().removeAttribute(SessionUser.SEESION_USER);
+        request.getSession().invalidate();
+        return ResponseResult.success("LogOut Success!");
+    }
+
+    @RequestMapping(value = "/updateSysUser",method = RequestMethod.POST)
+    public ResponseResult<Object> updateUser(@Validated @RequestBody SysUserUpdateIO sysUserUpdateIO){
+        return null;
+    }
 
 }

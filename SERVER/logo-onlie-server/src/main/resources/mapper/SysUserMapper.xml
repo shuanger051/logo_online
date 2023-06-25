@@ -51,6 +51,11 @@
         SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName} and password = #{password}
     </select>
 
+    <!-- 根据用户昵称检查用户是否存在 -->
+    <select id="checkSysUserIsExist" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName}
+    </select>
+
     <!-- 更新登录相关操作 -->
     <update id="updateLoginSuccess" parameterType="com.qinghua.website.server.domain.SysUserDTO">
         UPDATE t_sys_user

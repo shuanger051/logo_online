@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.SysDictItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysDictItemDTO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="item_sort" jdbcType="INTEGER" property="itemSort"/>
+        <result column="item_key" jdbcType="VARCHAR" property="itemKey"/>
+        <result column="item_value" jdbcType="VARCHAR" property="itemValue"/>
+        <result column="dict_key" jdbcType="BIGINT" property="dictKey"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, item_sort, item_key, item_value, dict_key, create_time, update_time
+    </sql>
+
+    <select id="getDictItemById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from t_sys_dict_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 查询 -->
+    <select id="getDictItemList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysDictItemDTO">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        t_sys_dict_item
+        <trim prefix="where" prefixOverrides="and">
+            <if test="itemKey != null and itemKey !='' ">item_key = #{itemKey}</if>
+            <if test="itemValue != null and itemValue !='' ">and item_value like concat('%',#{itemValue},'%')</if>
+            <if test="dictKey != null and dictKey !='' ">and dict_key = #{dictKey}</if>
+        </trim>
+        order by item_sort asc
+    </select>
+
+    <!-- 查询数据字典子项编码或数据字典字典名称是否存在 -->
+    <select id="getSysDictItemByItemKeyOrItemValueList" parameterType="com.qinghua.website.server.domain.SysDictItemDTO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from t_sys_dict_item
+        where dict_key = #{dictKey} and ( item_key = #{itemKey} or item_value = #{itemValue})
+    </select>
+
+    <!-- 修改排序 -->
+    <update id="updateSort" parameterType="com.qinghua.website.server.domain.SysDictItemDTO">
+        update t_sys_dict_item set item_sort = item_sort - 1 where item_sort > #{itemSort} and dict_key=#{dictKey}
+    </update>
+
+    <!-- 新增 -->
+    <insert id="saveDictItem" parameterType="com.qinghua.website.server.domain.SysDictItemDTO">
+        insert into t_sys_dict_item(
+        <trim suffix="" suffixOverrides=",">
+            <if test="itemSort != null">item_sort,</if>
+            <if test="itemKey != null and itemKey !=''  ">item_key,</if>
+            <if test="itemValue != null and itemValue !=''  ">item_value,</if>
+            <if test="dictKey != null  ">dict_key,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="itemSort != null">#{itemSort},</if>
+            <if test="itemKey != null and itemKey !=''  ">#{itemKey},</if>
+            <if test="itemValue != null and itemValue !=''  ">#{itemValue},</if>
+            <if test="dictKey != null  ">#{dictKey},</if>
+            #{createTime}
+        </trim>
+        )
+    </insert>
+
+    <!-- 修改 -->
+    <update id="updateDictItemById" parameterType="com.qinghua.website.server.domain.SysDictItemDTO">
+        update t_sys_dict_item set
+        <trim suffix="" suffixOverrides=",">
+            <if test="itemSort != null">item_sort = #{itemSort},</if>
+            <if test="itemKey != null and itemKey !=''  ">item_key = #{itemKey},</if>
+            <if test="itemValue != null and itemValue !='' ">item_value = #{itemValue},</if>
+            update_time = #{updateTime}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDictItemById" parameterType="java.lang.Long">
+        delete from t_sys_dict_item where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 根据dictKey来删除下面的dictItems -->
+    <delete id="deleteDictItemByDictId" parameterType="java.lang.String">
+        delete from t_sys_dict_item where dict_key = #{dictKey,jdbcType=BIGINT}
+    </delete>
+</mapper>

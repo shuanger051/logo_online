@@ -33,6 +33,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param login
      * @return
      */
+    @Override
     public SysUserDTO login(SysUserDTO login){
         return sysUserMapper.login(login);
     }
@@ -41,6 +42,7 @@ public class SysUserServiceImpl implements SysUserService {
      * 更新登录相关信息
      * @return
      */
+    @Override
     public void updateLoginSuccess(SysUserDTO updateLogin){
         sysUserMapper.updateLoginSuccess(updateLogin);
     }
@@ -49,9 +51,20 @@ public class SysUserServiceImpl implements SysUserService {
      * 更新登录相关信息
      * @param updateLogin
      */
+    @Override
     public void updateLoginFail(SysUserDTO updateLogin){
         sysUserMapper.updateLoginFail(updateLogin);
     }
 
+    /**
+     * 根据用户昵称检查用户是否存在
+     * @param userName
+     * @return
+     */
+    @Override
+    public boolean checkSysUserIsExist(String userName){
+        boolean checkFlag =  sysUserMapper.checkSysUserIsExist(userName) == null ? false:true;
+        return checkFlag;
+    }
 
 }

@@ -31,4 +31,11 @@ public interface SysUserService {
      */
     public void updateLoginFail(SysUserDTO loginUpdate);
 
+    /**
+     * 根据用户昵称检查用户是否存在
+     * @param userName
+     * @return
+     */
+    public boolean checkSysUserIsExist(String userName);
+
 }

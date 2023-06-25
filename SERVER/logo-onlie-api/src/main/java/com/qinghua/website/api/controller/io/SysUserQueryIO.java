@@ -2,7 +2,8 @@ package com.qinghua.website.api.controller.io;
 
 import lombok.Data;
 
-public class SysUserIO extends BaseIO{
+@Data
+public class SysUserQueryIO extends BaseIO{
 
     /**
      * user_name:用户名
@@ -23,38 +24,6 @@ public class SysUserIO extends BaseIO{
      * is_disabled:是否禁用 0 不禁用 1 禁用
      */
     private String isDisabled;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(String isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    public String getIsDisabled() {
-        return isDisabled;
-    }
-
-    public void setIsDisabled(String isDisabled) {
-        this.isDisabled = isDisabled;
-    }
 
     @Override
     public String toString() {

@@ -9,11 +9,11 @@ public class BizException extends GlobalException {
     public BizException() {
     }
 
-    public BizException(String errorMessage, Integer errorCode) {
+    public BizException(String errorMessage, String errorCode) {
         super(errorMessage, errorCode);
     }
 
-    public BizException(Throwable cause, Integer errorCode, String errorMessage) {
+    public BizException(Throwable cause, String errorCode, String errorMessage) {
         super(cause, errorCode, errorMessage);
     }
 

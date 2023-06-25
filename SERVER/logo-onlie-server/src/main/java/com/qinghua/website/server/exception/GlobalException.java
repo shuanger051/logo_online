@@ -10,20 +10,20 @@ import java.util.Map;
  */
 public class GlobalException extends RuntimeException {
 
-    private Integer errorCode;
+    private String errorCode;
     private String errorMessage;
     private Map<String, Object> errorProperties = new HashMap(10);
 
     public GlobalException() {
     }
 
-    public GlobalException(String errorMessage, Integer errorCode) {
+    public GlobalException(String errorMessage, String errorCode) {
         super(errorMessage);
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
 
-    public GlobalException(Throwable cause, Integer errorCode, String errorMessage) {
+    public GlobalException(Throwable cause, String errorCode, String errorMessage) {
         super(errorMessage, cause);
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
@@ -59,7 +59,7 @@ public class GlobalException extends RuntimeException {
         return sb.toString();
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return this.errorCode;
     }
 

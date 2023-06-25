@@ -14,19 +14,19 @@ public class ResponseResult<T> implements Serializable {
 
     private static final long serialVersionUID = 7962380213425770636L;
 
-    private int code;
+    private String code;
 
     private String msg;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    private ResponseResult(int code, String msg) {
+    private ResponseResult(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    private ResponseResult(int code, String msg, T data) {
+    private ResponseResult(String code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -36,11 +36,11 @@ public class ResponseResult<T> implements Serializable {
         return new ResponseResult(SysConstant.SYSTEM_ERROR_500.getCode(), msg, (Object)null);
     }
 
-    public static ResponseResult error(Integer code, String msg) {
+    public static ResponseResult error(String code, String msg) {
         return new ResponseResult(code, msg, (Object)null);
     }
 
-    public static <T> ResponseResult error(Integer code, String msg, T data) {
+    public static <T> ResponseResult error(String code, String msg, T data) {
         return new ResponseResult(code, msg, data);
     }
 
@@ -60,7 +60,7 @@ public class ResponseResult<T> implements Serializable {
         return new ResponseResult(iEnum.getCode(), iEnum.getMsg(), data);
     }
 
-    public int getCode() {
+    public String getCode() {
         return this.code;
     }
 

@@ -2,6 +2,7 @@ package com.qinghua.website.server.dao;
 
 import com.qinghua.website.server.domain.SysUserDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,5 +34,12 @@ public interface SysUserMapper {
      * @param bean
      */
     public void updateLoginFail(SysUserDTO bean);
+
+    /**
+     * 根据用户昵称检查用户是否存在
+     * @param userName
+     * @return
+     */
+    public SysUserDTO checkSysUserIsExist(@Param("userName") String userName);
 
 }
