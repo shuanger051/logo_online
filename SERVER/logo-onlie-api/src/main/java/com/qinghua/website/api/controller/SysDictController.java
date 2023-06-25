@@ -37,8 +37,7 @@ public class SysDictController {
      */
     @RequestMapping(value = "/getDictListByPage", method = RequestMethod.GET)
     public ResponseResult<Object> getDictListByPage(@Validated @RequestBody SysDictQueryIO sysDictQueryIO) {
-        SysDictDTO sysDictDTO = new SysDictDTO();
-        BeanToolsUtil.copyOrReturnNull(sysDictQueryIO, SysUserDTO.class);
+        SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictQueryIO, SysDictDTO.class);
         PageInfo<SysDictDTO> pageList = sysDictService.getDictListByPage(sysDictDTO);
         List<SysDictVO> sysDictList =  BeanToolsUtil.copyAsList(pageList.getList(), SysDictVO.class);
         PageListVO<SysDictVO> result = new PageListVO<>();
