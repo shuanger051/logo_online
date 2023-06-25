@@ -2,6 +2,7 @@ package com.qinghua.website.server.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qinghua.website.server.enums.DictEnum;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class DictUtil {
 
     @Resource
-    private RedisUtil redisUtil;
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 通过dictKey获取DictItems
@@ -23,7 +24,7 @@ public class DictUtil {
      * @return
      */
     public Map<String, Object> getDictItemsByDictKey(String dictKey) {
-        String result = (String)redisUtil.hGet(DictEnum.REDIS_MAP_KEY.getCode(), dictKey);
+        String result = (String)stringRedisTemplate.opsForHash().get(DictEnum.REDIS_MAP_KEY.getCode(), dictKey);
         if (result == null) {
             return new HashMap<>();
         }

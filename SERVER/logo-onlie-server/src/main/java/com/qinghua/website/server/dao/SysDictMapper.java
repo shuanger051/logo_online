@@ -1,7 +1,7 @@
 package com.qinghua.website.server.dao;
 
 import com.qinghua.website.server.domain.SysDictDTO;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @ClassName DictMapper
  * @Description 数据字典类型mapper
  **/
-@Repository
+@Mapper
 public interface SysDictMapper {
 
     /**

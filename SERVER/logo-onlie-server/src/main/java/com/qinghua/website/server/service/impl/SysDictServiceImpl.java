@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,13 +21,13 @@ import java.util.List;
  * @Description 数据字典类型接口实现
  **/
 @Slf4j
-@Service
+@Service(value = "sysDictService")
 public class SysDictServiceImpl implements SysDictService {
 
     @Autowired
     private SysDictMapper sysDictMapper;
 
-    @Autowired
+    @Resource
     private SysDictItemService sysDictItemService;
 
 
@@ -87,6 +88,18 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     /**
+     * 判断dictKey是否存在
+     * @param dictKey
+     * @return
+     */
+    @Override
+    public boolean checkDictKeyExists(String dictKey) {
+        SysDictDTO sysDictDTO = new SysDictDTO();
+        sysDictDTO.setDictKey(dictKey);
+        return sysDictMapper.getDictList(sysDictDTO).size() > 0;
+    }
+
+    /**
      * 修改数据字典类型信息
      *
      * @param dictDTO
@@ -123,4 +136,5 @@ public class SysDictServiceImpl implements SysDictService {
             sysDictItemService.deleteDictItemByDictKey(dict.getDictKey());
         }
     }
+
 }

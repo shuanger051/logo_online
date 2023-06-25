@@ -1,8 +1,8 @@
 package com.qinghua.website.server.dao;
 
 import com.qinghua.website.server.domain.SysDictItemDTO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @ClassName DictItemMapper
  * @Description 数据字典条目mapper
  **/
-@Repository
+@Mapper
 public interface SysDictItemMapper {
 
     /**

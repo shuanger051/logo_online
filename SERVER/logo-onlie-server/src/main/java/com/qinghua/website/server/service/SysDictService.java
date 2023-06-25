@@ -41,6 +41,13 @@ public interface SysDictService {
     SysDictDTO getDictById(Long id);
 
     /**
+     * 判断dictKey是否存在
+     * @param dictKey
+     * @return
+     */
+    boolean checkDictKeyExists(String dictKey);
+
+    /**
      * 修改数据字典类型信息
      * @param sysDictDTO
      * @return

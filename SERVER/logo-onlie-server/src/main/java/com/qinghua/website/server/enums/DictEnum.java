@@ -9,8 +9,7 @@ import com.qinghua.website.server.constant.IEnum;
  */
 public enum DictEnum implements IEnum {
 
-    REDIS_MAP_KEY("dictionaryMap","存放redis的map的key值"),
-    MODEL_TYPE("model_type","物模型类型");
+    REDIS_MAP_KEY("dictionaryMap","存放redis的map的key值");
 
     private final String code;
 

@@ -25,14 +25,11 @@ import java.util.Map;
  * @Description 数据字典条目接口实现
  **/
 @Slf4j
-@Service
+@Service(value = "sysDictItemService")
 public class SysDictItemServiceImpl implements SysDictItemService {
 
     @Autowired
     private SysDictItemMapper sysDictItemMapper;
-
-    @Autowired
-    private SysDictService sysDictService;
 
     @Resource
     private DictUtil dictUtil;
@@ -81,10 +78,6 @@ public class SysDictItemServiceImpl implements SysDictItemService {
      */
     @Override
     public void saveDictItem(SysDictItemDTO dictItemDTO) {
-
-        if (!checkDictKeyExists(dictItemDTO.getDictKey())) {
-            throw new BizException(SysConstant.ERROR_DICT_CHECK_DICTKEY_10008);
-        }
          // 去除分页效果
         SysDictItemDTO dto = new SysDictItemDTO();
         dto.setDictKey(dictItemDTO.getDictKey());
@@ -103,19 +96,6 @@ public class SysDictItemServiceImpl implements SysDictItemService {
         // 设置排序编号
         dictItemDTO.setItemSort(dictItemList.size() + 1);
         sysDictItemMapper.saveDictItem(dictItemDTO);
-    }
-
-
-    /**
-     * 判断dictKey是否存在
-     *
-     * @param dictKey
-     * @return
-     */
-    private boolean checkDictKeyExists(String dictKey) {
-        SysDictDTO sysDictDTO = new SysDictDTO();
-        sysDictDTO.setDictKey(dictKey);
-        return sysDictService.getDictList(sysDictDTO).size() > 0;
     }
 
     /**
