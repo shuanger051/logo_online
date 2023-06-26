@@ -1,16 +1,12 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.qinghua.website.api.controller.io.IdIO;
-import com.qinghua.website.api.controller.io.SysDictItemUpdateIO;
-import com.qinghua.website.api.controller.io.SysDictQueryIO;
-import com.qinghua.website.api.controller.io.SysDictSaveIO;
+import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysDictVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.SysDictDTO;
-import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.service.SysDictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -60,12 +56,12 @@ public class SysDictController {
 
     /**
      * 数据字典类型数据修改
-     * @param sysDictItemUpdateIO
+     * @param sysDictUpdateIO
      * @return
      */
     @RequestMapping(value = "/updateDictById", method = RequestMethod.POST)
-    public ResponseResult<Object> updateDictById(@Valid @RequestBody SysDictItemUpdateIO sysDictItemUpdateIO) {
-        SysDictDTO sysDictDTO = BeanToolsUtil.copyOrReturnNull(sysDictItemUpdateIO, SysDictDTO.class);
+    public ResponseResult<Object> updateDictById(@Valid @RequestBody SysDictUpdateIO sysDictUpdateIO) {
+        SysDictDTO sysDictDTO = BeanToolsUtil.copyOrReturnNull(sysDictUpdateIO, SysDictDTO.class);
         sysDictService.updateDictById(sysDictDTO);
         return ResponseResult.success();
     }

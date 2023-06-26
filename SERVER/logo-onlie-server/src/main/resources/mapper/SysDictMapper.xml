@@ -6,8 +6,8 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="dict_key" jdbcType="VARCHAR" property="dictKey"/>
         <result column="dict_name" jdbcType="VARCHAR" property="dictName"/>
-        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
-        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="BaseColumnList">
@@ -55,7 +55,7 @@
         <trim suffix="" suffixOverrides=",">
             <if test="dictKey != null and dictKey !='' ">#{dictKey},</if>
             <if test="dictName != null and dictName !=''  ">#{dictName},</if>
-            #{createTime}
+            NOW()
         </trim>
         )
     </insert>
@@ -66,7 +66,7 @@
         <trim suffix="" suffixOverrides=",">
             <if test="dictKey != null and dictKey !='' ">dict_key = #{dictKey},</if>
             <if test="dictName != null and dictName !=''  ">dict_name = #{dictName},</if>
-            update_time = #{updateTime}
+            update_time = NOW()
         </trim>
         where id = #{id}
     </update>

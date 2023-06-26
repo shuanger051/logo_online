@@ -41,7 +41,7 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/getSysUserList")
-    public ResponseResult<Object> getSysUserList(@Validated SysUserQueryIO sysUserQueryIO){
+    public ResponseResult<Object> getSysUserList(@Validated @RequestBody SysUserQueryIO sysUserQueryIO){
         SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserQueryIO,SysUserDTO.class);
         PageInfo<SysUserDTO> pageList =  sysUserService.getSysUserList(queryDTO);
         List<SysUserVO> sysUserVOList =  BeanToolsUtil.copyAsList(pageList.getList(),SysUserVO.class);

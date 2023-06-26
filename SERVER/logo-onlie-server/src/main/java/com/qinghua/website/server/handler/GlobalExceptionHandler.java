@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
                 }
             }
 
-            return ResponseResult.error(SysConstant.SYSTEM_ERROR_400.getCode(), firstErrorMsg, paramsErrorMsgMap);
+            return ResponseResult.error(SysConstant.SYSTEM_ERROR_400.getCode(), "数据参数错误", paramsErrorMsgMap);
         } else if (e instanceof MissingServletRequestParameterException) {
             return ResponseResult.error(SysConstant.SYSTEM_ERROR_400, "[ 参数: " + ((MissingServletRequestParameterException)e).getParameterName() + " ] 必传");
         } else if (e instanceof ConstraintViolationException) {

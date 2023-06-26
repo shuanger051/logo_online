@@ -41,7 +41,7 @@ public class SysDictItemController {
      * @return
      */
     @RequestMapping(value = "/getDictItemListByPage", method = RequestMethod.GET)
-    public ResponseResult<Object> getDictListPage(@Valid SysDictItemQueryIO sysDictItemQueryIO) {
+    public ResponseResult<Object> getDictListPage(@Valid @RequestBody SysDictItemQueryIO sysDictItemQueryIO) {
 
         SysDictItemDTO sysDictItemDTO =  BeanToolsUtil.copyOrReturnNull(sysDictItemQueryIO, SysDictItemDTO.class);
         PageInfo<SysDictItemDTO> pageList = sysDictItemService.getDictItemListByPage(sysDictItemDTO);
@@ -88,7 +88,7 @@ public class SysDictItemController {
     @RequestMapping(value = "/saveDictItem", method = RequestMethod.POST)
     public ResponseResult<Object> saveDictItem(@Valid @RequestBody SysDictItemSaveIO sysDictItemSaveIO) {
         if (!sysDictService.checkDictKeyExists(sysDictItemSaveIO.getDictKey())) {
-            throw new BizException(SysConstant.ERROR_DICT_CHECK_DICTNAME_10006);
+            throw new BizException(SysConstant.ERROR_DICT_CHECK_DICTKEY_10008);
         }
         SysDictItemDTO dictItem = BeanToolsUtil.copyOrReturnNull(sysDictItemSaveIO, SysDictItemDTO.class);
         sysDictItemService.saveDictItem(dictItem);

@@ -1,9 +1,12 @@
 package com.qinghua.website.api.controller.vo;
 
+import lombok.Data;
+
 /**
  * @ClassName SysDictItemVO
  * @Description 数据字典条目查询VO
  **/
+@Data
 public class SysDictItemVO {
 
     /**

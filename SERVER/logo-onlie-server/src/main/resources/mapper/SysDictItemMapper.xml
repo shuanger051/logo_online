@@ -8,8 +8,8 @@
         <result column="item_key" jdbcType="VARCHAR" property="itemKey"/>
         <result column="item_value" jdbcType="VARCHAR" property="itemValue"/>
         <result column="dict_key" jdbcType="BIGINT" property="dictKey"/>
-        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
-        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="BaseColumnList">
@@ -67,7 +67,7 @@
             <if test="itemKey != null and itemKey !=''  ">#{itemKey},</if>
             <if test="itemValue != null and itemValue !=''  ">#{itemValue},</if>
             <if test="dictKey != null  ">#{dictKey},</if>
-            #{createTime}
+            NOW()
         </trim>
         )
     </insert>
@@ -79,7 +79,7 @@
             <if test="itemSort != null">item_sort = #{itemSort},</if>
             <if test="itemKey != null and itemKey !=''  ">item_key = #{itemKey},</if>
             <if test="itemValue != null and itemValue !='' ">item_value = #{itemValue},</if>
-            update_time = #{updateTime}
+            update_time = NOW()
         </trim>
         where id = #{id}
     </update>
