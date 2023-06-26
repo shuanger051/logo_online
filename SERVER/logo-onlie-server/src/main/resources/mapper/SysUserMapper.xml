@@ -32,6 +32,16 @@
         id,	user_name, email,register_time, register_ip,last_login_time,last_login_ip, login_count,is_admin,is_disabled,error_count,error_ip,error_time create_time,update_time
     </sql>
 
+    <!-- 根据ID查询管理员信息 -->
+    <select id="getSysUser" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id !='' ">and id = #{id}</if>
+        </trim>
+    </select>
+
     <!-- 查询entity实体类信息集合 -->
     <select id="getSysUserList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserDTO">
         SELECT <include refid="Base_Column_List" /> FROM t_sys_user

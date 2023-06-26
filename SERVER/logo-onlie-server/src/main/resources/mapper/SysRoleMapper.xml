@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qinghua.website.server.dao.SysRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysRoleDTO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_level" jdbcType="INTEGER" property="roleLevel"/>
+        <result column="role_status" jdbcType="VARCHAR" property="roleStatus"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="SysRoleEntity_Base_Column_List">
+		id,role_name,role_level,role_status,description,create_time,update_time
+	</sql>
+
+    <!-- 根据ID查询管理员角色信息 -->
+    <select id="getSysRoleById" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        select
+        <include refid="SysRoleEntity_Base_Column_List"/>
+        from t_sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id !='' ">and id = #{id}</if>
+        </trim>
+    </select>
+
+    <!-- 分页查询管理员角色列表   采用like格式 -->
+    <select id="getSysRoleList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        select
+            <include refid="SysRoleEntity_Base_Column_List"/>
+        from t_sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">and id=#{id}</if>
+            <if test="roleName != null and roleName !='' ">and role_name like concat('%',#{roleName},'%')</if>
+            <if test="roleLevel != null ">and role_level = #{roleLevel}</if>
+            <if test="roleStatus != null and roleStatus !='' ">and role_status = #{roleStatus}</if>
+        </trim>
+    </select>
+
+    <!-- -->
+    <select id="getRoleListByUserId" resultType="java.lang.String" parameterType="java.lang.Long">
+        select
+            role.role_name
+        from t_sys_user user, t_sys_user_role user_role, t_sys_role role
+        where
+            user.id = user_role.user_id  and user_role.role_id = role.id  and user.id = #{userId}
+    </select>
+
+    <!-- 根据RoleName查询角色信息 -->
+    <select id="getSysRoleByRoleName" parameterType="com.qinghua.website.server.domain.SysRoleDTO" resultType="com.qinghua.website.server.domain.SysRoleDTO">
+        select
+            <include refid="SysRoleEntity_Base_Column_List"/>
+        from t_sys_role where role_name = #{roleName}
+    </select>
+
+    <!-- 保存管理员角色信息 -->
+    <insert id="saveSysRole" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        insert into t_sys_role (
+        <trim suffix="" suffixOverrides=",">
+            <if test="roleName != null and roleName !=''  ">role_name,</if>
+            <if test="roleLevel != null">role_level,</if>
+            <if test="roleStatus != null and roleStatus !=''  ">role_status,</if>
+            <if test="description != null  and description !=''  ">description,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="roleName != null and roleName !=''  ">#{roleName},</if>
+            <if test="roleLevel != null">#{roleLevel},</if>
+            <if test="roleStatus != null and roleStatus != '' ">#{roleStatus},</if>
+            <if test="description != null  and description !=''  ">#{description},</if>
+            NOW()
+        </trim>
+        )
+    </insert>
+
+    <!-- 更新角色信息 -->
+    <update id="updateSysRoleById" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        update t_sys_role set
+        <trim suffix="" suffixOverrides=",">
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="roleLevel != null">role_level = #{roleLevel},</if>
+            <if test="roleStatus != null">role_status = #{roleStatus},</if>
+            <if test="description != null">description = #{description},</if>
+            update_time = NOW()
+        </trim>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id !='' ">and id = #{id}</if>
+        </trim>
+    </update>
+
+    <!--物理删除角色-->
+    <delete id="deleteSysRoleById" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        delete from t_sys_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id !='' ">and id = #{id}</if>
+        </trim>
+    </delete>
+
+    <update id="updateSysRoleStatusById" parameterType="com.qinghua.website.server.domain.SysRoleDTO">
+        update t_sys_role
+        <set>
+            <if test="roleStatus != null and roleStatus !='' ">role_status = #{roleStatus},</if>
+            update_time = #{updateTime}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qinghua.website.server.dao.SysRolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysRolePermissionDTO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="permission_id" jdbcType="BIGINT" property="permissionId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="SysRolePermissionEntity_Base_Column_List">
+		id,permission_id,role_id,create_time,update_time
+	</sql>
+
+    <!-- 根据ID查询角色权限信息 -->
+    <select id="getSysRolePermissionById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+	        <include refid="SysRolePermissionEntity_Base_Column_List" />
+        FROM
+	        t_sys_role_permission
+        WHERE
+	        id = #{id}
+    </select>
+
+    <!-- 根据角色ID查询角色权限信息 -->
+    <select id="getSysRolePermissionListByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="SysRolePermissionEntity_Base_Column_List" />
+        FROM
+        t_sys_role_permission
+        WHERE
+        role_id = #{roleId}
+    </select>
+
+    <!-- 分页查询角色权限列表-->
+    <select id="getSysRolePermissionList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysRolePermissionDTO">
+        select
+            <include refid="SysRolePermissionEntity_Base_Column_List" />
+        from t_sys_role_permission
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">and id = #{id}</if>
+            <if test="roleId != null">and role_id = #{roleId}</if>
+            <if test="permissionId != null and permissionId !='' ">and permission_id = #{permissionId}</if>
+        </trim>
+    </select>
+
+    <!-- 根据RoleId & PermissionId查询角色权限信息 -->
+    <select id="getSysRolePermsByRoleIdANDPermsId" parameterType="com.qinghua.website.server.domain.SysRolePermissionDTO" resultType="com.qinghua.website.server.domain.SysRolePermissionDTO">
+        select
+            <include refid="SysRolePermissionEntity_Base_Column_List" />
+        from
+            t_sys_role_permission
+        where role_id = #{roleId} and permission_id = #{permissionId}
+    </select>
+
+    <!-- 保存角色权限信息 -->
+    <insert id="saveSysRolePermission" parameterType="com.qinghua.website.server.domain.SysRolePermissionDTO">
+        insert into t_sys_role_permission (
+        <trim suffix="" suffixOverrides=",">
+            <if test="permissionId != null">permission_id,</if>
+            <if test="roleId != null">role_id,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="permissionId != null">#{permissionId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            NOW()
+        </trim>
+        )
+    </insert>
+
+    <!-- 批量新增角色权限信息 -->
+    <insert id="saveSysRolePermissionForBatch" parameterType="java.util.List">
+        insert into t_sys_role_permission (
+            role_id,
+            permission_id,
+            create_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.roleId},
+            #{item.permissionId},
+            NOW()
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新管理员权限信息 -->
+    <update id="updateSysRolePermissionById" parameterType="com.qinghua.website.server.domain.SysRolePermissionDTO">
+        update t_sys_role_permission set
+        <trim suffix="" suffixOverrides=",">
+            <if test="permissionId != null">permission_id = #{permissionId},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            update_time = NOW()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--物理删除权限-->
+    <delete id="deleteSysRolePermissionById" parameterType="java.lang.Long">
+        delete from t_sys_role_permission where id = #{id}
+    </delete>
+
+    <!-- 根据RoleID批量删除权限信息 -->
+    <delete id="deleteSysRolePermissionByUserIdForBatch" parameterType="java.util.List">
+        delete from t_sys_role_permission where role_id in
+        <foreach collection="list" item="item" index="no" open="(" separator="," close=")">
+            #{item.roleId}
+        </foreach>
+    </delete>
+
+</mapper>

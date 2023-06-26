@@ -10,6 +10,13 @@ import java.util.List;
 public interface SysUserMapper {
 
     /**
+     * 根据ID查询管理员信息
+     * @param sysUserDTO
+     * @return
+     */
+    SysUserDTO getSysUser(SysUserDTO sysUserDTO);
+
+    /**
      * 分页查询系统用户信息集合
      * @param bean
      * @return

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qinghua.website.server.dao.SysUserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysUserRoleDTO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="SysUserRoleEntity_Base_Column_List">
+		id,user_id,role_id,create_time,update_time
+	</sql>
+
+    <!-- 根据ID查询管理员权限信息 -->
+    <select id="getSysUserRoleById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="SysUserRoleEntity_Base_Column_List"/>
+        from t_sys_user_role where id = #{id}
+    </select>
+
+    <!-- 分页查询管理员权限列表   采用like格式 -->
+    <select id="getSysUserRoleList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysUserRoleDTO">
+        select
+            <include refid="SysUserRoleEntity_Base_Column_List"/>
+        from t_sys_user_role
+        <trim prefix="where" prefixOverrides="and">
+            <if test="userId != null">and user_id = #{userId}</if>
+            <if test="roleId != null">and role_id = #{roleId}</if>
+        </trim>
+    </select>
+
+    <!-- 根据RoleID & UserId 查询UserRole信息 -->
+    <select id="getSysUserRoleByUserIdANDRoleId" parameterType="com.qinghua.website.server.domain.SysUserRoleDTO" resultType="com.qinghua.website.server.domain.SysUserRoleDTO">
+        select
+        <include refid="SysUserRoleEntity_Base_Column_List"/>
+        from t_sys_user_role
+        where user_id = #{userId} and role_id = #{roleId}
+    </select>
+
+    <!-- 保存管理员权限信息 -->
+    <insert id="saveSysUserRole" parameterType="com.qinghua.website.server.domain.SysUserRoleDTO">
+        insert into t_sys_user_role (
+        <trim suffix="" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="roleId != null">role_id,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            NOW()
+        </trim>
+        )
+    </insert>
+
+    <!-- 批量新增或修改用户角色信息 -->
+    <insert id="saveSysUserRoleForBatch" parameterType="java.util.List">
+
+        insert into t_sys_user_role (
+            user_id,
+            role_id,
+            create_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+                #{item.userId},
+                #{item.roleId},
+                NOW()
+        )
+        </foreach>
+
+    </insert>
+
+    <!-- 更新用户角色信息 -->
+    <update id="updateSysUserRoleById" parameterType="com.qinghua.website.server.domain.SysUserRoleDTO">
+        update t_sys_user_role set
+        <trim suffix="" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            update_time = NOW()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--物理删除权限-->
+    <delete id="deleteSysUserRoleById" parameterType="java.lang.Long">
+        delete from t_sys_user_role where id = #{id}
+    </delete>
+
+    <!-- 根据UserID删除用户角色信息 -->
+    <delete id="deleteSysUserRoleByUserId" parameterType="com.qinghua.website.server.domain.SysUserRoleDTO">
+        delete t_sys_user_role where user_id = #{userId}
+    </delete>
+
+    <!-- 根据UserID批量删除用户角色信息 -->
+    <delete id="deleteSysUserRoleByUserIdForBatch" parameterType="java.util.List">
+        delete from t_sys_user_role where user_id in
+        <foreach collection="list" item="item" index="no" open="(" separator="," close=")">
+            #{item.userId}
+        </foreach>
+    </delete>
+
+</mapper>

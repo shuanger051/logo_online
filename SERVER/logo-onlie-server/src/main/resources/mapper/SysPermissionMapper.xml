@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qinghua.website.server.dao.SysPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.SysPermissionDTO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="permission_type" jdbcType="VARCHAR" property="permissionType"/>
+        <result column="permission_group" jdbcType="VARCHAR" property="permissionGroup"/>
+        <result column="permission_level" jdbcType="INTEGER" property="permissionLevel"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_path" jdbcType="VARCHAR" property="permissionPath"/>
+        <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
+        <result column="icon_path" jdbcType="VARCHAR" property="iconPath"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- VO层展示效果 -->
+    <resultMap id="BaseResultVOMap" type="com.qinghua.website.server.domain.SysPermissionDTO">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="permission_type" jdbcType="VARCHAR" property="permissionType"/>
+        <result column="permission_group" jdbcType="VARCHAR" property="permissionGroup"/>
+        <result column="permission_level" jdbcType="INTEGER" property="permissionLevel"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_path" jdbcType="VARCHAR" property="permissionPath"/>
+        <result column="sort_no" jdbcType="INTEGER" property="sortNo"/>
+        <result column="icon_path" jdbcType="VARCHAR" property="iconPath"/>
+    </resultMap>
+
+    <sql id="SysPermissionEntity_Base_Column_List">
+		id,parent_id,permission_type,permission_group,permission_level,permission_name,sort_no,icon_path,permission_path,create_time,update_time
+	</sql>
+
+    <!-- VO层展示字段 -->
+    <sql id="SysPermissionVO_Column_List">
+		id,parent_id,permission_type,permission_level,permission_name,sort_no,icon_path,permission_path
+	</sql>
+
+    <!-- 根据ID查询权限信息 -->
+    <select id="getSysPermissionById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission where id = #{id}
+    </select>
+
+    <!-- 在本组下根据ID查询权限信息 -->
+    <select id="getSysPermissionByIdAndGroup" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        select
+        <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission where id = #{id}
+        and permission_group = #{permissionGroup}
+    </select>
+
+    <!-- 分页查询权限列表   采用like格式 -->
+    <select id="getSysPermissionList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        select
+            <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission
+        <trim prefix="where" prefixOverrides="and">
+            <if test="parentId != null">and parent_id = #{parentId}</if>
+            <if test="permissionType != null and permissionType !='' ">and permission_type = #{permissionType}</if>
+            <if test="permissionGroup != null and permissionGroup !='' ">and permission_group = #{permissionGroup}</if>
+            <if test="permissionName != null and permissionName !='' ">and permission_name like concat('%',#{permissionName},'%')</if>
+            <if test="permissionPath != null and permissionPath !='' ">and permission_path like concat('%',#{permissionPath},'%')</if>
+        </trim>
+        order by sort_no asc
+    </select>
+
+    <!-- 根据用户ID查询权限信息 -->
+    <select id="getPermsStringByUserId" resultType="java.lang.String" parameterType="java.lang.Long">
+        select
+            perms.permission_path
+        from
+            t_sys_user user, t_sys_user_role user_role, t_sys_role role, t_sys_role_permission role_perms, t_sys_permission perms
+        where
+           user.id = user_role.user_id
+	       and user_role.role_id = role.id
+	       and role.id = role_perms.role_id
+	       and role_perms.permission_id = perms.id
+	       and role.role_status = '1'
+	       and user.id = #{userId}
+	    order by perms.sort_no asc
+    </select>
+
+    <!-- 根据角色ID查询权限信息 -->
+    <select id="getPermissionByRoleId" resultMap="BaseResultVOMap" parameterType="java.lang.Long">
+        select
+            perms.id,perms.parent_id,perms.permission_type,perms.permission_group,perms.permission_level,perms.permission_name,perms.permission_path,perms.icon_path,perms.sort_no
+        from
+            t_sys_role_permission rp,t_sys_permission perms
+        where
+            rp.permission_id = perms.id
+            and rp.role_id = #{id}
+    </select>
+
+    <!-- 通过组获取所有的权限列表   -->
+    <select id="findAllListByGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission
+        where permission_group = #{permissionGroup} and permission_type != '1'
+    </select>
+
+    <!-- 根据用户ID查询权限集合 -->
+    <select id="getPermsListByUserId" resultMap="BaseResultVOMap" parameterType="java.lang.Long">
+        select
+            perms.id,perms.parent_id,perms.permission_type,perms.permission_group,perms.permission_level,perms.permission_name,perms.permission_path,perms.icon_path,perms.sort_no
+        from
+            t_sys_user user, t_sys_user_role user_role, t_sys_role role, t_sys_role_permission role_perms, t_sys_permission perms
+        where
+           user.id = user_role.user_id
+	       and user_role.role_id = role.id
+	       and role.id = role_perms.role_id
+	       and role_perms.permission_id = perms.id
+	       and role.role_status = '1'
+	       and user.id = #{userId}
+	       order by perms.sort_no asc
+    </select>
+
+    <!-- 根据权限名称获取权限信息 -->
+    <select id="getPermsByName" resultType="com.qinghua.website.server.domain.SysPermissionDTO" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        select
+        <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission
+        where permission_name = #{permissionName}
+        and permission_group = #{permissionGroup}
+    </select>
+
+    <!-- 根据权限路径获取权限信息 -->
+    <select id="getPermsByPath" resultType="com.qinghua.website.server.domain.SysPermissionDTO" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        select
+            <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission
+        <trim prefix="where" prefixOverrides="and">
+            <if test="permissionPath != null and permissionPath !='' ">and permission_path =#{permissionPath}</if>
+            and permission_path != "#"
+            and permission_group = #{permissionGroup}
+        </trim>
+    </select>
+
+    <!-- 保存管理员权限信息 -->
+    <insert id="saveSysPermission" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        insert into t_sys_permission (
+        <trim suffix="" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="permissionType != null and permissionType !=''  ">permission_type,</if>
+            <if test="permissionGroup != null and permissionGroup !=''  ">permission_group,</if>
+            <if test="permissionLevel != null ">permission_level,</if>
+            <if test="permissionName != null and permissionName !=''  ">permission_name,</if>
+            <if test="permissionPath != null  and permissionPath !=''  ">permission_path,</if>
+            <if test="sortNo != null ">sort_no,</if>
+            <if test="iconPath != null  and iconPath !=''  ">icon_path,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="permissionType != null and permissionType !=''  ">#{permissionType},</if>
+            <if test="permissionGroup != null and permissionGroup !=''  ">#{permissionGroup},</if>
+            <if test="permissionLevel != null  ">#{permissionLevel},</if>
+            <if test="permissionName != null and permissionName !=''  ">#{permissionName},</if>
+            <if test="permissionPath != null  and permissionPath !=''  ">#{permissionPath},</if>
+            <if test="sortNo != null ">#{sortNo},</if>
+            <if test="iconPath != null  and iconPath !=''  ">#{iconPath},</if>
+            #{createTime}
+        </trim>
+        )
+    </insert>
+
+    <!-- 更新管理员权限信息 -->
+    <update id="updateSysPermissionById" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
+        update t_sys_permission set
+        <trim suffix="" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="permissionType != null">permission_type = #{permissionType},</if>
+            <if test="permissionGroup != null">permission_group = #{permissionGroup},</if>
+            <if test="permissionLevel != null">permission_level = #{permissionLevel},</if>
+            <if test="permissionName != null">permission_name = #{permissionName},</if>
+            <if test="permissionPath != null">permission_path = #{permissionPath},</if>
+            <if test="sortNo != null ">sort_no = #{sortNo},</if>
+            <if test="iconPath != null  and iconPath !=''  ">icon_path = #{iconPath},</if>
+            update_time = #{updateTime}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--物理删除权限-->
+    <delete id="deleteSysPermissionById" parameterType="java.lang.Long">
+        delete from t_sys_permission where id = #{id}
+    </delete>
+
+</mapper>
