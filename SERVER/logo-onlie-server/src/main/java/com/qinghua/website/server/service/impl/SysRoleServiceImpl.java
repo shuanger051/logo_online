@@ -36,7 +36,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRoleDTO.setId(id);
 
         SysRoleDTO resRole = sysRoleMapper.getSysRoleById(sysRoleDTO);
-        Preconditions.checkNotNull(resRole, "用户所属渠道下不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
+        Preconditions.checkNotNull(resRole, "不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
 
         return sysRoleMapper.getSysRoleById(sysRoleDTO);
     }
@@ -86,7 +86,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void updateSysRoleById(SysRoleDTO sysRoleDTO){
         SysRoleDTO resRole = sysRoleMapper.getSysRoleById(sysRoleDTO);
-        Preconditions.checkNotNull(resRole, "用户所属渠道下不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
+        Preconditions.checkNotNull(resRole, "不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
 
         if (StringUtils.isNoneBlank(sysRoleDTO.getRoleName())) {
             SysRoleDTO roleDTO = sysRoleMapper.getSysRoleByRoleName(sysRoleDTO);
@@ -105,7 +105,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void deleteSysRoleById(SysRoleDTO sysRoleDTO){
         SysRoleDTO resRole = sysRoleMapper.getSysRoleById(sysRoleDTO);
-        Preconditions.checkNotNull(resRole, "用户所属渠道下不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
+        Preconditions.checkNotNull(resRole, "不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
         sysRoleMapper.deleteSysRoleById(sysRoleDTO);
     }
 
@@ -127,7 +127,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void updateSysRoleStatusById(SysRoleDTO sysRoleDTO) {
         SysRoleDTO resRole = sysRoleMapper.getSysRoleById(sysRoleDTO);
-        Preconditions.checkNotNull(resRole, "用户所属渠道下不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
+        Preconditions.checkNotNull(resRole, "不存在RoleID为： " + sysRoleDTO.getId() + " 的角色");
         sysRoleMapper.updateSysRoleStatusById(sysRoleDTO);
     }
 

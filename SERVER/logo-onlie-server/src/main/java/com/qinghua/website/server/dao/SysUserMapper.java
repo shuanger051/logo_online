@@ -24,6 +24,13 @@ public interface SysUserMapper {
     public List<SysUserDTO> getSysUserList(SysUserDTO bean);
 
     /**
+     * 根据用户名称&密码查询用户信息
+     * @param bean
+     * @return
+     */
+    public SysUserDTO getSysUserByNameAndPwd(SysUserDTO bean);
+
+    /**
      * 系统用户登录校验
      * @param bean
      * @return
@@ -48,5 +55,41 @@ public interface SysUserMapper {
      * @return
      */
     public SysUserDTO checkSysUserIsExist(@Param("userName") String userName);
+
+    /**
+     * 重置密码
+     * @param resetPwd
+     */
+    public void resetPwd(SysUserDTO resetPwd);
+
+    /**
+     * 解除用户锁定状态
+     * @param secureLock
+     */
+    public void secureAccountLock(SysUserDTO secureLock);
+
+    /**
+     * 新增系统用户信息
+     * @param sysUserDTO
+     */
+    public void saveSysUser(SysUserDTO sysUserDTO);
+
+    /**
+     * 修改系统用户信息
+     */
+    public void updateUser(SysUserDTO sysUserDTO);
+
+    /**
+     * 修改系统用户密码
+     * @param userName
+     * @param password
+     */
+    public void changePwd(@Param("userName")String userName,@Param("password")String password);
+
+    /**
+     * 改变系统用户禁用状态
+     * @param sysUserDTO
+     */
+    public void lockSysUser(SysUserDTO sysUserDTO);
 
 }

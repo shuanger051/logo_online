@@ -4,9 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
 import com.qinghua.website.api.common.SessionUser;
-import com.qinghua.website.api.controller.io.LoginIO;
-import com.qinghua.website.api.controller.io.SysUserQueryIO;
-import com.qinghua.website.api.controller.io.SysUserUpdateIO;
+import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysUserVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
@@ -16,6 +14,7 @@ import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.SysUserService;
+import com.qinghua.website.server.utils.DateUtil;
 import com.qinghua.website.server.utils.RSACryptoHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -58,9 +57,20 @@ public class SysUserController {
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseResult<Object> login(@Validated @RequestBody LoginIO loginIO, HttpServletRequest request){
-        //校验验证码有效性 TODO
-        String password = RSACryptoHelper.decrypt(loginIO.getPassword());
-        return ResponseResult.success(userNameLogin(loginIO.getUserName(), password,request));
+        //校验验证码有效性，首先判断验证码是否生成，再判断验证码是否和session中相同
+        if(null != request.getSession().getAttribute("imgVerifyCode")){
+            String imgVerifyCode = request.getSession().getAttribute("imgVerifyCode").toString();
+            if(null != imgVerifyCode && imgVerifyCode.equals(loginIO.getCaptchaCode())){
+                //清除session中的图片验证码
+                request.getSession().removeAttribute("imgVerifyCode");
+                String password = RSACryptoHelper.decrypt(loginIO.getPassword());
+                return ResponseResult.success(userNameLogin(loginIO.getUserName(), password,request));
+            }else{
+                throw new BizException(SysConstant.ERROR_IMG_CODE_IS_WRONG);
+            }
+        }else{
+            throw new BizException(SysConstant.ERROR_MUST_CREATE_IMG_CODE_FIRST);
+        }
     }
 
     /**
@@ -84,22 +94,49 @@ public class SysUserController {
 
         if(null != resUser){
             log.info("[消息:]用户{}正在执行登录操作",userName);
-            //判定账户状态是否为锁定，锁定的账户不允许登录,且错误登录次数不得大于3次
-            if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0") && resUser.getErrorCount() <= 3){
-                log.info("[消息：] 用户{}登录成功",userName);
-                //更新登录次数，最后登录时间，更新时间,错误次数为0
-                SysUserDTO loginUpdateInfo = new SysUserDTO();
-                loginUpdateInfo.setId(resUser.getId());
-                loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
-                loginUpdateInfo.setLoginCount(resUser.getLoginCount()+1);
-                loginUpdateInfo.setLastLoginTime(new Date());
-                sysUserService.updateLoginSuccess(loginUpdateInfo);
-                //将用户数据写入session
-                SessionUser user = new SessionUser();
-                request.getSession().setAttribute(SessionUser.SEESION_USER,user);
-                return Boolean.TRUE;
+            //判定账户状态是否为锁定，锁定的账户不允许登录
+            if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0")){
+                //用户未锁定，追加判断错误次数校验，错误登录次数不得大于3次，否则不允许登录
+                if(resUser.getErrorCount() <= 3){
+                    log.info("[消息：] 用户{}登录成功",userName);
+                    //更新登录次数，最后登录时间，更新时间,错误次数为0
+                    SysUserDTO loginUpdateInfo = new SysUserDTO();
+                    loginUpdateInfo.setId(resUser.getId());
+                    loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
+                    loginUpdateInfo.setLoginCount(resUser.getLoginCount()+1);
+                    loginUpdateInfo.setLastLoginTime(new Date());
+                    sysUserService.updateLoginSuccess(loginUpdateInfo);
+                    //将用户数据写入session
+                    SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
+                    request.getSession().setAttribute(SessionUser.SEESION_USER,user);
+                    return Boolean.TRUE;
+                }else{
+                    throw new BizException(SysConstant.ERROR_LOGIN_WRONG_MANY_TIMES);
+                }
             }else{
-                throw new BizException(SysConstant.LOGIN_ERROR_10002.getMsg(),SysConstant.LOGIN_ERROR_10002.getCode());
+                //用户已锁定，追加判断锁定时间是否已经超过24小时，若超过24小时则自动解除锁定
+                Date curDate = DateUtil.formatDate(new Date());
+                Date lockTime = resUser.getErrorTime();
+                long cha = curDate.getTime() - lockTime.getTime();
+                double result = cha * 1.0 / (1000 * 60 * 60);
+
+                //小于24小时
+                if(result<=24){
+                    throw new BizException(SysConstant.LOGIN_ERROR_10002.getMsg(),SysConstant.LOGIN_ERROR_10002.getCode());
+                }else{
+                    log.info("[消息：] 用户{}登录成功",userName);
+                    //更新登录次数，最后登录时间，更新时间,错误次数为0
+                    SysUserDTO loginUpdateInfo = new SysUserDTO();
+                    loginUpdateInfo.setId(resUser.getId());
+                    loginUpdateInfo.setLastLoginIp(IpUtil.getRemoteAddr(request));
+                    loginUpdateInfo.setLoginCount(resUser.getLoginCount()+1);
+                    loginUpdateInfo.setLastLoginTime(new Date());
+                    sysUserService.updateLoginSuccess(loginUpdateInfo);
+                    //将用户数据写入session
+                    SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
+                    request.getSession().setAttribute(SessionUser.SEESION_USER,user);
+                    return Boolean.TRUE;
+                }
             }
         }else{
             log.info("[消息：] 用户{}用户密码不匹配,错误次数为{}",resUser.getUserName(),resUser.getErrorCount()+1);
@@ -136,9 +173,113 @@ public class SysUserController {
         return ResponseResult.success("LogOut Success!");
     }
 
+    /**
+     * 更新系统用户信息
+     * @param sysUserUpdateIO
+     * @return
+     */
     @RequestMapping(value = "/updateSysUser",method = RequestMethod.POST)
     public ResponseResult<Object> updateUser(@Validated @RequestBody SysUserUpdateIO sysUserUpdateIO){
-        return null;
+        SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserUpdateIO,SysUserDTO.class);
+        sysUserService.updateUser(sysUserDTO);
+        return ResponseResult.success();
     }
+
+    /**
+     * 新增系统用户信息
+     * @param sysUserSaveIO
+     * @return
+     */
+    @RequestMapping(value = "/saveSysUser",method = RequestMethod.POST)
+    public ResponseResult<Object> saveUser(@Validated @RequestBody SysUserSaveIO sysUserSaveIO,HttpServletRequest request){
+        SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserSaveIO,SysUserDTO.class);
+        sysUserDTO.setPassword(MD5Util.toMD5String(sysUserDTO.getPassword()));
+        sysUserDTO.setLoginCount(0);
+        sysUserDTO.setIsDisabled("0");
+        sysUserDTO.setIsAdmin("0");
+        sysUserDTO.setActivation(true);
+        sysUserDTO.setRegisterIp(IpUtil.getRemoteAddr(request));
+        sysUserService.saveSysUser(sysUserDTO);
+        return ResponseResult.success();
+    }
+
+    /**
+     * 重置系统用户密码
+     * @param sysUserUpdatePWDIO
+     * @return
+     */
+    @RequestMapping(value = "/resetPwd",method = RequestMethod.POST)
+    public ResponseResult<Object> resetPwd(@Validated @RequestBody SysUserUpdatePWDIO sysUserUpdatePWDIO,HttpServletRequest request){
+        //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
+        SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
+        if(null != user){
+            if(user.getIsAdmin().equals("1")){
+                SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserUpdatePWDIO,SysUserDTO.class);
+                sysUserService.resetPwd(sysUserDTO);
+                return ResponseResult.success();
+            }else{
+                throw new BizException(SysConstant.ERROR_NOLY_SUPER_ADMIN_CAN_DO);
+            }
+        }else{
+            throw new BizException(SysConstant.ERROR_USER_NOT_LOGIN);
+        }
+    }
+
+    /**
+     * 超管解除账号锁定状态
+     * @param sysUserLockIO
+     * @return
+     */
+    @RequestMapping(value = "/secureAccountLock",method = RequestMethod.POST)
+    public ResponseResult<Object> secureAccountLock(@Validated @RequestBody SysUserLockIO sysUserLockIO, HttpServletRequest request){
+        //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
+        SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
+        if(null != user){
+            if(user.getIsAdmin().equals("1")){
+                SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserLockIO,SysUserDTO.class);
+                sysUserService.secureAccountLock(sysUserDTO);
+                return ResponseResult.success();
+            }else{
+                throw new BizException(SysConstant.ERROR_NOLY_SUPER_ADMIN_CAN_DO);
+            }
+        }else{
+            throw new BizException(SysConstant.ERROR_USER_NOT_LOGIN);
+        }
+    }
+
+    /**
+     * 系统用户修改密码
+     * @param sysUserPwdIO
+     * @return
+     */
+    @RequestMapping(value = "/changePwd",method = RequestMethod.POST)
+    public ResponseResult<Object> changePwd(@Validated @RequestBody SysUserPwdIO sysUserPwdIO){
+        sysUserService.changePwd(sysUserPwdIO.getUserName(),sysUserPwdIO.getOldPassword(),sysUserPwdIO.getNewPassword());
+        return ResponseResult.success();
+    }
+
+    /**
+     * 改变系统用户禁用状态
+     * @param sysUserStatusIO
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/lockSysUser",method = RequestMethod.POST)
+    public ResponseResult<Object> lockSysUser(@Validated @RequestBody SysUserStatusIO sysUserStatusIO, HttpServletRequest request){
+        //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
+        SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
+        if(null != user){
+            if(user.getIsAdmin().equals("1")){
+                SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserStatusIO,SysUserDTO.class);
+                sysUserService.lockSysUser(sysUserDTO);
+                return ResponseResult.success();
+            }else{
+                throw new BizException(SysConstant.ERROR_NOLY_SUPER_ADMIN_CAN_DO);
+            }
+        }else{
+            throw new BizException(SysConstant.ERROR_USER_NOT_LOGIN);
+        }
+    }
+
 
 }

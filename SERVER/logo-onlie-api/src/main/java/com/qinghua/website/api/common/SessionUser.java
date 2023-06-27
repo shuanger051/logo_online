@@ -7,6 +7,8 @@ public class SessionUser {
 
     public static final String SEESION_USER = "user";
 
+    public static final String USER_IMG_CODE =  "user_img_code";
+
     /**
      * id:
      */

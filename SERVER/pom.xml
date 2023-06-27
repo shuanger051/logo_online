@@ -50,6 +50,8 @@
 
     <shiro-redis.version>2.8.24</shiro-redis.version>
     <fastjson.version>1.2.70</fastjson.version>
+    <guava.version>20.0</guava.version>
+    <hutool.version>5.8.18</hutool.version>
   </properties>
 
 </project>

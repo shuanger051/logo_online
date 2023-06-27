@@ -66,6 +66,34 @@
         SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName}
     </select>
 
+    <!-- 根据用户昵称检查用户是否存在 -->
+    <select id="getSysUserByNameAndPwd" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName} and password = #{password}
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="saveSysUser" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        INSERT INTO t_sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName !=null and userName !='' ">user_name,</if>
+            <if test="email !=null and email !=''">email,</if>
+            <if test="password !=null and password != ''">password,</if>
+            register_time,
+            <if test="registerIp !=null and registerIp != ''">register_ip,</if>
+            login_count,
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName !=null and userName !=''">#{userName},</if>
+            <if test="email !=null and email !=''">#{email},</if>
+            <if test="password !=null and password != ''">#{password},</if>
+            NOW(),
+            <if test="registerIp !=null and registerIp != ''">#{registerIp},</if>
+            0,
+            NOW()
+        </trim>
+    </insert>
+
     <!-- 更新登录相关操作 -->
     <update id="updateLoginSuccess" parameterType="com.qinghua.website.server.domain.SysUserDTO">
         UPDATE t_sys_user
@@ -95,32 +123,53 @@
         WHERE id = #{id}
     </update>
 
-    <!--<insert id="save" parameterType="com.zealdee.iot.iotwebservice.domain.EntityDTO">
-        INSERT INTO t_entity_msg_log
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="entityImei !=null and entityImei !='' ">entity_imei,</if>
-            <if test="msgCode !=null and msgCode !=''">msg_code,</if>
-            <if test="returnCode !=null and returnCode != ''">return_code,</if>
-            <if test="expectStatus !=null and expectStatus != ''">expect_status,</if>
-            <if test="entityType !=null and entityType != ''">entity_type,</if>
-            <if test="systemCode !=null and systemCode != ''">system_code,</if>
-            send_time,
-            <if test="callbackUrl !=null and callbackUrl != ''">callback_url,</if>
-            create_time
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="entityImei !=null and entityImei !=''">#{entityImei},</if>
-            <if test="msgCode !=null and msgCode !=''">#{msgCode},</if>
-            <if test="returnCode !=null and returnCode != ''">#{returnCode},</if>
-            <if test="expectStatus !=null and expectStatus != ''">#{expectStatus},</if>
-            <if test="entityType !=null and entityType != ''">#{entityType},</if>
-            <if test="systemCode !=null and systemCode != ''">#{systemCode},</if>
-            NOW(),
-            <if test="callbackUrl !=null and callbackUrl != ''">#{callbackUrl},</if>
-            NOW()
-        </trim>
-    </insert>-->
+    <!-- 重置密码 -->
+    <update id="resetPwd" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="password !=null and password !='' ">password = #{password},</if>
+            update_time = NOW()
+        </set>
+        WHERE user_name = #{userName}
+    </update>
 
+    <!-- 解除用户锁定状态 -->
+    <update id="secureAccountLock" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user set is_disabled = '0',update_time = NOW() WHERE user_name = #{userName}
+    </update>
 
+    <!-- 修改系统用户信息 -->
+    <update id="updateUser" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="email !=null and email !='' ">email = #{email},</if>
+            <if test="activation !=null and activation !='' ">activation = #{activation},</if>
+            <if test="activationCode !=null and activationCode !='' ">activation_code = #{activationCode},</if>
+            <if test="isAdmin !=null and isAdmin !='' ">is_admin = #{isAdmin},</if>
+            <if test="isDisabled !=null and isDisabled !='' ">is_disabled = #{isDisabled},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 修改系统用户密码 -->
+    <update id="changePwd" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="password !=null and password !='' ">password = #{password},</if>
+            update_time = NOW()
+        </set>
+        WHERE user_name = #{userName}
+    </update>
+
+    <!-- 改变用户禁用状态 -->
+    <update id="lockSysUser" parameterType="com.qinghua.website.server.domain.SysUserDTO">
+        UPDATE t_sys_user
+        <set>
+            <if test="isDisabled !=null and isDisabled !='' ">is_disabled = #{isDisabled},</if>
+            update_time = NOW()
+        </set>
+        WHERE user_name = #{userName}
+    </update>
 
 </mapper>

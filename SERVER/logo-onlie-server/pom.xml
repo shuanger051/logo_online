@@ -129,6 +129,20 @@
       <artifactId>httpclient</artifactId>
     </dependency>
 
+    <!-- google工具 -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+
+    <!-- 图片验证码 -->
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-captcha</artifactId>
+      <version>${hutool.version}</version>
+    </dependency>
+
     <!-- lombok插件 -->
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -28,12 +28,12 @@ public enum SysConstant implements IEnum {
     ERROR_WRONG_LIST_PARAMS_10014("10014", "存在重复数据"),
     ERROR_ENCODE_RSA_WRONG_10015("10015","签名加密失败"),
     ERROR_DECODE_RSA_WRONG_10016("10016","签名解密失败"),
-    ERROR_UNKNOWN_SIGN_WRONG_10017("10017","签名证书非法，系统已拒绝访问"),
-    ERROR_ANSWER_NUM_LACK_10018("10018","必须且只能绑定三个问题"),
+    ERROR_NOLY_SUPER_ADMIN_CAN_DO("10017","只有超级管理员才可以对此数据操作"),
+    ERROR_MUST_CREATE_IMG_CODE_FIRST("10018","请先点击页面按钮生成图片验证码"),
     ERROR_QUESTION_EXIT_10019("10019","用户问题不可以重复"),
     ERROR_CUSTCODE_ORGNAME_PARENTID_EXIT_10020("10020","已存在相同级别同名机构"),
-    ERROR_SYS_USER_NOT_EXISTS_10021("10021","用户管理员不存在"),
-    ERROR_SECURITY_ANSWER_NOTHING_SECURITY_PROBLEM_10022("10022","该用户还未设置密保问题"),
+    ERROR_SYS_USER_NOT_EXISTS("10021","用户管理员不存在"),
+    ERROR_USER_NOT_LOGIN("10022","用户未登录不允许操作"),
     ERROR_SECURITY_ANSWER_ILLEGAL_INCOMING_DATA_10023("10023","传入参数ID非法"),
     ERROR_SECURITY_QUESTION_NOT_FOUND_QUESTIONNAME_10024("10024","密保问题不存在"),
     ERROR_USER_NOT_SAME_CHANNEL_100029("10025","当前用户所属机构下无此用户ID"),
@@ -52,7 +52,7 @@ public enum SysConstant implements IEnum {
     ERROR_USER_UN_LOGIN("10038", "未登录或者登录已失效"),
     ERROR_USER_NO_RIGHTS("10039", "无权限"),
     ERROR_USER_REPEAT_USERNAME("10040","用户名已存在"),
-    ERROR_USER_CUST_CODE_MUST_HAVE("10041","必须传入客户编码(CUST_CODE)"),
+    ERROR_IMG_CODE_IS_WRONG("10041","图片验证码错误"),
     ERROR_USER_CUST_CODE_UNLAWFUL("10042","客户编码非法"),
     ERROR_USER_CHECK_NEW_PWD_NOTNULL("10043", "新密码不能为空"),
     ERROR_USER_CHECK_OLD_PWD_NOTNULL("10044", "旧密码不能为空"),
@@ -72,7 +72,14 @@ public enum SysConstant implements IEnum {
     ERROR_USER_NOT_HAVE_ROLE_4("10058","当前用户所属的机构下无此角色信息"),
     ERROR_USER_ONLY_CHANGE_YOURSELF_PASSWORD("10059","用户仅限修改本人密码"),
     ERROR_USER_NOT_SAME_CHANNEL("10060","当前用户所属的机构下无此用户信息"),
-    ERROR_USER_REPEAT_PERMSNAME_UNDEFIND("10061","该权限不存在");
+    ERROR_USER_REPEAT_PERMSNAME_UNDEFIND("10061","该权限不存在"),
+    ERROR_CHECK_START_DATE("10062", "开始日期格式不正确"),
+    ERROR_CHECK_END_DATE("10063", "结束日期格式不正确"),
+    ERROR_CHECK_START_TIME("10064", "开始时间格式不正确"),
+    ERROR_CHECK_END_TIME("10065", "结束时间格式不正确"),
+    ERROR_CHECK_DATE_INTERVAL("10066", "开始日期不能晚于结束日期"),
+    ERROR_DATE_FORMAT("10067","时间格式化出错"),
+    ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多");
 
     private final String code;
 
