@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.MerchantInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.MerchantInfoDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="merchant_name" property="merchantName" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="merchant_status" property="merchantStatus" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+	        id,	        merchant_name,	        gender,	        merchant_status,	        phone,	        id_card,	        remark,	        create_time,	        update_time    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getMerchantInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_merchant_info WHERE  id =#{id}
+    </select>
+
+    <!-- 根据身份证号查询商户信息 -->
+    <select id="getMerchantInfoByIdCard" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_merchant_info WHERE  id_card =#{idCard}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getMerchantInfoList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.MerchantInfoDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_merchant_info
+        <trim prefix="where" prefixOverrides="AND || OR">
+                        <if test="id !=null">AND id = #{id}</if>
+                        <if test="merchantName !=null and merchantName !=''">AND merchant_name = #{merchantName}</if>
+                        <if test="gender !=null and gender !=''">AND gender = #{gender}</if>
+                        <if test="merchantStatus !=null and merchantStatus !=''">AND merchant_status = #{merchantStatus}</if>
+                        <if test="phone !=null and phone !=''">AND phone = #{phone}</if>
+                        <if test="idCard !=null and idCard !=''">AND id_card = #{idCard}</if>
+                        <if test="remark !=null and remark !=''">AND remark = #{remark}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteMerchantInfoById" parameterType="java.lang.Long">
+        DELETE FROM t_merchant_info
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateMerchantInfoById" parameterType="com.qinghua.website.server.domain.MerchantInfoDTO">
+        UPDATE t_merchant_info
+        <set>
+            <if test="merchantName !=null and merchantName !=''">merchant_name = #{merchantName},</if>
+            <if test="gender !=null and gender !=''">gender = #{gender},</if>
+            <if test="merchantStatus !=null and merchantStatus !=''">merchant_status = #{merchantStatus},</if>
+            <if test="phone !=null and phone !=''">phone = #{phone},</if>
+            <if test="idCard !=null and idCard !=''">id_card = #{idCard},</if>
+            <if test="remark !=null and remark !=''">remark = #{remark},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveMerchantInfo" parameterType="com.qinghua.website.server.domain.MerchantInfoDTO">
+        INSERT INTO t_merchant_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="merchantName !=null and merchantName !=''">merchant_name,</if>
+            <if test="gender !=null and gender !=''">gender,</if>
+            <if test="merchantStatus !=null and merchantStatus !=''">merchant_status,</if>
+            <if test="phone !=null and phone !=''">phone,</if>
+            <if test="idCard !=null and idCard !=''">id_card,</if>
+            <if test="remark !=null and remark !=''">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="merchantName !=null and merchantName !=''">#{merchantName},</if>
+            <if test="gender !=null and gender !=''">#{gender},</if>
+            <if test="merchantStatus !=null and merchantStatus !=''">#{merchantStatus},</if>
+            <if test="phone !=null and phone !=''">#{phone},</if>
+            <if test="idCard !=null and idCard !=''">#{idCard},</if>
+            <if test="remark !=null and remark !=''">#{remark},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

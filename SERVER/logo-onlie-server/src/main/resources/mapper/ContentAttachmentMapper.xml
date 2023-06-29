@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.ContentAttachmentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ContentAttachmentDTO">
+       <id column="id" property="id" jdbcType="BIGINT"/>
+       <result column="content_id" property="contentId" jdbcType="BIGINT"/>
+       <result column="priority" property="priority" jdbcType="INTEGER"/>
+       <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR"/>
+       <result column="attachment_name" property="attachmentName" jdbcType="VARCHAR"/>
+       <result column="filename" property="filename" jdbcType="VARCHAR"/>
+       <result column="download_count" property="downloadCount" jdbcType="INTEGER"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+	        id,	        content_id,	        priority,	        attachment_path,	        attachment_name,	        filename,	        download_count,	        create_time,	        update_time    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getContentAttachmentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_attachment WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getContentAttachmentList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentAttachmentDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_attachment
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="id !=null">AND id = #{id}</if>
+            <if test="contentId !=null">AND content_id = #{contentId}</if>
+            <if test="priority !=null">AND priority = #{priority}</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">AND attachment_path = #{attachmentPath}</if>
+            <if test="attachmentName !=null and attachmentName !=''">AND attachment_name = #{attachmentName}</if>
+            <if test="filename !=null and filename !=''">AND filename = #{filename}</if>
+            <if test="downloadCount !=null">AND download_count = #{downloadCount}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteContentAttachmentById" parameterType="java.lang.Long">
+        DELETE FROM t_content_attachment
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateContentAttachmentById" parameterType="com.qinghua.website.server.domain.ContentAttachmentDTO">
+        UPDATE t_content_attachment
+        <set>
+            <if test="contentId !=null">content_id = #{contentId},</if>
+            <if test="priority !=null">priority = #{priority},</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">attachment_path = #{attachmentPath},</if>
+            <if test="attachmentName !=null and attachmentName !=''">attachment_name = #{attachmentName},</if>
+            <if test="filename !=null and filename !=''">filename = #{filename},</if>
+            <if test="downloadCount !=null">download_count = #{downloadCount},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveContentAttachment" parameterType="com.qinghua.website.server.domain.ContentAttachmentDTO">
+        INSERT INTO t_content_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contentId !=null">content_id,</if>
+            <if test="priority !=null">priority,</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">attachment_path,</if>
+            <if test="attachmentName !=null and attachmentName !=''">attachment_name,</if>
+            <if test="filename !=null and filename !=''">filename,</if>
+            <if test="downloadCount !=null">download_count,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contentId !=null">#{contentId},</if>
+            <if test="priority !=null">#{priority},</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">#{attachmentPath},</if>
+            <if test="attachmentName !=null and attachmentName !=''">#{attachmentName},</if>
+            <if test="filename !=null and filename !=''">#{filename},</if>
+            <if test="downloadCount !=null">#{downloadCount},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

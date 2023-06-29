@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.ContentPictureMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ContentPictureDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="priority" property="priority" jdbcType="INTEGER"/>
+        <result column="content_id" property="contentId" jdbcType="BIGINT"/>
+        <result column="img_path" property="imgPath" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+	        id,	        priority,	        content_id,	        img_path,	        description,	        create_time,	        update_time    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getContentPictureById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_picture WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getContentPictureList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentPictureDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_picture
+        <trim prefix="where" prefixOverrides="AND || OR">
+        <if test="id !=null">AND id = #{id}</if>
+        <if test="priority !=null">AND priority = #{priority}</if>
+        <if test="contentId !=null">AND content_id = #{contentId}</if>
+        <if test="imgPath !=null and imgPath !=''">AND img_path = #{imgPath}</if>
+        <if test="description !=null and description !=''">AND description = #{description}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteContentPictureById" parameterType="java.lang.Long">
+        DELETE FROM t_content_picture
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateContentPictureById" parameterType="com.qinghua.website.server.domain.ContentPictureDTO">
+        UPDATE t_content_picture
+        <set>
+            <if test="priority !=null">priority = #{priority},</if>
+            <if test="contentId !=null">content_id = #{contentId},</if>
+            <if test="imgPath !=null and imgPath !=''">img_path = #{imgPath},</if>
+            <if test="description !=null and description !=''">description = #{description},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveContentPicture" parameterType="com.qinghua.website.server.domain.ContentPictureDTO">
+        INSERT INTO t_content_picture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priority !=null">priority,</if>
+            <if test="contentId !=null">content_id,</if>
+            <if test="imgPath !=null and imgPath !=''">img_path,</if>
+            <if test="description !=null and description !=''">description,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priority !=null">#{priority},</if>
+            <if test="contentId !=null">#{contentId},</if>
+            <if test="imgPath !=null and imgPath !=''">#{imgPath},</if>
+            <if test="description !=null and description !=''">#{description},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

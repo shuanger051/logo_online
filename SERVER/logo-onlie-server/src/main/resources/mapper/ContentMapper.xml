@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.ContentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ContentDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="channel_id" property="channelId" jdbcType="BIGINT"/>
+        <result column="top_level" property="topLevel" jdbcType="INTEGER"/>
+        <result column="is_recommend" property="isRecommend" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="views_day" property="viewsDay" jdbcType="INTEGER"/>
+        <result column="comments_day" property="commentsDay" jdbcType="INTEGER"/>
+        <result column="downloads_day" property="downloadsDay" jdbcType="INTEGER"/>
+        <result column="ups_day" property="upsDay" jdbcType="INTEGER"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+	        id,	        channel_id,	        sort_date,	        top_level,	        is_recommend,	        status,	        views_day,	        comments_day,	        downloads_day,	        ups_day,	        create_time,	        update_time    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getContentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getContentList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_content
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="id !=null">AND id = #{id}</if>
+            <if test="channelId !=null">AND channel_id = #{channelId}</if>
+            <if test="sortDate !=null">AND sort_date = #{sortDate}</if>
+            <if test="topLevel !=null">AND top_level = #{topLevel}</if>
+            <if test="isRecommend !=null">AND is_recommend = #{isRecommend}</if>
+            <if test="status !=null">AND status = #{status}</if>
+            <if test="viewsDay !=null">AND views_day = #{viewsDay}</if>
+            <if test="commentsDay !=null">AND comments_day = #{commentsDay}</if>
+            <if test="downloadsDay !=null">AND downloads_day = #{downloadsDay}</if>
+            <if test="upsDay !=null">AND ups_day = #{upsDay}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+    <!-- 根据ChannelId查询文章集合 -->
+    <select id="getContentByChannelId" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_content where channel_id = #{channelId}
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteContentById" parameterType="java.lang.Long">
+        DELETE FROM t_content
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateContentById" parameterType="com.qinghua.website.server.domain.ContentDTO">
+        UPDATE t_content
+        <set>
+            <if test="channelId !=null">channel_id = #{channelId},</if>
+            <if test="sortDate !=null">sort_date = #{sortDate},</if>
+            <if test="topLevel !=null">top_level = #{topLevel},</if>
+            <if test="isRecommend !=null">is_recommend = #{isRecommend},</if>
+            <if test="status !=null">status = #{status},</if>
+            <if test="viewsDay !=null">views_day = #{viewsDay},</if>
+            <if test="commentsDay !=null">comments_day = #{commentsDay},</if>
+            <if test="downloadsDay !=null">downloads_day = #{downloadsDay},</if>
+            <if test="upsDay !=null">ups_day = #{upsDay},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveContent" parameterType="com.qinghua.website.server.domain.ContentDTO">
+        INSERT INTO t_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channelId !=null">channel_id,</if>
+            <if test="sortDate !=null">sort_date,</if>
+            <if test="topLevel !=null">top_level,</if>
+            <if test="isRecommend !=null">is_recommend,</if>
+            <if test="status !=null">status,</if>
+            <if test="viewsDay !=null">views_day,</if>
+            <if test="commentsDay !=null">comments_day,</if>
+            <if test="downloadsDay !=null">downloads_day,</if>
+            <if test="upsDay !=null">ups_day,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="channelId !=null">#{channelId},</if>
+            <if test="sortDate !=null">#{sortDate},</if>
+            <if test="topLevel !=null">#{topLevel},</if>
+            <if test="isRecommend !=null">#{isRecommend},</if>
+            <if test="status !=null">#{status},</if>
+            <if test="viewsDay !=null">#{viewsDay},</if>
+            <if test="commentsDay !=null">#{commentsDay},</if>
+            <if test="downloadsDay !=null">#{downloadsDay},</if>
+            <if test="upsDay !=null">#{upsDay},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

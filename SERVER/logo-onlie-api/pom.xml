@@ -36,6 +36,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- mapstruct 类转换工具 -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

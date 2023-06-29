@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.ContentExtMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ContentExtDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="content_id" property="contentId" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="short_title" property="shortTitle" jdbcType="VARCHAR"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="origin" property="origin" jdbcType="VARCHAR"/>
+        <result column="origin_url" property="originUrl" jdbcType="VARCHAR"/>
+        <result column="title_img" property="titleImg" jdbcType="VARCHAR"/>
+        <result column="content_img" property="contentImg" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="type_img" property="typeImg" jdbcType="VARCHAR"/>
+        <result column="external_link" property="externalLink" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+	        id,	        content_id,	        title,	        short_title,	        author,	        description,	        origin,	        origin_url,	        release_date,	        title_img,	        content_img,	        content,	        type_img,	        external_link,	        create_time,	        update_time    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getContentExtById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_ext WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getContentExtList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_ext
+        <trim prefix="where" prefixOverrides="AND || OR">
+                        <if test="id !=null">AND id = #{id}</if>
+                        <if test="contentId !=null">AND content_id = #{contentId}</if>
+                        <if test="title !=null and title !=''">AND title = #{title}</if>
+                        <if test="shortTitle !=null and shortTitle !=''">AND short_title = #{shortTitle}</if>
+                        <if test="author !=null and author !=''">AND author = #{author}</if>
+                        <if test="description !=null and description !=''">AND description = #{description}</if>
+                        <if test="origin !=null and origin !=''">AND origin = #{origin}</if>
+                        <if test="originUrl !=null and originUrl !=''">AND origin_url = #{originUrl}</if>
+                        <if test="releaseDate !=null">AND release_date = #{releaseDate}</if>
+                        <if test="titleImg !=null and titleImg !=''">AND title_img = #{titleImg}</if>
+                        <if test="contentImg !=null and contentImg !=''">AND content_img = #{contentImg}</if>
+                        <if test="content !=null and content !=''">AND content = #{content}</if>
+                        <if test="typeImg !=null and typeImg !=''">AND type_img = #{typeImg}</if>
+                        <if test="externalLink !=null and externalLink !=''">AND external_link = #{externalLink}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteContentExtById" parameterType="java.lang.Long">
+        DELETE FROM t_content_ext
+        WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateContentExtById" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
+        UPDATE t_content_ext
+        <set>
+            <if test="contentId !=null">content_id = #{contentId},</if>
+            <if test="title !=null and title !=''">title = #{title},</if>
+            <if test="shortTitle !=null and shortTitle !=''">short_title = #{shortTitle},</if>
+            <if test="author !=null and author !=''">author = #{author},</if>
+            <if test="description !=null and description !=''">description = #{description},</if>
+            <if test="origin !=null and origin !=''">origin = #{origin},</if>
+            <if test="originUrl !=null and originUrl !=''">origin_url = #{originUrl},</if>
+            <if test="releaseDate !=null">release_date = #{releaseDate},</if>
+            <if test="titleImg !=null and titleImg !=''">title_img = #{titleImg},</if>
+            <if test="contentImg !=null and contentImg !=''">content_img = #{contentImg},</if>
+            <if test="content !=null and content !=''">content = #{content},</if>
+            <if test="typeImg !=null and typeImg !=''">type_img = #{typeImg},</if>
+            <if test="externalLink !=null and externalLink !=''">external_link = #{externalLink},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveContentExt" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
+        INSERT INTO t_content_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contentId !=null">content_id,</if>
+            <if test="title !=null and title !=''">title,</if>
+            <if test="shortTitle !=null and shortTitle !=''">short_title,</if>
+            <if test="author !=null and author !=''">author,</if>
+            <if test="description !=null and description !=''">description,</if>
+            <if test="origin !=null and origin !=''">origin,</if>
+            <if test="originUrl !=null and originUrl !=''">origin_url,</if>
+            <if test="releaseDate !=null">release_date,</if>
+            <if test="titleImg !=null and titleImg !=''">title_img,</if>
+            <if test="contentImg !=null and contentImg !=''">content_img,</if>
+            <if test="content !=null and content !=''">content,</if>
+            <if test="typeImg !=null and typeImg !=''">type_img,</if>
+            <if test="externalLink !=null and externalLink !=''">external_link,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contentId !=null">#{contentId},</if>
+            <if test="title !=null and title !=''">#{title},</if>
+            <if test="shortTitle !=null and shortTitle !=''">#{shortTitle},</if>
+            <if test="author !=null and author !=''">#{author},</if>
+            <if test="description !=null and description !=''">#{description},</if>
+            <if test="origin !=null and origin !=''">#{origin},</if>
+            <if test="originUrl !=null and originUrl !=''">#{originUrl},</if>
+            <if test="releaseDate !=null">#{releaseDate},</if>
+            <if test="titleImg !=null and titleImg !=''">#{titleImg},</if>
+            <if test="contentImg !=null and contentImg !=''">#{contentImg},</if>
+            <if test="content !=null and content !=''">#{content},</if>
+            <if test="typeImg !=null and typeImg !=''">#{typeImg},</if>
+            <if test="externalLink !=null and externalLink !=''">#{externalLink},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

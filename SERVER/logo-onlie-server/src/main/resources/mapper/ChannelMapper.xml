@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.ChannelMapper">
+
+    <resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ChannelDTO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="model_id" jdbcType="BIGINT" property="modelId"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+        <result column="is_display" jdbcType="VARCHAR" property="isDisplay"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="comment_control" jdbcType="VARCHAR" property="commentControl"/>
+        <result column="allow_updown" jdbcType="VARCHAR" property="allowUpdown"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, model_id, parent_id, name, order_no,is_display, description,comment_control,allow_updown,create_time, update_time
+    </sql>
+
+    <!-- 根据ID查询 -->
+    <select id="getChannelByID" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from t_channel
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 查询 -->
+    <select id="getChannelListByPage" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ChannelDTO">
+        select
+        <include refid="BaseColumnList"/>
+        from t_channel
+        <trim prefix="where" prefixOverrides="and">
+            <if test="name != null and name !='' ">name like concat('%', #{name}, '%')</if>
+            <if test="isDisplay != null and isDisplay !='' ">and is_display = #{isDisplay}</if>
+            <if test="commentControl != null">and comment_control = #{commentControl}</if>
+            <if test="allowUpdown != null">and allow_updown = #{allowUpdown}</if>
+        </trim>
+        order by create_time asc
+    </select>
+
+    <!-- 根据ParentID查询子栏目集合 -->
+    <select id="getChannelByParentID" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ChannelDTO">
+        select
+            <include refid="BaseColumnList"/>
+        from t_channel where parent_id = #{parentId} order by create_time asc
+    </select>
+
+    <!-- 新增 -->
+    <insert id="saveChannel" parameterType="com.qinghua.website.server.domain.ChannelDTO">
+        insert into t_channel(
+        <trim suffix="" suffixOverrides=",">
+            <if test="modelId != null">model_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name !=''  ">name,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="isDisplay != null and isDisplay != ''">is_display,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="commentControl != null">comment_control,</if>
+            <if test="allowUpdown != null">allow_updown,</if>
+            create_time
+        </trim>
+        ) values (
+        <trim suffix="" suffixOverrides=",">
+            <if test="modelId != null">#{modelId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name !=''  ">#{name},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="isDisplay != null and isDisplay !=''  ">#{isDisplay},</if>
+            <if test="description != null and description !=''  ">#{description},</if>
+            <if test="commentControl != null  ">#{commentControl},</if>
+            <if test="allowUpdown != null  ">#{allowUpdown},</if>
+            NOW()
+        </trim>
+        )
+    </insert>
+
+    <!-- 修改 -->
+    <update id="updateChannel" parameterType="com.qinghua.website.server.domain.ChannelDTO">
+        update t_channel set
+        <trim suffix="" suffixOverrides=",">
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name !=''  ">name = #{name},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="isDisplay != null and isDisplay !=''  ">is_display = #{isDisplay},</if>
+            <if test="description != null and description !='' ">description = #{description},</if>
+            <if test="commentControl != null">comment_control = #{commentControl},</if>
+            <if test="allowUpdown != null">allow_updown = #{allowUpdown},</if>
+            update_time = NOW()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteChannelByID" parameterType="java.lang.Long">
+        delete from t_channel where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

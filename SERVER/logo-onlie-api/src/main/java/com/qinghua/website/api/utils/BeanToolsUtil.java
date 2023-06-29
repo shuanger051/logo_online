@@ -1,5 +1,6 @@
 package com.qinghua.website.api.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -122,6 +123,18 @@ public class BeanToolsUtil {
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException ex) {
             throw new RuntimeException("数组对象转换异常", ex);
         }
-
     }
+
+    /**
+     * 从List<A> copy到List<B>
+     * @param list List<B>
+     * @param clazz B
+     * @return List<B>
+     */
+    public static <T> List<T> copyList(List<?> list,Class<T> clazz){
+        String oldOb = JSON.toJSONString(list);
+        return JSON.parseArray(oldOb, clazz);
+    }
+
+
 }
