@@ -3,6 +3,7 @@ package com.qinghua.website.api.controller;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.common.SessionUser;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
@@ -39,6 +40,7 @@ public class SysUserController {
      * @param sysUserQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询系统用户信息集合")
     @GetMapping("/getSysUserList")
     public ResponseResult<Object> getSysUserList(@Validated @RequestBody SysUserQueryIO sysUserQueryIO){
         SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserQueryIO,SysUserDTO.class);
@@ -55,6 +57,7 @@ public class SysUserController {
      * @param loginIO 用户名+密码+验证码
      * @return
      */
+    @LogAnnotation(logType = "login",logDesc = "支持用戶名&密碼校驗登錄")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseResult<Object> login(@Validated @RequestBody LoginIO loginIO, HttpServletRequest request){
         //校验验证码有效性，首先判断验证码是否生成，再判断验证码是否和session中相同
@@ -164,6 +167,7 @@ public class SysUserController {
      * @param request
      * @return
      */
+    @LogAnnotation(logType = "logout",logDesc = "系统用户登出")
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public ResponseResult<Object> logout(HttpServletRequest request){
         SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
@@ -178,6 +182,7 @@ public class SysUserController {
      * @param sysUserUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "更新系统用户信息")
     @RequestMapping(value = "/updateSysUser",method = RequestMethod.POST)
     public ResponseResult<Object> updateUser(@Validated @RequestBody SysUserUpdateIO sysUserUpdateIO){
         SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserUpdateIO,SysUserDTO.class);
@@ -190,6 +195,7 @@ public class SysUserController {
      * @param sysUserSaveIO
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增系统用户信息")
     @RequestMapping(value = "/saveSysUser",method = RequestMethod.POST)
     public ResponseResult<Object> saveUser(@Validated @RequestBody SysUserSaveIO sysUserSaveIO,HttpServletRequest request){
         SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserSaveIO,SysUserDTO.class);
@@ -208,6 +214,7 @@ public class SysUserController {
      * @param sysUserUpdatePWDIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "重置系统用户密码")
     @RequestMapping(value = "/resetPwd",method = RequestMethod.POST)
     public ResponseResult<Object> resetPwd(@Validated @RequestBody SysUserUpdatePWDIO sysUserUpdatePWDIO,HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
@@ -230,6 +237,7 @@ public class SysUserController {
      * @param sysUserLockIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "超管解除账号锁定状态")
     @RequestMapping(value = "/secureAccountLock",method = RequestMethod.POST)
     public ResponseResult<Object> secureAccountLock(@Validated @RequestBody SysUserLockIO sysUserLockIO, HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
@@ -252,6 +260,7 @@ public class SysUserController {
      * @param sysUserPwdIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "系统用户修改密码")
     @RequestMapping(value = "/changePwd",method = RequestMethod.POST)
     public ResponseResult<Object> changePwd(@Validated @RequestBody SysUserPwdIO sysUserPwdIO){
         sysUserService.changePwd(sysUserPwdIO.getUserName(),sysUserPwdIO.getOldPassword(),sysUserPwdIO.getNewPassword());
@@ -264,6 +273,7 @@ public class SysUserController {
      * @param request
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "改变系统用户禁用状态")
     @RequestMapping(value = "/lockSysUser",method = RequestMethod.POST)
     public ResponseResult<Object> lockSysUser(@Validated @RequestBody SysUserStatusIO sysUserStatusIO, HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口

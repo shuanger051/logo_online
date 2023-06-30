@@ -32,4 +32,10 @@ public interface LogInfoMapper {
          */
         Integer saveLogInfo(LogInfoDTO bean);
 
+        /**
+         * 根据天数进行数据删除
+         * @param days
+         */
+        void deleteLogInfoListByDays(@Param("days")Integer days);
+
 }

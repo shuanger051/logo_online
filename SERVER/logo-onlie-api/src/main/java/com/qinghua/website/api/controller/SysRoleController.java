@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysRoleVO;
@@ -32,6 +33,7 @@ public class SysRoleController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据ID查询角色信息")
     @RequestMapping(value = "/getSysRoleById", method = RequestMethod.GET)
     public ResponseResult<Object> getSysRoleById(@RequestParam("id") Long id) {
         SysRoleDTO sysRoleDTO = sysRoleService.getSysRoleById(id);
@@ -44,6 +46,7 @@ public class SysRoleController {
      * @param sysRoleQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询角色信息")
     @RequestMapping(value = "/getSysRoleListByPage", method = RequestMethod.GET)
     public ResponseResult<Object> getSysRoleListByPage(@Validated @RequestBody SysRoleQueryIO sysRoleQueryIO) {
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleQueryIO, SysRoleDTO.class);
@@ -61,6 +64,7 @@ public class SysRoleController {
      * @param sysRoleSaveIO
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增角色信息")
     @RequestMapping(value = "/saveSysRole", method = RequestMethod.POST)
     public ResponseResult<Object> saveSysRole(@Validated @RequestBody SysRoleSaveIO sysRoleSaveIO) {
         SysRoleDTO sysRoleDTO = BeanToolsUtil.copyOrReturnNull(sysRoleSaveIO, SysRoleDTO.class);
@@ -74,6 +78,7 @@ public class SysRoleController {
      * @param sysRoleUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "根据ID修改角色信息")
     @RequestMapping(value = "/updateSysRoleById", method = RequestMethod.POST)
     public ResponseResult<Object> updateSysRoleById(@Validated @RequestBody SysRoleUpdateIO sysRoleUpdateIO) {
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleUpdateIO, SysRoleDTO.class);
@@ -86,6 +91,7 @@ public class SysRoleController {
      * @param idIO
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "根据ID删除角色信息")
     @RequestMapping(value = "/deleteSysRoleById", method = RequestMethod.POST)
     public ResponseResult<Object> deleteSysRoleById(@Validated @RequestBody IdIO idIO) {
         SysRoleDTO sysRoleDTO = new SysRoleDTO();
@@ -99,6 +105,7 @@ public class SysRoleController {
      * @param sysRoleUpdateStatusIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "根据ID修改角色状态")
     @RequestMapping(value = "/updateSysRoleStatusById",method = RequestMethod.POST)
     public ResponseResult<Object> updateSysRoleStatusById(@Validated @RequestBody SysRoleUpdateStatusIO sysRoleUpdateStatusIO){
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleUpdateStatusIO,SysRoleDTO.class);

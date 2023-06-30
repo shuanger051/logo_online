@@ -37,4 +37,11 @@ public interface LogInfoService {
          */
         Integer saveLogInfo(LogInfoDTO bean);
 
+        /**
+         * 根据天数清除超出天数的数据集合
+         * @param days
+         * @return
+         */
+        void deleteLogInfoListByDays(Integer days);
+
 }

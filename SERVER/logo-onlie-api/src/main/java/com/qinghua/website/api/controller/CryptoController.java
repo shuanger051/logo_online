@@ -1,5 +1,6 @@
 package com.qinghua.website.api.controller;
 
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.RSAEncryptIO;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.utils.CryptoCache;
@@ -21,6 +22,7 @@ public class CryptoController {
      * 获取RSA密钥
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "获取RSA密钥")
     @RequestMapping(value = "/getPublicKey",method = RequestMethod.GET)
     public ResponseResult<Object> getKey(){
         Map<String,Object> resMap = new HashMap<>();
@@ -29,9 +31,10 @@ public class CryptoController {
     }
 
     /**
-     * 加密参数
+     * 根据密钥加密参数
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据密钥加密参数")
     @RequestMapping(value = "/encrypt",method = RequestMethod.POST)
     public ResponseResult<Object> encrypt(@Validated @RequestBody RSAEncryptIO encryptIO){
         Map<String,Object> resMap = new HashMap<>();

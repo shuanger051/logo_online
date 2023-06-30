@@ -2,6 +2,7 @@ package com.qinghua.website.api.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class ImgCodeController {
      * @param httpServletResponse
      * @throws Exception
      */
+    @LogAnnotation(logType = "query",logDesc = "生成图片验证码")
     @GetMapping("/kaptcha")
     public void defaultKaptcha(HttpServletRequest request,HttpServletResponse httpServletResponse) throws Exception {
         httpServletResponse.setHeader("Cache-Control", "no-store");

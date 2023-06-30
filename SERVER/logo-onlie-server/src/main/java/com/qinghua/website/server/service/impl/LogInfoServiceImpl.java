@@ -47,4 +47,9 @@ public class LogInfoServiceImpl implements LogInfoService {
             return logInfoMapper.saveLogInfo(bean);
         }
 
+        @Override
+        public void deleteLogInfoListByDays(Integer days){
+            logInfoMapper.deleteLogInfoListByDays(days);
+        }
+
 }

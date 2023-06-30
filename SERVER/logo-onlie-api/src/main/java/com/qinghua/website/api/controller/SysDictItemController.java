@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.IdIO;
 import com.qinghua.website.api.controller.io.SysDictItemQueryIO;
 import com.qinghua.website.api.controller.io.SysDictItemSaveIO;
@@ -36,12 +37,13 @@ public class SysDictItemController {
     private SysDictService sysDictService;
 
     /**
-     * 数据字典分页查询
+     * 数据字典子项分页查询
      * @param sysDictItemQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "数据字典子项分页查询")
     @RequestMapping(value = "/getDictItemListByPage", method = RequestMethod.GET)
-    public ResponseResult<Object> getDictListPage(@Valid @RequestBody SysDictItemQueryIO sysDictItemQueryIO) {
+    public ResponseResult<Object> getDicItemtListPage(@Valid @RequestBody SysDictItemQueryIO sysDictItemQueryIO) {
 
         SysDictItemDTO sysDictItemDTO =  BeanToolsUtil.copyOrReturnNull(sysDictItemQueryIO, SysDictItemDTO.class);
         PageInfo<SysDictItemDTO> pageList = sysDictItemService.getDictItemListByPage(sysDictItemDTO);
@@ -59,6 +61,7 @@ public class SysDictItemController {
      * @param dictKey
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "数据字典通过dict_key查询字典子项列表")
     @RequestMapping(value = "/getItemsByDictKey", method = RequestMethod.GET)
     public ResponseResult<Object> getItemsByDictKey(@RequestParam("dictKey") String dictKey) {
         List<SysDictItemDTO> sysDictItemList = sysDictItemService.getItemsByDictKey(dictKey);
@@ -68,10 +71,11 @@ public class SysDictItemController {
 
 
     /**
-     * 数据字典条目数据查看
+     * 数据字典条目子项数据查看
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "数据字典条目子项数据查看")
     @RequestMapping(value = "/getDictItemById", method = RequestMethod.GET)
     public ResponseResult<Object> getDictItemById(@RequestParam("id") Long id) {
         SysDictItemDTO dictItem = sysDictItemService.getDictItemById(id);
@@ -81,10 +85,11 @@ public class SysDictItemController {
 
 
     /**
-     * 数据字典条目添加
+     * 数据字典子项添加
      * @param sysDictItemSaveIO
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "数据字典子项添加")
     @RequestMapping(value = "/saveDictItem", method = RequestMethod.POST)
     public ResponseResult<Object> saveDictItem(@Valid @RequestBody SysDictItemSaveIO sysDictItemSaveIO) {
         if (!sysDictService.checkDictKeyExists(sysDictItemSaveIO.getDictKey())) {
@@ -96,10 +101,11 @@ public class SysDictItemController {
     }
 
     /**
-     * 数据字典条目数据修改
+     * 数据字典子项数据修改
      * @param sysDictItemUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "数据字典子项数据修改")
     @RequestMapping(value = "/updateDictItemById", method = RequestMethod.POST)
     public ResponseResult<Object> updateDictItemById(@Valid @RequestBody SysDictItemUpdateIO sysDictItemUpdateIO) {
         SysDictItemDTO dictItem =  BeanToolsUtil.copyOrReturnNull(sysDictItemUpdateIO, SysDictItemDTO.class);
@@ -108,10 +114,11 @@ public class SysDictItemController {
     }
 
     /**
-     * 数据字典条目数据删除
+     * 数据字典子项数据删除
      * @param idIO
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "数据字典子项数据删除")
     @RequestMapping(value = "/deleteDictItemById", method = RequestMethod.POST)
     public ResponseResult<Object> deleteDictItemById(@Valid @RequestBody IdIO idIO) {
         sysDictItemService.deleteDictItemById(idIO.getId());

@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.MerchantInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
@@ -33,6 +34,7 @@ public class MerchantInfoController {
      * @param merchantQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询商户列表")
     @RequestMapping(value = "/getMerchantInfoListByPage",method = RequestMethod.GET)
     public ResponseResult<Object> getMerchantInfoListByPage(@Validated @RequestBody MerchantQueryIO merchantQueryIO){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
@@ -49,6 +51,7 @@ public class MerchantInfoController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据ID查询商户信息")
     @RequestMapping(value = "/getMerchantInfoById",method = RequestMethod.GET)
     public ResponseResult<Object> getMerchantInfoById(@RequestParam("id") Long id){
         MerchantInfoDTO merchantInfoDTO = merchantInfoService.getMerchantInfoById(id);
@@ -61,6 +64,7 @@ public class MerchantInfoController {
      * @param bean
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增商户信息")
     @RequestMapping(value = "/saveMerchantInfo",method = RequestMethod.POST)
     public ResponseResult<Object> saveMerchantInfo(@Validated @RequestBody MerchantInfoSaveIO bean){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
@@ -75,6 +79,7 @@ public class MerchantInfoController {
      * @param bean
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "修改商户信息")
     @RequestMapping(value = "/updateMerchantInfoById",method = RequestMethod.POST)
     public ResponseResult<Object> updateMerchantInfoById(@Validated @RequestBody MerchantInfoUpdateIO bean){
         MerchantInfoDTO merchantInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
@@ -89,6 +94,7 @@ public class MerchantInfoController {
      * @param req
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "删除商户信息")
     @RequestMapping(value="/deleteMerchantInfoById", method= RequestMethod.POST)
     public ResponseResult<Object> deleteMerchantInfoById(@Valid @RequestBody IdIO req) {
         merchantInfoService.deleteMerchantInfoById(req.getId());

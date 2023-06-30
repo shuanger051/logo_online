@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.IdIO;
 import com.qinghua.website.api.controller.io.SysUserRoleQueryIO;
 import com.qinghua.website.api.controller.io.SysUserRoleSaveIO;
@@ -40,6 +41,7 @@ public class SysUserRoleController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据ID查询用户角色信息")
     @RequestMapping(value = "/getSysUserRoleById", method = RequestMethod.GET)
     public ResponseResult<Object> getSysUserRoleById(@RequestParam("id") Long id) {
         SysUserRoleDTO sysUserRoleDTO = sysUserRoleService.getSysUserRoleById(id);
@@ -52,6 +54,7 @@ public class SysUserRoleController {
      * @param sysUserRoleQueryReq
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询用户角色信息")
     @RequestMapping(value = "/getSysUserRoleListByPage", method = RequestMethod.GET)
     public ResponseResult<Object> getSysUserRoleListByPage(@Validated @RequestBody SysUserRoleQueryIO sysUserRoleQueryReq) {
         SysUserRoleDTO sysUserRoleDTO = BeanToolsUtil.copyOrReturnNull(sysUserRoleQueryReq, SysUserRoleDTO.class);
@@ -68,6 +71,7 @@ public class SysUserRoleController {
      * @param sysUserRoleSaveReq
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增用户角色信息")
     @RequestMapping(value = "/saveSysUserRole", method = RequestMethod.POST)
     public ResponseResult<Object> saveSysUserRole(@Validated @RequestBody SysUserRoleSaveIO sysUserRoleSaveReq) {
         SysUserRoleDTO sysUserRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysUserRoleSaveReq, SysUserRoleDTO.class);
@@ -81,6 +85,7 @@ public class SysUserRoleController {
      * @param sysUserRoleUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "根据ID修改用户角色信息")
     @RequestMapping(value = "/updateSysUserRoleById", method = RequestMethod.POST)
     public ResponseResult<Object> updateSysUserRoleById(@Validated @RequestBody SysUserRoleUpdateIO sysUserRoleUpdateIO) {
         SysUserRoleDTO sysUserRoleDTO = BeanToolsUtil.copyOrReturnNull(sysUserRoleUpdateIO, SysUserRoleDTO.class);
@@ -93,6 +98,7 @@ public class SysUserRoleController {
      * @param idIO
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "根据ID删除用户角色信息")
     @RequestMapping(value = "/deleteSysUserRoleById", method = RequestMethod.POST)
     public ResponseResult<Object> deleteSysUserRoleById(@Validated @RequestBody IdIO idIO) {
         sysUserRoleService.deleteSysUserRoleById(idIO.getId());
@@ -104,6 +110,7 @@ public class SysUserRoleController {
      * @param sysUserRoleSaveReqList
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "批量新增或修改用户角色信息")
     @RequestMapping(value = "/saveOrUpdateSysUserRoleForBatch",method = RequestMethod.POST)
     public ResponseResult<Object> saveOrUpdateSysUserRoleForBatch(@Validated @RequestBody ValidList<SysUserRoleSaveIO> sysUserRoleSaveReqList){
 

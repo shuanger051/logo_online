@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.IdIO;
 import com.qinghua.website.api.controller.io.SysPermissionQueryIO;
 import com.qinghua.website.api.controller.io.SysPermissionSaveIO;
@@ -36,6 +37,7 @@ public class SysPermissionController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据ID查询权限信息")
     @RequestMapping(value = "/getSysPermissionById", method = RequestMethod.GET)
     public ResponseResult<Object> getSysPermissionById(@RequestParam("id") Long id) {
         SysPermissionDTO sysPermissionDTO = sysPermissionService.getSysPermissionById(id);
@@ -48,6 +50,7 @@ public class SysPermissionController {
      * @param sysPermissionQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询权限信息")
     @RequestMapping(value = "/getSysPermissionListByPage", method = RequestMethod.GET)
     public ResponseResult<Object> getSysPermissionListByPage(@Validated @RequestBody SysPermissionQueryIO sysPermissionQueryIO) {
         SysPermissionDTO sysPermissionDTO =  BeanToolsUtil.copyOrReturnNull(sysPermissionQueryIO, SysPermissionDTO.class);
@@ -63,6 +66,7 @@ public class SysPermissionController {
      * 查询所有权限信息
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "查询所有权限信息")
     @RequestMapping(value = "/getSysPermissionList", method = RequestMethod.GET)
     public ResponseResult<Object> getSysPermissionList() {
         SysPermissionDTO sysPermissionDTO = new SysPermissionDTO();
@@ -76,6 +80,7 @@ public class SysPermissionController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据角色ID查询权限信息")
     @RequestMapping(value = "/getPermissionByRoleId", method = RequestMethod.GET)
     public ResponseResult<Object> getPermissionByRoleId(@RequestParam("id") Long id) {
         List<SysPermissionDTO> permissionList = sysPermissionService.getPermissionByRoleId(id);
@@ -88,6 +93,7 @@ public class SysPermissionController {
      * @param sysPermissionSaveIO
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增权限信息")
     @RequestMapping(value = "/saveSysPermission", method = RequestMethod.POST)
     public ResponseResult<Object> saveSysPermission(@Validated @RequestBody SysPermissionSaveIO sysPermissionSaveIO) {
         SysPermissionDTO sysPermissionDTO =  BeanToolsUtil.copyOrReturnNull(sysPermissionSaveIO, SysPermissionDTO.class);
@@ -101,6 +107,7 @@ public class SysPermissionController {
      * @param sysPermissionUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "根据ID修改权限信息")
     @RequestMapping(value = "/updateSysPermissionById", method = RequestMethod.POST)
     public ResponseResult<Object> updateSysPermissionById(@Validated @RequestBody SysPermissionUpdateIO sysPermissionUpdateIO) {
         SysPermissionDTO sysPermissionDTO =  BeanToolsUtil.copyOrReturnNull(sysPermissionUpdateIO, SysPermissionDTO.class);
@@ -113,6 +120,7 @@ public class SysPermissionController {
      * @param idIO
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "根据ID删除权限信息")
     @RequestMapping(value = "/deleteSysPermissionById", method = RequestMethod.POST)
     public ResponseResult<Object> deleteSysPermissionById(@Validated @RequestBody IdIO idIO) {
         sysPermissionService.deleteSysPermissionById(idIO.getId());

@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.ChannelQueryIO;
 import com.qinghua.website.api.controller.io.ChannelSaveIO;
 import com.qinghua.website.api.controller.io.ChannelUpdateIO;
@@ -35,6 +36,7 @@ public class ChannelController{
      * @param channelQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "分页查询栏目列表")
     @RequestMapping(value = "/getChannelListByPage",method = RequestMethod.GET)
     public ResponseResult<Object> getChannelListByPage(@Validated @RequestBody ChannelQueryIO channelQueryIO){
         ChannelDTO channelDTO =  BeanToolsUtil.copyOrReturnNull(channelQueryIO, ChannelDTO.class);
@@ -51,6 +53,7 @@ public class ChannelController{
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "根据栏目ID查询栏目信息")
     @RequestMapping(value = "/getChannelByID",method = RequestMethod.GET)
     public ResponseResult<Object> getChannelByID(@RequestParam("id") Long id){
         ChannelDTO channelDTO = channelService.getChannelByID(id);
@@ -63,6 +66,7 @@ public class ChannelController{
      * @param bean
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "新增栏目信息")
     @RequestMapping(value = "/saveChannel",method = RequestMethod.POST)
     public ResponseResult<Object> postChannel(@Validated @RequestBody ChannelSaveIO bean){
         ChannelDTO channelDTO =  BeanToolsUtil.copyOrReturnNull(bean, ChannelDTO.class);
@@ -75,6 +79,7 @@ public class ChannelController{
      * @param bean
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "修改栏目信息")
     @RequestMapping(value = "/updateChannel",method = RequestMethod.POST)
     public ResponseResult<Object> updateChannel(@Validated @RequestBody ChannelUpdateIO bean){
         ChannelDTO channelDTO = BeanToolsUtil.copyOrReturnNull(bean, ChannelDTO.class);
@@ -87,6 +92,7 @@ public class ChannelController{
      * @param req
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "删除栏目信息")
     @RequestMapping(value="/deleteChannelByID", method= RequestMethod.POST)
     public ResponseResult<Object> deleteChannelByID(@Valid @RequestBody IdIO req) {
         channelService.deleteChannelByID(req.getId());

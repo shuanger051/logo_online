@@ -70,4 +70,9 @@
         </trim>
     </insert>
 
+    <!-- 删除超过60天的数据集合 -->
+    <delete id="deleteLogInfoListByDays" parameterType="java.lang.Integer">
+        DELETE from t_log_info where create_time <![CDATA[ <= ]]> date_add(NOW(),INTERVAL - #{days} DAY)
+    </delete>
+
 </mapper>

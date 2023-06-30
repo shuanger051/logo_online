@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.controller.vo.SysDictVO;
@@ -31,6 +32,7 @@ public class SysDictController {
      * @param sysDictQueryIO
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "数据字典分页查询")
     @RequestMapping(value = "/getDictListByPage", method = RequestMethod.GET)
     public ResponseResult<Object> getDictListByPage(@Validated @RequestBody SysDictQueryIO sysDictQueryIO) {
         SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictQueryIO, SysDictDTO.class);
@@ -47,6 +49,7 @@ public class SysDictController {
      * @param sysDictSaveIO
      * @return
      */
+    @LogAnnotation(logType = "save",logDesc = "数据字典类型数据添加")
     @RequestMapping(value = "/saveDict", method = RequestMethod.POST)
     public ResponseResult<Object> saveDict(@Valid @RequestBody SysDictSaveIO sysDictSaveIO) {
         SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictSaveIO, SysDictDTO.class);
@@ -59,6 +62,7 @@ public class SysDictController {
      * @param sysDictUpdateIO
      * @return
      */
+    @LogAnnotation(logType = "update",logDesc = "数据字典类型数据修改")
     @RequestMapping(value = "/updateDictById", method = RequestMethod.POST)
     public ResponseResult<Object> updateDictById(@Valid @RequestBody SysDictUpdateIO sysDictUpdateIO) {
         SysDictDTO sysDictDTO = BeanToolsUtil.copyOrReturnNull(sysDictUpdateIO, SysDictDTO.class);
@@ -71,6 +75,7 @@ public class SysDictController {
      * @param id
      * @return
      */
+    @LogAnnotation(logType = "query",logDesc = "数据字典类型查看")
     @RequestMapping(value = "/getDictById", method = RequestMethod.GET)
     public ResponseResult<Object> getDictById(@RequestParam("id") Long id) {
         SysDictDTO dict = sysDictService.getDictById(id);
@@ -83,6 +88,7 @@ public class SysDictController {
      * @param req
      * @return
      */
+    @LogAnnotation(logType = "delete",logDesc = "数据字典类型数据删除")
     @RequestMapping(value = "/deleteDictById", method = RequestMethod.POST)
     public ResponseResult<Object> deleteDictById(@Valid @RequestBody IdIO req) {
         sysDictService.deleteDictById(req.getId());

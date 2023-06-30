@@ -35,7 +35,7 @@ public enum SysConstant implements IEnum {
     ERROR_SYS_USER_NOT_EXISTS("10021","用户管理员不存在"),
     ERROR_USER_NOT_LOGIN("10022","用户未登录不允许操作"),
     ERROR_SECURITY_ANSWER_ILLEGAL_INCOMING_DATA_10023("10023","传入参数ID非法"),
-    ERROR_SECURITY_QUESTION_NOT_FOUND_QUESTIONNAME_10024("10024","密保问题不存在"),
+    ERROR_SYS_CONFIG_KEY_IS_NOT_EXIST("10024","系统配置参数不存在，请检查初始化配置"),
     ERROR_USER_NOT_SAME_CHANNEL_100029("10025","无此用户ID"),
     ERROR_CHANNEL_HAVE_SUB("10026","存在子栏目，请先删除子栏目"),
     ERROR_MERCHANT_IS_EXISTS("10027","当前身份证号信息的商户已存在"),
