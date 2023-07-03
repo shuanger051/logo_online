@@ -1,0 +1,12 @@
+{
+  "name": "shop-sign",
+  "version": "1.0.0",
+  "description": "店铺招牌管理",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
