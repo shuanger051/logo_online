@@ -35,6 +35,8 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+
+
     /**
      * 分页查询系统用户信息集合
      * @param sysUserQueryIO
@@ -203,7 +205,7 @@ public class SysUserController {
         sysUserDTO.setLoginCount(0);
         sysUserDTO.setIsDisabled("0");
         sysUserDTO.setIsAdmin("0");
-        sysUserDTO.setActivation(true);
+        sysUserDTO.setActivation("1");
         sysUserDTO.setRegisterIp(IpUtil.getRemoteAddr(request));
         sysUserService.saveSysUser(sysUserDTO);
         return ResponseResult.success();

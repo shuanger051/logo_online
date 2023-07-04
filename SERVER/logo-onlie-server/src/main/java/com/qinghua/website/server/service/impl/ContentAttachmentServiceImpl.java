@@ -30,13 +30,6 @@ public class ContentAttachmentServiceImpl implements ContentAttachmentService {
         }
 
         @Override
-        public PageInfo<ContentAttachmentDTO> getContentAttachmentListByPage(ContentAttachmentDTO bean) {
-            PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
-            List<ContentAttachmentDTO> contentAttachmentList = contentAttachmentMapper.getContentAttachmentList(bean);
-            return PageInfo.of(contentAttachmentList);
-        }
-
-        @Override
         public ContentAttachmentDTO getContentAttachmentById(Long id) {
             Preconditions.checkNotNull(id, "参数:ID不能为空");
             return contentAttachmentMapper.getContentAttachmentById(id);

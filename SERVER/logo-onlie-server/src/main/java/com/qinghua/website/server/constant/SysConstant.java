@@ -15,7 +15,7 @@ public enum SysConstant implements IEnum {
     RSA_ERROR_10001("10001","密碼解析錯誤!"),
     LOGIN_ERROR_10002("10002","账户已锁定,请联系管理员处理!"),
     RSA_ERROR_10003("10003","获取加密key错误,请重试!"),
-    ERROR_FILE_UPLOAD_FILE_10004("10004", "文件上传异常异常"),
+    ERROR_FILE_UPLOAD_FILE_10004("10004", "文件上传异常"),
     ERROR_DICT_DELETE_DICT_10005("10005", "数据字典删除失败"),
     ERROR_DICT_CHECK_DICTNAME_10006("10006", "数据字典名称已存在"),
     ERROR_DICT_CHECK_DICTKEY_10007("10007", "数据字典编码已存在"),

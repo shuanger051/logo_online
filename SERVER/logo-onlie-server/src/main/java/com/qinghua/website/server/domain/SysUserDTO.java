@@ -81,7 +81,7 @@ public class SysUserDTO extends BaseDTO {
     /**
      * activation:激活状态
      */
-    private Boolean activation;
+    private String activation;
     
     /**
      * activation_code:激活码

@@ -17,12 +17,27 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-	        id,	        content_id,	        priority,	        attachment_path,	        attachment_name,	        filename,	        download_count,	        create_time,	        update_time    </sql>
+        id,
+        content_id,
+        priority,
+        attachment_path,
+        attachment_name,
+        filename,
+        download_count,
+        create_time,
+        update_time
+    </sql>
 
     <!--  通过ID来获取对象 -->
     <select id="getContentAttachmentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT <include refid="Base_Column_List"/>
         FROM t_content_attachment WHERE  id =#{id}
+    </select>
+
+    <!--  通过ContentID来获取对象 -->
+    <select id="getContentAttachmentByContentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_attachment WHERE  content_id =#{id}
     </select>
 
     <!-- 通过实体来查询分页列表 -->

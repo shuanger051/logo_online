@@ -5,13 +5,20 @@ import cn.afterturn.easypoi.handler.inter.IExcelDataModel;
 import cn.afterturn.easypoi.handler.inter.IExcelModel;
 import com.qinghua.website.api.validation.MultipleLayerValidator;
 import com.qinghua.website.api.validation.MyEmail;
-import com.qinghua.website.api.validation.PasswordCheck;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 @Data
-public class SysUserSaveIO {
+public class SysUserImportIO  implements IExcelDataModel, IExcelModel {
+
+    /**
+     * 行号
+     */
+    private Integer rowNum;
+
+    /**
+     * 错误消息
+     */
+    private String errorMsg;
 
     /**
      * user_name:用户名
@@ -28,20 +35,20 @@ public class SysUserSaveIO {
     @Excel(name = "电子邮箱")
     private String email;
 
-    /**
-     * password:密码
-     */
-    @NotNull(message = "密码不能为空")
-    @PasswordCheck(message = "密码要求最小长度8-20位，由数字、字符、字母大小写其中三种组成！")
-    private String password;
+    public Integer getRowNum() {
+        return rowNum;
+    }
 
-    @Override
-    public String toString() {
-        return "SysUserSaveIO{" +
-                "userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public void setRowNum(Integer rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
 }

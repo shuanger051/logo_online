@@ -15,12 +15,24 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-	        id,	        content_id,	        check_step,	        check_opinion,	        is_rejected,	        create_time,	        update_time    </sql>
+        id,
+        content_id,
+        check_step,
+        check_opinion,
+        is_rejected,
+        create_time,
+        update_time
+    </sql>
 
     <!--  通过ID来获取对象 -->
     <select id="getContentCheckById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT <include refid="Base_Column_List"/>
         FROM t_content_check WHERE  id =#{id}
+    </select>
+
+    <!-- 根据文章ID查询文章审核信息 -->
+    <select id="getContentCheckByContentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_check WHERE  content_id = #{id}
     </select>
 
     <!-- 通过实体来查询分页列表 -->

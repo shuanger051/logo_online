@@ -29,6 +29,13 @@ public interface ContentExtMapper {
         ContentExtDTO getContentExtById(@Param("id") Long id);
 
         /**
+         * 根据contentId查询文章扩展信息
+         * @param contentId
+         * @return
+         */
+        ContentExtDTO getContentExtByContentId(Long contentId);
+
+        /**
          * 新增
          * @param bean
          */

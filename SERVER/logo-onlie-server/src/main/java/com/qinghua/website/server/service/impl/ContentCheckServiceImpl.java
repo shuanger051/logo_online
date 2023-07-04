@@ -30,13 +30,6 @@ public class ContentCheckServiceImpl implements ContentCheckService {
         }
 
         @Override
-        public PageInfo<ContentCheckDTO> getContentCheckListByPage(ContentCheckDTO bean) {
-            PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
-            List<ContentCheckDTO> contentCheckList = contentCheckMapper.getContentCheckList(bean);
-            return PageInfo.of(contentCheckList);
-        }
-
-        @Override
         public ContentCheckDTO getContentCheckById(Long id) {
             Preconditions.checkNotNull(id, "参数:ID不能为空");
             return contentCheckMapper.getContentCheckById(id);

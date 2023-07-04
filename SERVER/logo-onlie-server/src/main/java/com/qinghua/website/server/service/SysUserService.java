@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.SysUserDTO;
 
+import java.util.List;
+
 public interface SysUserService {
 
     /**
@@ -76,5 +78,11 @@ public interface SysUserService {
      * @param sysUserDTO
      */
     public void lockSysUser(SysUserDTO sysUserDTO);
+
+    /**
+     * 批量保存系统用户信息
+     * @param list
+     */
+    public void  saveSysUserByList(List<SysUserDTO> list);
 
 }

@@ -29,6 +29,13 @@ public interface ContentCheckMapper {
         ContentCheckDTO getContentCheckById(@Param("id") Long id);
 
         /**
+         * 根据ContentID 查询文章审核信息
+         * @param contentId
+         * @return
+         */
+        ContentCheckDTO getContentCheckByContentId(Long contentId);
+
+        /**
          * 新增
          * @param bean
          */

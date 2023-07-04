@@ -30,13 +30,6 @@ public class ContentExtServiceImpl implements ContentExtService {
         }
 
         @Override
-        public PageInfo<ContentExtDTO> getContentExtListByPage(ContentExtDTO bean) {
-            PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
-            List<ContentExtDTO> contentExtList = contentExtMapper.getContentExtList(bean);
-            return PageInfo.of(contentExtList);
-        }
-
-        @Override
         public ContentExtDTO getContentExtById(Long id) {
             Preconditions.checkNotNull(id, "参数:ID不能为空");
             return contentExtMapper.getContentExtById(id);

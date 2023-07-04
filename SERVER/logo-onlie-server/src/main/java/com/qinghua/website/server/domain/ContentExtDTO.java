@@ -1,12 +1,11 @@
 package com.qinghua.website.server.domain;
 
-import com.qinghua.website.server.common.BaseDTO;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class ContentExtDTO extends BaseDTO {
+public class ContentExtDTO {
 
 	private Long id;
 
@@ -66,14 +65,12 @@ public class ContentExtDTO extends BaseDTO {
 	private String content;
 
     /**
-     * 图片类型
-     */
-	private String typeImg;
-
-    /**
      * 外部链接
      */
 	private String externalLink;
+
+	private Date createTime;
+	private Date updateTime;
 
 	@Override
 	public String toString() {
@@ -90,10 +87,7 @@ public class ContentExtDTO extends BaseDTO {
 					", titleImg=" + this.getTitleImg() +
 					", contentImg=" + this.getContentImg() +
 					", content=" + this.getContent() +
-					", typeImg=" + this.getTypeImg() +
 					", externalLink=" + this.getExternalLink() +
-					", createTime=" + this.getCreateTime() +
-					", updateTime=" + this.getUpdateTime() +
 			"}";
 	}
 

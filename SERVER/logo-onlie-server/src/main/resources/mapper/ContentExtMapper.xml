@@ -15,7 +15,6 @@
         <result column="title_img" property="titleImg" jdbcType="VARCHAR"/>
         <result column="content_img" property="contentImg" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
-        <result column="type_img" property="typeImg" jdbcType="VARCHAR"/>
         <result column="external_link" property="externalLink" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -23,7 +22,22 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-	        id,	        content_id,	        title,	        short_title,	        author,	        description,	        origin,	        origin_url,	        release_date,	        title_img,	        content_img,	        content,	        type_img,	        external_link,	        create_time,	        update_time    </sql>
+        id,
+        content_id,
+        title,
+        short_title,
+        author,
+        description,
+        origin,
+        origin_url,
+        release_date,
+        title_img,
+        content_img,
+        content,
+        external_link,
+        create_time,
+        update_time
+    </sql>
 
     <!--  通过ID来获取对象 -->
     <select id="getContentExtById" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -31,24 +45,18 @@
         FROM t_content_ext WHERE  id =#{id}
     </select>
 
+    <!--  通过ContentID来获取对象 -->
+    <select id="getContentExtByContentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_ext WHERE  content_id =#{id}
+    </select>
+
     <!-- 通过实体来查询分页列表 -->
     <select id="getContentExtList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
         SELECT <include refid="Base_Column_List"/> FROM t_content_ext
         <trim prefix="where" prefixOverrides="AND || OR">
-                        <if test="id !=null">AND id = #{id}</if>
-                        <if test="contentId !=null">AND content_id = #{contentId}</if>
-                        <if test="title !=null and title !=''">AND title = #{title}</if>
-                        <if test="shortTitle !=null and shortTitle !=''">AND short_title = #{shortTitle}</if>
-                        <if test="author !=null and author !=''">AND author = #{author}</if>
-                        <if test="description !=null and description !=''">AND description = #{description}</if>
-                        <if test="origin !=null and origin !=''">AND origin = #{origin}</if>
-                        <if test="originUrl !=null and originUrl !=''">AND origin_url = #{originUrl}</if>
-                        <if test="releaseDate !=null">AND release_date = #{releaseDate}</if>
-                        <if test="titleImg !=null and titleImg !=''">AND title_img = #{titleImg}</if>
-                        <if test="contentImg !=null and contentImg !=''">AND content_img = #{contentImg}</if>
-                        <if test="content !=null and content !=''">AND content = #{content}</if>
-                        <if test="typeImg !=null and typeImg !=''">AND type_img = #{typeImg}</if>
-                        <if test="externalLink !=null and externalLink !=''">AND external_link = #{externalLink}</if>
+            <if test="title !=null and title !=''">AND title = #{title}</if>
+            <if test="author !=null and author !=''">AND author = #{author}</if>
+            <if test="releaseDate !=null">AND release_date = #{releaseDate}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -57,11 +65,9 @@
         </trim>
     </select>
 
-
     <!-- 根据ID删除 -->
     <delete id="deleteContentExtById" parameterType="java.lang.Long">
-        DELETE FROM t_content_ext
-        WHERE id=#{id}
+        DELETE FROM t_content_ext WHERE id=#{id}
     </delete>
 
     <!-- 根据ID更新 -->
@@ -79,7 +85,6 @@
             <if test="titleImg !=null and titleImg !=''">title_img = #{titleImg},</if>
             <if test="contentImg !=null and contentImg !=''">content_img = #{contentImg},</if>
             <if test="content !=null and content !=''">content = #{content},</if>
-            <if test="typeImg !=null and typeImg !=''">type_img = #{typeImg},</if>
             <if test="externalLink !=null and externalLink !=''">external_link = #{externalLink},</if>
             update_time = NOW()
         </set>
@@ -101,7 +106,6 @@
             <if test="titleImg !=null and titleImg !=''">title_img,</if>
             <if test="contentImg !=null and contentImg !=''">content_img,</if>
             <if test="content !=null and content !=''">content,</if>
-            <if test="typeImg !=null and typeImg !=''">type_img,</if>
             <if test="externalLink !=null and externalLink !=''">external_link,</if>
             create_time
         </trim>
@@ -117,7 +121,6 @@
             <if test="titleImg !=null and titleImg !=''">#{titleImg},</if>
             <if test="contentImg !=null and contentImg !=''">#{contentImg},</if>
             <if test="content !=null and content !=''">#{content},</if>
-            <if test="typeImg !=null and typeImg !=''">#{typeImg},</if>
             <if test="externalLink !=null and externalLink !=''">#{externalLink},</if>
             NOW()
         </trim>

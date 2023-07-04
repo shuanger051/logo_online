@@ -92,4 +92,9 @@ public interface SysUserMapper {
      */
     public void lockSysUser(SysUserDTO sysUserDTO);
 
+    /**
+     * 批量保存系统用户信息
+     */
+    public void saveSysUserByList(List<SysUserDTO> list);
+
 }

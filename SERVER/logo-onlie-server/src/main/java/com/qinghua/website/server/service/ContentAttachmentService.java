@@ -15,11 +15,6 @@ import java.util.List;
 public interface ContentAttachmentService {
 
         /**
-        * 分页查询
-        */
-        PageInfo<ContentAttachmentDTO> getContentAttachmentListByPage(ContentAttachmentDTO bean);
-
-        /**
          * 查询List集合
          * @param bean
          * @return
