@@ -126,4 +126,29 @@
         </trim>
     </insert>
 
+    <!-- 根据文章ID删除扩展信息 -->
+    <delete id="deleteContentExtByContentId" parameterType="java.lang.Long">
+        DELETE FROM t_content_ext WHERE content_id = #{contentId}
+    </delete>
+
+    <!-- 根据contentId更新 -->
+    <update id="updateContentExtByContentId" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
+        UPDATE t_content_ext
+        <set>
+            <if test="title !=null and title !=''">title = #{title},</if>
+            <if test="shortTitle !=null and shortTitle !=''">short_title = #{shortTitle},</if>
+            <if test="author !=null and author !=''">author = #{author},</if>
+            <if test="description !=null and description !=''">description = #{description},</if>
+            <if test="origin !=null and origin !=''">origin = #{origin},</if>
+            <if test="originUrl !=null and originUrl !=''">origin_url = #{originUrl},</if>
+            <if test="releaseDate !=null">release_date = #{releaseDate},</if>
+            <if test="titleImg !=null and titleImg !=''">title_img = #{titleImg},</if>
+            <if test="contentImg !=null and contentImg !=''">content_img = #{contentImg},</if>
+            <if test="content !=null and content !=''">content = #{content},</if>
+            <if test="externalLink !=null and externalLink !=''">external_link = #{externalLink},</if>
+            update_time = NOW()
+        </set>
+        WHERE content_id = #{contentId}
+    </update>
+
 </mapper>

@@ -70,8 +70,7 @@
 
     <!-- 根据ID删除 -->
     <delete id="deleteContentById" parameterType="java.lang.Long">
-        DELETE FROM t_content
-        WHERE id=#{id}
+        DELETE FROM t_content WHERE id=#{id}
     </delete>
 
     <!-- 根据ID更新 -->

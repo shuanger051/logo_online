@@ -46,13 +46,13 @@ public interface ContentService {
          * 根据ID修改
          * @param bean
          */
-        Long updateContentById(ContentDTO bean);
+        void updateContentById(ContentDTO bean, ContentExtDTO contentExt, List<ContentAttachmentDTO> list);
 
         /**
          * 根据ID删除
          * @param id
          */
-        Long deleteContentById(Long id);
+        void deleteContentById(Long id);
 
         /**
          * 根据ChannelID查询文章集合

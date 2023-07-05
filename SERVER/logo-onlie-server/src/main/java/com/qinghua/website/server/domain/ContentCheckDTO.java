@@ -27,7 +27,7 @@ public class ContentCheckDTO {
     /**
      * 是否退回
      */
-	private Integer isRejected;
+	private String isRejected;
 
 	private Date createTime;
 	private Date updateTime;

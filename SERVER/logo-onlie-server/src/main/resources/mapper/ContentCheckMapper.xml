@@ -8,7 +8,7 @@
         <result column="content_id" property="contentId" jdbcType="BIGINT"/>
         <result column="check_step" property="checkStep" jdbcType="INTEGER"/>
         <result column="check_opinion" property="checkOpinion" jdbcType="VARCHAR"/>
-        <result column="is_rejected" property="isRejected" jdbcType="INTEGER"/>
+        <result column="is_rejected" property="isRejected" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -52,18 +52,15 @@
         </trim>
     </select>
 
-
     <!-- 根据ID删除 -->
     <delete id="deleteContentCheckById" parameterType="java.lang.Long">
-        DELETE FROM t_content_check
-        WHERE id=#{id}
+        DELETE FROM t_content_check WHERE id=#{id}
     </delete>
 
     <!-- 根据ID更新 -->
     <update id="updateContentCheckById" parameterType="com.qinghua.website.server.domain.ContentCheckDTO">
         UPDATE t_content_check
         <set>
-            <if test="contentId !=null">content_id = #{contentId},</if>
             <if test="checkStep !=null">check_step = #{checkStep},</if>
             <if test="checkOpinion !=null and checkOpinion !=''">check_opinion = #{checkOpinion},</if>
             <if test="isRejected !=null">is_rejected = #{isRejected},</if>
@@ -72,23 +69,40 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 根据contentId更新 -->
+    <update id="updateContentCheckByContentId" parameterType="com.qinghua.website.server.domain.ContentCheckDTO">
+        UPDATE t_content_check
+        <set>
+            check_step = check_step + 1,
+            <if test="checkOpinion !=null and checkOpinion !=''">check_opinion = #{checkOpinion},</if>
+            <if test="isRejected !=null">is_rejected = #{isRejected},</if>
+            update_time = NOW()
+        </set>
+        WHERE content_id = #{contentId}
+    </update>
+
     <!--保存-->
     <insert id="saveContentCheck" parameterType="com.qinghua.website.server.domain.ContentCheckDTO">
         INSERT INTO t_content_check
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="contentId !=null">content_id,</if>
-            <if test="checkStep !=null">check_step,</if>
+            check_step,
             <if test="checkOpinion !=null and checkOpinion !=''">check_opinion,</if>
             <if test="isRejected !=null">is_rejected,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="contentId !=null">#{contentId},</if>
-            <if test="checkStep !=null">#{checkStep},</if>
+            1,
             <if test="checkOpinion !=null and checkOpinion !=''">#{checkOpinion},</if>
             <if test="isRejected !=null">#{isRejected},</if>
             NOW()
         </trim>
     </insert>
+
+    <!-- 根据文章ID删除审核信息 -->
+    <delete id="deleteContentCheckByContentId" parameterType="java.lang.Long">
+        DELETE FROM t_content_check WHERE content_id=#{contentId}
+    </delete>
 
 </mapper>

@@ -81,7 +81,10 @@ public enum SysConstant implements IEnum {
     ERROR_DATE_FORMAT("10067","时间格式化出错"),
     ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多"),
     ERROR_GET_ATTACHMENT_INFO_FAIL("10069","附件信息不存在"),
-    ERROR_DOWNLOAD_FAIL("10070","文件下载出错");
+    ERROR_DOWNLOAD_FAIL("10070","文件下载出错"),
+    ERROR_DELETE_FILE_FAIL("10071","删除文件出错"),
+    ERROR_FILE_NOT_EXIST("10072","无此附件信息"),
+    ERROR_CONTENT_ALREADY_TAKE_EFFECT("10073","只有草稿或审核中的文章允许修改");
 
     private final String code;
 

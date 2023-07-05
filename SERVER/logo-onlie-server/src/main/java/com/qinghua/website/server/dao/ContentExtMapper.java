@@ -53,4 +53,16 @@ public interface ContentExtMapper {
          */
         Integer deleteContentExtById(@Param("id") Long id);
 
+        /**
+         * 根据文章ID删除扩展信息
+         * @param contentId
+         */
+        void deleteContentExtByContentId(@Param("contentId")Long contentId);
+
+        /**
+         * 更新扩展信息
+         * @param bean
+         */
+        void updateContentExtByContentId(ContentExtDTO bean);
+
 }

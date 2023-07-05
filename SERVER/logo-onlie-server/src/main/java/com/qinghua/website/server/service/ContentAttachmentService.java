@@ -59,4 +59,10 @@ public interface ContentAttachmentService {
          */
         void updateDownloadTimes(Long id);
 
+        /**
+         * 根据文具名称删除附件信息
+         * @param attachmentName
+         */
+        void deleteAttachmentByName(String attachmentName);
+
 }
