@@ -59,6 +59,10 @@
         </trim>
     </select>
 
+    <!-- 根据附件名称查询 -->
+    <select id="getAttachmentByAttachmentName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_attachment where attachment_name = #{attachmentName}
+    </select>
 
     <!-- 根据ID删除 -->
     <delete id="deleteContentAttachmentById" parameterType="java.lang.Long">
@@ -103,5 +107,14 @@
             NOW()
         </trim>
     </insert>
+
+    <insert id="saveContentAttachmentByList" parameterType="java.util.List">
+
+    </insert>
+
+    <!-- 更新下载次数 -->
+    <update id="updateDownloadTimes" parameterType="java.lang.Long">
+        update t_content_attachment set download_count = download_count + 1 , update_time = NOW()  where id = #{id}
+    </update>
 
 </mapper>

@@ -3,6 +3,8 @@ package com.qinghua.website.server.service;
 import com.github.pagehelper.PageInfo;
 import com.qinghua.website.server.domain.ChannelDTO;
 
+import java.util.List;
+
 public interface ChannelService {
 
     /**
@@ -18,6 +20,12 @@ public interface ChannelService {
      * @return  分页对象
      */
     public PageInfo<ChannelDTO> getChannelListByPage(ChannelDTO bean);
+
+    /**
+     * 查询可供下拉选择的栏目信息列表
+     * @return
+     */
+    List<ChannelDTO> getChannelList();
 
     /**
      * 保存单个对象

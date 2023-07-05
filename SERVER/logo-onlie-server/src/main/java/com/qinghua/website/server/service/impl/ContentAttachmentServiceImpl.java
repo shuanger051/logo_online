@@ -21,37 +21,53 @@ import javax.annotation.Resource;
 public class ContentAttachmentServiceImpl implements ContentAttachmentService {
 
                 
-        @Resource
-        private ContentAttachmentMapper contentAttachmentMapper;
+    @Resource
+    private ContentAttachmentMapper contentAttachmentMapper;
 
-        @Override
-        public List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean) {
-            return contentAttachmentMapper.getContentAttachmentList(bean);
-        }
+    @Override
+    public List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean) {
+        return contentAttachmentMapper.getContentAttachmentList(bean);
+    }
 
-        @Override
-        public ContentAttachmentDTO getContentAttachmentById(Long id) {
-            Preconditions.checkNotNull(id, "参数:ID不能为空");
-            return contentAttachmentMapper.getContentAttachmentById(id);
-        }
+    /**
+     * 根据
+     * @param attachmentName
+     * @return
+     */
+    public ContentAttachmentDTO getAttachmentByAttachmentName(String attachmentName){
+        return contentAttachmentMapper.getAttachmentByAttachmentName(attachmentName);
+    }
 
-        @Transactional(propagation = Propagation.REQUIRED)
-        @Override
-        public Integer saveContentAttachment(ContentAttachmentDTO bean) {
-            return contentAttachmentMapper.saveContentAttachment(bean);
-        }
 
-        @Override
-        public Integer deleteContentAttachmentById(Long id) {
-            Preconditions.checkNotNull(id, "参数:ID不能为空");
-            return contentAttachmentMapper.deleteContentAttachmentById(id);
-        }
+    @Override
+    public ContentAttachmentDTO getContentAttachmentById(Long id) {
+        Preconditions.checkNotNull(id, "参数:ID不能为空");
+        return contentAttachmentMapper.getContentAttachmentById(id);
+    }
 
-        @Transactional(propagation = Propagation.REQUIRED)
-        @Override
-        public Integer updateContentAttachmentById(ContentAttachmentDTO bean) {
-            Preconditions.checkNotNull(bean.getId(), "参数:ID不能为空");
-            return contentAttachmentMapper.updateContentAttachmentById(bean);
-        }
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Integer saveContentAttachment(ContentAttachmentDTO bean) {
+        return contentAttachmentMapper.saveContentAttachment(bean);
+    }
+
+    @Override
+    public Integer deleteContentAttachmentById(Long id) {
+        Preconditions.checkNotNull(id, "参数:ID不能为空");
+        return contentAttachmentMapper.deleteContentAttachmentById(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Integer updateContentAttachmentById(ContentAttachmentDTO bean) {
+        Preconditions.checkNotNull(bean.getId(), "参数:ID不能为空");
+        return contentAttachmentMapper.updateContentAttachmentById(bean);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void updateDownloadTimes(Long id){
+        contentAttachmentMapper.updateDownloadTimes(id);
+    }
 
 }

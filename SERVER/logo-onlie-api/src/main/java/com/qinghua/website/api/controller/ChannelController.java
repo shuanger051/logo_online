@@ -62,6 +62,18 @@ public class ChannelController{
     }
 
     /**
+     * 查询可供下拉选择的栏目信息列表
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "查询可供下拉选择的栏目信息列表")
+    @RequestMapping(value = "/getChannelList",method = RequestMethod.GET)
+    public ResponseResult<Object> getChannelList(){
+        List<ChannelDTO> list = channelService.getChannelList();
+        List<ChannelVO> channelVOList = BeanToolsUtil.copyList(list,ChannelVO.class);
+        return ResponseResult.success(channelVOList);
+    }
+
+    /**
      * 新增栏目信息
      * @param bean
      * @return

@@ -11,8 +11,10 @@ import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.api.utils.PdfBoxUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
+import com.qinghua.website.server.domain.ContentAttachmentDTO;
 import com.qinghua.website.server.domain.ContentCheckDTO;
 import com.qinghua.website.server.domain.ContentDTO;
+import com.qinghua.website.server.domain.ContentExtDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.ContentCheckService;
 import com.qinghua.website.server.service.ContentService;
@@ -90,9 +92,38 @@ public class ContentController {
      */
     @LogAnnotation(logType = "save",logDesc = "保存文章信息")
     @RequestMapping(value = "/saveContent",method = RequestMethod.POST)
-    public ResponseResult<Object> saveContent(@Validated ContentSaveIO bean){
-        ContentDTO contentDTO = BeanToolsUtil.copyOrReturnNull(bean,ContentDTO.class);
-        contentService.saveContent(contentDTO);
+    public ResponseResult<Object> saveContent(@Validated @RequestBody ContentSaveIO bean){
+
+        ContentDTO contentDTO = new ContentDTO();
+        contentDTO.setChannelId(bean.getChannelId());
+        contentDTO.setIsRecommend(bean.getIsRecommend());
+
+        ContentExtDTO contentExt = new ContentExtDTO();
+        contentExt.setAuthor(bean.getContentExt().getAuthor());
+        contentExt.setContent(bean.getContentExt().getContent());
+        contentExt.setContentImg(bean.getContentExt().getContentImg());
+        contentExt.setDescription(bean.getContentExt().getDescription());
+        contentExt.setOrigin(bean.getContentExt().getOrigin());
+        contentExt.setOriginUrl(bean.getContentExt().getOriginUrl());
+        contentExt.setReleaseDate(bean.getContentExt().getReleaseDate());
+        contentExt.setExternalLink(bean.getContentExt().getExternalLink());
+        contentExt.setShortTitle(bean.getContentExt().getShortTitle());
+        contentExt.setTitle(bean.getContentExt().getTitle());
+
+        List<ContentAttachmentDTO> list = new ArrayList<>();
+        if(null != bean.getContentAttachment() && bean.getContentAttachment().size() >0){
+            for(int i=0;i<bean.getContentAttachment().size();i++){
+                ContentAttachmentSaveIO saveIO = bean.getContentAttachment().get(i);
+                ContentAttachmentDTO contentAttachment = new ContentAttachmentDTO();
+                contentAttachment.setAttachmentPath(saveIO.getAttachmentPath());
+                contentAttachment.setAttachmentName(saveIO.getAttachmentName());
+                contentAttachment.setFilename(saveIO.getFilename());
+                contentAttachment.setPriority(saveIO.getPriority());
+                list.add(contentAttachment);
+            }
+        }
+
+        contentService.saveContent(contentDTO,contentExt,list);
         return ResponseResult.success();
     }
 

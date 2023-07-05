@@ -67,8 +67,8 @@ public enum SysConstant implements IEnum {
     ERROR_USER_PHONE_ISNULL("10053","手机号非法"),
     ERROR_LOGIN_CHECK_FAILED("10054","请刷新页面重新尝试"),
     ERROR_USER_NOT_HAVE_ROLE("10055","未查询到此角色信息"),
-    ERROR_USER_NOT_HAVE_ROLE_2("10056","批量参数中存在不属于当前用户所属机构的角色"),
-    ERROR_USER_NOT_HAVE_ROLE_3("10057","批量参数中存在不属于当前用户所属机构的用户"),
+    ERROR_USER_NOT_HAVE_ROLE_2("10056","批量参数中存在不属于当前用户的角色"),
+    ERROR_USER_NOT_HAVE_ROLE_3("10057","批量参数中存在不属于当前用户的用户"),
     ERROR_USER_NOT_HAVE_ROLE_4("10058","无此角色信息"),
     ERROR_USER_ONLY_CHANGE_YOURSELF_PASSWORD("10059","用户仅限修改本人密码"),
     ERROR_USER_NOT_SAME_CHANNEL("10060","无此用户信息"),
@@ -79,7 +79,9 @@ public enum SysConstant implements IEnum {
     ERROR_CHECK_END_TIME("10065", "结束时间格式不正确"),
     ERROR_CHECK_DATE_INTERVAL("10066", "开始日期不能晚于结束日期"),
     ERROR_DATE_FORMAT("10067","时间格式化出错"),
-    ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多");
+    ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多"),
+    ERROR_GET_ATTACHMENT_INFO_FAIL("10069","附件信息不存在"),
+    ERROR_DOWNLOAD_FAIL("10070","文件下载出错");
 
     private final String code;
 

@@ -4,7 +4,7 @@ import com.qinghua.website.api.validation.DictValidator;
 import lombok.Data;
 
 @Data
-public class ContentQueryIO {
+public class ContentQueryIO extends BaseIO{
 
     /**
      *@Fields channel_id:栏目id

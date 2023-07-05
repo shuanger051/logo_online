@@ -22,6 +22,13 @@ public interface ContentAttachmentService {
         List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean);
 
         /**
+         * 根据
+         * @param attachmentName
+         * @return
+         */
+        ContentAttachmentDTO getAttachmentByAttachmentName(String attachmentName);
+
+        /**
          * 根据ID查询
          *
          * @param id
@@ -46,5 +53,10 @@ public interface ContentAttachmentService {
          * @param id
          */
         Integer deleteContentAttachmentById(Long id);
+
+        /**
+         * 更新下载次数
+         */
+        void updateDownloadTimes(Long id);
 
 }

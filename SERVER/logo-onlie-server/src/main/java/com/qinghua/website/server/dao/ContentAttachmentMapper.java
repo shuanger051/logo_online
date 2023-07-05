@@ -21,6 +21,13 @@ public interface ContentAttachmentMapper {
         List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean);
 
         /**
+         * 根据附件名称查询
+         * @param attachmentName
+         * @return
+         */
+        ContentAttachmentDTO getAttachmentByAttachmentName(@Param("attachmentName") String attachmentName);
+
+        /**
          * 根据ID查询
          *
          * @param id
@@ -45,5 +52,16 @@ public interface ContentAttachmentMapper {
          * @param id
          */
         Integer deleteContentAttachmentById(@Param("id") Long id);
+
+        /**
+         * 批量新增附件信息
+         * @param list
+         */
+        void saveContentAttachmentByList(List<ContentAttachmentDTO> list);
+
+        /**
+         * 更新下载次数
+         */
+        void updateDownloadTimes(@Param("id") Long id);
 
 }

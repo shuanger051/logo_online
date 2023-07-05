@@ -88,7 +88,7 @@
     </update>
 
     <!--保存-->
-    <insert id="saveContent" parameterType="com.qinghua.website.server.domain.ContentDTO">
+    <insert id="saveContent" parameterType="com.qinghua.website.server.domain.ContentDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_content
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="channelId !=null">channel_id,</if>

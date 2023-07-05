@@ -35,3 +35,9 @@ logging:
   root:
     level: debug
     path: ./logs
+
+#UPLOAD PATH CONFIG
+upload:
+  path:
+    content: F:\\upload\\content #文章附件
+    merchant: F:\\upload\\merchant #商户附件

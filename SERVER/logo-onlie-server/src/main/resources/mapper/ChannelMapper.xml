@@ -42,6 +42,11 @@
         order by create_time asc
     </select>
 
+    <!-- 查询可供下拉选择的栏目信息列表 -->
+    <select id="getChannelList" resultMap="BaseResultMap">
+        select <include refid="BaseColumnList"/> from t_channel where is_display = '1' and allow_updown = '1' order by create_time asc
+    </select>
+
     <!-- 根据ParentID查询子栏目集合 -->
     <select id="getChannelByParentID" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ChannelDTO">
         select
