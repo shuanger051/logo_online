@@ -40,4 +40,4 @@ logging:
 upload:
   path:
     content: F:\\upload\\content #文章附件
-    merchant: F:\\upload\\merchant #商户附件
+    shops: F:\\upload\\shops #商铺附件

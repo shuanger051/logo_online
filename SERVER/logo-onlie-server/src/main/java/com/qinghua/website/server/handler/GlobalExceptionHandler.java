@@ -20,6 +20,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
@@ -142,7 +143,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     private ResponseResult resolveExceptionDefault(Exception e) {
-        return this.isDAOException(e.getMessage()) ? ResponseResult.error(SysConstant.SYSTEM_ERROR_500.getCode(), "数据访问异常") : ResponseResult.error(SysConstant.SYSTEM_ERROR_500);
+        if(e instanceof MultipartException){
+            return ResponseResult.error(SysConstant.SYSTEM_ERROR_400.getCode(), "参数错误,缺少文件参数");
+        }else{
+            return this.isDAOException(e.getMessage()) ? ResponseResult.error(SysConstant.SYSTEM_ERROR_500.getCode(), "数据访问异常") : ResponseResult.error(SysConstant.SYSTEM_ERROR_500);
+        }
     }
 
     private boolean isDAOException(String errorMsg) {

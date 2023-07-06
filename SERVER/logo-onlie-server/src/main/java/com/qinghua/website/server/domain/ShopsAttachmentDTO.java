@@ -14,36 +14,29 @@ public class ShopsAttachmentDTO extends BaseDTO {
 	private Long shopsId;
 
     /**
-     * 店铺图片地址
+     * 地址
      */
-	private String shopsPicPath;
+	private String attachmentPath;
 
     /**
-     * 店铺租房合同地址
+     * 名字
      */
-	private String shopsContractPath;
+	private String attachmentName;
 
     /**
-     * 店铺图片名字
+     * 源文件名称
      */
-	private String shopsPicName;
-
-    /**
-     * 店铺租房合同名字
-     */
-	private String shopsContractName;
+	private String fileName;
 
 	@Override
 	public String toString() {
-	return "ShopsAttachment{" +
-					", id=" + this.getId() +
-					", shopsId=" + this.getShopsId() +
-					", shopsPicPath=" + this.getShopsPicPath() +
-					", shopsContractPath=" + this.getShopsContractPath() +
-					", shopsPicName=" + this.getShopsPicName() +
-					", shopsContractName=" + this.getShopsContractName() +
-					", createTime=" + this.getCreateTime() +
-					", updateTime=" + this.getUpdateTime() +
-			"}";
-}
+		return "ShopsAttachmentDTO{" +
+				"id=" + id +
+				", shopsId=" + shopsId +
+				", attachmentPath='" + attachmentPath + '\'' +
+				", attachmentName='" + attachmentName + '\'' +
+				", fileName='" + fileName + '\'' +
+				'}';
+	}
+
 }
