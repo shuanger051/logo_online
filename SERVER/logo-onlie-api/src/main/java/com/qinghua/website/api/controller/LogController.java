@@ -10,6 +10,7 @@ import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.LogInfoDTO;
 import com.qinghua.website.server.service.LogInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class LogController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询日志列表")
     @RequestMapping(value = "/getLogInfoListByPage",method = RequestMethod.GET)
+    @RequiresPermissions("/log/getLogInfoListByPage")
     public ResponseResult<Object> getLogInfoListByPage(@Validated @RequestBody LogQueryIO logQueryIO){
         LogInfoDTO logInfoDTO =  BeanToolsUtil.copyOrReturnNull(logQueryIO, LogInfoDTO.class);
         PageInfo<LogInfoDTO> pageList = logInfoService.getLogInfoListByPage(logInfoDTO);
@@ -51,6 +53,7 @@ public class LogController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据ID查询日志信息")
     @RequestMapping(value = "/getLogInfoById",method = RequestMethod.GET)
+    @RequiresPermissions("/log/getLogInfoById")
     public ResponseResult<Object> getLogInfoById(@RequestParam("id") Long id){
         LogInfoDTO logInfoDTO = logInfoService.getLogInfoById(id);
         LogInfoVO logInfoVO = BeanToolsUtil.copyOrReturnNull(logInfoDTO,LogInfoVO.class);

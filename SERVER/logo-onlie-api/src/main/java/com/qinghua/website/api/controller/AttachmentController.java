@@ -10,6 +10,7 @@ import com.qinghua.website.server.domain.ContentAttachmentDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.ContentAttachmentService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,7 @@ public class AttachmentController {
      */
     @LogAnnotation(logType = "upload",logDesc = "上传文章附件")
     @RequestMapping(value = "/uploadContentAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadContentAttachment")
     public ResponseResult<Object> uploadContentAttachment(@RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) {
 
         checkFile(multipartFile);
@@ -97,6 +99,7 @@ public class AttachmentController {
      */
     @LogAnnotation(logType = "download",logDesc = "下载文章附件")
     @RequestMapping(value = "/downloadContentAttachment", method = RequestMethod.GET)
+    @RequiresPermissions("/attachment/downloadContentAttachment")
     public void downloadContentAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
 
         Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
@@ -143,6 +146,7 @@ public class AttachmentController {
      */
     @LogAnnotation(logType = "upload",logDesc = "上传商铺附件")
     @RequestMapping(value = "/uploadShopsAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadShopsAttachment")
     public ResponseResult<Object> uploadShopsAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
 
         checkFile(multipartFile);
@@ -182,6 +186,7 @@ public class AttachmentController {
      */
     @LogAnnotation(logType = "download",logDesc = "下载商铺附件")
     @RequestMapping(value = "/downloadShopsAttachment", method = RequestMethod.GET)
+    @RequiresPermissions("/attachment/downloadShopsAttachment")
     public void downloadShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
 
         Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");

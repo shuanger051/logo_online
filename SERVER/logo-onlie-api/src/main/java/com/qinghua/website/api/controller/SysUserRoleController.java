@@ -16,6 +16,7 @@ import com.qinghua.website.server.domain.SysUserRoleDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.SysUserRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据ID查询用户角色信息")
     @RequestMapping(value = "/getSysUserRoleById", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/user-role/getSysUserRoleById")
     public ResponseResult<Object> getSysUserRoleById(@RequestParam("id") Long id) {
         SysUserRoleDTO sysUserRoleDTO = sysUserRoleService.getSysUserRoleById(id);
         SysUserRoleVO sysUserRoleVO =  BeanToolsUtil.copyOrReturnNull(sysUserRoleDTO,SysUserRoleVO.class);
@@ -56,6 +58,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询用户角色信息")
     @RequestMapping(value = "/getSysUserRoleListByPage", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/user-role/getSysUserRoleListByPage")
     public ResponseResult<Object> getSysUserRoleListByPage(@Validated @RequestBody SysUserRoleQueryIO sysUserRoleQueryReq) {
         SysUserRoleDTO sysUserRoleDTO = BeanToolsUtil.copyOrReturnNull(sysUserRoleQueryReq, SysUserRoleDTO.class);
         PageInfo<SysUserRoleDTO> pagelist = sysUserRoleService.getSysUserRoleListByPage(sysUserRoleDTO);
@@ -73,6 +76,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "save",logDesc = "新增用户角色信息")
     @RequestMapping(value = "/saveSysUserRole", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user-role/saveSysUserRole")
     public ResponseResult<Object> saveSysUserRole(@Validated @RequestBody SysUserRoleSaveIO sysUserRoleSaveReq) {
         SysUserRoleDTO sysUserRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysUserRoleSaveReq, SysUserRoleDTO.class);
         sysUserRoleService.saveSysUserRole(sysUserRoleDTO);
@@ -87,6 +91,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "update",logDesc = "根据ID修改用户角色信息")
     @RequestMapping(value = "/updateSysUserRoleById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user-role/updateSysUserRoleById")
     public ResponseResult<Object> updateSysUserRoleById(@Validated @RequestBody SysUserRoleUpdateIO sysUserRoleUpdateIO) {
         SysUserRoleDTO sysUserRoleDTO = BeanToolsUtil.copyOrReturnNull(sysUserRoleUpdateIO, SysUserRoleDTO.class);
         sysUserRoleService.updateSysUserRoleById(sysUserRoleDTO);
@@ -100,6 +105,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "delete",logDesc = "根据ID删除用户角色信息")
     @RequestMapping(value = "/deleteSysUserRoleById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user-role/deleteSysUserRoleById")
     public ResponseResult<Object> deleteSysUserRoleById(@Validated @RequestBody IdIO idIO) {
         sysUserRoleService.deleteSysUserRoleById(idIO.getId());
         return ResponseResult.success();
@@ -112,6 +118,7 @@ public class SysUserRoleController {
      */
     @LogAnnotation(logType = "save",logDesc = "批量新增或修改用户角色信息")
     @RequestMapping(value = "/saveOrUpdateSysUserRoleForBatch",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user-role/saveOrUpdateSysUserRoleForBatch")
     public ResponseResult<Object> saveOrUpdateSysUserRoleForBatch(@Validated @RequestBody ValidList<SysUserRoleSaveIO> sysUserRoleSaveReqList){
 
         //判断提交的List集合是否存在重复的数据

@@ -20,6 +20,7 @@ import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -61,6 +62,7 @@ public class EasyPoiController {
      */
     @LogAnnotation(logType = "query",logDesc = "导出系统用户列表")
     @RequestMapping(value = "/exportExcelByUserListPage", method = RequestMethod.GET)
+    @RequiresPermissions("/easyPoi/exportExcelByUserListPage")
     public ResponseResult<Object> exportExcelByUserListPage(@Validated SysUserQueryIO sysUserQueryIO,
                                           ModelMap map, HttpServletRequest request,
                                           HttpServletResponse response){
@@ -86,6 +88,7 @@ public class EasyPoiController {
      */
     @LogAnnotation(logType = "save",logDesc = "导入系统用户列表")
     @RequestMapping(value = "/importExcelByUserList", method = RequestMethod.POST)
+    @RequiresPermissions("/easyPoi/importExcelByUserList")
     public ResponseResult<Object> importExcelByUserList(@RequestPart("file")MultipartFile file){
 
         checkExcelFile(file);
@@ -131,6 +134,7 @@ public class EasyPoiController {
      */
     @LogAnnotation(logType = "query",logDesc = "下载Excel导入模板")
     @RequestMapping(value = "/downloadExcelTemplate", method = RequestMethod.GET)
+    @RequiresPermissions("/easyPoi/downloadExcelTemplate")
     public void downloadExcelTemplate(HttpServletRequest req, HttpServletResponse res,String fileName) throws IOException {
 
         Preconditions.checkNotNull(fileName, "参数:模板名称不能为空！");

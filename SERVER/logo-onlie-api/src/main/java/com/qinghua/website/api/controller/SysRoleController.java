@@ -10,6 +10,7 @@ import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.SysRoleDTO;
 import com.qinghua.website.server.service.SysRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据ID查询角色信息")
     @RequestMapping(value = "/getSysRoleById", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/role/getSysRoleById")
     public ResponseResult<Object> getSysRoleById(@RequestParam("id") Long id) {
         SysRoleDTO sysRoleDTO = sysRoleService.getSysRoleById(id);
         SysRoleVO sysRoleVO =  BeanToolsUtil.copyOrReturnNull(sysRoleDTO,SysRoleVO.class);
@@ -48,6 +50,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询角色信息")
     @RequestMapping(value = "/getSysRoleListByPage", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/role/getSysRoleListByPage")
     public ResponseResult<Object> getSysRoleListByPage(@Validated @RequestBody SysRoleQueryIO sysRoleQueryIO) {
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleQueryIO, SysRoleDTO.class);
         PageInfo<SysRoleDTO> pageList = sysRoleService.getSysRoleListByPage(sysRoleDTO);
@@ -66,6 +69,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "save",logDesc = "新增角色信息")
     @RequestMapping(value = "/saveSysRole", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/role/saveSysRole")
     public ResponseResult<Object> saveSysRole(@Validated @RequestBody SysRoleSaveIO sysRoleSaveIO) {
         SysRoleDTO sysRoleDTO = BeanToolsUtil.copyOrReturnNull(sysRoleSaveIO, SysRoleDTO.class);
         sysRoleService.saveSysRole(sysRoleDTO);
@@ -80,6 +84,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "update",logDesc = "根据ID修改角色信息")
     @RequestMapping(value = "/updateSysRoleById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/role/updateSysRoleById")
     public ResponseResult<Object> updateSysRoleById(@Validated @RequestBody SysRoleUpdateIO sysRoleUpdateIO) {
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleUpdateIO, SysRoleDTO.class);
         sysRoleService.updateSysRoleById(sysRoleDTO);
@@ -93,6 +98,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "delete",logDesc = "根据ID删除角色信息")
     @RequestMapping(value = "/deleteSysRoleById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/role/deleteSysRoleById")
     public ResponseResult<Object> deleteSysRoleById(@Validated @RequestBody IdIO idIO) {
         SysRoleDTO sysRoleDTO = new SysRoleDTO();
         sysRoleDTO.setId(idIO.getId());
@@ -107,6 +113,7 @@ public class SysRoleController {
      */
     @LogAnnotation(logType = "update",logDesc = "根据ID修改角色状态")
     @RequestMapping(value = "/updateSysRoleStatusById",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/role/updateSysRoleStatusById")
     public ResponseResult<Object> updateSysRoleStatusById(@Validated @RequestBody SysRoleUpdateStatusIO sysRoleUpdateStatusIO){
         SysRoleDTO sysRoleDTO =  BeanToolsUtil.copyOrReturnNull(sysRoleUpdateStatusIO,SysRoleDTO.class);
         sysRoleService.updateSysRoleStatusById(sysRoleDTO);

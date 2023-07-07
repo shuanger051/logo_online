@@ -204,6 +204,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "update",logDesc = "更新系统用户信息")
     @RequestMapping(value = "/updateSysUser",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/updateSysUser")
     public ResponseResult<Object> updateUser(@Validated @RequestBody SysUserUpdateIO sysUserUpdateIO){
         SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserUpdateIO,SysUserDTO.class);
         sysUserService.updateUser(sysUserDTO);
@@ -217,6 +218,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "save",logDesc = "新增系统用户信息")
     @RequestMapping(value = "/saveSysUser",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/saveSysUser")
     public ResponseResult<Object> saveUser(@Validated @RequestBody SysUserSaveIO sysUserSaveIO,HttpServletRequest request){
         SysUserDTO sysUserDTO = BeanToolsUtil.copyOrReturnNull(sysUserSaveIO,SysUserDTO.class);
         sysUserDTO.setPassword(MD5Util.toMD5String(sysUserDTO.getPassword()));
@@ -236,6 +238,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "update",logDesc = "重置系统用户密码")
     @RequestMapping(value = "/resetPwd",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/resetPwd")
     public ResponseResult<Object> resetPwd(@Validated @RequestBody SysUserUpdatePWDIO sysUserUpdatePWDIO,HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
         SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
@@ -259,6 +262,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "update",logDesc = "超管解除账号锁定状态")
     @RequestMapping(value = "/secureAccountLock",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/secureAccountLock")
     public ResponseResult<Object> secureAccountLock(@Validated @RequestBody SysUserLockIO sysUserLockIO, HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
         SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);
@@ -296,6 +300,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "update",logDesc = "改变系统用户禁用状态")
     @RequestMapping(value = "/lockSysUser",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/lockSysUser")
     public ResponseResult<Object> lockSysUser(@Validated @RequestBody SysUserStatusIO sysUserStatusIO, HttpServletRequest request){
         //判断当前操作用户是否为超级管理员，只有超管才可以访问该接口
         SessionUser user = (SessionUser) request.getSession().getAttribute(SessionUser.SEESION_USER);

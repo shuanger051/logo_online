@@ -8,18 +8,17 @@ import com.qinghua.website.api.controller.vo.ShopsInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.server.common.ResponseResult;
-import com.qinghua.website.server.domain.ContentAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsInfoDTO;
 import com.qinghua.website.server.service.ShopsInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -37,6 +36,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询店铺信息列表")
     @RequestMapping(value = "/getShopsInfoListByPage",method = RequestMethod.GET)
+    @RequiresPermissions("/shops-info/getShopsInfoListByPage")
     public ResponseResult<Object> getShopsInfoListByPage(@Validated @RequestBody ShopsInfoQueryIO shopsInfoQueryIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
@@ -54,6 +54,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据店铺ID查询店铺信息")
     @RequestMapping(value = "/getShopsInfoById",method = RequestMethod.GET)
+    @RequiresPermissions("/shops-info/getShopsInfoById")
     public ResponseResult<Object> getShopsInfoById(@RequestParam("id") Long id){
         ShopsInfoDTO shopsInfoDTO = shopsInfoService.getShopsInfoById(id);
         ShopsInfoVO shopsInfoVO = BeanToolsUtil.copyOrReturnNull(shopsInfoDTO,ShopsInfoVO.class);
@@ -67,6 +68,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "save",logDesc = "新增商铺信息")
     @RequestMapping(value = "/saveShopsInfo",method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/saveShopsInfo")
     public ResponseResult<Object> saveShopsInfo(@Validated @RequestBody ShopsInfoSaveIO bean){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
@@ -81,6 +83,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "update",logDesc = "修改店铺信息")
     @RequestMapping(value = "/updateShopsInfoById",method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/updateShopsInfoById")
     public ResponseResult<Object> updateShopsInfoById(@Validated @RequestBody ShopsInfoUpdateIO bean){
         ShopsInfoDTO shopsInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
@@ -95,6 +98,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "delete",logDesc = "删除店铺信息")
     @RequestMapping(value="/deleteShopsInfoById", method= RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsInfoById")
     public ResponseResult<Object> deleteShopsInfoById(@Valid @RequestBody IdIO req) {
         shopsInfoService.deleteShopsInfoById(req.getId());
         return ResponseResult.success();
@@ -108,6 +112,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "upload",logDesc = "根据附件名称删除商铺附件")
     @RequestMapping(value = "/deleteShopsAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsAttachment")
     public ResponseResult<Object> deleteShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {
         Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
         shopsInfoService.deleteAttachmentByName(attachmentName);

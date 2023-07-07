@@ -15,6 +15,7 @@ import com.qinghua.website.server.service.ContentAttachmentService;
 import com.qinghua.website.server.service.ContentCheckService;
 import com.qinghua.website.server.service.ContentService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页获取文章列表信息")
     @RequestMapping(value = "/getContentListByPage",method = RequestMethod.GET)
+    @RequiresPermissions("/content/getContentListByPage")
     public ResponseResult<Object> getContentListByPage(@Validated @RequestBody ContentQueryIO bean){
         ContentDTO contentDTO = BeanToolsUtil.copyOrReturnNull(bean,ContentDTO.class);
         PageInfo<ContentDTO> pageList = contentService.getContentListByPage(contentDTO);
@@ -60,6 +62,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据文章ID查询文章信息")
     @RequestMapping(value = "/getContentById",method = RequestMethod.GET)
+    @RequiresPermissions("/content/getContentById")
     public ResponseResult<Object> getContentById(@RequestParam("id") Long id){
         ContentDTO contentDTO = contentService.getContentById(id);
         ContentVO contentVO = BeanToolsUtil.copyOrReturnNull(contentDTO,ContentVO.class);
@@ -73,6 +76,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "save",logDesc = "保存文章信息")
     @RequestMapping(value = "/saveContent",method = RequestMethod.POST)
+    @RequiresPermissions("/content/saveContent")
     public ResponseResult<Object> saveContent(@Validated @RequestBody ContentSaveIO bean){
 
         ContentDTO contentDTO = new ContentDTO();
@@ -115,6 +119,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "update",logDesc = "根据ID更新文章信息")
     @RequestMapping(value = "/updateContentById",method = RequestMethod.POST)
+    @RequiresPermissions("/content/updateContentById")
     public ResponseResult<Object> updateContentById(@Validated @RequestBody ContentUpdateIO bean){
 
         ContentDTO contentDTO = new ContentDTO();
@@ -160,6 +165,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "delete",logDesc = "根据ID删除文章信息")
     @RequestMapping(value="/deleteContentById", method=RequestMethod.POST)
+    @RequiresPermissions("/content/deleteContentById")
     public ResponseResult<Object> deleteContentById(@Valid @RequestBody IdIO req) {
         contentService.deleteContentById(req.getId());
         return ResponseResult.success();
@@ -172,6 +178,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "delete",logDesc = "根据附件名称删除附件信息")
     @RequestMapping(value="/deleteAttachmentByName", method=RequestMethod.POST)
+    @RequiresPermissions("/content/deleteAttachmentByName")
     public ResponseResult<Object> deleteAttachmentByName(@RequestParam("attachmentName")String attachmentName) {
         attachmentService.deleteAttachmentByName(attachmentName);
         return ResponseResult.success();
@@ -185,6 +192,7 @@ public class ContentController {
      */
     @LogAnnotation(logType = "update",logDesc = "审核文章信息")
     @RequestMapping(value = "/auditContent", method = RequestMethod.POST)
+    @RequiresPermissions("/content/auditContent")
     public ResponseResult<Object> auditContent(@Validated @RequestBody ContentCheckUpdateIO checkUpdateIO){
         ContentCheckDTO contentCheckDTO = BeanToolsUtil.copyOrReturnNull(checkUpdateIO,ContentCheckDTO.class);
         contentCheckService.updateContentCheckByContentId(contentCheckDTO);

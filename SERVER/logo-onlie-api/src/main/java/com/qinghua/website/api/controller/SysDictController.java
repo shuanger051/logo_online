@@ -9,6 +9,7 @@ import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.SysDictDTO;
 import com.qinghua.website.server.service.SysDictService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class SysDictController {
      */
     @LogAnnotation(logType = "query",logDesc = "数据字典分页查询")
     @RequestMapping(value = "/getDictListByPage", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict/getDictListByPage")
     public ResponseResult<Object> getDictListByPage(@Validated @RequestBody SysDictQueryIO sysDictQueryIO) {
         SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictQueryIO, SysDictDTO.class);
         PageInfo<SysDictDTO> pageList = sysDictService.getDictListByPage(sysDictDTO);
@@ -51,6 +53,7 @@ public class SysDictController {
      */
     @LogAnnotation(logType = "save",logDesc = "数据字典类型数据添加")
     @RequestMapping(value = "/saveDict", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict/saveDict")
     public ResponseResult<Object> saveDict(@Valid @RequestBody SysDictSaveIO sysDictSaveIO) {
         SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictSaveIO, SysDictDTO.class);
         sysDictService.saveDict(sysDictDTO);
@@ -64,6 +67,7 @@ public class SysDictController {
      */
     @LogAnnotation(logType = "update",logDesc = "数据字典类型数据修改")
     @RequestMapping(value = "/updateDictById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict/updateDictById")
     public ResponseResult<Object> updateDictById(@Valid @RequestBody SysDictUpdateIO sysDictUpdateIO) {
         SysDictDTO sysDictDTO = BeanToolsUtil.copyOrReturnNull(sysDictUpdateIO, SysDictDTO.class);
         sysDictService.updateDictById(sysDictDTO);
@@ -77,6 +81,7 @@ public class SysDictController {
      */
     @LogAnnotation(logType = "query",logDesc = "数据字典类型查看")
     @RequestMapping(value = "/getDictById", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict/getDictById")
     public ResponseResult<Object> getDictById(@RequestParam("id") Long id) {
         SysDictDTO dict = sysDictService.getDictById(id);
         SysDictVO sysDictVO =  BeanToolsUtil.copyOrReturnNull(dict, SysDictVO.class);
@@ -90,6 +95,7 @@ public class SysDictController {
      */
     @LogAnnotation(logType = "delete",logDesc = "数据字典类型数据删除")
     @RequestMapping(value = "/deleteDictById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict/deleteDictById")
     public ResponseResult<Object> deleteDictById(@Valid @RequestBody IdIO req) {
         sysDictService.deleteDictById(req.getId());
         return ResponseResult.success();

@@ -15,6 +15,7 @@ import com.qinghua.website.server.domain.SysDictItemDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.SysDictItemService;
 import com.qinghua.website.server.service.SysDictService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "query",logDesc = "数据字典子项分页查询")
     @RequestMapping(value = "/getDictItemListByPage", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict-item/getDictItemListByPage")
     public ResponseResult<Object> getDicItemtListPage(@Valid @RequestBody SysDictItemQueryIO sysDictItemQueryIO) {
 
         SysDictItemDTO sysDictItemDTO =  BeanToolsUtil.copyOrReturnNull(sysDictItemQueryIO, SysDictItemDTO.class);
@@ -63,6 +65,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "query",logDesc = "数据字典通过dict_key查询字典子项列表")
     @RequestMapping(value = "/getItemsByDictKey", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict-item/getItemsByDictKey")
     public ResponseResult<Object> getItemsByDictKey(@RequestParam("dictKey") String dictKey) {
         List<SysDictItemDTO> sysDictItemList = sysDictItemService.getItemsByDictKey(dictKey);
         List<SysDictItemVO> sysDictItemVOList = BeanToolsUtil.copyAsList(sysDictItemList,SysDictItemVO.class);
@@ -77,6 +80,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "query",logDesc = "数据字典条目子项数据查看")
     @RequestMapping(value = "/getDictItemById", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict-item/getDictItemById")
     public ResponseResult<Object> getDictItemById(@RequestParam("id") Long id) {
         SysDictItemDTO dictItem = sysDictItemService.getDictItemById(id);
         SysDictItemVO sysDictItemVO = BeanToolsUtil.copyOrReturnNull(dictItem, SysDictItemVO.class);
@@ -91,6 +95,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "save",logDesc = "数据字典子项添加")
     @RequestMapping(value = "/saveDictItem", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict-item/saveDictItem")
     public ResponseResult<Object> saveDictItem(@Valid @RequestBody SysDictItemSaveIO sysDictItemSaveIO) {
         if (!sysDictService.checkDictKeyExists(sysDictItemSaveIO.getDictKey())) {
             throw new BizException(SysConstant.ERROR_DICT_CHECK_DICTKEY_10008);
@@ -107,6 +112,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "update",logDesc = "数据字典子项数据修改")
     @RequestMapping(value = "/updateDictItemById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict-item/updateDictItemById")
     public ResponseResult<Object> updateDictItemById(@Valid @RequestBody SysDictItemUpdateIO sysDictItemUpdateIO) {
         SysDictItemDTO dictItem =  BeanToolsUtil.copyOrReturnNull(sysDictItemUpdateIO, SysDictItemDTO.class);
         sysDictItemService.updateDictItemById(dictItem);
@@ -120,6 +126,7 @@ public class SysDictItemController {
      */
     @LogAnnotation(logType = "delete",logDesc = "数据字典子项数据删除")
     @RequestMapping(value = "/deleteDictItemById", method = RequestMethod.POST)
+    @RequiresPermissions("/sys/dict-item/deleteDictItemById")
     public ResponseResult<Object> deleteDictItemById(@Valid @RequestBody IdIO idIO) {
         sysDictItemService.deleteDictItemById(idIO.getId());
         return ResponseResult.success();
