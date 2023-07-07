@@ -33,7 +33,7 @@ public enum SysConstant implements IEnum {
     ERROR_CHANNEL_HAVE_CONTENT("10019","该栏目下已有文章，请先删除文章。"),
     ERROR_CUSTCODE_ORGNAME_PARENTID_EXIT_10020("10020","已存在相同级别同名机构"),
     ERROR_SYS_USER_NOT_EXISTS("10021","用户管理员不存在"),
-    ERROR_USER_NOT_LOGIN("10022","用户未登录不允许操作"),
+    ERROR_USER_NOT_LOGIN("10022","用户未登录或登录已失效"),
     ERROR_SECURITY_ANSWER_ILLEGAL_INCOMING_DATA_10023("10023","传入参数ID非法"),
     ERROR_SYS_CONFIG_KEY_IS_NOT_EXIST("10024","系统配置参数不存在，请检查初始化配置"),
     ERROR_USER_NOT_SAME_CHANNEL_100029("10025","无此用户ID"),

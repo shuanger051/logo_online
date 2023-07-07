@@ -176,4 +176,14 @@ public class SysUserServiceImpl implements SysUserService {
         }
     }
 
+    /**
+     * 根据用户名称获取用户信息
+     * @param userName
+     * @return
+     */
+    @Override
+    public SysUserDTO getSysUserByUserName(String userName){
+        return sysUserMapper.getSysUserByUserName(userName);
+    }
+
 }

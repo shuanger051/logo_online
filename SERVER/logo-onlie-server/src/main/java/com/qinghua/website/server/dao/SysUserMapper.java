@@ -97,4 +97,11 @@ public interface SysUserMapper {
      */
     public void saveSysUserByList(List<SysUserDTO> list);
 
+    /**
+     * 根据用户名称获取用户信息
+     * @param userName
+     * @return
+     */
+    public SysUserDTO getSysUserByUserName(String userName);
+
 }

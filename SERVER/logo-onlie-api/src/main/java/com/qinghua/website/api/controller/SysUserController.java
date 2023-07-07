@@ -19,6 +19,10 @@ import com.qinghua.website.server.utils.DateUtil;
 import com.qinghua.website.server.utils.RSACryptoHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -99,6 +103,12 @@ public class SysUserController {
 
         if(null != resUser){
             log.info("[消息:]用户{}正在执行登录操作",userName);
+
+            Subject subject = SecurityUtils.getSubject();
+            // 在认证提交前准备 token（令牌）
+            UsernamePasswordToken token = new UsernamePasswordToken(resUser.getUserName(), MD5Util.toMD5String(password));
+
+
             //判定账户状态是否为锁定，锁定的账户不允许登录
             if(null != resUser.getIsDisabled() && resUser.getIsDisabled().equals("0")){
                 //用户未锁定，追加判断错误次数校验，错误登录次数不得大于3次，否则不允许登录
@@ -113,6 +123,10 @@ public class SysUserController {
                     sysUserService.updateLoginSuccess(loginUpdateInfo);
                     //将用户数据写入session
                     SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
+
+                    // 执行认证登陆
+                    subject.login(token);
+                    //保存session
                     request.getSession().setAttribute(SessionUser.SEESION_USER,user);
                     return Boolean.TRUE;
                 }else{
@@ -139,6 +153,10 @@ public class SysUserController {
                     sysUserService.updateLoginSuccess(loginUpdateInfo);
                     //将用户数据写入session
                     SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
+
+                    // 执行认证登陆
+                    subject.login(token);
+                    //保存session
                     request.getSession().setAttribute(SessionUser.SEESION_USER,user);
                     return Boolean.TRUE;
                 }
@@ -264,6 +282,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "update",logDesc = "系统用户修改密码")
     @RequestMapping(value = "/changePwd",method = RequestMethod.POST)
+    @RequiresPermissions("/sys/user/changePwd")
     public ResponseResult<Object> changePwd(@Validated @RequestBody SysUserPwdIO sysUserPwdIO){
         sysUserService.changePwd(sysUserPwdIO.getUserName(),sysUserPwdIO.getOldPassword(),sysUserPwdIO.getNewPassword());
         return ResponseResult.success();
