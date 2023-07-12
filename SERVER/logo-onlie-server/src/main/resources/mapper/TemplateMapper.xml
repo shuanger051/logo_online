@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.TemplateMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.TemplateDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="dom_item" property="domItem" jdbcType="VARCHAR"/>
+        <result column="release_status" property="releaseStatus" jdbcType="VARCHAR"/>
+        <result column="style" property="style" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        name,
+        dom_item,
+        release_status,
+        style,
+        create_time,
+        update_time
+    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getTemplateById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_template WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getTemplateList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.TemplateDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_template
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="name !=null and name !=''">AND name = like concat('%', #{name}, '%')</if>
+            <if test="releaseStatus !=null and releaseStatus !=''">AND release_status = #{releaseStatus}</if>
+            <if test="style !=null and style !=''">AND style = #{style}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteTemplateById" parameterType="java.lang.Long">
+        DELETE FROM t_template WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateTemplateById" parameterType="com.qinghua.website.server.domain.TemplateDTO">
+        UPDATE t_template
+        <set>
+            <if test="name !=null and name !=''">name = #{name},</if>
+            <if test="domItem !=null and domItem !=''">dom_item = #{domItem},</if>
+            <if test="releaseStatus !=null and releaseStatus !=''">release_status = #{releaseStatus},</if>
+            <if test="style !=null and style !=''">style = #{style},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID更改模板发布状态  -->
+    <update id="updateTemplateStatusById" parameterType="com.qinghua.website.server.domain.TemplateDTO">
+        UPDATE t_template set release_status = #{releaseStatus}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveTemplate" parameterType="com.qinghua.website.server.domain.TemplateDTO">
+        INSERT INTO t_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name !=null and name !=''">name,</if>
+            <if test="domItem !=null and domItem !=''">dom_item,</if>
+            release_status,
+            <if test="style !=null and style !=''">style,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name !=null and name !=''">#{name},</if>
+            <if test="domItem !=null and domItem !=''">#{domItem},</if>
+            '2',
+            <if test="style !=null and style !=''">#{style},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>
