@@ -15,11 +15,6 @@ import java.util.List;
 public interface ContentCheckService {
 
         /**
-        * 分页查询
-        */
-        PageInfo<ContentCheckDTO> getContentCheckListByPage(ContentCheckDTO bean);
-
-        /**
          * 查询List集合
          * @param bean
          * @return
@@ -27,12 +22,19 @@ public interface ContentCheckService {
         List<ContentCheckDTO> getContentCheckList(ContentCheckDTO bean);
 
         /**
-         * 根据ID查询
+         * 根据ContentID查询
          *
-         * @param id
+         * @param contentId
          * @return
          */
-        ContentCheckDTO getContentCheckById(Long id);
+        ContentCheckDTO getContentCheckByContentId(Long contentId);
+
+        /**
+         * 根据content_id更新审核信息
+         * @param checkDTO
+         * @return
+         */
+        void updateContentCheckByContentId(ContentCheckDTO checkDTO);
 
         /**
          * 新增

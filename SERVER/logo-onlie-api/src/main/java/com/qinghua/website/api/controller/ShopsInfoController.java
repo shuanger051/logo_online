@@ -1,22 +1,23 @@
 package com.qinghua.website.api.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import com.qinghua.website.api.annotation.LogAnnotation;
-import com.qinghua.website.api.controller.io.IdIO;
-import com.qinghua.website.api.controller.io.ShopsInfoQueryIO;
-import com.qinghua.website.api.controller.io.ShopsInfoSaveIO;
-import com.qinghua.website.api.controller.io.ShopsInfoUpdateIO;
+import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.ShopsInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.server.common.ResponseResult;
+import com.qinghua.website.server.domain.ShopsAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsInfoDTO;
 import com.qinghua.website.server.service.ShopsInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询店铺信息列表")
     @RequestMapping(value = "/getShopsInfoListByPage",method = RequestMethod.GET)
+    @RequiresPermissions("/shops-info/getShopsInfoListByPage")
     public ResponseResult<Object> getShopsInfoListByPage(@Validated @RequestBody ShopsInfoQueryIO shopsInfoQueryIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
@@ -52,6 +54,7 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据店铺ID查询店铺信息")
     @RequestMapping(value = "/getShopsInfoById",method = RequestMethod.GET)
+    @RequiresPermissions("/shops-info/getShopsInfoById")
     public ResponseResult<Object> getShopsInfoById(@RequestParam("id") Long id){
         ShopsInfoDTO shopsInfoDTO = shopsInfoService.getShopsInfoById(id);
         ShopsInfoVO shopsInfoVO = BeanToolsUtil.copyOrReturnNull(shopsInfoDTO,ShopsInfoVO.class);
@@ -59,15 +62,17 @@ public class ShopsInfoController {
     }
 
     /**
-     * 新增店铺信息
+     * 新增商铺信息
      * @param bean
      * @return
      */
-    @LogAnnotation(logType = "save",logDesc = "新增店铺信息")
+    @LogAnnotation(logType = "save",logDesc = "新增商铺信息")
     @RequestMapping(value = "/saveShopsInfo",method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/saveShopsInfo")
     public ResponseResult<Object> saveShopsInfo(@Validated @RequestBody ShopsInfoSaveIO bean){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
-        shopsInfoService.saveShopsInfo(shopsInfoDTO);
+        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
+        shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
     }
 
@@ -78,9 +83,11 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "update",logDesc = "修改店铺信息")
     @RequestMapping(value = "/updateShopsInfoById",method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/updateShopsInfoById")
     public ResponseResult<Object> updateShopsInfoById(@Validated @RequestBody ShopsInfoUpdateIO bean){
         ShopsInfoDTO shopsInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
-        shopsInfoService.updateShopsInfoById(shopsInfoDTO);
+        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
+        shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();
     }
 
@@ -91,8 +98,24 @@ public class ShopsInfoController {
      */
     @LogAnnotation(logType = "delete",logDesc = "删除店铺信息")
     @RequestMapping(value="/deleteShopsInfoById", method= RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsInfoById")
     public ResponseResult<Object> deleteShopsInfoById(@Valid @RequestBody IdIO req) {
         shopsInfoService.deleteShopsInfoById(req.getId());
+        return ResponseResult.success();
+    }
+
+    /**
+     * 根据附件名称删除商铺附件
+     * @param attachmentName
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "根据附件名称删除商铺附件")
+    @RequestMapping(value = "/deleteShopsAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsAttachment")
+    public ResponseResult<Object> deleteShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {
+        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
+        shopsInfoService.deleteAttachmentByName(attachmentName);
         return ResponseResult.success();
     }
 

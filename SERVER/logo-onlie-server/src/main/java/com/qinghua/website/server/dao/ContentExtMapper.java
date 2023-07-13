@@ -29,6 +29,13 @@ public interface ContentExtMapper {
         ContentExtDTO getContentExtById(@Param("id") Long id);
 
         /**
+         * 根据contentId查询文章扩展信息
+         * @param contentId
+         * @return
+         */
+        ContentExtDTO getContentExtByContentId(Long contentId);
+
+        /**
          * 新增
          * @param bean
          */
@@ -45,5 +52,17 @@ public interface ContentExtMapper {
          * @param id
          */
         Integer deleteContentExtById(@Param("id") Long id);
+
+        /**
+         * 根据文章ID删除扩展信息
+         * @param contentId
+         */
+        void deleteContentExtByContentId(@Param("contentId")Long contentId);
+
+        /**
+         * 更新扩展信息
+         * @param bean
+         */
+        void updateContentExtByContentId(ContentExtDTO bean);
 
 }

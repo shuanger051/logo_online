@@ -55,6 +55,9 @@
     <mapstruct.version>1.3.0.Final</mapstruct.version>
     <lombook.bind.version>0.2.0</lombook.bind.version>
     <gm4.version>1.69</gm4.version>
+    <poi.version>4.4.0</poi.version>
+    <shiro.version>1.4.0</shiro.version>
+    <shiro-redis.version>2.8.24</shiro-redis.version>
   </properties>
 
 </project>

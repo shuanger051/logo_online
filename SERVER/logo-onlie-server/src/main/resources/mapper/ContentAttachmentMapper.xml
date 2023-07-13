@@ -17,7 +17,16 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-	        id,	        content_id,	        priority,	        attachment_path,	        attachment_name,	        filename,	        download_count,	        create_time,	        update_time    </sql>
+        id,
+        content_id,
+        priority,
+        attachment_path,
+        attachment_name,
+        filename,
+        download_count,
+        create_time,
+        update_time
+    </sql>
 
     <!--  通过ID来获取对象 -->
     <select id="getContentAttachmentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -25,17 +34,23 @@
         FROM t_content_attachment WHERE  id =#{id}
     </select>
 
+    <!--  通过ContentID来获取对象 -->
+    <select id="getContentAttachmentByContentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_attachment WHERE  content_id =#{id}
+    </select>
+
+    <select id="getAttachmentListByContentId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_content_attachment WHERE  content_id =#{contentId}
+    </select>
+
     <!-- 通过实体来查询分页列表 -->
     <select id="getContentAttachmentList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentAttachmentDTO">
         SELECT <include refid="Base_Column_List"/> FROM t_content_attachment
         <trim prefix="where" prefixOverrides="AND || OR">
-            <if test="id !=null">AND id = #{id}</if>
             <if test="contentId !=null">AND content_id = #{contentId}</if>
-            <if test="priority !=null">AND priority = #{priority}</if>
-            <if test="attachmentPath !=null and attachmentPath !=''">AND attachment_path = #{attachmentPath}</if>
-            <if test="attachmentName !=null and attachmentName !=''">AND attachment_name = #{attachmentName}</if>
             <if test="filename !=null and filename !=''">AND filename = #{filename}</if>
-            <if test="downloadCount !=null">AND download_count = #{downloadCount}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -44,6 +59,10 @@
         </trim>
     </select>
 
+    <!-- 根据附件名称查询 -->
+    <select id="getAttachmentByAttachmentName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_attachment where attachment_name = #{attachmentName}
+    </select>
 
     <!-- 根据ID删除 -->
     <delete id="deleteContentAttachmentById" parameterType="java.lang.Long">
@@ -88,5 +107,42 @@
             NOW()
         </trim>
     </insert>
+
+    <!-- 批量新增 -->
+    <insert id="saveContentAttachmentList" parameterType="java.util.List">
+        insert into t_content_attachment (
+            content_id,
+            priority,
+            attachment_path,
+            attachment_name,
+            filename,
+            create_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.contentId},
+                #{item.priority},
+                #{item.attachmentPath},
+                #{item.attachmentName},
+                #{item.filename},
+                NOW()
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新下载次数 -->
+    <update id="updateDownloadTimes" parameterType="java.lang.Long">
+        update t_content_attachment set download_count = download_count + 1 , update_time = NOW()  where id = #{id}
+    </update>
+
+    <!-- 根据文章ID删除附件信息 -->
+    <delete id="deleteContentAttachmentByContentId" parameterType="java.lang.Long">
+        DELETE FROM t_content_attachment WHERE content_id = #{contentId}
+    </delete>
+
+    <!-- 根据附件名称删除附件信息 -->
+    <delete id="deleteAttachmentByName" parameterType="java.lang.String">
+        DELETE FROM t_content_attachment WHERE attachment_name = #{attachmentName}
+    </delete>
 
 </mapper>

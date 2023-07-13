@@ -4,36 +4,34 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ShopsAttachmentDTO">
-          <id column="id" property="id" jdbcType="BIGINT"/>
-          <result column="shops_id" property="shopsId" jdbcType="BIGINT"/>
-          <result column="shops_pic_path" property="shopsPicPath" jdbcType="VARCHAR"/>
-          <result column="shops_contract_path" property="shopsContractPath" jdbcType="VARCHAR"/>
-          <result column="shops_pic_name" property="shopsPicName" jdbcType="VARCHAR"/>
-          <result column="shops_contract_name" property="shopsContractName" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="shops_id" property="shopsId" jdbcType="BIGINT"/>
+        <result column="attachment_path" property="attachmentPath" jdbcType="VARCHAR"/>
+        <result column="attachment_name" property="attachmentName" jdbcType="VARCHAR"/>
+        <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
         shops_id,
-        shops_pic_path,
-        shops_contract_path,
-        shops_pic_name,
-        shops_contract_name,
+        attachment_path,
+        attachment_name,
+        file_name,
         create_time,
         update_time
     </sql>
 
     <!--  通过ID来获取对象 -->
     <select id="getShopsAttachmentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT <include refid="Base_Column_List"/>
-        FROM t_shops_attachment WHERE  id =#{id}
+        SELECT <include refid="Base_Column_List"/> FROM t_shops_attachment WHERE  id =#{id}
     </select>
 
     <!--  通过shops_id来获取对象 -->
     <select id="getShopsAttachmentByShopsId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT <include refid="Base_Column_List"/>
-        FROM t_shops_attachment WHERE  shops_id =#{id}
+        SELECT <include refid="Base_Column_List"/> FROM t_shops_attachment WHERE  shops_id =#{id}
     </select>
 
     <!-- 通过实体来查询分页列表 -->
@@ -49,11 +47,14 @@
         </trim>
     </select>
 
+    <!-- 通过附件名称查询 -->
+    <select id="getShopsAttachmentByAttachmentName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_shops_attachment where attachment_name = #{attachmentName}
+    </select>
 
     <!-- 根据ID删除 -->
     <delete id="deleteShopsAttachmentById" parameterType="java.lang.Long">
-        DELETE FROM t_shops_attachment
-        WHERE id=#{id}
+        DELETE FROM t_shops_attachment WHERE id=#{id}
     </delete>
 
     <!-- 根据ID更新 -->
@@ -61,10 +62,9 @@
         UPDATE t_shops_attachment
         <set>
             <if test="shopsId !=null">shops_id = #{shopsId},</if>
-            <if test="shopsPicPath !=null and shopsPicPath !=''">shops_pic_path = #{shopsPicPath},</if>
-            <if test="shopsContractPath !=null and shopsContractPath !=''">shops_contract_path = #{shopsContractPath},</if>
-            <if test="shopsPicName !=null and shopsPicName !=''">shops_pic_name = #{shopsPicName},</if>
-            <if test="shopsContractName !=null and shopsContractName !=''">shops_contract_name = #{shopsContractName},</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">attachment_path = #{attachmentPath},</if>
+            <if test="attachmentName !=null and attachmentName !=''">attachment_name = #{attachmentName},</if>
+            <if test="fileName !=null and fileName !=''">file_name = #{fileName},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -75,20 +75,48 @@
         INSERT INTO t_shops_attachment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="shopsId !=null">shops_id,</if>
-            <if test="shopsPicPath !=null and shopsPicPath !=''">shops_pic_path,</if>
-            <if test="shopsContractPath !=null and shopsContractPath !=''">shops_contract_path,</if>
-            <if test="shopsPicName !=null and shopsPicName !=''">shops_pic_name,</if>
-            <if test="shopsContractName !=null and shopsContractName !=''">shops_contract_name,</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">attachment_path,</if>
+            <if test="attachmentName !=null and attachmentName !=''">attachment_name,</if>
+            <if test="fileName !=null and fileName !=''">file_name,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="shopsId !=null">#{shopsId},</if>
-            <if test="shopsPicPath !=null and shopsPicPath !=''">#{shopsPicPath},</if>
-            <if test="shopsContractPath !=null and shopsContractPath !=''">#{shopsContractPath},</if>
-            <if test="shopsPicName !=null and shopsPicName !=''">#{shopsPicName},</if>
-            <if test="shopsContractName !=null and shopsContractName !=''">#{shopsContractName},</if>
+            <if test="attachmentPath !=null and attachmentPath !=''">#{attachmentPath},</if>
+            <if test="attachmentName !=null and attachmentName !=''">#{attachmentName},</if>
+            <if test="fileName !=null and fileName !=''">#{fileName},</if>
             NOW()
         </trim>
     </insert>
+
+    <!-- 根据附件名称删除 -->
+    <delete id="deleteAttachmentByName" parameterType="java.lang.String">
+        DELETE FROM t_shops_attachment WHERE attachment_name = #{attachmentName}
+    </delete>
+
+    <!-- 批量新增附件信息 -->
+    <insert id="saveShopsAttachmentByList" parameterType="java.util.List">
+        insert into t_shops_attachment (
+            shops_id,
+            attachment_path,
+            attachment_name,
+            file_name,
+            create_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.shopsId},
+                #{item.attachmentPath},
+                #{item.attachmentName},
+                #{item.fileName},
+                NOW()
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据shopsId删除 -->
+    <delete id="deleteShopsAttachmentByShopsId" parameterType="java.lang.Long">
+        DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId}
+    </delete>
 
 </mapper>

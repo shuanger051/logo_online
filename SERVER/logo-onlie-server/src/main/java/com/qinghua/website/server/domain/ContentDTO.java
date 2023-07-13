@@ -4,6 +4,7 @@ import com.qinghua.website.server.common.BaseDTO;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ContentDTO extends BaseDTO {
@@ -16,61 +17,47 @@ public class ContentDTO extends BaseDTO {
 	private Long channelId;
 
     /**
-     * 排序日期
-     */
-	private Date sortDate;
-
-    /**
-     * 固定级别
-     */
-	private Integer topLevel;
-
-    /**
      * 是否推荐
      */
-	private Integer isRecommend;
+	private String isRecommend;
 
     /**
      * 状态 0:草稿;1:审核中;2:审核通过;3:回收站
      */
-	private Integer status;
+	private String status;
 
     /**
      * 日访问数
      */
 	private Integer viewsDay;
 
-    /**
-     * 日评论数
-     */
-	private Integer commentsDay;
+	/**
+	 * 文章审核信息
+	 */
+	private ContentCheckDTO contentCheck;
 
-    /**
-     * 日下载数
-     */
-	private Integer downloadsDay;
+	/**
+	 * 文章扩展信息
+	 */
+	private ContentExtDTO contentExt;
 
-    /**
-     * 日顶数
-     */
-	private Integer upsDay;
+	/**
+	 * 文章附件信息
+	 */
+	private List<ContentAttachmentDTO> list;
 
 	@Override
 	public String toString() {
-	return "Content{" +
-					", id=" + this.getId() +
-					", channelId=" + this.getChannelId() +
-					", sortDate=" + this.getSortDate() +
-					", topLevel=" + this.getTopLevel() +
-					", isRecommend=" + this.getIsRecommend() +
-					", status=" + this.getStatus() +
-					", viewsDay=" + this.getViewsDay() +
-					", commentsDay=" + this.getCommentsDay() +
-					", downloadsDay=" + this.getDownloadsDay() +
-					", upsDay=" + this.getUpsDay() +
-					", createTime=" + this.getCreateTime() +
-					", updateTime=" + this.getUpdateTime() +
-			"}";
+		return "ContentDTO{" +
+				"id=" + id +
+				", channelId=" + channelId +
+				", isRecommend='" + isRecommend + '\'' +
+				", status='" + status + '\'' +
+				", viewsDay=" + viewsDay +
+				", contentCheck=" + contentCheck +
+				", contentExt=" + contentExt +
+				", contentAttachmentList=" + list +
+				'}';
 	}
 
 }

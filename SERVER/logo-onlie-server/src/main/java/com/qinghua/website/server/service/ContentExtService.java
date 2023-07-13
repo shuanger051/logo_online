@@ -15,11 +15,6 @@ import java.util.List;
 public interface ContentExtService {
 
         /**
-        * 分页查询
-        */
-        PageInfo<ContentExtDTO> getContentExtListByPage(ContentExtDTO bean);
-
-        /**
          * 查询List集合
          * @param bean
          * @return

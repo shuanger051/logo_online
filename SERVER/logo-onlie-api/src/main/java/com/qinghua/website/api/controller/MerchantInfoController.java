@@ -11,6 +11,7 @@ import com.qinghua.website.server.domain.MerchantInfoDTO;
 import com.qinghua.website.server.service.MerchantInfoService;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class MerchantInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询商户列表")
     @RequestMapping(value = "/getMerchantInfoListByPage",method = RequestMethod.GET)
+    @RequiresPermissions("/merchantInfo/getMerchantInfoListByPage")
     public ResponseResult<Object> getMerchantInfoListByPage(@Validated @RequestBody MerchantQueryIO merchantQueryIO){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
         PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
@@ -53,6 +55,7 @@ public class MerchantInfoController {
      */
     @LogAnnotation(logType = "query",logDesc = "根据ID查询商户信息")
     @RequestMapping(value = "/getMerchantInfoById",method = RequestMethod.GET)
+    @RequiresPermissions("/merchantInfo/getMerchantInfoById")
     public ResponseResult<Object> getMerchantInfoById(@RequestParam("id") Long id){
         MerchantInfoDTO merchantInfoDTO = merchantInfoService.getMerchantInfoById(id);
         MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchantInfoDTO,MerchantInfoVO.class);
@@ -66,6 +69,7 @@ public class MerchantInfoController {
      */
     @LogAnnotation(logType = "save",logDesc = "新增商户信息")
     @RequestMapping(value = "/saveMerchantInfo",method = RequestMethod.POST)
+    @RequiresPermissions("/merchantInfo/saveMerchantInfo")
     public ResponseResult<Object> saveMerchantInfo(@Validated @RequestBody MerchantInfoSaveIO bean){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
         merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
@@ -81,6 +85,7 @@ public class MerchantInfoController {
      */
     @LogAnnotation(logType = "update",logDesc = "修改商户信息")
     @RequestMapping(value = "/updateMerchantInfoById",method = RequestMethod.POST)
+    @RequiresPermissions("/merchantInfo/updateMerchantInfoById")
     public ResponseResult<Object> updateMerchantInfoById(@Validated @RequestBody MerchantInfoUpdateIO bean){
         MerchantInfoDTO merchantInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
         merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
@@ -96,6 +101,7 @@ public class MerchantInfoController {
      */
     @LogAnnotation(logType = "delete",logDesc = "删除商户信息")
     @RequestMapping(value="/deleteMerchantInfoById", method= RequestMethod.POST)
+    @RequiresPermissions("/merchantInfo/deleteMerchantInfoById")
     public ResponseResult<Object> deleteMerchantInfoById(@Valid @RequestBody IdIO req) {
         merchantInfoService.deleteMerchantInfoById(req.getId());
         return ResponseResult.success();

@@ -52,7 +52,7 @@ public class ShopsInfoUpdateIO {
     /**
      * 店铺附件
      */
-    private List<ShopsAttachmentIO> shopsAttachmentIOList;
+    private List<ShopsAttachmentIO> list;
 
     @Override
     public String toString() {
@@ -64,7 +64,7 @@ public class ShopsInfoUpdateIO {
                 ", isOldShops='" + isOldShops + '\'' +
                 ", shopsType='" + shopsType + '\'' +
                 ", remark='" + remark + '\'' +
-                ", shopsAttachmentIOList=" + shopsAttachmentIOList +
+                ", shopsAttachmentIOList=" + list +
                 '}';
     }
 }

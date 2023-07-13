@@ -1,11 +1,11 @@
 package com.qinghua.website.server.domain;
 
-
-import com.qinghua.website.server.common.BaseDTO;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class ContentAttachmentDTO extends BaseDTO {
+public class ContentAttachmentDTO {
 
 	private Long id;
 
@@ -39,6 +39,9 @@ public class ContentAttachmentDTO extends BaseDTO {
      */
 	private Integer downloadCount;
 
+	private Date createTime;
+	private Date updateTime;
+
 	@Override
 	public String toString() {
 	return "ContentAttachment{" +
@@ -49,8 +52,6 @@ public class ContentAttachmentDTO extends BaseDTO {
 					", attachmentName=" + this.getAttachmentName() +
 					", filename=" + this.getFilename() +
 					", downloadCount=" + this.getDownloadCount() +
-					", createTime=" + this.getCreateTime() +
-					", updateTime=" + this.getUpdateTime() +
 			"}";
 }
 }

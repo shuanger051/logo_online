@@ -46,6 +46,16 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     /**
+     * 查询可供下拉选择的栏目信息列表
+     * @return
+     */
+    public List<ChannelDTO> getChannelList(){
+        List<ChannelDTO> channelDTOList = channelMapper.getChannelList();
+        return channelDTOList;
+    }
+
+
+    /**
      * 保存单个对象
      * @param bean  保存对象
      * @return 主键

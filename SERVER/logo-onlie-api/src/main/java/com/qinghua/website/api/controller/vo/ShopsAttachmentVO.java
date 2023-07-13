@@ -5,33 +5,37 @@ import lombok.Data;
 @Data
 public class ShopsAttachmentVO {
 
-    /**
-     * 店铺图片地址
-     */
-    private String shopsPicPath;
+    private Long id;
 
     /**
-     * 店铺租房合同地址
+     * 商铺ID
      */
-    private String shopsContractPath;
+    private Long shopsId;
 
     /**
-     * 店铺图片名字
+     * 地址
      */
-    private String shopsPicName;
+    private String attachmentPath;
 
     /**
-     * 店铺租房合同名字
+     * 名字
      */
-    private String shopsContractName;
+    private String attachmentName;
+
+    /**
+     * 源文件名称
+     */
+    private String fileName;
 
     @Override
     public String toString() {
         return "ShopsAttachmentVO{" +
-                "shopsPicPath='" + shopsPicPath + '\'' +
-                ", shopsContractPath='" + shopsContractPath + '\'' +
-                ", shopsPicName='" + shopsPicName + '\'' +
-                ", shopsContractName='" + shopsContractName + '\'' +
+                "id=" + id +
+                ", shopsId=" + shopsId +
+                ", attachmentPath='" + attachmentPath + '\'' +
+                ", attachmentName='" + attachmentName + '\'' +
+                ", fileName='" + fileName + '\'' +
                 '}';
     }
+
 }

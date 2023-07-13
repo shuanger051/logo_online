@@ -1,10 +1,11 @@
 package com.qinghua.website.server.domain;
 
-import com.qinghua.website.server.common.BaseDTO;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class ContentCheckDTO extends BaseDTO {
+public class ContentCheckDTO {
 
 	private Long id;
 
@@ -26,7 +27,10 @@ public class ContentCheckDTO extends BaseDTO {
     /**
      * 是否退回
      */
-	private Integer isRejected;
+	private String isRejected;
+
+	private Date createTime;
+	private Date updateTime;
 
 	@Override
 	public String toString() {
@@ -36,8 +40,6 @@ public class ContentCheckDTO extends BaseDTO {
 					", checkStep=" + this.getCheckStep() +
 					", checkOpinion=" + this.getCheckOpinion() +
 					", isRejected=" + this.getIsRejected() +
-					", createTime=" + this.getCreateTime() +
-					", updateTime=" + this.getUpdateTime() +
 			"}";
 }
 }

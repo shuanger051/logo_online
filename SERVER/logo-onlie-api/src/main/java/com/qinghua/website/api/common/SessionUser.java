@@ -2,12 +2,21 @@ package com.qinghua.website.api.common;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class SessionUser {
+public class SessionUser implements Serializable {
+
+    private static final long serialVersionUID = -1045486377820200117L;
 
     public static final String SEESION_USER = "user";
 
     public static final String USER_IMG_CODE =  "user_img_code";
+
+    public static final String IS_ADMIN_VALUE = "1";
+
+    public static final String USER_LOCK_STATUS_IS_DISABLED = "1";
+
 
     /**
      * id:

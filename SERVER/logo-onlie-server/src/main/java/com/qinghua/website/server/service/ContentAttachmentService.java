@@ -15,16 +15,18 @@ import java.util.List;
 public interface ContentAttachmentService {
 
         /**
-        * 分页查询
-        */
-        PageInfo<ContentAttachmentDTO> getContentAttachmentListByPage(ContentAttachmentDTO bean);
-
-        /**
          * 查询List集合
          * @param bean
          * @return
          */
         List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean);
+
+        /**
+         * 根据
+         * @param attachmentName
+         * @return
+         */
+        ContentAttachmentDTO getAttachmentByAttachmentName(String attachmentName);
 
         /**
          * 根据ID查询
@@ -51,5 +53,16 @@ public interface ContentAttachmentService {
          * @param id
          */
         Integer deleteContentAttachmentById(Long id);
+
+        /**
+         * 更新下载次数
+         */
+        void updateDownloadTimes(Long id);
+
+        /**
+         * 根据文具名称删除附件信息
+         * @param attachmentName
+         */
+        void deleteAttachmentByName(String attachmentName);
 
 }

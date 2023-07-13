@@ -1,7 +1,9 @@
 package com.qinghua.website.server.service;
 
+import com.qinghua.website.server.domain.ContentAttachmentDTO;
 import com.qinghua.website.server.domain.ContentDTO;
 import com.github.pagehelper.PageInfo;
+import com.qinghua.website.server.domain.ContentExtDTO;
 
 import java.util.List;
 
@@ -35,22 +37,22 @@ public interface ContentService {
         ContentDTO getContentById(Long id);
 
         /**
-         * 新增
+         * 新增文章信息，需同时保存文章扩展信息和附件信息
          * @param bean
          */
-        Integer saveContent(ContentDTO bean);
+        void saveContent(ContentDTO bean, ContentExtDTO contentExt, List<ContentAttachmentDTO> list);
 
         /**
          * 根据ID修改
          * @param bean
          */
-        Integer updateContentById(ContentDTO bean);
+        void updateContentById(ContentDTO bean, ContentExtDTO contentExt, List<ContentAttachmentDTO> list);
 
         /**
          * 根据ID删除
          * @param id
          */
-        Integer deleteContentById(Long id);
+        void deleteContentById(Long id);
 
         /**
          * 根据ChannelID查询文章集合

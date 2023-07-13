@@ -53,4 +53,29 @@ public interface ShopsAttachmentMapper {
          */
         Integer deleteShopsAttachmentById(@Param("id") Long id);
 
+        /**
+         * 根据附件名称查询
+         * @param attachmentName
+         * @return
+         */
+        ShopsAttachmentDTO getShopsAttachmentByAttachmentName(@Param("attachmentName")String attachmentName);
+
+        /**
+         * 根据附件名称删除
+         * @param attachmentName
+         */
+        void deleteAttachmentByName(@Param("attachmentName")String attachmentName);
+
+        /**
+         * 批量新增附件信息
+         * @param list
+         */
+        void saveShopsAttachmentByList(List<ShopsAttachmentDTO> list);
+
+        /**
+         * 根据商铺ID删除附件
+         * @param shopsId
+         */
+        void deleteShopsAttachmentByShopsId(@Param("shopsId")Long shopsId);
+
 }

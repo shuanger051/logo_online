@@ -88,7 +88,7 @@
     </update>
 
     <!--保存-->
-    <insert id="saveShopsInfo" parameterType="com.qinghua.website.server.domain.ShopsInfoDTO">
+    <insert id="saveShopsInfo" parameterType="com.qinghua.website.server.domain.ShopsInfoDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_shops_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="merchantId !=null">merchant_id,</if>

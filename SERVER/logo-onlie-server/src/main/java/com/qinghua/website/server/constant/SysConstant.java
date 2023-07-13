@@ -15,7 +15,7 @@ public enum SysConstant implements IEnum {
     RSA_ERROR_10001("10001","密碼解析錯誤!"),
     LOGIN_ERROR_10002("10002","账户已锁定,请联系管理员处理!"),
     RSA_ERROR_10003("10003","获取加密key错误,请重试!"),
-    ERROR_FILE_UPLOAD_FILE_10004("10004", "文件上传异常异常"),
+    ERROR_FILE_UPLOAD_FILE_10004("10004", "文件上传异常"),
     ERROR_DICT_DELETE_DICT_10005("10005", "数据字典删除失败"),
     ERROR_DICT_CHECK_DICTNAME_10006("10006", "数据字典名称已存在"),
     ERROR_DICT_CHECK_DICTKEY_10007("10007", "数据字典编码已存在"),
@@ -33,7 +33,7 @@ public enum SysConstant implements IEnum {
     ERROR_CHANNEL_HAVE_CONTENT("10019","该栏目下已有文章，请先删除文章。"),
     ERROR_CUSTCODE_ORGNAME_PARENTID_EXIT_10020("10020","已存在相同级别同名机构"),
     ERROR_SYS_USER_NOT_EXISTS("10021","用户管理员不存在"),
-    ERROR_USER_NOT_LOGIN("10022","用户未登录不允许操作"),
+    ERROR_USER_NOT_LOGIN("10022","用户未登录或登录已失效"),
     ERROR_SECURITY_ANSWER_ILLEGAL_INCOMING_DATA_10023("10023","传入参数ID非法"),
     ERROR_SYS_CONFIG_KEY_IS_NOT_EXIST("10024","系统配置参数不存在，请检查初始化配置"),
     ERROR_USER_NOT_SAME_CHANNEL_100029("10025","无此用户ID"),
@@ -67,8 +67,8 @@ public enum SysConstant implements IEnum {
     ERROR_USER_PHONE_ISNULL("10053","手机号非法"),
     ERROR_LOGIN_CHECK_FAILED("10054","请刷新页面重新尝试"),
     ERROR_USER_NOT_HAVE_ROLE("10055","未查询到此角色信息"),
-    ERROR_USER_NOT_HAVE_ROLE_2("10056","批量参数中存在不属于当前用户所属机构的角色"),
-    ERROR_USER_NOT_HAVE_ROLE_3("10057","批量参数中存在不属于当前用户所属机构的用户"),
+    ERROR_USER_NOT_HAVE_ROLE_2("10056","批量参数中存在不属于当前用户的角色"),
+    ERROR_USER_NOT_HAVE_ROLE_3("10057","批量参数中存在不属于当前用户的用户"),
     ERROR_USER_NOT_HAVE_ROLE_4("10058","无此角色信息"),
     ERROR_USER_ONLY_CHANGE_YOURSELF_PASSWORD("10059","用户仅限修改本人密码"),
     ERROR_USER_NOT_SAME_CHANNEL("10060","无此用户信息"),
@@ -79,7 +79,13 @@ public enum SysConstant implements IEnum {
     ERROR_CHECK_END_TIME("10065", "结束时间格式不正确"),
     ERROR_CHECK_DATE_INTERVAL("10066", "开始日期不能晚于结束日期"),
     ERROR_DATE_FORMAT("10067","时间格式化出错"),
-    ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多");
+    ERROR_LOGIN_WRONG_MANY_TIMES("10068","错误次数过多"),
+    ERROR_GET_ATTACHMENT_INFO_FAIL("10069","附件信息不存在"),
+    ERROR_DOWNLOAD_FAIL("10070","文件下载出错"),
+    ERROR_DELETE_FILE_FAIL("10071","删除文件出错"),
+    ERROR_FILE_NOT_EXIST("10072","无此附件信息"),
+    ERROR_CONTENT_ALREADY_TAKE_EFFECT("10073","只有草稿或审核中的文章允许修改"),
+    ERROR_SHOPS_MERCHANT_IS_WRONG("10074","店铺不存在或店铺与商户信息不匹配");
 
     private final String code;
 

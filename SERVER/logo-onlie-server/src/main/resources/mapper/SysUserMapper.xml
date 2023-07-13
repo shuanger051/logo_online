@@ -29,7 +29,43 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,	user_name, email,register_time, register_ip,last_login_time,last_login_ip, login_count,is_admin,is_disabled,error_count,error_ip,error_time create_time,update_time
+        id,
+        user_name,
+        email,
+        register_time,
+        register_ip,
+        last_login_time,
+        last_login_ip,
+        login_count,
+        is_admin,
+        is_disabled,
+        activation,
+        error_count,
+        error_ip,
+        error_time,
+        create_time,
+        update_time
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Shiro_List">
+        id,
+        user_name,
+        password,
+        email,
+        register_time,
+        register_ip,
+        last_login_time,
+        last_login_ip,
+        login_count,
+        is_admin,
+        is_disabled,
+        activation,
+        error_count,
+        error_ip,
+        error_time,
+        create_time,
+        update_time
     </sql>
 
     <!-- 根据ID查询管理员信息 -->
@@ -71,6 +107,12 @@
         SELECT <include refid="Base_Column_List" /> FROM t_sys_user where user_name = #{userName} and password = #{password}
     </select>
 
+    <select id="getSysUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Shiro_List"/>
+        from t_sys_user where user_name= #{userName}
+    </select>
+
     <!-- 新增用户 -->
     <insert id="saveSysUser" parameterType="com.qinghua.website.server.domain.SysUserDTO">
         INSERT INTO t_sys_user
@@ -92,6 +134,34 @@
             0,
             NOW()
         </trim>
+    </insert>
+
+    <!-- 默认pd 8个8 -->
+    <insert id="saveSysUserByList" parameterType="java.util.List">
+        insert into t_sys_user (
+        user_name,
+        email,
+        login_count,
+        password,
+        register_time,
+        activation,
+        is_admin,
+        is_disabled,
+        create_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.userName},
+            #{item.email},
+            0,
+            '8ddcff3a80f4189ca1c9d4d902c3c909',
+            NOW(),
+            '1',
+            '0',
+            '0',
+            NOW()
+            )
+        </foreach>
     </insert>
 
     <!-- 更新登录相关操作 -->

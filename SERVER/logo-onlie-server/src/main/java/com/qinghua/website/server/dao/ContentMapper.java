@@ -32,19 +32,19 @@ public interface ContentMapper {
          * 新增
          * @param bean
          */
-        Integer saveContent(ContentDTO bean);
+        Long saveContent(ContentDTO bean);
 
         /**
          * 根据ID修改
          * @param bean
          */
-        Integer updateContentById(ContentDTO bean);
+        Long updateContentById(ContentDTO bean);
 
         /**
          * 根据ID删除
          * @param id
          */
-        Integer deleteContentById(@Param("id") Long id);
+        Long deleteContentById(@Param("id") Long id);
 
         /**
          * 根据ChannelID 查询文章集合

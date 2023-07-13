@@ -11,6 +11,7 @@ import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.SysUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -152,6 +153,37 @@ public class SysUserServiceImpl implements SysUserService {
         }else{
             throw new BizException(SysConstant.ERROR_SYS_USER_NOT_EXISTS);
         }
+    }
+
+    /**
+     *
+     * @param list
+     */
+    @Override
+    public void saveSysUserByList(List<SysUserDTO> list){
+        if(null != list){
+            try {
+                sysUserMapper.saveSysUserByList(list);
+            }catch (Exception e) {
+                Throwable cause = e.getCause();
+                if(cause instanceof java.sql.SQLIntegrityConstraintViolationException){
+                    throw new BizException(SysConstant.ERROR_USER_REPEAT_USERNAME);
+                }
+            }
+        }else{
+            //不允许上传空表格
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 根据用户名称获取用户信息
+     * @param userName
+     * @return
+     */
+    @Override
+    public SysUserDTO getSysUserByUserName(String userName){
+        return sysUserMapper.getSysUserByUserName(userName);
     }
 
 }

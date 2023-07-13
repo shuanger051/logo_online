@@ -5,33 +5,29 @@ import lombok.Data;
 @Data
 public class ShopsAttachmentIO {
 
-    /**
-     * 店铺图片地址
-     */
-    private String shopsPicPath;
+    private Long shopsId;
 
     /**
-     * 店铺租房合同地址
+     * 地址
      */
-    private String shopsContractPath;
+    private String attachmentPath;
 
     /**
-     * 店铺图片名字
+     * 名字
      */
-    private String shopsPicName;
+    private String attachmentName;
 
     /**
-     * 店铺租房合同名字
+     * 源文件名称
      */
-    private String shopsContractName;
+    private String fileName;
 
     @Override
     public String toString() {
         return "ShopsAttachmentIO{" +
-                "shopsPicPath='" + shopsPicPath + '\'' +
-                ", shopsContractPath='" + shopsContractPath + '\'' +
-                ", shopsPicName='" + shopsPicName + '\'' +
-                ", shopsContractName='" + shopsContractName + '\'' +
+                ", attachmentPath='" + attachmentPath + '\'' +
+                ", attachmentName='" + attachmentName + '\'' +
+                ", fileName='" + fileName + '\'' +
                 '}';
     }
 

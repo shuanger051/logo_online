@@ -1,5 +1,6 @@
 package com.qinghua.website.api.controller.vo;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,21 +16,25 @@ public class SysUserVO {
     /**
      * user_name:用户名
      */
+    @Excel(name = "用户名", width = 20, needMerge = true)
     private String userName;
 
     /**
      * email:电子邮箱
      */
+    @Excel(name = "电子邮箱", width = 30, needMerge = true)
     private String email;
 
     /**
      * register_time:注册时间
      */
+    @Excel(name = "注册时间", width = 30, format = "yyyy-MM-dd HH:mm:ss")
     private Date registerTime;
 
     /**
      * register_ip:注册IP
      */
+    @Excel(name = "注册IP", width = 30, needMerge = true)
     private String registerIp;
 
     /**
@@ -75,7 +80,8 @@ public class SysUserVO {
     /**
      * activation:激活状态
      */
-    private Boolean activation;
+    @Excel(name = "激活状态", width = 20, replace = {"未激活_0", "激活_1"})
+    private String activation;
 
     /**
      * activation_code:激活码
@@ -85,11 +91,13 @@ public class SysUserVO {
     /**
      * is_admin:是否管理员 0 不是 1 是
      */
+    @Excel(name = "是否超管", width = 20, replace = {"不是_0", "是_1"})
     private String isAdmin;
 
     /**
      * is_disabled:0 不禁用 1 禁用
      */
+    @Excel(name = "是否禁用", width = 20, replace = {"不禁用_0", "禁用_1"})
     private String isDisabled;
 
     @Override

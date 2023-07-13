@@ -3,6 +3,10 @@ spring:
     name: logo
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个文件上传大小
+      max-request-size: 100MB #总文件上传大小
 
 server:
   port: 9001
@@ -37,3 +41,6 @@ pagehelper:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
