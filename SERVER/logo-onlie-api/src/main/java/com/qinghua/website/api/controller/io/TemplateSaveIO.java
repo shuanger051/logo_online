@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller.io;
 
 import com.qinghua.website.api.validation.DictValidator;
+import com.qinghua.website.api.validation.IsJson;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public class TemplateSaveIO {
     /**
      * 元素信息
      */
-    @NotNull(message = "元素信息不能为空")
+    @IsJson(message = "元素信息必须为合法的JSON字符串")
     private String domItem;
 
     /**

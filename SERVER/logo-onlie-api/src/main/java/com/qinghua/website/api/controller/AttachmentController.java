@@ -47,6 +47,18 @@ public class AttachmentController {
     @Value("${upload.path.shops}")
     private String shopsPath;
 
+    /**
+     * 素材附件上传路径
+     */
+    @Value("${upload.path.material}")
+    private String materialPath;
+
+    /**
+     * 店招附件上传路径
+     */
+    @Value("${upload.path.logo}")
+    private String logoPath;
+
 
     @Autowired
     private ContentAttachmentService attachmentService;
@@ -222,6 +234,84 @@ public class AttachmentController {
     }
 
     /**
+     * 上传素材附件
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "上传素材附件")
+    @RequestMapping(value = "/uploadMaterialAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadMaterialAttachment")
+    public ResponseResult<Object> uploadMaterialAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
+            boolean mkdirs = new File( materialPath + "\\" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "\\" + newFileName  ;
+            String fullName = materialPath + "\\" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 上传店招附件
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "上传店招附件")
+    @RequestMapping(value = "/uploadLogoAttachment", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadLogoAttachment")
+    public ResponseResult<Object> uploadLogoAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
+            boolean mkdirs = new File( logoPath + "\\" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "\\" + newFileName  ;
+            String fullName = logoPath + "\\" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
      * 校验文件是否合法
      * @param file
      * @return
@@ -240,5 +330,8 @@ public class AttachmentController {
             throw new IllegalArgumentException("该文件无数据");
         }
     }
+
+
+
 
 }

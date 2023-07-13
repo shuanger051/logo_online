@@ -84,7 +84,8 @@ public enum SysConstant implements IEnum {
     ERROR_DOWNLOAD_FAIL("10070","文件下载出错"),
     ERROR_DELETE_FILE_FAIL("10071","删除文件出错"),
     ERROR_FILE_NOT_EXIST("10072","无此附件信息"),
-    ERROR_CONTENT_ALREADY_TAKE_EFFECT("10073","只有草稿或审核中的文章允许修改");
+    ERROR_CONTENT_ALREADY_TAKE_EFFECT("10073","只有草稿或审核中的文章允许修改"),
+    ERROR_SHOPS_MERCHANT_IS_WRONG("10074","店铺不存在或店铺与商户信息不匹配");
 
     private final String code;
 

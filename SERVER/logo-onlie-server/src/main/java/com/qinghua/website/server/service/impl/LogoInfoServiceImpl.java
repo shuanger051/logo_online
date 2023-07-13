@@ -1,6 +1,10 @@
 package com.qinghua.website.server.service.impl;
 
+import com.qinghua.website.server.constant.SysConstant;
+import com.qinghua.website.server.dao.ShopsInfoMapper;
 import com.qinghua.website.server.domain.LogoInfoDTO;
+import com.qinghua.website.server.domain.ShopsInfoDTO;
+import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.LogoInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,6 +23,9 @@ public class LogoInfoServiceImpl implements LogoInfoService {
                 
     @Resource
     private LogoInfoMapper logoInfoMapper;
+
+    @Resource
+    private ShopsInfoMapper shopsInfoMapper;
 
     @Override
     public List<LogoInfoDTO> getLogoInfoList(LogoInfoDTO bean) {
@@ -41,7 +48,13 @@ public class LogoInfoServiceImpl implements LogoInfoService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveLogoInfo(LogoInfoDTO bean) {
-        logoInfoMapper.saveLogoInfo(bean);
+        //校验shopsId 与 merchantID 是否对应。
+        ShopsInfoDTO shops = shopsInfoMapper.getShopsInfoById(bean.getShopsId());
+        if(null != shops && shops.getMerchantId().equals(bean.getMerchantId())){
+            logoInfoMapper.saveLogoInfo(bean);
+        }else{
+            throw new BizException(SysConstant.ERROR_SHOPS_MERCHANT_IS_WRONG);
+        }
     }
 
     @Override
@@ -53,7 +66,12 @@ public class LogoInfoServiceImpl implements LogoInfoService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateLogoInfoById(LogoInfoDTO bean) {
-        Preconditions.checkNotNull(bean.getId(), "参数:ID不能为空");
-        logoInfoMapper.updateLogoInfoById(bean);
+        //校验shopsId 与 merchantID 是否对应。
+        ShopsInfoDTO shops = shopsInfoMapper.getShopsInfoById(bean.getShopsId());
+        if(null != shops && shops.getMerchantId().equals(bean.getMerchantId())){
+            logoInfoMapper.updateLogoInfoById(bean);
+        }else{
+            throw new BizException(SysConstant.ERROR_SHOPS_MERCHANT_IS_WRONG);
+        }
     }
 }

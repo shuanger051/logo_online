@@ -41,3 +41,5 @@ upload:
   path:
     content: F:\\upload\\content #文章附件
     shops: F:\\upload\\shops #商铺附件
+    material: F:\\upload\\material #素材附件
+    logo: F:\\upload\\logo #店招附件

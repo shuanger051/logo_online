@@ -33,7 +33,7 @@
     <select id="getMaterialList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.MaterialDTO">
         SELECT <include refid="Base_Column_List"/> FROM t_material
         <trim prefix="where" prefixOverrides="AND || OR">
-            <if test="name !=null and name !=''">AND name = like concat('%', #{name}, '%')</if>
+            <if test="name !=null and name !=''">AND name like concat('%', #{name}, '%')</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
