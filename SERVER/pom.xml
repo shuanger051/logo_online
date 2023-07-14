@@ -58,6 +58,8 @@
     <poi.version>4.4.0</poi.version>
     <shiro.version>1.4.0</shiro.version>
     <shiro-redis.version>2.8.24</shiro-redis.version>
+
+    <jwt.version>3.4.0</jwt.version>
   </properties>
 
 </project>
