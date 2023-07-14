@@ -2,7 +2,7 @@ spring:
   application:
     name: logo
   profiles:
-    active: dev
+    active: @profile@
   servlet:
     multipart:
       max-file-size: 10MB #单个文件上传大小
