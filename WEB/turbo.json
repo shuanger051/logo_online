@@ -15,7 +15,7 @@
     "lint:fix": {
       "outputs": []
     },
-    "dev": {
+    "serve": {
       "cache": false
     },
     "test": {
