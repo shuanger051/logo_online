@@ -1,11 +1,17 @@
 {
-  "name": "shop-sign",
-  "version": "1.0.0",
-  "description": "店铺招牌管理",
   "private": true,
-  "main": "index.js",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "turbo run serve --parallel",
+    "dev": "turbo run dev",
+    "build": "turbo run build"
+  },
+  "devDependencies": {
+    "turbo": "latest"
   },
   "author": "",
   "license": "ISC"

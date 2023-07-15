@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>文件夹</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="40" height="40"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#FFC7BA" offset="0%"></stop>
+            <stop stop-color="#F79C8B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="文件夹" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="蒙版" fill="#F2E1E0" fill-rule="nonzero" opacity="0.701060268" xlink:href="#path-1"></use>
+            <g id="文件夹-(1)" mask="url(#mask-2)" fill-rule="nonzero">
+                <g transform="translate(6.000000, 7.640884)">
+                    <path d="M27.9958253,20.3999287 L0,20.3999287 L0,3.83567071 L25.9126286,3.83567071 C27.0648576,3.83567071 28,4.75980366 28,5.89846747 L28,20.3999287 L27.9958253,20.3999287 Z M17.4963471,3.83567071 C17.4963471,1.92552091 15.9308185,0.378423335 13.9979126,0.378423335 L0,0.378423335 L0,3.83567071 L17.4963471,3.83567071" id="形状" fill="#FF6B5B"></path>
+                    <polygon id="路径" fill="#FFFFFF" points="3.11111111 15.1311115 3.11111111 4.5934771 23.8518519 4.5934771 23.8518519 15.1311115 3.11111111 15.1311115"></polygon>
+                    <path d="M28,22.4093839 L28,8.49197301 C28,7.50458913 27.2150313,6.70100398 26.2505219,6.70100398 L1.74947808,6.70100398 C0.784968685,6.70100398 0,7.50458913 0,8.49197301 L0,22.4051095 C0,23.6233104 0.964509395,24.6149825 2.15866388,24.6149825 L25.8455115,24.6149825 C27.0354906,24.6192431 28,23.6275848 28,22.4093839 L28,22.4093839 Z" id="路径" fill="url(#linearGradient-3)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

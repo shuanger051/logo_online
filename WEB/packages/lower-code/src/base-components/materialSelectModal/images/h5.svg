@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>文件夹 3</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="64" height="64"></rect>
+        <linearGradient x1="31.937709%" y1="100%" x2="31.937709%" y2="0%" id="linearGradient-3">
+            <stop stop-color="#FFB02C" offset="0%"></stop>
+            <stop stop-color="#FEC05A" offset="100%"></stop>
+        </linearGradient>
+        <path d="M0,0 L3.45454547,39.0857143 L18.9784091,43.4285714 L34.5454545,39.0857143 L38,0 L0,0 Z M38,0 L34.5454545,39.0857143 L19,43.4285714 L19,34.612 L19,34.6125714 L9.84545454,32.0502857 L9.28409092,25.7097143 L12.7386364,25.7097143 L13.0625,29.4011429 L19,31.008 L19,31.007 L19,22.018 L8.93863636,22.0182857 L7.77272727,8.81600001 L19,8.816 L19,0 L38,0 Z M19,18.522 L19,12.29 L11.5511364,12.2902857 L12.1125,18.5222857 L19,18.522 Z" id="path-4"></path>
+    </defs>
+    <g id="素材中心H5" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="蒙版" fill="#FFF6DD" fill-rule="nonzero" opacity="0.701060268" xlink:href="#path-1"></use>
+            <g id="H5" mask="url(#mask-2)" fill="#FFC86F" fill-rule="nonzero" opacity="0.99">
+                <g transform="translate(13.000000, 11.000000)" id="形状">
+                    <path d="M0,0 L3.45454547,39.0857143 L18.9784091,43.4285714 L34.5454545,39.0857143 L38,0 L0,0 Z M29.9034091,12.2902857 L11.5511364,12.2902857 L12.1125,18.5222857 L29.3636364,18.5222857 L28.1545455,32.072 L19,34.6125714 L9.84545454,32.0502857 L9.28409092,25.7097143 L12.7386364,25.7097143 L13.0625,29.4011429 L19,31.008 L19.1727273,30.9645714 L24.9159091,29.4011429 L25.5636364,22.0182857 L8.93863636,22.0182857 L7.77272727,8.81600001 L30.2272727,8.81600001 L29.9034091,12.2902857 L29.9034091,12.2902857 Z"></path>
+                </g>
+            </g>
+            <g id="H5" mask="url(#mask-2)">
+                <g transform="translate(13.000000, 11.000000)" id="蒙版">
+                    <mask id="mask-5" fill="white">
+                        <use xlink:href="#path-4"></use>
+                    </mask>
+                    <use fill="url(#linearGradient-3)" fill-rule="nonzero" opacity="0.99" xlink:href="#path-4"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

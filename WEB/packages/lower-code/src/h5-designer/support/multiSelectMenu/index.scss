@@ -1,0 +1,108 @@
+.multiSelectTool{
+  width: 245px;
+  height: 32px;
+  background: #FFFFFF;
+  box-shadow: 0 3px 8px 0 rgba(51,51,51,0.30);
+  border-radius: 2px;
+  padding: 4px 7px;
+  display: flex;
+  .btn,.btn-disable{
+    width: 24px;
+    height: 24px;
+    border: 1px solid #F7F7F7;
+    background: #F7F7F7;
+    border-radius: 2px;
+    margin-left: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    div{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .h-tooltip:nth-child(1) .btn{
+    margin-left: 0px;
+  }
+  // div:hover{
+  //   border: 1px solid #037DF3;
+  //   filter: drop-shadow(#037DF3 100px 0);
+  //   transform: translateX(-100px);
+  // }
+  .btn:hover {
+    border: 1px solid #037DF3;
+    .btnSvg{
+      filter: drop-shadow(#037DF3 100px 0);
+      transform: translateX(-100px);
+    }
+  }
+  .horizontal-left{
+    background: url('~@Root/assets/images/multiSelectMenu/horizontal-left.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .horizontal-center{
+    background: url('~@Root/assets/images/multiSelectMenu/horizontal-center.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .horizontal-right{
+    background: url('~@Root/assets/images/multiSelectMenu/horizontal-right.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .vertical-top{
+    background: url('~@Root/assets/images/multiSelectMenu/vertical-top.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .vertical-center{
+    background: url('~@Root/assets/images/multiSelectMenu/vertical-center.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .vertical-bottom{
+    background: url('~@Root/assets/images/multiSelectMenu/vertical-bottom.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+  }
+  .spreadOut-vertical{
+    background: url('~@Root/assets/images/multiSelectMenu/spreadOut-vertical.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center
+    // filter: drop-shadow(#2F3335 100px 0);
+    // transform: translateX(-100px);
+  }
+  .spreadOut-horizontal{
+    background: url('~@Root/assets/images/multiSelectMenu/spreadOut-horizontal.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:50% 50%
+  }
+  .vertical-top-disable{
+    background: url('~@Root/assets/images/multiSelectMenu/vertical-top.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center;
+    filter: drop-shadow(#999999 100px 0);
+    transform: translateX(-100px);
+  }
+  .vertical-center-disable{
+    background: url('~@Root/assets/images/multiSelectMenu/vertical-center.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center;
+    filter: drop-shadow(#999999 100px 0);
+    transform: translateX(-100px);
+  }
+  .spreadOut-vertical-disable{
+    background: url('~@Root/assets/images/multiSelectMenu/spreadOut-vertical.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center;
+    filter: drop-shadow(#999999 100px 0);
+    transform: translateX(-100px);
+  }
+  .spreadOut-horizontal-disable{
+    background: url('~@Root/assets/images/multiSelectMenu/spreadOut-horizontal.svg') no-repeat;
+    background-size: 88% 88%;
+    background-position:center center;
+    filter: drop-shadow(#999999 100px 0);
+    transform: translateX(-100px);
+  }
+}
