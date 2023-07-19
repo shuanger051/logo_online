@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinghua.website.server.dao.CustomerInfoMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.CustomerInfoDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="head_img" property="headImg" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        customer_name,
+        password,
+        mobile,
+        id_card,
+        nick_name,
+        head_img,
+        age,
+        gender,
+        create_time,
+        update_time
+    </sql>
+
+    <!--  通过ID来获取对象 -->
+    <select id="getCustomerInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_customer_info WHERE  id =#{id}
+    </select>
+
+    <!-- 通过实体来查询分页列表 -->
+    <select id="getCustomerInfoList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_customer_info
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="mobile !=null and mobile !=''">AND mobile = #{mobile}</if>
+            <if test="idCard !=null and idCard !=''">AND id_card = #{idCard}</if>
+            <if test="gender !=null and gender !=''">AND gender = #{gender}</if>
+        </trim>
+        <trim prefix="ORDER BY ">
+            <if test="sort !=null and sort != ''">
+                #{sort}
+            </if>
+        </trim>
+    </select>
+
+    <!-- 根据客户名称查询客户信息 -->
+    <select id="getCustomerInfoByCustomerName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_customer_info where customer_name = #{customerName}
+    </select>
+
+    <!-- 根据密码查询客户信息 -->
+    <select id="getCustomerByIDPwd" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        SELECT <include refid="Base_Column_List"/> FROM t_customer_info where id = #{id} and password = #{password}
+    </select>
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteCustomerInfoById" parameterType="java.lang.Long">
+        DELETE FROM t_customer_info WHERE id=#{id}
+    </delete>
+
+    <!-- 根据ID更新 -->
+    <update id="updateCustomerInfoById" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        UPDATE t_customer_info
+        <set>
+            <if test="mobile !=null and mobile !=''">mobile = #{mobile},</if>
+            <if test="idCard !=null and idCard !=''">id_card = #{idCard},</if>
+            <if test="nickName !=null and nickName !=''">nick_name = #{nickName},</if>
+            <if test="headImg !=null and headImg !=''">head_img = #{headImg},</if>
+            <if test="age !=null">age = #{age},</if>
+            <if test="gender !=null and gender !=''">gender = #{gender},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 修改客户密码 -->
+    <update id="updateCustomerPwdByID" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        UPDATE t_customer_info set password = #{password} where id = #{id}
+    </update>
+
+    <!-- 修改密码 -->
+    <update id="updateCustomerPassword" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        UPDATE t_customer_info
+        <set>
+            <if test="password !=null and password !=''">password = #{password},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--保存-->
+    <insert id="saveCustomerInfo" parameterType="com.qinghua.website.server.domain.CustomerInfoDTO">
+        INSERT INTO t_customer_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerName !=null and customerName !=''">customer_name,</if>
+            <if test="password !=null and password !=''">password,</if>
+            <if test="mobile !=null and mobile !=''">mobile,</if>
+            <if test="idCard !=null and idCard !=''">id_card,</if>
+            <if test="nickName !=null and nickName !=''">nick_name,</if>
+            <if test="headImg !=null and headImg !=''">head_img,</if>
+            <if test="age !=null">age,</if>
+            <if test="gender !=null and gender !=''">gender,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerName !=null and customerName !=''">#{customerName},</if>
+            <if test="password !=null and password !=''">#{password},</if>
+            <if test="mobile !=null and mobile !=''">#{mobile},</if>
+            <if test="idCard !=null and idCard !=''">#{idCard},</if>
+            <if test="nickName !=null and nickName !=''">#{nickName},</if>
+            <if test="headImg !=null and headImg !=''">#{headImg},</if>
+            <if test="age !=null">#{age},</if>
+            <if test="gender !=null and gender !=''">#{gender},</if>
+            NOW()
+        </trim>
+    </insert>
+
+</mapper>

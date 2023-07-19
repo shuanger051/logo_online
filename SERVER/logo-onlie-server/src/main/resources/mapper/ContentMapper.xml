@@ -25,6 +25,29 @@
                     column="id" select="com.qinghua.website.server.dao.ContentAttachmentMapper.getContentAttachmentByContentId"/>
     </resultMap>
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapAPI" type="com.qinghua.website.server.domain.ContentDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="channel_id" property="channelId" jdbcType="BIGINT"/>
+        <result column="is_recommend" property="isRecommend" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="views_day" property="viewsDay" jdbcType="INTEGER"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <association property="contentCheck" column="id"
+                     javaType="com.qinghua.website.server.domain.ContentCheckDTO"
+                     select="com.qinghua.website.server.dao.ContentCheckMapper.getContentCheckByContentId"  fetchType="lazy"/>
+
+        <association property="contentExt" column="id"
+                     javaType="com.qinghua.website.server.domain.ContentExtDTO"
+                     select="com.qinghua.website.server.dao.ContentExtMapper.getContentExtByContentIdAPI" fetchType="lazy"/>
+
+        <collection property="list" ofType="com.qinghua.website.server.domain.ContentAttachmentDTO"
+                    column="id" select="com.qinghua.website.server.dao.ContentAttachmentMapper.getContentAttachmentByContentId"/>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
@@ -39,6 +62,11 @@
     <!--  通过ID来获取对象 -->
     <select id="getContentById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT <include refid="Base_Column_List"/> FROM t_content WHERE  id =#{id}
+    </select>
+
+    <!-- APP文章详情查看 -->
+    <select id="getContentByIDAPI" resultMap="BaseResultMapAPI" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_content WHERE  id =#{id} and status = '2'
     </select>
 
     <!-- 通过实体来查询分页列表 -->

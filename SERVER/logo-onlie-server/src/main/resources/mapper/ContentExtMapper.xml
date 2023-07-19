@@ -50,6 +50,11 @@
         SELECT <include refid="Base_Column_List"/> FROM t_content_ext WHERE  content_id =#{id}
     </select>
 
+    <!--  通过ContentID来获取对象 -->
+    <select id="getContentExtByContentIdAPI" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_content_ext WHERE  content_id =#{id} and <![CDATA[ release_date <= NOW() ]]>
+    </select>
+
     <!-- 通过实体来查询分页列表 -->
     <select id="getContentExtList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.ContentExtDTO">
         SELECT <include refid="Base_Column_List"/> FROM t_content_ext

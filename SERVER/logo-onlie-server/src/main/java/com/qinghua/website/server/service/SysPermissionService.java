@@ -78,4 +78,5 @@ public interface SysPermissionService {
      * @return
      */
     List<SysPermissionDTO> findAllListByGroup(String code);
+
 }

@@ -59,4 +59,11 @@ public interface ShopsInfoService {
          */
         void deleteAttachmentByName(String attachmentName);
 
+        /**
+         * 根据商户ID查询店铺信息
+         * @param merchantId
+         * @return
+         */
+        List<ShopsInfoDTO> getShopsInfoByMerchantId(Long merchantId);
+
 }

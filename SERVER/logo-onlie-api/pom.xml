@@ -94,6 +94,7 @@
             <properties>
                 <profile>test</profile>
             </properties>
+
         </profile>
         <profile>
             <id>prod</id>

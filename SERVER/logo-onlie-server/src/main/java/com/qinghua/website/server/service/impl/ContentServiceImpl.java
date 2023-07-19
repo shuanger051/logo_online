@@ -69,6 +69,26 @@ public class ContentServiceImpl implements ContentService {
         return contentMapper.getContentById(id);
     }
 
+
+    /**
+     * APP文章详情查看
+     * @param id
+     * @return
+     */
+    @Override
+    public ContentDTO getContentByIDAPI(Long id){
+        ContentDTO res = contentMapper.getContentByIDAPI(id);
+        if(null != res && null != res.getContentExt()){
+            //更新浏览次数
+            res.setViewsDay(res.getViewsDay()+1);
+            contentMapper.updateContentById(res);
+            return res;
+        }else{
+            throw new BizException("没有符合条件的已发布文章或文章未到预定发布时间",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+    }
+
+
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveContent(ContentDTO bean, ContentExtDTO contentExt, List<ContentAttachmentDTO> list) {

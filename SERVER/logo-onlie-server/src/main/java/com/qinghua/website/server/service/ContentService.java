@@ -37,6 +37,13 @@ public interface ContentService {
         ContentDTO getContentById(Long id);
 
         /**
+         * APP文章详情查看
+         * @param id
+         * @return
+         */
+        ContentDTO getContentByIDAPI(Long id);
+
+        /**
          * 新增文章信息，需同时保存文章扩展信息和附件信息
          * @param bean
          */

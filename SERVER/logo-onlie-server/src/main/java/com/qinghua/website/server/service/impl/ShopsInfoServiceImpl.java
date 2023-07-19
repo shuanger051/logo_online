@@ -134,4 +134,15 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
             throw new BizException(SysConstant.ERROR_FILE_NOT_EXIST);
         }
     }
+
+    /**
+     * 根据商户ID查询店铺信息
+     * @param merchantId
+     * @return
+     */
+    @Override
+    public List<ShopsInfoDTO> getShopsInfoByMerchantId(Long merchantId){
+        return shopsInfoMapper.getShopsInfoByMerchantId(merchantId);
+    }
+
 }

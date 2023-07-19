@@ -140,6 +140,14 @@
         </trim>
     </select>
 
+    <!-- 根据用户ID查询用户所有权限信息 -->
+    <select id="getSysPermissionListBYUserId" parameterType="java.lang.Long">
+        select
+            <include refid="SysPermissionEntity_Base_Column_List"/>
+        from t_sys_permission
+            where
+    </select>
+
     <!-- 保存管理员权限信息 -->
     <insert id="saveSysPermission" parameterType="com.qinghua.website.server.domain.SysPermissionDTO">
         insert into t_sys_permission (

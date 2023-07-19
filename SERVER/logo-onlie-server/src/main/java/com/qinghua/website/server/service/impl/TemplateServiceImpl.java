@@ -1,6 +1,8 @@
 package com.qinghua.website.server.service.impl;
 
+import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.TemplateDTO;
+import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.TemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,6 +42,16 @@ public class TemplateServiceImpl implements TemplateService {
         return templateMapper.getTemplateById(id);
     }
 
+    @Override
+    public TemplateDTO getTemplateByIdAPI(Long id){
+        TemplateDTO res = templateMapper.getTemplateByIdAPI(id);
+        if(null != res){
+            return res;
+        }else{
+            throw new BizException("没有ID为："+id+"的模板数据", SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveTemplate(TemplateDTO bean) {
@@ -65,5 +77,16 @@ public class TemplateServiceImpl implements TemplateService {
         templateMapper.updateTemplateStatusById(templateDTO);
     }
 
+    /**
+     * 分页查询模板信息列表
+     * @param bean
+     * @return
+     */
+    @Override
+    public PageInfo<TemplateDTO> queryTemplateListPageAPI(TemplateDTO bean){
+        PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
+        List<TemplateDTO> list = templateMapper.queryTemplateListPageAPI(bean);
+        return new PageInfo<>(list);
+    }
 
 }

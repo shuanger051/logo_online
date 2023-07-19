@@ -2,11 +2,15 @@ package com.qinghua.website.api.controller.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Description: 权限信息VO
  */
 @Data
-public class SysPermissionVO {
+public class SysPermissionVO implements Serializable {
+
+    private static final long serialVersionUID = -2925296422869175213L;
 
     /**
      *主键ID
