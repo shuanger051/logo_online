@@ -55,7 +55,7 @@ public class SysPermissionController {
     @LogAnnotation(logType = "query",logDesc = "分页查询权限信息")
     @RequestMapping(value = "/getSysPermissionListByPage", method = RequestMethod.GET)
     @RequiresPermissions("/sys/permission/getSysPermissionListByPage")
-    public ResponseResult<Object> getSysPermissionListByPage(@Validated @RequestBody SysPermissionQueryIO sysPermissionQueryIO) {
+    public ResponseResult<Object> getSysPermissionListByPage(@Validated SysPermissionQueryIO sysPermissionQueryIO) {
         SysPermissionDTO sysPermissionDTO =  BeanToolsUtil.copyOrReturnNull(sysPermissionQueryIO, SysPermissionDTO.class);
         PageInfo<SysPermissionDTO> pagelist = sysPermissionService.getSysPermissionListByPage(sysPermissionDTO);
         List<SysPermissionVO> sysPermissionVOList = BeanToolsUtil.copyAsList(pagelist.getList(), SysPermissionVO.class);

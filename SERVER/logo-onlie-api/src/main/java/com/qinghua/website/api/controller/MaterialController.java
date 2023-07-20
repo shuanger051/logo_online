@@ -32,7 +32,7 @@ public class MaterialController {
     @LogAnnotation(logType = "query",logDesc = "分页查询素材信息")
     @RequestMapping("/getMaterialListByPage")
     @RequiresPermissions("/material/getMaterialListByPage")
-    public ResponseResult<Object> getMaterialListByPage(@Validated @RequestBody MaterialQueryIO materialQueryIO){
+    public ResponseResult<Object> getMaterialListByPage(@Validated MaterialQueryIO materialQueryIO){
         MaterialDTO queryDTO = BeanToolsUtil.copyOrReturnNull(materialQueryIO,MaterialDTO.class);
         PageInfo<MaterialDTO> pageList =  materialService.getMaterialListByPage(queryDTO);
         List<MaterialVO> materialVOList =  BeanToolsUtil.copyAsList(pageList.getList(),MaterialVO.class);

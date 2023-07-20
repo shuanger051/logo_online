@@ -52,7 +52,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询系统用户信息集合")
     @GetMapping("/getSysUserList")
-    public ResponseResult<Object> getSysUserList(@Validated @RequestBody SysUserQueryIO sysUserQueryIO){
+    public ResponseResult<Object> getSysUserList(@Validated SysUserQueryIO sysUserQueryIO){
         SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserQueryIO,SysUserDTO.class);
         PageInfo<SysUserDTO> pageList =  sysUserService.getSysUserList(queryDTO);
         List<SysUserVO> sysUserVOList =  BeanToolsUtil.copyAsList(pageList.getList(),SysUserVO.class);

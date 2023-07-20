@@ -73,7 +73,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "login",logDesc = "用户登录APP获取TOKEN")
     @RequestMapping("/getTokenAPI")
-    public ResponseResult<Object> getTokenAPI(@Validated @RequestBody APPLoginIO loginIO, HttpServletRequest request){
+    public ResponseResult<Object> getTokenAPI(@Validated APPLoginIO loginIO, HttpServletRequest request){
 
         //先将前端传进来的RSA密码进行解密
         String password = RSACryptoHelper.decrypt(loginIO.getPassword());
@@ -193,7 +193,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询模板信息列表API")
     @RequestMapping("/queryTemplateListPageAPI")
-    public ResponseResult<Object> queryTemplateListPageAPI(@Validated @RequestBody TemplateQueryAPIIO templateQueryIO){
+    public ResponseResult<Object> queryTemplateListPageAPI(@Validated TemplateQueryAPIIO templateQueryIO){
         TemplateDTO template = BeanToolsUtil.copyOrReturnNull(templateQueryIO,TemplateDTO.class);
         PageInfo<TemplateDTO> resList = templateService.queryTemplateListPageAPI(template);
         List<TemplateVO> templateVOS = BeanToolsUtil.copyList(resList.getList(),TemplateVO.class);

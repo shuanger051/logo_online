@@ -59,7 +59,7 @@ public class SysUserRoleController {
     @LogAnnotation(logType = "query",logDesc = "分页查询用户角色信息")
     @RequestMapping(value = "/getSysUserRoleListByPage", method = RequestMethod.GET)
     @RequiresPermissions("/sys/user-role/getSysUserRoleListByPage")
-    public ResponseResult<Object> getSysUserRoleListByPage(@Validated @RequestBody SysUserRoleQueryIO sysUserRoleQueryReq) {
+    public ResponseResult<Object> getSysUserRoleListByPage(@Validated SysUserRoleQueryIO sysUserRoleQueryReq) {
         SysUserRoleDTO sysUserRoleDTO = BeanToolsUtil.copyOrReturnNull(sysUserRoleQueryReq, SysUserRoleDTO.class);
         PageInfo<SysUserRoleDTO> pagelist = sysUserRoleService.getSysUserRoleListByPage(sysUserRoleDTO);
         List<SysUserRoleVO> sysUserRoleVOList =  BeanToolsUtil.copyAsList(pagelist.getList(), SysUserRoleVO.class);

@@ -37,7 +37,7 @@ public class ShopsInfoController {
     @LogAnnotation(logType = "query",logDesc = "分页查询店铺信息列表")
     @RequestMapping(value = "/getShopsInfoListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/shops-info/getShopsInfoListByPage")
-    public ResponseResult<Object> getShopsInfoListByPage(@Validated @RequestBody ShopsInfoQueryIO shopsInfoQueryIO){
+    public ResponseResult<Object> getShopsInfoListByPage(@Validated ShopsInfoQueryIO shopsInfoQueryIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
         List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);

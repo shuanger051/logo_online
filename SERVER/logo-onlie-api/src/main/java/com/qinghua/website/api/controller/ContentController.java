@@ -45,7 +45,7 @@ public class ContentController {
     @LogAnnotation(logType = "query",logDesc = "分页获取文章列表信息")
     @RequestMapping(value = "/getContentListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/content/getContentListByPage")
-    public ResponseResult<Object> getContentListByPage(@Validated @RequestBody ContentQueryIO bean){
+    public ResponseResult<Object> getContentListByPage(@Validated ContentQueryIO bean){
         ContentDTO contentDTO = BeanToolsUtil.copyOrReturnNull(bean,ContentDTO.class);
         PageInfo<ContentDTO> pageList = contentService.getContentListByPage(contentDTO);
         List<ContentVO> contentVOList =  BeanToolsUtil.copyAsList(pageList.getList(), ContentVO.class);

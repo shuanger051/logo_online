@@ -95,7 +95,7 @@ public class SysRolePermissionController {
     @LogAnnotation(logType = "query",logDesc = "分页查询角色权限信息")
     @RequestMapping(value = "/getSysRolePermissionListByPage", method = RequestMethod.GET)
     @RequiresPermissions("/sys/role-permission/getSysRolePermissionListByPage")
-    public ResponseResult<Object> getSysRolePermissionListByPage(@Validated @RequestBody SysRolePermissionQueryIO sysRolePermissionQueryIO) {
+    public ResponseResult<Object> getSysRolePermissionListByPage(@Validated SysRolePermissionQueryIO sysRolePermissionQueryIO) {
         SysRolePermissionDTO sysRolePermissionDTO =  BeanToolsUtil.copyOrReturnNull(sysRolePermissionQueryIO, SysRolePermissionDTO.class);
         PageInfo<SysRolePermissionDTO> pagelist = sysRolePermissionService.getSysRolePermissionListByPage(sysRolePermissionDTO);
 

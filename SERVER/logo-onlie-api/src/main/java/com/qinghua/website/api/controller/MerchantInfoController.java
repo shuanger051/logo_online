@@ -38,7 +38,7 @@ public class MerchantInfoController {
     @LogAnnotation(logType = "query",logDesc = "分页查询商户列表")
     @RequestMapping(value = "/getMerchantInfoListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/merchantInfo/getMerchantInfoListByPage")
-    public ResponseResult<Object> getMerchantInfoListByPage(@Validated @RequestBody MerchantQueryIO merchantQueryIO){
+    public ResponseResult<Object> getMerchantInfoListByPage(@Validated MerchantQueryIO merchantQueryIO){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
         PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
         List<MerchantInfoVO> merchantInfoDTOList =  BeanToolsUtil.copyAsList(pageList.getList(), MerchantInfoVO.class);

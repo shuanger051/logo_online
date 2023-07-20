@@ -36,7 +36,7 @@ public class LogController {
     @LogAnnotation(logType = "query",logDesc = "分页查询日志列表")
     @RequestMapping(value = "/getLogInfoListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/log/getLogInfoListByPage")
-    public ResponseResult<Object> getLogInfoListByPage(@Validated @RequestBody LogQueryIO logQueryIO){
+    public ResponseResult<Object> getLogInfoListByPage(@Validated LogQueryIO logQueryIO){
         LogInfoDTO logInfoDTO =  BeanToolsUtil.copyOrReturnNull(logQueryIO, LogInfoDTO.class);
         PageInfo<LogInfoDTO> pageList = logInfoService.getLogInfoListByPage(logInfoDTO);
         List<LogInfoVO> logInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(), LogInfoVO.class);

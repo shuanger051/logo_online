@@ -32,7 +32,7 @@ public class LogoController {
     @LogAnnotation(logType = "query",logDesc = "分页查询店招信息")
     @RequestMapping("/getLogoListByPage")
     @RequiresPermissions("/logo/getLogoListByPage")
-    public ResponseResult<Object> getLogoListByPage(@Validated @RequestBody LogoQueryIO logoQueryIO){
+    public ResponseResult<Object> getLogoListByPage(@Validated LogoQueryIO logoQueryIO){
         LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
         PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
         List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);

@@ -36,7 +36,7 @@ public class SysDictController {
     @LogAnnotation(logType = "query",logDesc = "数据字典分页查询")
     @RequestMapping(value = "/getDictListByPage", method = RequestMethod.GET)
     @RequiresPermissions("/sys/dict/getDictListByPage")
-    public ResponseResult<Object> getDictListByPage(@Validated @RequestBody SysDictQueryIO sysDictQueryIO) {
+    public ResponseResult<Object> getDictListByPage(@Validated SysDictQueryIO sysDictQueryIO) {
         SysDictDTO sysDictDTO =  BeanToolsUtil.copyOrReturnNull(sysDictQueryIO, SysDictDTO.class);
         PageInfo<SysDictDTO> pageList = sysDictService.getDictListByPage(sysDictDTO);
         List<SysDictVO> sysDictList =  BeanToolsUtil.copyAsList(pageList.getList(), SysDictVO.class);

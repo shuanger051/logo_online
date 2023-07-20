@@ -32,7 +32,7 @@ public class TemplateController {
     @LogAnnotation(logType = "query",logDesc = "分页查询模板信息")
     @RequestMapping(value = "/getTemplateListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/template/getTemplateListByPage")
-    public ResponseResult<Object> getTemplateListByPage(@Validated @RequestBody TemplateQueryIO templateQueryIO){
+    public ResponseResult<Object> getTemplateListByPage(@Validated TemplateQueryIO templateQueryIO){
         TemplateDTO queryDTO = BeanToolsUtil.copyOrReturnNull(templateQueryIO,TemplateDTO.class);
         PageInfo<TemplateDTO> pageList =  templateService.getTemplateListByPage(queryDTO);
         List<TemplateVO> templateVOList =  BeanToolsUtil.copyAsList(pageList.getList(),TemplateVO.class);
