@@ -1,8 +1,8 @@
 let path = require('path')
 const webpack = require('webpack')
 const ThemeColorReplacer = require('webpack-theme-color-replacer')
-const {getThemeColors, modifyVars} = require('./src/utils/themeUtil')
-const {resolveCss} = require('./src/utils/theme-color-replacer-extend')
+const { getThemeColors, modifyVars } = require('./src/utils/themeUtil')
+const { resolveCss } = require('./src/utils/theme-color-replacer-extend')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const webpackMixin =  require('@shop-sign/editor/webpackMixIn');
 const productionGzipExtensions = ['js', 'css']
@@ -37,15 +37,15 @@ const assetsCDN = {
 module.exports = {
   devServer: {
     port: 8081,
-    // proxy: {
-    //   '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
-    //     target: process.env.VUE_APP_API_BASE_URL,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/api': ''
-    //     }
-    //   }
-    // }
+    proxy: {
+      '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
+        target: process.env.VUE_APP_API_BASE_URL,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   },
   pluginOptions: {
     'style-resources-loader': {
@@ -90,7 +90,7 @@ module.exports = {
     if (isProd) {
       config.plugin('optimize-css')
         .tap(args => {
-            args[0].cssnanoOptions.preset[1].colormin = false
+          args[0].cssnanoOptions.preset[1].colormin = false
           return args
         })
     }
@@ -99,8 +99,8 @@ module.exports = {
       config.plugin('html')
         .tap(args => {
           args[0].cdn = assetsCDN
-        return args
-      })
+          return args
+        })
     }
   },
   css: {
