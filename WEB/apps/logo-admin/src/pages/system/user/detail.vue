@@ -18,7 +18,6 @@
   </a-form>
 </template>
 <script>
-import _ from "lodash";
 import { reactive } from "vue";
 import { message } from "ant-design-vue";
 import { systemService } from "@/services";

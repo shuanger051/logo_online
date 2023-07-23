@@ -1,7 +1,6 @@
 import { reactive, ref } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import modalConfirm from 'ant-design-vue/es/modal/confirm'
-import _ from 'lodash'
 
 /**
  * 表格列表

@@ -19,17 +19,23 @@
         <a-button type="danger" @click="onReset">重置</a-button>
       </a-space>
       <a-space>
-        <a-button type="primary">新增</a-button>
+        <a-button type="primary" @click="onAdd">新增</a-button>
       </a-space>
     </div>
     <!-- 结果列表 -->
     <a-table
+      rowKey="id"
+      size="small"
+      :bordered="true"
       :data-source="list"
       :columns="columns"
       :pagination="page"
       @change="onChange"
     >
       <template slot="operation" slot-scope="text, record">
+        <a-button type="link" size="small" @click="onEdit(record)"
+          >修改</a-button
+        >
         <a-button type="link" size="small" @click="onDel(record)"
           >删除</a-button
         >
@@ -38,7 +44,7 @@
   </div>
 </template>
 <script>
-import _ from 'lodash';
+import Detail from "./detail";
 import { mapState } from "vuex";
 import { systemService } from "@/services";
 import useTable from "@/hooks/useTable";
@@ -80,7 +86,18 @@ export default {
       onReset,
       onChange,
       createDelEvent,
+      createModalEvent,
     } = useTable(systemService.getSysRoleListByPage);
+
+    // 新增
+    const onAdd = createModalEvent(Detail, {
+      title: "新增角色",
+    });
+
+    // 编辑
+    const onEdit = createModalEvent(Detail, {
+      title: "修改",
+    });
 
     // event：删除
     const onDel = createDelEvent((data) =>
@@ -92,6 +109,8 @@ export default {
       list,
       page,
       onDel,
+      onAdd,
+      onEdit,
       onSerach,
       onReset,
       onChange,
@@ -100,7 +119,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.serach-form {
-  margin-bottom: 24px;
-}
 </style>

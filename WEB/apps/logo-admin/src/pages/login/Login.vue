@@ -100,7 +100,6 @@
 </template>
 
 <script>
-import _ from "lodash";
 import CommonLayout from "@/layouts/CommonLayout";
 import { getRoutesConfig } from "@/services/user";
 import { setAuthorization } from "@/utils/request";
