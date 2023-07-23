@@ -27,6 +27,9 @@ public interface TemplateService {
          */
         TemplateDTO getTemplateById(Long id);
 
+
+        TemplateDTO getTemplateByIdAPI(Long id);
+
         /**
          * 新增
          * @param bean
@@ -50,5 +53,12 @@ public interface TemplateService {
          * @param templateDTO
          */
         void updateTemplateStatusById(TemplateDTO templateDTO);
+
+        /**
+         * 分页查询模板信息列表
+         * @param templateDTO
+         * @return
+         */
+        PageInfo<TemplateDTO> queryTemplateListPageAPI(TemplateDTO templateDTO);
 
 }

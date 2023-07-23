@@ -45,7 +45,7 @@ public class SysDictItemController {
     @LogAnnotation(logType = "query",logDesc = "数据字典子项分页查询")
     @RequestMapping(value = "/getDictItemListByPage", method = RequestMethod.GET)
     @RequiresPermissions("/sys/dict-item/getDictItemListByPage")
-    public ResponseResult<Object> getDicItemtListPage(@Valid @RequestBody SysDictItemQueryIO sysDictItemQueryIO) {
+    public ResponseResult<Object> getDicItemtListPage(@Valid SysDictItemQueryIO sysDictItemQueryIO) {
 
         SysDictItemDTO sysDictItemDTO =  BeanToolsUtil.copyOrReturnNull(sysDictItemQueryIO, SysDictItemDTO.class);
         PageInfo<SysDictItemDTO> pageList = sysDictItemService.getDictItemListByPage(sysDictItemDTO);

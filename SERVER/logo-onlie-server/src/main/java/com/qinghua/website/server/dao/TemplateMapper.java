@@ -28,6 +28,9 @@ public interface TemplateMapper {
          */
         TemplateDTO getTemplateById(@Param("id") Long id);
 
+        TemplateDTO getTemplateByIdAPI(@Param("id") Long id);
+
+
         /**
          * 新增
          * @param bean
@@ -51,5 +54,12 @@ public interface TemplateMapper {
          * @param bean
          */
         void updateTemplateStatusById(TemplateDTO bean);
+
+        /**
+         * 分页查询模板信息列表
+         * @param templateDTO
+         * @return
+         */
+        List<TemplateDTO> queryTemplateListPageAPI(TemplateDTO templateDTO);
 
 }

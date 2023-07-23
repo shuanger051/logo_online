@@ -38,18 +38,25 @@ public interface MerchantInfoService {
          * 新增
          * @param bean
          */
-        Integer saveMerchantInfo(MerchantInfoDTO bean);
+        void saveMerchantInfo(MerchantInfoDTO bean);
 
         /**
          * 根据ID修改
          * @param bean
          */
-        Integer updateMerchantInfoById(MerchantInfoDTO bean);
+        void updateMerchantInfoById(MerchantInfoDTO bean);
 
         /**
          * 根据ID删除
          * @param id
          */
-        Integer deleteMerchantInfoById(Long id);
+        void deleteMerchantInfoById(Long id);
+
+        /**
+         * 根据身份证号查询商户信息
+         * @param idCard
+         * @return
+         */
+        MerchantInfoDTO getMerchantInfoByIdCard(String idCard);
 
 }

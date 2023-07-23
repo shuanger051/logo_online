@@ -40,7 +40,7 @@ public class ChannelController{
     @LogAnnotation(logType = "query",logDesc = "分页查询栏目列表")
     @RequestMapping(value = "/getChannelListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/channel/getChannelListByPage")
-    public ResponseResult<Object> getChannelListByPage(@Validated @RequestBody ChannelQueryIO channelQueryIO){
+    public ResponseResult<Object> getChannelListByPage(@Validated ChannelQueryIO channelQueryIO){
         ChannelDTO channelDTO =  BeanToolsUtil.copyOrReturnNull(channelQueryIO, ChannelDTO.class);
         PageInfo<ChannelDTO> pageList = channelService.getChannelListByPage(channelDTO);
         List<ChannelVO> channelDTOList =  BeanToolsUtil.copyAsList(pageList.getList(), ChannelVO.class);

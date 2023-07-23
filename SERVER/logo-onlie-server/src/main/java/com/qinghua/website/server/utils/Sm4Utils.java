@@ -15,6 +15,9 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Arrays;
 
+/**
+ * 国密加解密
+ */
 public class Sm4Utils {
 
     private static final String ENCODING = "UTF-8";

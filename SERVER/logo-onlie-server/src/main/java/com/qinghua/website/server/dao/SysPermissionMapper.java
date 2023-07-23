@@ -89,4 +89,5 @@ public interface SysPermissionMapper {
      * @return
      */
     List<SysPermissionDTO> findAllListByGroup(@Param("permissionGroup") String permissionGroup);
+
 }

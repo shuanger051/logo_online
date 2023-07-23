@@ -11,7 +11,7 @@ public class APPLoginIO {
      * 账户
      */
     @NotNull(message = "账户不能填空!")
-    private String userName;
+    private String customerName;
 
     /**
      * 密码
@@ -22,7 +22,7 @@ public class APPLoginIO {
     @Override
     public String toString() {
         return "APPLoginIO{" +
-                "userName='" + userName + '\'' +
+                "customerName='" + customerName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

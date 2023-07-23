@@ -166,4 +166,5 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     public List<SysPermissionDTO> findAllListByGroup(String group) {
         return sysPermissionMapper.findAllListByGroup(group);
     }
+
 }

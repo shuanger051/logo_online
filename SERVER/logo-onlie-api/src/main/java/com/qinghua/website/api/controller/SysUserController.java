@@ -7,13 +7,16 @@ import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.common.SessionUser;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.PageListVO;
+import com.qinghua.website.api.controller.vo.SysPermissionVO;
 import com.qinghua.website.api.controller.vo.SysUserVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.api.utils.IpUtil;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
+import com.qinghua.website.server.domain.SysPermissionDTO;
 import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.exception.BizException;
+import com.qinghua.website.server.service.SysPermissionService;
 import com.qinghua.website.server.service.SysUserService;
 import com.qinghua.website.server.utils.DateUtil;
 import com.qinghua.website.server.utils.RSACryptoHelper;
@@ -39,7 +42,8 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
-
+    @Autowired
+    private SysPermissionService sysPermissionService;
 
     /**
      * 分页查询系统用户信息集合
@@ -48,7 +52,7 @@ public class SysUserController {
      */
     @LogAnnotation(logType = "query",logDesc = "分页查询系统用户信息集合")
     @GetMapping("/getSysUserList")
-    public ResponseResult<Object> getSysUserList(@Validated @RequestBody SysUserQueryIO sysUserQueryIO){
+    public ResponseResult<Object> getSysUserList(@Validated SysUserQueryIO sysUserQueryIO){
         SysUserDTO queryDTO = BeanToolsUtil.copyOrReturnNull(sysUserQueryIO,SysUserDTO.class);
         PageInfo<SysUserDTO> pageList =  sysUserService.getSysUserList(queryDTO);
         List<SysUserVO> sysUserVOList =  BeanToolsUtil.copyAsList(pageList.getList(),SysUserVO.class);
@@ -88,7 +92,7 @@ public class SysUserController {
      * @param password
      * @return
      */
-    public Boolean userNameLogin(String userName,String password, HttpServletRequest request){
+    public SessionUser userNameLogin(String userName,String password, HttpServletRequest request){
         String pwd = StringUtils.lowerCase(MD5Util.toMD5String(password));
         SysUserDTO loginDTO = new SysUserDTO();
         loginDTO.setUserName(userName);
@@ -124,11 +128,15 @@ public class SysUserController {
                     //将用户数据写入session
                     SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
 
+                    //获取用户所属权限信息
+                    List<SysPermissionDTO> permissionList = sysPermissionService.getPermsListByUserId(user.getId());
+                    List<SysPermissionVO> list = BeanToolsUtil.copyList(permissionList,SysPermissionVO.class);
+                    user.setPermissionList(list);
                     // 执行认证登陆
                     subject.login(token);
                     //保存session
                     request.getSession().setAttribute(SessionUser.SEESION_USER,user);
-                    return Boolean.TRUE;
+                    return user;
                 }else{
                     throw new BizException(SysConstant.ERROR_LOGIN_WRONG_MANY_TIMES);
                 }
@@ -153,12 +161,15 @@ public class SysUserController {
                     sysUserService.updateLoginSuccess(loginUpdateInfo);
                     //将用户数据写入session
                     SessionUser user = BeanToolsUtil.copyOrReturnNull(resUser,SessionUser.class);
-
+                    //获取用户所属权限信息
+                    List<SysPermissionDTO> permissionList = sysPermissionService.getPermsListByUserId(user.getId());
+                    List<SysPermissionVO> list = BeanToolsUtil.copyList(permissionList,SysPermissionVO.class);
+                    user.setPermissionList(list);
                     // 执行认证登陆
                     subject.login(token);
                     //保存session
                     request.getSession().setAttribute(SessionUser.SEESION_USER,user);
-                    return Boolean.TRUE;
+                    return user;
                 }
             }
         }else{
@@ -178,7 +189,7 @@ public class SysUserController {
             }
 
             sysUserService.updateLoginFail(loginUpdateInfo);
-            return Boolean.FALSE;
+            return null;
         }
     }
 

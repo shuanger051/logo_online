@@ -29,6 +29,14 @@ public interface ContentMapper {
         ContentDTO getContentById(@Param("id") Long id);
 
         /**
+         * APP查询文章详情
+         * @param id
+         * @return
+         */
+        ContentDTO getContentByIDAPI(@Param("id") Long id);
+
+
+        /**
          * 新增
          * @param bean
          */

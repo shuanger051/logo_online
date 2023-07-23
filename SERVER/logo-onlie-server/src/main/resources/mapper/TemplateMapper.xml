@@ -29,6 +29,11 @@
         SELECT <include refid="Base_Column_List"/> FROM t_template WHERE  id =#{id}
     </select>
 
+    <!--  通过ID来获取对象 -->
+    <select id="getTemplateByIdAPI" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_template WHERE  id =#{id} and release_status = '1'
+    </select>
+
     <!-- 通过实体来查询分页列表 -->
     <select id="getTemplateList" resultMap="BaseResultMap" parameterType="com.qinghua.website.server.domain.TemplateDTO">
         SELECT <include refid="Base_Column_List"/> FROM t_template
@@ -41,6 +46,15 @@
             <if test="sort !=null and sort != ''">
                 #{sort}
             </if>
+        </trim>
+    </select>
+
+    <!-- 分页查询模板信息列表API -->
+    <select id="queryTemplateListPageAPI" parameterType="com.qinghua.website.server.domain.TemplateDTO" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_template
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="style !=null and style !=''">AND style = #{style}</if>
+            and release_status = '1'
         </trim>
     </select>
 

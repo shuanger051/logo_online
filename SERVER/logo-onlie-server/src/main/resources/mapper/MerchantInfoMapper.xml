@@ -27,8 +27,7 @@
 
     <!-- 根据身份证号查询商户信息 -->
     <select id="getMerchantInfoByIdCard" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT <include refid="Base_Column_List"/>
-        FROM t_merchant_info WHERE  id_card =#{idCard}
+        SELECT <include refid="Base_Column_List"/> FROM t_merchant_info WHERE  id_card =#{idCard}
     </select>
 
     <!-- 通过实体来查询分页列表 -->
