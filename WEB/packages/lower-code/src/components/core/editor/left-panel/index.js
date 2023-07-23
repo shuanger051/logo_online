@@ -7,8 +7,13 @@ import RenderDataSourcePanel from 'core/editor/data-source/index.js'
 export default {
   name: 'EditorLeftPanel',
   render (h) {
+    window.ccc = this
+    console.log(this, 99999999)
     return (
+      <div>
+        
       <RenderShortcutsPanel />
+      </div>
     )
   }
 }

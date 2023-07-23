@@ -12,11 +12,12 @@ import {initI18n} from '@/utils/i18n'
 import bootstrap from '@/bootstrap'
 import 'moment/locale/zh-cn'
 import * as axios from '@/utils/request'
-
+import editorConfig from '@shop-sign/editor'
 
 
 const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
+editorConfig.initI18n(i18n)
 
 Vue.use(Antd)
 Vue.config.productionTip = false

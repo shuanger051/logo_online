@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import BoxModelEditor from './box-model'
-import langMixin from 'core/mixins/i18n'
 import { getVM, getComponentsForPropsEditor } from '@editor/utils/element'
 import 'core/styles/props-config-panel.scss'
 
 export default {
   name: 'RightPanelProps',
-  mixins: [langMixin],
   components: {
     BoxModelEditor
   },

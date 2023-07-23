@@ -1,13 +1,12 @@
 import ShortcutButton from './shortcut-button'
 import UsageTip from './usage-tip'
 import LoadNpmPlugins from './load-npm-plugins.vue'
-import langMixin from 'core/mixins/i18n'
 import dragMixin from 'core/mixins/drag'
 import loadPluginsMixin from 'core/plugins/index'
 import { mapActions } from 'vuex'
 
 export default {
-  mixins: [langMixin, dragMixin, loadPluginsMixin],
+  mixins: [ dragMixin, loadPluginsMixin],
   data: () => ({
     npmPackages: []
   }),

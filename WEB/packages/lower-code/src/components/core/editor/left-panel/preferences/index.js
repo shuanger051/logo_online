@@ -1,8 +1,6 @@
-import langMixin from 'core/mixins/i18n'
 import LocalPreferences, { IS_CONFIRM_BEFORE_DELETE_ELEMENT } from './local-preferences'
 
 export default {
-  mixins: [langMixin],
   data: () => ({
     form: {
       [IS_CONFIRM_BEFORE_DELETE_ELEMENT]: false // 删除元素前需要确认
