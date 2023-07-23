@@ -4,7 +4,7 @@ const ThemeColorReplacer = require('webpack-theme-color-replacer')
 const {getThemeColors, modifyVars} = require('./src/utils/themeUtil')
 const {resolveCss} = require('./src/utils/theme-color-replacer-extend')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
+const webpackMixin =  require('@shop-sign/editor/webpackMixIn');
 const productionGzipExtensions = ['js', 'css']
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -36,6 +36,7 @@ const assetsCDN = {
 
 module.exports = {
   devServer: {
+    port: 8081,
     // proxy: {
     //   '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
     //     target: process.env.VUE_APP_API_BASE_URL,
@@ -65,6 +66,7 @@ module.exports = {
         resolveCss
       })
     )
+
     // Ignore all locale files of moment.js
     config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
     // 生产环境下将资源压缩成gzip格式
@@ -81,6 +83,7 @@ module.exports = {
     if (isProd) {
       config.externals = assetsCDN.externals
     }
+    webpackMixin(config)
   },
   chainWebpack: config => {
     // 生产环境下关闭css压缩的 colormin 项，因为此项优化与主题色替换功能冲突
@@ -110,6 +113,7 @@ module.exports = {
       }
     }
   },
+  lintOnSave: false,
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   outputDir: 'dist',
   assetsDir: 'static',

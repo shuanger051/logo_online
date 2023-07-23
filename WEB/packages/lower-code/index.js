@@ -1,1 +1,4 @@
-alert(1)
+class editorConfig {
+
+}
+export default new editorConfig()

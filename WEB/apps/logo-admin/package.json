@@ -37,10 +37,12 @@
     "zh-cn": "link:moment/locale/zh-cn"
   },
   "devDependencies": {
-    "@shop-sign/lower-code": "workspace:*",
+    "@shop-sign/editor": "workspace:*",
     "@ant-design/colors": "^4.0.1",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
+    "@vue/babel-preset-jsx": "^1.0.0",
+    "@vue/babel-helper-vue-jsx-merge-props":"^1.0.0",
     "@vue/cli-service": "^4.4.0",
     "@vuepress/plugin-back-to-top": "^1.5.2",
     "babel-eslint": "^10.1.0",
@@ -53,6 +55,8 @@
     "fast-deep-equal": "^3.1.3",
     "gh-pages": "^3.1.0",
     "less-loader": "^6.1.1",
+    "node-sass": "^4.14.1",
+    "sass-loader": "10.0.2",
     "style-resources-loader": "^1.3.2",
     "vue-cli-plugin-style-resources-loader": "^0.1.4",
     "vue-template-compiler": "^2.6.11",

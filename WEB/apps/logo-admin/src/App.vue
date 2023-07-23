@@ -61,6 +61,7 @@ export default {
       }
     },
     setLanguage(lang) {
+      console.log(this,444)
       this.$i18n.locale = lang
       switch (lang) {
         case 'CN':

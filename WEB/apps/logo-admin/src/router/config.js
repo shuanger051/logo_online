@@ -20,6 +20,7 @@ const options = {
       name: '403',
       component: () => import('@/pages/exception/403'),
     },
+
     {
       path: '/',
       name: '首页',
@@ -96,6 +97,11 @@ const options = {
               path: 'template',
               name: '模版管理',
               component: () => import('@/pages/signboard/template/list'),
+            },
+            {
+              path: '/addTemplate',
+              name: '新建模板',
+              component: () => import('@/pages/signboard/template/addTemplate'),
             },
             {
               path: 'apply',

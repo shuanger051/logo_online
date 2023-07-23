@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "turbo run serve --parallel",
+    "serve:admin": "turbo run serve --filter @shop-sign/logo-admin",
+    "serve:editor": "turbo run serve --filter @shop-sign/editor",
     "build": "turbo run build"
   },
   "devDependencies": {
