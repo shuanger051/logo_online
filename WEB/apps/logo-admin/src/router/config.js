@@ -1,26 +1,9 @@
 import TabsView from '@/layouts/tabs/TabsView'
-// import BlankView from '@/layouts/BlankView'
 import PageView from '@/layouts/PageView'
 
 // 路由配置
 const options = {
   routes: [
-    {
-      path: '/login',
-      name: '登录页',
-      component: () => import('@/pages/login')
-    },
-    {
-      path: '*',
-      name: '404',
-      component: () => import('@/pages/exception/404'),
-    },
-    {
-      path: '/403',
-      name: '403',
-      component: () => import('@/pages/exception/403'),
-    },
-
     {
       path: '/',
       name: '首页',
@@ -28,7 +11,7 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'demo',
+          path: 'home',
           name: '首页',
           meta: {
             icon: 'file-ppt'
@@ -131,12 +114,12 @@ const options = {
             {
               path: 'inform',
               name: '通知管理',
-              component: () => import('@/pages/affiche/inform/list'),
+              component: () => import('@/pages/affiche/article/list'),
             },
             {
               path: 'policy',
               name: '政策法规',
-              component: () => import('@/pages/affiche/policy/list'),
+              component: () => import('@/pages/affiche/article/list'),
             }
           ]
         }, {
@@ -145,33 +128,8 @@ const options = {
           meta: {
             icon: 'bug'
           },
-          component: () => import('@/pages/demo')
+          component: () => import('@/pages/logs/list')
         },
-        // {
-        //   path: 'exception',
-        //   name: '异常页',
-        //   meta: {
-        //     icon: 'warning',
-        //   },
-        //   component: BlankView,
-        //   children: [
-        //     {
-        //       path: '404',
-        //       name: 'Exp404',
-        //       component: () => import('@/pages/exception/404')
-        //     },
-        //     {
-        //       path: '403',
-        //       name: 'Exp403',
-        //       component: () => import('@/pages/exception/403')
-        //     },
-        //     {
-        //       path: '500',
-        //       name: 'Exp500',
-        //       component: () => import('@/pages/exception/500')
-        //     }
-        //   ]
-        // },
         {
           name: '验权页面',
           path: 'auth/demo',
@@ -185,7 +143,22 @@ const options = {
           }
         }
       ]
-    }
+    },
+    {
+      path: '/login',
+      name: '登录页',
+      component: () => import('@/pages/login')
+    },
+    {
+      path: '/403',
+      name: '403',
+      component: () => import('@/pages/exception/403'),
+    },
+    {
+      path: '*',
+      name: '404',
+      component: () => import('@/pages/exception/404'),
+    },
   ]
 }
 

@@ -24,6 +24,7 @@
     "enquire.js": "^2.1.6",
     "highlight.js": "^10.2.1",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
     "mockjs": "^1.1.0",
     "moment": "^2.29.4",
@@ -37,8 +38,8 @@
     "zh-cn": "link:moment/locale/zh-cn"
   },
   "devDependencies": {
-    "@shop-sign/editor": "workspace:*",
     "@ant-design/colors": "^4.0.1",
+    "@shop-sign/editor": "workspace:*",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/babel-preset-jsx": "^1.0.0",

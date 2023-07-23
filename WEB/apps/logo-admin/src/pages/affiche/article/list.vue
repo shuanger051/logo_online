@@ -67,7 +67,7 @@
 import Detail from "./detail";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
-import { shopService } from "@/services";
+import { afficheService } from "@/services";
 export default {
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
@@ -75,40 +75,26 @@ export default {
     columns() {
       return [
         {
-          title: "店铺地址",
-          dataIndex: "address",
-          key: "address",
+          title: "标题",
+          dataIndex: "contentExt.title",
+          key: "title",
         },
         {
-          title: "营业年限",
-          dataIndex: "bizYears",
-          key: "bizYears",
+          title: "摘要",
+          dataIndex: "contentExt.description",
+          key: "description",
         },
         {
-          title: "行业类型",
-          dataIndex: "industryType",
-          key: "industryType",
+          title: "是否超管",
+          dataIndex: "isAdmin",
+          key: "isAdmin",
         },
         {
-          title: "是否老店",
-          dataIndex: "isOldShops",
-          key: "isOldShops",
+          title: "是否禁用",
+          dataIndex: "isDisabled",
+          key: "isDisabled",
+          scopedSlots: { customRender: "isDisabled" },
         },
-        {
-          title: "店铺属性",
-          dataIndex: "shopsType",
-          key: "shopsType",
-        },
-        {
-          title: "备注",
-          dataIndex: "remark",
-          key: "remark",
-        },
-        {
-          title: "备案资料",
-          key: "archives",
-        },
-        ,
         {
           title: "操作",
           key: "operation",
@@ -128,7 +114,7 @@ export default {
       onChange,
       createDelEvent,
       createModalEvent,
-    } = useTable(shopService.getShopsInfoListByPage);
+    } = useTable(afficheService.getContentListByPage);
 
     // 新增事件
     const onAdd = createModalEvent(Detail, { title: "新增用户" });
@@ -136,7 +122,7 @@ export default {
     const onEdit = createModalEvent(Detail, { title: "编辑用户" });
     // 删除事件
     const onDel = createDelEvent((data) =>
-      shopService.deleteShopsInfoById(_.pick(data, ["id"]))
+      afficheService.deleteContentById(_.pick(data, ["id"]))
     );
 
     return {

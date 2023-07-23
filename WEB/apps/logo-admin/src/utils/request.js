@@ -2,12 +2,13 @@ import axios from 'axios'
 import Cookie from 'js-cookie'
 
 // 跨域认证信息 header 名
-const xsrfHeaderName = 'Authorization'
+const xsrfHeaderName = 'sid'
 
 axios.defaults.timeout = 5000
 axios.defaults.withCredentials = true
 axios.defaults.xsrfHeaderName = xsrfHeaderName
 axios.defaults.xsrfCookieName = xsrfHeaderName
+axios.defaults.baseURL = '/api'
 
 // 认证类型
 const AUTH_TYPE = {
@@ -47,7 +48,7 @@ async function request(url, method, params, config) {
  * @param {*} config 
  * @returns 
  */
-export async function axiosPost(url, config) {
+export function axiosPost(url, config) {
   return (data) => axios.post(url, data, config)
 }
 
@@ -57,7 +58,7 @@ export async function axiosPost(url, config) {
  * @param {*} config 
  * @returns 
  */
-export async function axiosGet(url, config) {
+export function axiosGet(url, config = {}) {
   return (params) => axios.get(url, Object.assign(config, { params }))
 }
 
@@ -103,18 +104,18 @@ function removeAuthorization(authType = AUTH_TYPE.BEARER) {
  */
 function checkAuthorization(authType = AUTH_TYPE.BEARER) {
   switch (authType) {
-    case AUTH_TYPE.BEARER:
-      if (Cookie.get(xsrfHeaderName)) {
-        return true
-      }
-      break
-    case AUTH_TYPE.BASIC:
-    case AUTH_TYPE.AUTH1:
-    case AUTH_TYPE.AUTH2:
+    // case AUTH_TYPE.BEARER:
+    //   if (Cookie.get(xsrfHeaderName)) {
+    //     return true
+    //   }
+    //   break
+    // case AUTH_TYPE.BASIC:
+    // case AUTH_TYPE.AUTH1:
+    // case AUTH_TYPE.AUTH2:
     default:
       break
   }
-  return false
+  return true
 }
 
 /**
