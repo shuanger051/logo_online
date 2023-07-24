@@ -67,8 +67,13 @@ public class TemplateServiceImpl implements TemplateService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void updateTemplateById(TemplateDTO bean) {
-        Preconditions.checkNotNull(bean.getId(), "参数:ID不能为空");
-        templateMapper.updateTemplateById(bean);
+        //校验数据合法性
+        TemplateDTO check = templateMapper.getTemplateById(bean.getId());
+        if(null != check){
+            templateMapper.updateTemplateById(bean);
+        }else{
+            throw new BizException("没有ID为"+bean.getId()+"的模板数据",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
