@@ -53,12 +53,12 @@ export default function useTable(request) {
         okText: "删除",
         okType: "danger",
         onOk: () => callback(data)
-          .then(() => {
+          .then(() =>
             message.success("删除成功")
-          })
-          .catch(() => {
+          )
+          .catch(() =>
             message.error("删除失败")
-          })
+          )
       })
   }
 
