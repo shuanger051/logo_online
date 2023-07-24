@@ -97,7 +97,6 @@ const CoreEditor = {
     return (
         <a-layout>
           <a-layout>
-
             <AdjustLeftPanel />
             <EditorCanvas />
             <AdjustLineV
