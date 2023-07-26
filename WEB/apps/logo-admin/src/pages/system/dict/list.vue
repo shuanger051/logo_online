@@ -75,40 +75,20 @@ export default {
     columns() {
       return [
         {
-          title: "店铺地址",
-          dataIndex: "address",
-          key: "address",
+          title: "条目键值",
+          dataIndex: "dictKey",
+          key: "dictKey",
         },
         {
-          title: "营业年限",
-          dataIndex: "bizYears",
-          key: "bizYears",
-        },
-        {
-          title: "行业类型",
-          dataIndex: "industryType",
-          key: "industryType",
-        },
-        {
-          title: "是否老店",
-          dataIndex: "isOldShops",
-          key: "isOldShops",
-        },
-        {
-          title: "店铺属性",
-          dataIndex: "shopsType",
-          key: "shopsType",
+          title: "条目名称",
+          dataIndex: "dictName",
+          key: "dictName",
         },
         {
           title: "备注",
           dataIndex: "remark",
           key: "remark",
         },
-        {
-          title: "备案资料",
-          key: "archives",
-        },
-        ,
         {
           title: "操作",
           key: "operation",

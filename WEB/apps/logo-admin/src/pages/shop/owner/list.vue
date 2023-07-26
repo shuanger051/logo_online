@@ -56,9 +56,10 @@
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onDel(record)"
-          >删除</a-button
-        >
+        <!-- btn:删除 -->
+        <a-popconfirm title="是否确认删除该商户信息？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
@@ -68,6 +69,7 @@ import Detail from "./detail";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
+import { message } from "ant-design-vue";
 export default {
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
@@ -75,25 +77,39 @@ export default {
     columns() {
       return [
         {
-          title: "标题",
-          dataIndex: "contentExt.title",
-          key: "title",
+          title: "商户ID",
+          dataIndex: "id",
+          key: "id",
         },
         {
-          title: "摘要",
-          dataIndex: "contentExt.description",
-          key: "description",
+          title: "商户名称",
+          dataIndex: "merchantName",
+          key: "merchantName",
         },
         {
-          title: "是否超管",
-          dataIndex: "isAdmin",
-          key: "isAdmin",
+          title: "性别",
+          dataIndex: "gender",
+          key: "gender",
         },
         {
-          title: "是否禁用",
-          dataIndex: "isDisabled",
-          key: "isDisabled",
-          scopedSlots: { customRender: "isDisabled" },
+          title: "商户状态",
+          dataIndex: "merchantStatus",
+          key: "merchantStatus",
+        },
+        {
+          title: "联系电话",
+          dataIndex: "phone",
+          key: "phone",
+        },
+        {
+          title: "证件号码",
+          dataIndex: "idCard",
+          key: "idCard",
+        },
+        {
+          title: "备注",
+          dataIndex: "remark",
+          key: "remark",
         },
         {
           title: "操作",
@@ -117,19 +133,24 @@ export default {
     } = useTable(shopService.getMerchantInfoListByPage);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, { title: "新增用户" });
+    const onAdd = createModalEvent(Detail, {
+      title: "新增用户",
+      props: {
+        action: "add",
+      },
+    });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, { title: "编辑用户" });
-    // 删除事件
-    const onDel = createDelEvent((data) =>
-      shopService.deleteMerchantInfoById(_.pick(data, ["id"]))
-    );
+    const onEdit = createModalEvent(Detail, {
+      title: "编辑用户",
+      props: {
+        action: "edit",
+      },
+    });
 
     return {
       formData,
       list,
       page,
-      onDel,
       onAdd,
       onEdit,
       onSerach,
@@ -137,9 +158,19 @@ export default {
       onChange,
     };
   },
+  created() {
+    this.onSerach();
+  },
   methods: {
-    // 重置密码
-    onResetPwd() {},
+    // event：删除
+    onDel(record) {
+      shopService
+        .deleteMerchantInfoById(_.pick(record, ["id"]))
+        .then(() => message.success("删除成功"))
+        .catch((err) =>
+          message.error(`删除失败：${_.pick(err, "msg", "未知错误")}`)
+        );
+    },
   },
 };
 </script>

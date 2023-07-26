@@ -75,40 +75,45 @@ export default {
     columns() {
       return [
         {
-          title: "店铺地址",
-          dataIndex: "address",
-          key: "address",
+          title: "ID",
+          dataIndex: "id",
+          key: "id",
         },
         {
-          title: "营业年限",
-          dataIndex: "bizYears",
-          key: "bizYears",
+          title: "权限名称",
+          dataIndex: "permissionName",
+          key: "permissionName",
         },
         {
-          title: "行业类型",
-          dataIndex: "industryType",
-          key: "industryType",
+          title: "父级ID",
+          dataIndex: "parentId",
+          key: "parentId",
         },
         {
-          title: "是否老店",
-          dataIndex: "isOldShops",
-          key: "isOldShops",
+          title: "权限类型",
+          dataIndex: "permissionType",
+          key: "permissionType",
         },
         {
-          title: "店铺属性",
-          dataIndex: "shopsType",
-          key: "shopsType",
+          title: "权限等级",
+          dataIndex: "permissionLevel",
+          key: "permissionLevel",
         },
         {
-          title: "备注",
-          dataIndex: "remark",
-          key: "remark",
+          title: "权限路径",
+          dataIndex: "permissionPath",
+          key: "permissionPath",
         },
         {
-          title: "备案资料",
-          key: "archives",
+          title: "权限组",
+          dataIndex: "permissionGroup",
+          key: "permissionGroup",
         },
-        ,
+        {
+          title: "图标",
+          dataIndex: "iconPath",
+          key: "iconPath",
+        },
         {
           title: "操作",
           key: "operation",
@@ -150,6 +155,9 @@ export default {
       onReset,
       onChange,
     };
+  },
+  created() {
+    this.onSerach();
   },
   methods: {
     // 重置密码

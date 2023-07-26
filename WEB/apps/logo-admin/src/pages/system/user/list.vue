@@ -52,30 +52,39 @@
       @change="onChange"
     >
       <!-- 禁用 -->
-      <template slot="isDisabled" slot-scope="val">
-        <a-switch
-          :checked="Boolean(val)"
-          checked-children="是"
-          un-checked-children="是"
-        ></a-switch>
+      <template slot="isDisabled" slot-scope="val, record">
+        <a-popconfirm
+          :title="`是否确认${val == '1' ? '启用' : '禁用'}该账号？`"
+          @confirm="onDisabled(record)"
+        >
+          <a-switch
+            :checked="val == '1'"
+            checked-children="是"
+            un-checked-children="否"
+          ></a-switch>
+        </a-popconfirm>
       </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onResetPwd(record)"
-          >重置密码</a-button
+        <a-popconfirm
+          title="是否确认重置该账号密码？"
+          @confirm="onResetPwd(record)"
         >
+          <a-button type="link" size="small">重置密码</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
 </template>
 <script>
 import Detail from "./detail";
-import { mapState } from "vuex";
-import { systemService } from "@/services";
 import useTable from "@/hooks/useTable";
+import { mapState } from "vuex";
+import { message } from "ant-design-vue";
+import { systemService } from "@/services";
 export default {
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
@@ -104,6 +113,16 @@ export default {
           scopedSlots: { customRender: "isDisabled" },
         },
         {
+          title: "登录时间",
+          dataIndex: "lastLoginTime",
+          key: "lastLoginTime",
+        },
+        {
+          title: "登录IP",
+          dataIndex: "lastLoginIp",
+          key: "lastLoginIp",
+        },
+        {
           title: "操作",
           key: "operation",
           scopedSlots: { customRender: "operation" },
@@ -124,9 +143,19 @@ export default {
     } = useTable(systemService.getSysUserList);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, { title: "新增用户" });
+    const onAdd = createModalEvent(Detail, {
+      title: "新增用户",
+      props: {
+        action: "add",
+      },
+    });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, { title: "编辑用户" });
+    const onEdit = createModalEvent(Detail, {
+      title: "编辑用户",
+      props: {
+        action: "edit",
+      },
+    });
 
     return {
       formData,
@@ -139,9 +168,33 @@ export default {
       onChange,
     };
   },
+  created() {
+    this.onSerach();
+  },
   methods: {
     // 重置密码
-    onResetPwd() {},
+    onResetPwd(record) {
+      let { userName } = record;
+      systemService
+        .resetPwd({ userName })
+        .then(() => message.success("重置成功"))
+        .catch((err) => message.error(_.get(err, "msg", "重置失败")));
+    },
+    // 锁定账户
+    onDisabled(record) {
+      let { userName, isDisabled } = record;
+      isDisabled = isDisabled == "1" ? "0" : "1";
+      systemService
+        .lockSysUser({
+          userName,
+          isDisabled,
+        })
+        .then(() => {
+          record.isDisabled = isDisabled;
+          message.success("操作成功");
+        })
+        .catch((err) => message.error(_.get(err, "msg", "操作失败")));
+    },
   },
 };
 </script>
