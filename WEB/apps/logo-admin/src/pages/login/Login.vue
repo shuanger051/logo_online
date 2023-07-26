@@ -11,12 +11,12 @@
       <a-form @submit="onSubmit" :form="form">
         <a-alert
           type="error"
-          :closable="true"
-          v-if="error"
-          :message="error"
-          @close="onClose"
           showIcon
           style="margin-bottom: 24px"
+          :closable="true"
+          :message="error"
+          v-if="error"
+          @close="onClose"
         />
         <a-form-item>
           <a-input
@@ -101,9 +101,9 @@
 
 <script>
 import CommonLayout from "@/layouts/CommonLayout";
-import { getRoutesConfig } from "@/services/user";
-import { setAuthorization } from "@/utils/request";
-import { loadRoutes } from "@/utils/routerUtil";
+// import { getRoutesConfig } from "@/services/user";
+// import { setAuthorization } from "@/utils/request";
+// import { loadRoutes } from "@/utils/routerUtil";
 import { mapMutations } from "vuex";
 import { appService } from "@/services";
 
@@ -134,7 +134,7 @@ export default {
     ...mapMutations("account", ["setUser", "setPermissions", "setRoles"]),
     onSubmit(e) {
       e.preventDefault();
-      console.log(appService);
+      this.onClose(); //关闭错误提示
       this.form.validateFields((err) => {
         if (!err) {
           this.logging = true;
@@ -149,20 +149,30 @@ export default {
             )
             // 登录
             .then((password) =>
-              appService.login({
-                userName,
-                password,
-                captchaCode,
-              })
+              appService
+                .login({
+                  userName,
+                  password,
+                  captchaCode,
+                })
+                .then((res) => {
+                  // 设置登录信息
+                  const { permissionList = [], ...user } = _.get(
+                    res,
+                    "data",
+                    {}
+                  );
+                  this.$store.commit("account/setPermissions", permissionList);
+                  this.$store.commit("account/setUser", user);
+                  this.$router.push({ path: "/home" });
+                })
             )
             .finally(() => {
               this.logging = false;
-              this.$router.push({ path: "/home" });
             })
             .catch((err) => {
-              this.$message.alert("登录失败", err);
+              this.error = _.get(err, "msg", "未知错误");
             });
-          // login(name, password).then(this.afterLogin);
         }
       });
     },
@@ -170,51 +180,39 @@ export default {
     getPublicKey() {
       const { rsaPublicKey: key } = this;
       if (key) return Promise.resolve(key);
-      return appService
-        .getPublicKey()
-        .then((res) => {
-          console.log(res);
-          const key = _.get(res, "data.publicKey");
-          this.rsaPublicKey = key;
-          return key;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      return appService.getPublicKey().then((res) => {
+        const key = _.get(res, "data.publicKey");
+        this.rsaPublicKey = key;
+        return key;
+      });
     },
     // 获取加密串
     getEncryptSign(data) {
-      console.log(data);
-      return appService
-        .encrypt(data)
-        .then((res) => _.get(res, "data.sign"))
-        .catch((err) => {
-          console.warn("rsa加密失败", err);
-        });
+      return appService.encrypt(data).then((res) => _.get(res, "data.sign"));
     },
-    afterLogin(res) {
-      this.logging = false;
-      const loginRes = res.data;
-      if (loginRes.code >= 0) {
-        const { user, permissions, roles } = loginRes.data;
-        this.setUser(user);
-        this.setPermissions(permissions);
-        this.setRoles(roles);
-        setAuthorization({
-          token: loginRes.data.token,
-          expireAt: new Date(loginRes.data.expireAt),
-        });
-        // 获取路由配置
-        getRoutesConfig().then((result) => {
-          const routesConfig = result.data.data;
-          loadRoutes(routesConfig);
-          this.$router.push("/demo");
-          this.$message.success(loginRes.message, 3);
-        });
-      } else {
-        this.error = loginRes.message;
-      }
-    },
+    // afterLogin(res) {
+    //   this.logging = false;
+    //   const loginRes = res.data;
+    //   if (loginRes.code >= 0) {
+    //     const { user, permissions, roles } = loginRes.data;
+    //     this.setUser(user);
+    //     this.setPermissions(permissions);
+    //     this.setRoles(roles);
+    //     setAuthorization({
+    //       token: loginRes.data.token,
+    //       expireAt: new Date(loginRes.data.expireAt),
+    //     });
+    //     // 获取路由配置
+    //     getRoutesConfig().then((result) => {
+    //       const routesConfig = result.data.data;
+    //       loadRoutes(routesConfig);
+    //       this.$router.push("/demo");
+    //       this.$message.success(loginRes.message, 3);
+    //     });
+    //   } else {
+    //     this.error = loginRes.message;
+    //   }
+    // },
     onClose() {
       this.error = false;
     },

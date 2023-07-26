@@ -13,7 +13,6 @@ import "moment/locale/zh-cn";
 import * as axios from "@/utils/request";
 import editorConfig from "core/Config";
 
-
 const router = initRouter(store.state.setting.asyncRoutes);
 const i18n = initI18n("CN", "US");
 

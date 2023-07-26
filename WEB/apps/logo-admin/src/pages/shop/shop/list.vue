@@ -51,14 +51,18 @@
       :columns="columns"
       @change="onChange"
     >
+      <template slot="archives">
+        <a-button type="link" size="small">查看</a-button>
+      </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onDel(record)"
-          >删除</a-button
-        >
+        <!-- btn:删除 -->
+        <a-popconfirm title="是否确认删除该商铺信息？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
@@ -68,12 +72,23 @@ import Detail from "./detail";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
+import { message } from "ant-design-vue";
 export default {
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
     columns() {
       return [
+        {
+          title: "行业类型",
+          dataIndex: "industryType",
+          key: "industryType",
+        },
+        {
+          title: "店铺属性",
+          dataIndex: "shopsType",
+          key: "shopsType",
+        },
         {
           title: "店铺地址",
           dataIndex: "address",
@@ -85,19 +100,9 @@ export default {
           key: "bizYears",
         },
         {
-          title: "行业类型",
-          dataIndex: "industryType",
-          key: "industryType",
-        },
-        {
           title: "是否老店",
           dataIndex: "isOldShops",
           key: "isOldShops",
-        },
-        {
-          title: "店铺属性",
-          dataIndex: "shopsType",
-          key: "shopsType",
         },
         {
           title: "备注",
@@ -107,6 +112,7 @@ export default {
         {
           title: "备案资料",
           key: "archives",
+          scopedSlots: { customRender: "archives" },
         },
         ,
         {
@@ -134,16 +140,11 @@ export default {
     const onAdd = createModalEvent(Detail, { title: "新增用户" });
     // 编辑事件
     const onEdit = createModalEvent(Detail, { title: "编辑用户" });
-    // 删除事件
-    const onDel = createDelEvent((data) =>
-      shopService.deleteShopsInfoById(_.pick(data, ["id"]))
-    );
 
     return {
       formData,
       list,
       page,
-      onDel,
       onAdd,
       onEdit,
       onSerach,
@@ -151,9 +152,19 @@ export default {
       onChange,
     };
   },
+  created(){
+    this.onSerach()
+  },
   methods: {
     // 重置密码
-    onResetPwd() {},
+    onDel(record) {
+      shopService
+        .deleteShopsInfoById(_.pick(record, ["id"]))
+        .then(() => message.success("删除成功"))
+        .catch((err) =>
+          message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
+        );
+    },
   },
 };
 </script>

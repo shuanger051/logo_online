@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
+    <a-form layout="inline" class="serach-form">
       <a-form-item label="角色名" name="roleName">
         <a-input v-model="formData.roleName" placeholder="请输入" />
       </a-form-item>
@@ -33,12 +33,14 @@
       @change="onChange"
     >
       <template slot="operation" slot-scope="text, record">
-        <a-button type="link" size="small" @click="onEdit(record)"
+        <!-- btn:修改 -->
+        <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onDel(record)"
-          >删除</a-button
-        >
+        <!-- btn:删除 -->
+        <a-popconfirm title="是否确认删除该角色？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
@@ -48,6 +50,7 @@ import Detail from "./detail";
 import { mapState } from "vuex";
 import { systemService } from "@/services";
 import useTable from "@/hooks/useTable";
+import { message } from "ant-design-vue";
 export default {
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
@@ -63,6 +66,7 @@ export default {
           dataIndex: "roleLevel",
           key: "roleLevel",
         },
+        { title: "描述", dataIndex: "description", key: "description" },
         {
           title: "角色状态",
           dataIndex: "roleStatus",
@@ -85,30 +89,29 @@ export default {
       onSerach,
       onReset,
       onChange,
-      createDelEvent,
       createModalEvent,
     } = useTable(systemService.getSysRoleListByPage);
 
     // 新增
     const onAdd = createModalEvent(Detail, {
       title: "新增角色",
+      props: {
+        action: "add",
+      },
     });
 
     // 编辑
     const onEdit = createModalEvent(Detail, {
       title: "修改",
+      props: {
+        action: "edit",
+      },
     });
-
-    // event：删除
-    const onDel = createDelEvent((data) =>
-      systemService.deleteSysRoleById(_.pick(data, ["id"]))
-    );
 
     return {
       formData,
       list,
       page,
-      onDel,
       onAdd,
       onEdit,
       onSerach,
@@ -116,7 +119,20 @@ export default {
       onChange,
     };
   },
+  created() {
+    this.onSerach();
+  },
+  methods: {
+    // event：删除
+    onDel(record) {
+      systemService
+        .deleteSysRoleById(_.pick(record, ["id"]))
+        .then(() => message.success("删除成功"))
+        .catch((err) =>
+          message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
+        );
+    },
+  },
 };
 </script>
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>
