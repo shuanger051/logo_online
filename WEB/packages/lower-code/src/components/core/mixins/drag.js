@@ -45,7 +45,6 @@ class Drag {
   }
 
   _mousemove (e) {
-    console.log('mousemove')
     this.mousemove(e)
   }
 

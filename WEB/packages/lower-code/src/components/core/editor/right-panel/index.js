@@ -11,7 +11,7 @@ export default {
     }
   },
   data: () => ({
-    activeTabKey: '页面'
+    activeTabKey: '作品'
   }),
   methods: {
     /**
@@ -38,7 +38,7 @@ export default {
           onChange={this.setActiveTab}
         >
           <a-tab-pane key="属性"><span slot="tab">{this.$t('editor.editPanel.tab.prop')}</span><RenderPropsEditor/></a-tab-pane>
-          <a-tab-pane label="页面" key='页面' tab={this.$t('editor.editPanel.tab.page')}>{ this.activeTabKey === '页面' && <RenderBackgroundEditor/> }</a-tab-pane>
+          <a-tab-pane label="作品" key='作品' tab={this.$t('editor.editPanel.tab.page')}>{ this.activeTabKey === '作品' && <RenderBackgroundEditor/> }</a-tab-pane>
         </a-tabs>
       </a-layout-sider>
     )

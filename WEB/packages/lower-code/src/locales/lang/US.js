@@ -79,7 +79,8 @@ export default {
       zoomIn: 'Zoom In{hotkey}',
       zoomOut: 'Zoom Out{hotkey}',
       issues: 'Issues',
-      poster: 'Screenshot'
+      poster: 'Screenshot',
+      save: 'Save'
     },
     editPanel: {
       tab: {

@@ -5,7 +5,7 @@ export default {
   render (h) {
     const style = {
       position: 'relative',
-      color: `${this.color} !important`,
+      color: `${this.fontColor} !important`,
       textDecoration: 'none',
       backgroundColor: this.backgroundColor || 'rgba(255, 255, 255, 0.2)',
       lineHeight: `${this.lineHeight}em`,
@@ -21,7 +21,7 @@ export default {
     }
   },
   props: {
-    backgroundColor: PropTypes.color({ label: '背景色', defaultValue: 'rgba(0, 0, 0, 0)' }),
+    fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
     borderRadius: PropTypes.number({ label: '圆角(px)' }),
     borderColor: PropTypes.color({ label: '边框颜色' }),

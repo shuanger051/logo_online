@@ -18,6 +18,7 @@ export default class Work {
     this.title = work.title || '标题'
     this.description = work.description || '描述'
     this.pages = work.pages || [new Page()]
+    this.backgroundColor = work.backgroundColor || 'rgba(0, 0, 0, 0)'
     this.datasources = (work.datasources || []).map(item => new DataSource(item))
 
     // this.id = this.id
@@ -35,7 +36,7 @@ export default class Work {
     this.is_publish = !!work.is_publish
     this.is_template = false
     this.width = work.width || 320
-    this.height = work.height || 568
+    this.height = work.height || 300
     this.page_mode = work.page_mode || PAGE_MODE.SWIPPER_PAGE
   }
 }

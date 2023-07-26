@@ -3,9 +3,7 @@ import VueI18n from "vue-i18n";
 // default language
 import enUSLang from "./lang/US";
 import zhCNLang from "./lang/CN";
-import editorConfig from "../../index";
 
-Vue.use(VueI18n);
 
 const messages = {
   US: {
@@ -19,11 +17,13 @@ export const defaultLang = "CN";
 
 let i18n;
 
-if (editorConfig.i18n) {
-  i18n = editorConfig.i18n;
+if (Vue.prototype.$i18nInstance) {
+  i18n = Vue.prototype.$i18nInstance;
   i18n.mergeLocaleMessage("US", enUSLang);
   i18n.mergeLocaleMessage("CN", zhCNLang);
 } else {
+  Vue.use(VueI18n);
+
   i18n = new VueI18n({
     locale: defaultLang,
     fallbackLocale: defaultLang,

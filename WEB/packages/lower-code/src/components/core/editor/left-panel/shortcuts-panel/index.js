@@ -46,7 +46,7 @@ export default {
   render (h) {
     // return this.renderShortCutsPanel(this.groups)
     return (
-      <div style={{ background: '#fff', padding: '12px', paddingLeft: 0, width:'300px' }}>
+      <div style={{ background: '#fff', padding: '12px', paddingLeft: 0, width:'300px', height:'100%' }}>
       <a-row gutter={10} style="max-height: calc(100vh - 150px);overflow: auto;margin:0;">
         <UsageTip />
         {

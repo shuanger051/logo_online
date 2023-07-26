@@ -207,6 +207,7 @@ export default {
             // this.bindContextMenu(e)
           }}
         >
+          <div style={{height:'100%', background: this.work.backgroundColor}}>
           {
             elements.map((element, index) => {
               if (element.name === 'lbp-background') {
@@ -317,7 +318,8 @@ export default {
           <div style={{
             position: 'absolute',
             top: `${this.work.height}px`,
-            width: '100%'
+            width: '100%',
+            zIndex: 10000
           }}>
             <div class="adjust-line-wrapper adjust-line-wrapper-h">
               <div class="adjust-line adjust-line-h"></div>
@@ -337,6 +339,7 @@ export default {
                   onChange={height => { this.updateWork({ height }) }}
                 />
                 <span>px</span>
+              </div>
               </div>
             </div>
           </div>

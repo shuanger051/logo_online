@@ -35,7 +35,7 @@ export default {
      */
     autoSave(info) {
       this.updateWork(info);
-      this.debounceSave();
+      // this.debounceSave();
     },
   },
   mounted() {
@@ -64,6 +64,13 @@ export default {
             placeholder="请输入描述"
             type="textarea"
           ></a-input>
+          <el-color-picker
+           show-alpha 
+           value={this.work.backgroundColor} 
+           onChange={(e) => {
+            this.autoSave({ backgroundColor: e })
+          }}
+          ></el-color-picker>
         </div>
       </div>
     );

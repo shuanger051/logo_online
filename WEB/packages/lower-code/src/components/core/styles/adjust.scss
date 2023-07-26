@@ -2,7 +2,6 @@ $activeHoverColor: #1593ff;
 .collapse-indicator-wrapper {
   position: relative;
   display: flex;
-  height: calc(100vh - 64px);
 
   .component-wrapper {
     order: 0;
@@ -104,7 +103,7 @@ $activeHoverColor: #1593ff;
 
 .adjust-line-wrapper-v {
   position: relative;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 209px);
   cursor: ew-resize;
 
   .adjust-button {

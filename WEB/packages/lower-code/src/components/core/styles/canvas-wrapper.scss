@@ -5,12 +5,12 @@
 
 $cellSize: 35.6px;
 $designerWidth: 320px;
-$designerHeight: 568px;
+$designerHeight: 300px;
 $designerWidthHalf: ($designerWidth/2);
 
 .canvas-wrapper {
   position: relative;
-  top: 60px;
+  top: 0px;
   width: $designerWidth;
   // height: $designerHeight;
   min-height: $designerHeight;

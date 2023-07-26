@@ -47,16 +47,15 @@ export default {
   render (h) {
     return (
       <a-layout id="canvas-outer-wrapper">
-        <a-radio-group
+        {/* <a-radio-group
           class="mode-toggle-wrapper"
           size="small"
           value={this.isPreviewMode}
           onInput={this.handleToggleMode}
         >
-          {/* 编辑模式、预览模式 */}
           <a-radio-button label={false} value={false}>{this.$t('editor.centerPanel.mode.edit')}</a-radio-button>
           <a-radio-button label={true} value={true}>{this.$t('editor.centerPanel.mode.preview')}</a-radio-button>
-        </a-radio-group>
+        </a-radio-group> */}
         <a-layout-content style={{ transform: `scale(${this.scaleRate})`, 'transform-origin': 'center top' }}>
           <div
             class='canvas-wrapper'

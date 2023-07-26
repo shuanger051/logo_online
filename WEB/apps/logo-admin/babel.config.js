@@ -1,6 +1,12 @@
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
-const plugins = ['@babel/plugin-proposal-optional-chaining']
+const plugins = ['@babel/plugin-proposal-optional-chaining', [
+  'component',
+  {
+    'libraryName': 'element-ui',
+    'styleLibraryName': 'theme-chalk'
+  }
+]]
 if (IS_PROD) {
   plugins.push('transform-remove-console')
 }

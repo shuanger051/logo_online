@@ -1,6 +1,5 @@
 import './gallery.scss'
 import PersonalTab from './tabs/personal.js'
-import PixabayTab from './tabs/pixabay.js'
 
 export default {
   name: 'lbs-image-gallery',
@@ -21,10 +20,6 @@ export default {
       {
         value: 'personal',
         label: '我的图库'
-      },
-      {
-        value: 'pixabay',
-        label: 'Pixabay图库'
       }
     ],
     activeTab: 'personal',
@@ -53,16 +48,9 @@ export default {
       this.$emit('change', item.url)
     },
     renderContent () {
-      switch (this.activeTab) {
-        case 'personal':
-          return <PersonalTab onChangeItem={item => {
-            this.handleSelectImage(item)
-          }}/>
-        case 'pixabay':
-          return <PixabayTab onChangeItem={item => {
-            this.handleSelectImage(item)
-          }}/>
-      }
+      return <PersonalTab onChangeItem={item => {
+        this.handleSelectImage(item)
+      }}/>
     },
     renderDefaultActivator () {
       const activatorWithoutImg = (

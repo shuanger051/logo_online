@@ -88,7 +88,8 @@ export default {
       zoomIn: '缩小{hotkey}',
       zoomOut: '放大{hotkey}',
       issues: '常见问题',
-      poster: '下载海报'
+      poster: '下载海报',
+      save:'保存'
     },
     editPanel: {
       tab: {

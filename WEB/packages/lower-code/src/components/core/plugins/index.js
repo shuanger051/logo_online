@@ -10,31 +10,21 @@ export const pluginsList = [
   {
     title: '图片',
     i18nTitle: {
-      'en-US': 'Picture',
-      'zh-CN': '图片'
+      'US': 'Picture',
+      'CN': '图片'
     },
     icon: 'photo',
     component: LbpPicture,
     visible: true,
     name: LbpPicture.name
   },
+
   {
     i18nTitle: {
-      'en-US': 'Text',
-      'zh-CN': '文字'
+      'US': 'Text',
+      'CN': '文字'
     },
     title: '文字',
-    icon: 'text-width',
-    component: LbpText,
-    visible: true,
-    name: LbpText.name
-  },
-  {
-    i18nTitle: {
-      'en-US': 'Tiny-Text',
-      'zh-CN': 'Tiny-文字'
-    },
-    title: 'Tiny-文字',
     icon: 'text-width',
     component: LbpTextTinymce,
     visible: true,

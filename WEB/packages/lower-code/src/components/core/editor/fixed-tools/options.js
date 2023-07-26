@@ -2,6 +2,11 @@ import undoRedoHistory from 'core/store/plugins/undo-redo/History'
 
 const fixedTools = [
   {
+    i18nTooltip: 'editor.fixedTool.save',
+    icon: 'floppy-o',
+    action: () => this.saveWork()
+  },
+  {
     i18nTooltip: 'editor.fixedTool.undo',
     icon: 'mail-reply',
     action: () => undoRedoHistory.undo(),
@@ -15,29 +20,29 @@ const fixedTools = [
     hotkey: 'ctrl&y,⌘&u',
     hotkeyTooltip: '(ctrl+y)'
   },
-  {
-    i18nTooltip: 'editor.fixedTool.preview',
-    icon: 'eye',
-    action: function () { this.previewDialogVisible = true }
-  },
-  {
-    i18nTooltip: 'editor.fixedTool.copyCurrentPage',
-    icon: 'copy',
-    action: function () { this.pageManager({ type: 'copy' }) },
-    hotkey: 'ctrl&c,⌘&c'
-  },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.preview',
+  //   icon: 'eye',
+  //   action: function () { this.previewDialogVisible = true }
+  // },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.copyCurrentPage',
+  //   icon: 'copy',
+  //   action: function () { this.pageManager({ type: 'copy' }) },
+  //   hotkey: 'ctrl&c,⌘&c'
+  // },
   {
     i18nTooltip: 'editor.fixedTool.copyCurrentElement',
     icon: 'copy',
     action: function () { this.elementManager({ type: 'copy' }) }
   },
-  {
-    i18nTooltip: 'editor.fixedTool.importPSD',
-    text: 'Ps',
-    icon: '', // 优先级: icon > text > i18nTooltip
-    action: '',
-    disabled: true
-  },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.importPSD',
+  //   text: 'Ps',
+  //   icon: '', // 优先级: icon > text > i18nTooltip
+  //   action: '',
+  //   disabled: true
+  // },
   {
     i18nTooltip: 'editor.fixedTool.zoomOut',
     icon: 'plus',
@@ -52,16 +57,16 @@ const fixedTools = [
     hotkey: 'ctrl&-,⌘&-',
     hotkeyTooltip: '(ctrl -)'
   },
-  {
-    i18nTooltip: 'editor.fixedTool.issues',
-    icon: 'question',
-    action: function () { window.open('https://github.com/ly525/luban-h5/issues/110') }
-  },
-  {
-    i18nTooltip: 'editor.fixedTool.poster',
-    icon: 'camera',
-    action: function () { this.downloadPoster() }
-  }
+  // {
+  //   i18nTooltip: 'editor.fixedTool.issues',
+  //   icon: 'question',
+  //   action: function () { window.open('https://github.com/ly525/luban-h5/issues/110') }
+  // },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.poster',
+  //   icon: 'camera',
+  //   action: function () { this.downloadPoster() }
+  // }
 ]
 
 export default fixedTools
