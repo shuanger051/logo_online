@@ -106,7 +106,7 @@ export default {
         }
       }
       const formItemLayout = this.layout === 'horizontal' ? {
-        labelCol: { span: 6 }, wrapperCol: { span: 16, offset: 2 }
+        labelCol: { span: 6 }, wrapperCol: { span: 16, offset: 1 }
       } : {}
       const formItemData = {
         props: {

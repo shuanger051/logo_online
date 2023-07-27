@@ -4,7 +4,7 @@ const fixedTools = [
   {
     i18nTooltip: 'editor.fixedTool.save',
     icon: 'floppy-o',
-    action: () => this.saveWork()
+    action(){ this.saveWork() }
   },
   {
     i18nTooltip: 'editor.fixedTool.undo',

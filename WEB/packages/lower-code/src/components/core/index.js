@@ -90,7 +90,7 @@ const CoreEditor = {
   },
 
   methods: {
-    ...mapActions("editor", ["fetchWork"]),
+    ...mapActions("editor", ["fetchWork", 'setEditingPage']),
     ...mapMutations("dialog", ["updateDialog"]),
   },
   render(h) {
@@ -111,10 +111,11 @@ const CoreEditor = {
     );
   },
   created() {
-    if (this.workId) {
-      this.fetchWork(this.workId);
+    this.setEditingPage()
+    if (this.$route.params.id) {
+      this.fetchWork(this.$route.params.id);
     } else {
-      this.$message.error("no work id!");
+      // this.$message.error("no work id!");
     }
   },
 };

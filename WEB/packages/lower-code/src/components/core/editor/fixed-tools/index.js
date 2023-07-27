@@ -13,7 +13,8 @@ export default {
       'pageManager',
       'elementManager',
       'updateScaleRate',
-      'downloadPoster'
+      'downloadPoster',
+      'saveWork'
     ])
   },
   render () {

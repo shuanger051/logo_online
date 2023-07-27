@@ -17,9 +17,16 @@ const router = initRouter(store.state.setting.asyncRoutes);
 const i18n = initI18n("CN", "US");
 
 // 初始化编辑器配置
-editorConfig.install(({ initI18n, initRequest }) => {
+editorConfig.install(({ initI18n, initRequest, initMode, initRouter, initSaveSucessJump }) => {
   initI18n(i18n);
   initRequest(axios);
+  initMode('logo-admin');
+  initRouter(router)
+  initSaveSucessJump(() => {
+    if ( !router.currentRoute?.params?.id) {
+      router.push('/signboard/template')
+    }
+  })
 });
 
 Vue.use(Antd);

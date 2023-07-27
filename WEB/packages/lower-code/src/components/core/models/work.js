@@ -16,9 +16,9 @@ export default class Work {
   constructor (work = {}) {
     this.id = work.id
     this.title = work.title || '标题'
-    this.description = work.description || '描述'
     this.pages = work.pages || [new Page()]
     this.backgroundColor = work.backgroundColor || 'rgba(0, 0, 0, 0)'
+    this.style = work.style || '1'
     this.datasources = (work.datasources || []).map(item => new DataSource(item))
 
     // this.id = this.id

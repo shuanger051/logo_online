@@ -4,6 +4,7 @@
 import axios from 'axios'
 import ImageItem from 'core/support/image-gallery/components/image-item.js'
 import Uploader from 'core/support/image-gallery/components/uploader.js'
+import {getMaterialListByPage} from 'core/api'
 
 export default {
   data: () => ({
@@ -17,7 +18,8 @@ export default {
   methods: {
     uploadSuccess ({ file, fileList }) {
       const response = file.response.length && file.response[0]
-      this.items = [{ name: response.name, url: response.url.replace('http://localhost:1337', '') }, ...this.cachedItems]
+      this.items = [{ name: response.name, url: response.url.replace('http://localhost:1337', '') }, ...this.items]
+      this.total++
     },
     beforeUpload (file) {
       this.items.unshift({
@@ -26,16 +28,13 @@ export default {
       return file
     },
     searchFiles () {
-      axios
-        .get('/upload/files', {
-          params: {
-            '_limit': this.pageSize,
-            '_start': (this.page - 1) * this.pageSize
-          // mime: 'image/png'
-          }
-        })
+      getMaterialListByPage({
+        fileType:1
+      })
         .then(res => {
-          this.items = res.data
+          
+          this.items = res.data.list
+          this.total = res.data.list.length
           this.cachedItems = []
         })
     }
@@ -57,12 +56,9 @@ export default {
                 pageSize: this.pageSize,
                 onChange: (page, pageSize) => {
                   this.page = page
-                  this.searchFiles()
-                  console.log(page)
                 },
                 onShowSizeChange: (currentPage, pageSize) => {
                   this.pageSize = pageSize
-                  this.searchFiles()
                 }
               }}
               style="height: 400px; overflow: auto;"
@@ -83,9 +79,7 @@ export default {
     )
   },
   mounted () {
-    axios.get('/upload/files/count').then(res => {
-      this.total = res.data.count
-    })
+    
     this.searchFiles()
     // demo code
   }

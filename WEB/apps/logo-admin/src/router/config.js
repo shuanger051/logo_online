@@ -82,9 +82,12 @@ const options = {
               component: () => import('@/pages/signboard/template/list'),
             },
             {
-              path: '/addTemplate',
+              path: '/addTemplate/:id?',
               name: '新建模板',
               component: () => import('@/pages/signboard/template/addTemplate'),
+              meta: {
+                invisible: true
+              }
             },
             {
               path: 'apply',

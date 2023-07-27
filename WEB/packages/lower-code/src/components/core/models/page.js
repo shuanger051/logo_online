@@ -5,7 +5,7 @@ class Page {
   constructor (page = {}) {
     this.uuid = page.uuid || +new Date()
     this.title = page.title || ''
-    this.elements = page.elements || [new Element(LbpBackground)]
+    this.elements = page.elements || []
   }
 
   clone () {

@@ -45,7 +45,8 @@ export default {
   },
   created () {
     window.EditorApp.$on('setEditingElement', ({ name }) => {
-      this.setActiveTab(name === 'lbp-background' ? '页面' : '属性')
+      console.log(name, 999999)
+      this.setActiveTab(name === 'lbp-background' ? '作品' : '属性')
     })
   }
 }
