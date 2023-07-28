@@ -1,9 +1,11 @@
 // https://github.com/luban-h5-components/plugin-common-props
 import PropTypes from '@luban-h5/plugin-common-props'
+import font from 'core/styles/fontMap'
 
 export default {
   render (h) {
     const style = {
+      fontFamily: this.fontFamily || 'arial',
       position: 'relative',
       color: `${this.fontColor} !important`,
       textDecoration: 'none',
@@ -22,6 +24,7 @@ export default {
   },
   props: {
     fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
+    fontFamily: PropTypes.select({ defaultValue: '', label: '字体', options: font }),
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
     borderRadius: PropTypes.number({ label: '圆角(px)' }),
     borderColor: PropTypes.color({ label: '边框颜色' }),

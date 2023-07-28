@@ -86,7 +86,8 @@ const options = {
               name: '新建模板',
               component: () => import('@/pages/signboard/template/addTemplate'),
               meta: {
-                invisible: true
+                invisible: true,
+                cacheAble:false
               }
             },
             {

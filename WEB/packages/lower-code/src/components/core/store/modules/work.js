@@ -1,4 +1,6 @@
 import Element from "core/models/element";
+import { message } from "ant-design-vue";
+
 import Vue from 'vue'
 import strapi from "@editor/utils/strapi";
 import Page from "core/models/page";
@@ -7,8 +9,12 @@ import { saveTemplate,updateTemplate, getTemplateByID } from "core/api";
 import { AxiosWrapper, handleError } from "@editor/utils/http.js";
 import editorConfig from 'core/Config'
 // import router from '@/router.js'
-import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
-
+import {  downloadPoster } from "@editor/utils/canvas-helper.js";
+const sleep = async (time) => {
+  return new Promise((r) => {
+    setTimeout(() => r(), time)
+  })
+}
 function setLoading(commit, loadingName, isLoading) {
   commit(
     "loading/update",
@@ -48,14 +54,15 @@ export const actions = {
         style: state.work.style,
         domItem: JSON.stringify(state.work)
       }
-      setLoading(commit, "uploadWorkCover_loading", true);
 
       if (currentRoute.params.id) {
         data.id = currentRoute.params.id
         await updateTemplate(data)
+        message.success('保存成功')
       } else {
         await saveTemplate(data)
-        setLoading(commit, "uploadWorkCover_loading", false);
+        message.success('保存成功')
+        await sleep(2)
         editorConfig.handlerSaveSucessJump()
       }
 
