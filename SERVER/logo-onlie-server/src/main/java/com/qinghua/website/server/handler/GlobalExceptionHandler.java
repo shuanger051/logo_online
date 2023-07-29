@@ -146,7 +146,11 @@ public class GlobalExceptionHandler {
         if(e instanceof MultipartException){
             return ResponseResult.error(SysConstant.SYSTEM_ERROR_400.getCode(), "参数错误,缺少文件参数");
         }else{
-            return this.isDAOException(e.getMessage()) ? ResponseResult.error(SysConstant.SYSTEM_ERROR_500.getCode(), "数据访问异常") : ResponseResult.error(SysConstant.SYSTEM_ERROR_500);
+            if(e.getMessage().contains("Subject does not have permission")){
+                return ResponseResult.error(SysConstant.SYSTEM_ERROR_401.getCode(), "无访问权限");
+            }else{
+                return this.isDAOException(e.getMessage()) ? ResponseResult.error(SysConstant.SYSTEM_ERROR_500.getCode(), "数据访问异常") : ResponseResult.error(SysConstant.SYSTEM_ERROR_500);
+            }
         }
     }
 
