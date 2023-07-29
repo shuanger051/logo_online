@@ -27,6 +27,11 @@ public class MaterialVO {
      */
     private String fileType;
 
+    /**
+     * 请求映射路径
+     */
+    private String urlPath;
+
     @Override
     public String toString() {
         return "MaterialVO{" +
