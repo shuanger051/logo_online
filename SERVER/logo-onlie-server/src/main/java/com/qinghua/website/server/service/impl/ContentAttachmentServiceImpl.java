@@ -36,8 +36,8 @@ public class ContentAttachmentServiceImpl implements ContentAttachmentService {
     /**
      * 文章附件上传路径地址
      */
-    @Value("${upload.path.content}")
-    private String contentPath;
+    @Value("${uploadPath.savePath}")
+    private String savePath;
 
     @Override
     public List<ContentAttachmentDTO> getContentAttachmentList(ContentAttachmentDTO bean) {
@@ -100,7 +100,7 @@ public class ContentAttachmentServiceImpl implements ContentAttachmentService {
             Preconditions.checkNotNull(res,"不存在文章ID为{}的信息",attachmentDTO.getId());
             if(null != res && (res.getStatus().equals("1") || res.getStatus().equals("0"))){
                 //先执行服务器文件清除动作
-                String filePath = contentPath + File.separator + attachmentDTO.getAttachmentPath() + "\\" + attachmentName;
+                String filePath = savePath + "content/" + File.separator + attachmentDTO.getAttachmentPath() + "/" + attachmentName;
                 FileUtils.deleteFile(filePath);
                 //数据库信息删除
                 contentAttachmentMapper.deleteAttachmentByName(attachmentName);

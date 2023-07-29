@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class SysRoleVO {
 
+    private Long id;
+
     /**
      * 角色名称
      */

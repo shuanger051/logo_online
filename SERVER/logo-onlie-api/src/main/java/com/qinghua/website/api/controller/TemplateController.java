@@ -15,7 +15,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/template")
@@ -66,8 +68,10 @@ public class TemplateController {
     @RequiresPermissions("/template/saveTemplate")
     public ResponseResult<Object> saveTemplate(@Validated @RequestBody TemplateSaveIO templateSaveIO){
         TemplateDTO saveDTO = BeanToolsUtil.copyOrReturnNull(templateSaveIO,TemplateDTO.class);
-        templateService.saveTemplate(saveDTO);
-        return ResponseResult.success();
+        Long res = templateService.saveTemplate(saveDTO);
+        Map<String,Object> map = new HashMap<>();
+        map.put("ID",res);
+        return ResponseResult.success(map);
     }
 
     /**

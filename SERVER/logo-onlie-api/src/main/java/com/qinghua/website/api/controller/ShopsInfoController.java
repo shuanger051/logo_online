@@ -110,7 +110,7 @@ public class ShopsInfoController {
      * @param request
      * @return
      */
-    @LogAnnotation(logType = "upload",logDesc = "根据附件名称删除商铺附件")
+    @LogAnnotation(logType = "static/upload",logDesc = "根据附件名称删除商铺附件")
     @RequestMapping(value = "/deleteShopsAttachment", method = RequestMethod.POST)
     @RequiresPermissions("/shops-info/deleteShopsAttachment")
     public ResponseResult<Object> deleteShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {

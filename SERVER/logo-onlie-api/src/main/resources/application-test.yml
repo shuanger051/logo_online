@@ -36,10 +36,7 @@ logging:
     level: INFO
     path: ./logs
 
-#UPLOAD PATH CONFIG
-upload:
-  path:
-    content: /usr/local/webapp/upload/content #文章附件
-    shops: /usr/local/webapp/upload/shops #商铺附件
-    material: /usr/local/webapp/upload/material #素材附件
-    logo: /usr/local/webapp/upload/logo #店招附件
+#FILE UPLOAD CONFIG
+uploadPath:
+  savePath: '/usr/local/webapp/server/upload/'  #图标存储路径
+  urlPath: '/savePath/'  #图标的映射路径

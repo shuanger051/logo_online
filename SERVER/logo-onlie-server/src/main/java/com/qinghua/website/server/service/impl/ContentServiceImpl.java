@@ -48,8 +48,8 @@ public class ContentServiceImpl implements ContentService {
     /**
      * 文章附件上传路径地址
      */
-    @Value("${upload.path.content}")
-    private String contentPath;
+    @Value("${uploadPath.savePath}")
+    private String savePath;
 
     @Override
     public List<ContentDTO> getContentList(ContentDTO bean) {
@@ -120,7 +120,7 @@ public class ContentServiceImpl implements ContentService {
         if(null != attachmentList && attachmentList.size() > 0){
             for(int i=0;i<attachmentList.size();i++){
                 ContentAttachmentDTO attachment = attachmentList.get(i);
-                String filePath = contentPath + File.separator + attachment.getAttachmentPath() + "\\" + attachment.getAttachmentName();
+                String filePath = savePath + "content/" + File.separator + attachment.getAttachmentPath() + "\\" + attachment.getAttachmentName();
                 FileUtils.deleteFile(filePath);
             }
         }

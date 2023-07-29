@@ -25,7 +25,7 @@ public class SysUserUpdateIO {
     /**
      * activation:激活状态
      */
-    private Boolean activation;
+    private String activation;
 
     /**
      * activation_code:激活码

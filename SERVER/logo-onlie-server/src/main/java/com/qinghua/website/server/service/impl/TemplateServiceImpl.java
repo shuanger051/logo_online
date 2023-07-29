@@ -54,8 +54,9 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void saveTemplate(TemplateDTO bean) {
+    public Long saveTemplate(TemplateDTO bean) {
         templateMapper.saveTemplate(bean);
+        return bean.getId();
     }
 
     @Override

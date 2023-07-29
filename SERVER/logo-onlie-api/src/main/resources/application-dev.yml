@@ -36,10 +36,7 @@ logging:
     level: debug
     path: ./logs
 
-#UPLOAD PATH CONFIG
-upload:
-  path:
-    content: F:\\upload\\content #文章附件
-    shops: F:\\upload\\shops #商铺附件
-    material: F:\\upload\\material #素材附件
-    logo: F:\\upload\\logo #店招附件
+#FILE UPLOAD CONFIG
+uploadPath:
+  savePath: 'F:\upload\'  #图标存储路径
+  urlPath: '/savePath/'  #图标的映射路径
