@@ -207,7 +207,7 @@ export default {
             // this.bindContextMenu(e)
           }}
         >
-          <div style={{height:'100%', background: this.work.backgroundColor}}>
+          <div style={{height:'100%', background: this.work.backgroundColor}}  id = 'content_edit'>
           {
             elements.map((element, index) => {
               if (element.name === 'lbp-background') {

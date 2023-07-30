@@ -11,8 +11,8 @@
           style="width: 200px"
           allowClear
           mode="multiple"
-          :maxTagCount = "1"
-          @change = "changeStyle"
+          :maxTagCount="1"
+          @change="changeStyle"
           placeholder="请选择"
         >
           <a-select-option
@@ -56,14 +56,24 @@
       @change="onChange"
     >
       <template slot="releaseStatus" slot-scope="text, record, index">
-        {{text == '1' ? '已发布': "未发布"}}
+        {{ text == "1" ? "已发布" : "未发布" }}
+      </template>
+      <template slot="shortImage" slot-scope="text, record, index">
+        <img
+          v-if="!!getImageSrc(record)"
+          width="100px"
+          height="100px"
+          :style="{objectFit: 'cover'}"
+          :src="getImageSrc(record)"
+        />
+        <span v-else>无缩略图</span>
       </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record, index">
         <a-button type="link" size="small" @click="onEdit({ record })"
           >编辑</a-button
         >
-        <a-button type="link" size="small" @click="onDel({record, index})"
+        <a-button type="link" size="small" @click="onDel({ record, index })"
           >删除</a-button
         >
       </template>
@@ -73,7 +83,7 @@
 <script>
 import Detail from "./detail";
 import useTable from "@/hooks/useTable";
-import {ref}  from 'vue'
+import { ref } from "vue";
 import { mapState } from "vuex";
 import { signboardService } from "@/services";
 const styleMap = [
@@ -105,21 +115,27 @@ export default {
           key: "style",
           customRender: (text) => {
             if (text.length) {
-              const styleLists = text.split(',')
+              const styleLists = text.split(",");
               const nameLists = styleLists.map((key) => {
-                return styleMap.find(s => key == s.value).label
-              })
-              return (<span>{nameLists.join(',')}</span>)
+                return styleMap.find((s) => key == s.value).label;
+              });
+              return <span>{nameLists.join(",")}</span>;
             } else {
-              return null
+              return null;
             }
-          }
+          },
         },
         {
           title: "是否发布",
           dataIndex: "releaseStatus",
           key: "releaseStatus",
           scopedSlots: { customRender: "releaseStatus" },
+        },
+        {
+          title: "缩略图",
+          key: "shortImage",
+          align: 'center',
+          scopedSlots: { customRender: "shortImage" },
         },
         {
           title: "操作",
@@ -145,15 +161,16 @@ export default {
     const formStyle = ref([]);
 
     // 删除事件
-    const onDel = createDelEvent(async ({record, index}) =>{
-      const data = await signboardService.deleteTemplateByID(_.pick(record, ["id"]))
-      console.log(list, 9999)
-      list.value.splice(index, 1)
-      return data
-  });
+    const onDel = createDelEvent(async ({ record, index }) => {
+      const data = await signboardService.deleteTemplateByID(
+        _.pick(record, ["id"])
+      );
+      list.value.splice(index, 1);
+      return data;
+    });
     const changeStyle = (v) => {
-      formData.style = v.join(',')
-    }
+      formData.style = v.join(",");
+    };
 
     return {
       formData,
@@ -162,28 +179,42 @@ export default {
       onDel,
       onSerach,
       onReset: () => {
-        formStyle.value = []
-        return onReset
+        formStyle.value = [];
+        return onReset;
       },
       onChange,
       styleMap,
       formStyle,
-      changeStyle
+      changeStyle,
     };
   },
   methods: {
-    // 重置密码
-    onEdit({record}) {
-      this.$router.push(`/addTemplate/${record.id}`)
+    getImageSrc(record) {
+      let src = "";
+      let json;
+      let isDev = process.env.NODE_ENV === "development";
+      let prefix = process.env.VUE_APP_API_BASE_URL;
+      try {
+        json = JSON.parse(record.domItem);
+        src = isDev
+          ? '/api/logo' + json.cover_image_url
+          : prefix + '/logo/'+ json.cover_image_url;
+      } catch (e) {
+        console.log(e);
+      }
+      return src;
     },
-    onAdd(){
-      this.$router.push(`/addTemplate`)
-    }
+    // 重置密码
+    onEdit({ record }) {
+      this.$router.push(`/addTemplate/${record.id}`);
+    },
+    onAdd() {
+      this.$router.push(`/addTemplate`);
+    },
   },
   created() {
-    this.onSerach()
-  }
-  
+    this.onSerach();
+  },
 };
 </script>
 <style lang="less" scoped></style>

@@ -31,8 +31,8 @@ function dataURItoBlob (dataURI) {
  * @param {文件名} fileName
  */
 export function takeScreenshot ({
-  selector = '.canvas-wrapper',
-  fileName = `${+new Date()}`,
+  selector = '#content_edit',
+  fileName = `${+new Date()}.png`,
   type = 'file'
 } = {}) {
   const el = document.querySelector(selector)
@@ -41,9 +41,9 @@ export function takeScreenshot ({
     // allowTaint: Whether to allow cross-origin images to taint the canvas
     // if you use allowTaint: true, the cors image will taint the canvas, and canvas.toDataURL won't work
     // 会对canvas造成污染，导致 canvas.toDataURL 无效
-    html2canvas(el, { proxy: '/works/cors-proxy' }).then(canvas => {
+    html2canvas(el, {backgroundColor: null}).then(canvas => {
       // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.6)
+      const dataUrl = canvas.toDataURL('image/png', 0.6)
       const blob = dataURItoBlob(dataUrl)
       const file = new window.File([blob], fileName, { type: 'image/png' })
       switch (type) {

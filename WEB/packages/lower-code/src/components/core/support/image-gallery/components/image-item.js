@@ -4,6 +4,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    resolveUrl: {
+      type: Function,
+      default: (u) => u
+    },
     height: {
       type: Number,
       default: 142
@@ -14,7 +18,6 @@ export default {
       return <a-spin>
         <a-card hoverable>
           <div
-            slot="cover"
             style={{
               height: `${this.height}px`
             }}>
@@ -27,10 +30,11 @@ export default {
         hoverable
       >
         <div
-          slot="cover"
           style={{
-            backgroundImage: `url(${this.item.url})`,
-            backgroundSize: 'cover',
+            backgroundImage: `url(${this.resolveUrl(this.item.url)})`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             height: `${this.height}px`
           }}>
         </div>

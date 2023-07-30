@@ -1,10 +1,11 @@
 import PropTypes from '@luban-h5/plugin-common-props'
+import {resolveImgUrl} from 'core/support/imgUrl'
 
 import placeholderImg from './lbp-picture-placeholder.png' // issue #34
 export default {
   name: 'lbp-picture',
   render () {
-    return <img src={this.imgSrc || placeholderImg} style={{ objectFit: this.fillType }} alt="" srcset="" width="100%" />
+    return <img src={this.getUrl(this.imgSrc || placeholderImg)} style={{ objectFit: this.fillType }} alt="" srcset="" width="100%" />
   },
   props: {
     imgSrc: PropTypes.image(),
@@ -28,5 +29,10 @@ export default {
   },
   data: () => ({
     placeholderImg
-  })
+  }),
+  methods: {
+    getUrl(url) {
+      return resolveImgUrl(url)
+    }
+  }
 }

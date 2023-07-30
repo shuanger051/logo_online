@@ -5,6 +5,7 @@ import axios from 'axios'
 import ImageItem from 'core/support/image-gallery/components/image-item.js'
 import Uploader from 'core/support/image-gallery/components/uploader.js'
 import {getMaterialListByPage} from 'core/api'
+import {resolveImgUrl} from 'core/support/imgUrl'
 
 export default {
   data: () => ({
@@ -17,9 +18,12 @@ export default {
   }),
   methods: {
     uploadSuccess ({ file, fileList }) {
-      const response = file.response.length && file.response[0]
-      this.items = [{ name: response.name, url: response.url.replace('http://localhost:1337', '') }, ...this.items]
-      this.total++
+      const response = file.response
+      if (response.code == '0')  {
+        this.items = [{ name: response.data.fileName, url: response.data.urlPath }, ...this.items]
+        this.total++  
+      }
+
     },
     beforeUpload (file) {
       this.items.unshift({
@@ -33,7 +37,12 @@ export default {
       })
         .then(res => {
           
-          this.items = res.data.list
+          this.items = res.data.list.map((row) => {
+            return {
+              name: row.fileName,
+              url: row.urlPath
+            }
+          })
           this.total = res.data.list.length
           this.cachedItems = []
         })
@@ -68,7 +77,10 @@ export default {
                 <a-list-item onClick={() => {
                   this.$emit('changeItem', item)
                 }}>
-                  <ImageItem item={item} />
+                  <ImageItem 
+                    item={item} 
+                    resolveUrl={resolveImgUrl}
+                    />
                 </a-list-item>
               )}
             >

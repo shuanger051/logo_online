@@ -1,26 +1,39 @@
 import Element from "core/models/element";
 import { message } from "ant-design-vue";
 
-import Vue from 'vue'
-import strapi from "@editor/utils/strapi";
+import Vue from "vue";
 import Page from "core/models/page";
 import Work from "core/models/work";
-import { saveTemplate,updateTemplate, getTemplateByID } from "core/api";
-import { AxiosWrapper, handleError } from "@editor/utils/http.js";
-import editorConfig from 'core/Config'
+import {
+  saveTemplate,
+  updateTemplate,
+  getTemplateByID,
+  uploadMaterialAttachment,
+} from "core/api";
+import editorConfig from "core/Config";
 // import router from '@/router.js'
-import {  downloadPoster } from "@editor/utils/canvas-helper.js";
+import { takeScreenshot,downloadPoster } from "@editor/utils/canvas-helper.js";
 const sleep = async (time) => {
   return new Promise((r) => {
-    setTimeout(() => r(), time)
+    setTimeout(() => r(), time);
+  });
+};
+
+const createSaveLoading = (dispatch) => (text) =>  {
+  dispatch('loading/update', {
+    type: 'saveWork_tip',
+    payload: text
+  },{
+    root: true
   })
 }
-function setLoading(commit, loadingName, isLoading) {
-  commit(
-    "loading/update",
-    { type: loadingName, payload: isLoading },
-    { root: true }
-  );
+const showOrHideLoading = (dispatch) => (flag) => {
+  dispatch('loading/update', {
+    type: 'saveWork_loading',
+    payload: flag
+  }, {
+    root: true
+  }) 
 }
 
 export const actions = {
@@ -38,71 +51,66 @@ export const actions = {
     };
     commit("setWork", work);
   },
-  /**
-   * isSaveCover {Boolean} 保存作品时，是否保存封面图
-   * loadingName {String} saveWork_loading, previewWork_loading
-   * 预览作品之前需要先保存，但希望 用户点击保存按钮 和 点击预览按钮 loading_name 能够不同（虽然都调用了 saveWork）
-   * 因为 loading 效果要放在不同的按钮上
-   */
-  async saveWork(
-    { commit, dispatch, state },
-  ) {
 
-      const {currentRoute} = editorConfig.router
-      const data = {
-        name: state.work.title,
-        style: state.work.style,
-        domItem: JSON.stringify(state.work)
-      }
+  async saveWork({ commit, dispatch, state }) {
+    const { currentRoute } = editorConfig.router;
 
-      if (currentRoute.params.id) {
-        data.id = currentRoute.params.id
-        await updateTemplate(data)
-        message.success('保存成功')
-      } else {
-        await saveTemplate(data)
-        message.success('保存成功')
-        await sleep(2)
-        editorConfig.handlerSaveSucessJump()
-      }
-
+    const flag = await dispatch('createCover')
+    if (flag) return 
+    const data = {
+      name: state.work.title,
+      style: state.work.style,
+      domItem: JSON.stringify(state.work),
+    };
+    if (currentRoute.params.id) {
+      data.id = currentRoute.params.id;
+      await updateTemplate(data);
+      message.success("保存成功");
+    } else {
+      await saveTemplate(data);
+      message.success("保存成功");
+      await sleep(2);
+      editorConfig.handlerSaveSucessJump();
+    }
   },
   fetchWork({ commit, dispatch, state }, workId) {
     return getTemplateByID({
-      id:workId
+      id: workId,
     }).then((entry) => {
-      const {data} = entry
+      const { data } = entry;
       try {
-        const str = data.domItem
-        const workData = JSON.parse(str)
+        const str = data.domItem;
+        const workData = JSON.parse(str);
         commit("setWork", workData);
         commit("setEditingPage");
-      } catch(e) {
-        Vue.prototype.$message.error('请输入正确的id')
+      } catch (e) {
+        Vue.prototype.$message.error("请输入正确的id");
       }
-    })
+    });
   },
-  setWorkAsTemplate({ commit, state, dispatch }, workId) {
-    new AxiosWrapper({
-      dispatch,
-      commit,
-      // name: 'editor/formDetailOfWork',
-      loading_name: "setWorkAsTemplate_loading",
-      successMsg: "设置为模板成功",
-    }).post(`/works/set-as-template/${workId || state.work.id}`);
-  },
-  uploadCover({ commit, state, dispatch }, { file } = {}) {
-    const formData = new FormData();
-    formData.append("files", file, `${+new Date()}.png`);
-    formData.append("workId", state.work.id);
-    return new AxiosWrapper({
-      dispatch,
-      commit,
-      name: "editor/setWorkCover",
-      loading_name: "uploadWorkCover_loading",
-      successMsg: "上传封面图成功!",
-      // }).post(`/works/uploadCover/${state.work.id}`, formData)
-    }).post(`/upload/`, formData);
+  async createCover({ commit, state, dispatch,rootState }) {
+    let flag = false
+    const handlerLoading = showOrHideLoading(dispatch)
+    const loadingTip = createSaveLoading(dispatch)
+
+    try {
+      handlerLoading(true)
+      loadingTip("正在生成封面图片...")
+      const file = await takeScreenshot();
+      loadingTip("正在上传封面图片...")
+      const form = new FormData()
+      form.append('file', file)
+      const info = await uploadMaterialAttachment(form);
+      if (info.code == "0") {
+        state.work.cover_image_url = info.data.urlPath
+      }
+    } catch (e) {
+      message.error('生成图片失败')
+      flag = true
+    } finally {
+        handlerLoading(false)
+    }
+    return flag
   },
   downloadPoster({ commit, state, dispatch }) {
     downloadPoster();
@@ -116,23 +124,7 @@ export const mutations = {
    * @param {*} state
    * @param {Object} payload
    *
-    value example: [
-      {
-        "id": 1,
-        "name": "1567769149231.png",
-        "hash": "1660b11229e7473b90f99a9f9afe7675",
-        "sha256": "lKl7f_csUAgOjf0VRYkBZ64EcTjvt4Dt4beNIhELpTU",
-        "ext": ".png",
-        "mime": "image/png",
-        "size": "6.57",
-        "url": "/uploads/1660b11229e7473b90f99a9f9afe7675.png",
-        "provider": "local",
-        "public_id": null,
-        "created_at": "2019-09-06T11:25:49.255Z",
-        "updated_at": "2019-09-06T11:25:49.261Z",
-        "related": []
-      }
-    ]
+
    */
   setWorkCover(state, { type, value }) {
     const [cover] = value;

@@ -10,6 +10,7 @@
  */
 // initial state
 const state = {
+  saveWork_tip: '',
   saveWork_loading: false,
   previewWork_loading: false,
   fetchWorks_loading: false,

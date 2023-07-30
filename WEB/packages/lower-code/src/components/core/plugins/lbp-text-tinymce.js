@@ -9,7 +9,7 @@ export default {
       position: 'relative',
       color: `${this.fontColor} !important`,
       textDecoration: 'none',
-      backgroundColor: this.backgroundColor || 'rgba(255, 255, 255, 0.2)',
+      backgroundColor: this.backgroundColor || 'unset',
       lineHeight: `${this.lineHeight}em`,
       border: `${this.borderWidth}px solid ${this.borderColor}`,
       borderRadius: `${this.borderRadius}px`

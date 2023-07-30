@@ -40,15 +40,14 @@ export default {
       const status = info.file.status
 
       if (status !== 'uploading') {
-        console.log(info.file, info.fileList)
       }
       if (status === 'done' && info.file?.response?.code == '0') {
         this.loading = false
         await this.saveMaterial(info.file.response.data)
         this.uploadSuccess(info)
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
+        this.$message.success(`${info.file.name} 上传成功.`)
       } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
+        this.$message.error(`${info.file.name} 上传失败.`)
       }
     }
   },

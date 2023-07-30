@@ -50,7 +50,9 @@ async function request(url, method, params, config) {
  * @returns
  */
 export function axiosPost(url, config) {
-  return (data) => axios.post(url, data, config);
+  return (data) => {
+    return axios.post(url, data, config)
+  };
 }
 
 /**

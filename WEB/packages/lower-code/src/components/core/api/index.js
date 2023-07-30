@@ -5,3 +5,4 @@ export const getMaterialListByPage = request.axiosGet('/logo/material/getMateria
 export const saveTemplate = request.axiosPost('/logo/template/saveTemplate')
 export const updateTemplate = request.axiosPost('/logo/template/updateTemplate')
 export const getTemplateByID = request.axiosGet('/logo/template/getTemplateByID')
+export const uploadMaterialAttachment =  request.axiosPost('logo/attachment/uploadMaterialAttachment')

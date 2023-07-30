@@ -81,6 +81,10 @@ const CoreEditor = {
     ...mapState("editor", {
       work: (state) => state.work,
     }),
+    ...mapState('loading', [
+      'saveWork_tip',
+      'saveWork_loading'
+    ]),
     ...mapState("dialog", [
       "editScript_dialog",
       "viewScript_dialog",
@@ -95,6 +99,7 @@ const CoreEditor = {
   },
   render(h) {
     return (
+      <a-spin spinning = {this.saveWork_loading} tip={this.saveWork_tip}>
         <a-layout>
           <a-layout>
             <AdjustLeftPanel />
@@ -108,6 +113,7 @@ const CoreEditor = {
             <EditorRightPanel width={this.propsPanelWidth} />
           </a-layout>
       </a-layout>
+      </a-spin>
     );
   },
   created() {
