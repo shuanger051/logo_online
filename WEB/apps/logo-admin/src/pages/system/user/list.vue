@@ -1,50 +1,15 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
-      <a-form-item label="用户名" name="userName">
-        <a-input v-model="formData.userName" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="邮箱" name="email">
-        <a-input v-model="formData.email" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="是否超管" name="isAdmin">
-        <a-select
-          v-model="formData.isAdmin"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="是否禁用" name="isDisabled">
-        <a-select
-          v-model="formData.isDisabled"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
-    <!-- 操作栏 -->
-    <div class="serach-action-bar">
-      <a-space>
-        <a-button type="primary" @click="onSerach">查询</a-button>
-        <a-button type="danger" @click="onReset">重置</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" @click="onAdd">新增</a-button>
-      </a-space>
-    </div>
+    <form-serach :fields="serachFields" @serach="onSerach">
+      <!-- 其他交互按钮 -->
+      <a-button type="primary" @click="onAdd">新增</a-button>
+    </form-serach>
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
       size="small"
+      :loading="loading"
       :bordered="true"
       :data-source="list"
       :pagination="page"
@@ -80,12 +45,15 @@
   </div>
 </template>
 <script>
-import Detail from "./detail";
+import Add from "./add.vue";
+import Edit from "./edit.vue";
+import FormSerach from "@/components/form/FormSerach.vue";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { message } from "ant-design-vue";
 import { systemService } from "@/services";
 export default {
+  components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
@@ -129,6 +97,35 @@ export default {
         },
       ];
     },
+    // 查询字段
+    serachFields() {
+      return [
+        { name: "userName", label: "用户名" },
+        { name: "email", label: "邮箱" },
+        {
+          name: "isAdmin",
+          label: "是否超管",
+          component: "select",
+          props: {
+            options: [
+              { value: "1", label: "是" },
+              { value: "0", label: "否" },
+            ],
+          },
+        },
+        {
+          name: "isDisabled",
+          label: "是否禁用",
+          component: "select",
+          props: {
+            options: [
+              { value: "1", label: "是" },
+              { value: "0", label: "否" },
+            ],
+          },
+        },
+      ];
+    },
   },
   setup() {
     // 表格列表功能
@@ -136,35 +133,25 @@ export default {
       formData,
       list,
       page,
+      loading,
       onSerach,
-      onReset,
       onChange,
       createModalEvent,
     } = useTable(systemService.getSysUserList);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, {
-      title: "新增用户",
-      props: {
-        action: "add",
-      },
-    });
+    const onAdd = createModalEvent(Add, { title: "新增用户" });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, {
-      title: "编辑用户",
-      props: {
-        action: "edit",
-      },
-    });
+    const onEdit = createModalEvent(Edit, { title: "编辑用户" });
 
     return {
       formData,
+      loading,
       list,
       page,
       onAdd,
       onEdit,
       onSerach,
-      onReset,
       onChange,
     };
   },

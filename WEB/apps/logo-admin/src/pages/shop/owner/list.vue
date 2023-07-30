@@ -1,46 +1,9 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
-      <a-form-item label="用户名" name="userName">
-        <a-input v-model="formData.userName" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="邮箱" name="email">
-        <a-input v-model="formData.email" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="是否超管" name="isAdmin">
-        <a-select
-          v-model="formData.isAdmin"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="是否禁用" name="isDisabled">
-        <a-select
-          v-model="formData.isDisabled"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
-    <!-- 操作栏 -->
-    <div class="serach-action-bar">
-      <a-space>
-        <a-button type="primary" @click="onSerach">查询</a-button>
-        <a-button type="danger" @click="onReset">重置</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" @click="onAdd">新增</a-button>
-      </a-space>
-    </div>
+    <form-serach :fields="serachFields" @serach="onSerach">
+      <a-button type="primary" @click="onAdd">新增</a-button>
+    </form-serach>
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
@@ -70,7 +33,9 @@ import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
 import { message } from "ant-design-vue";
+import FormSerach from "@/components/form/FormSerach.vue";
 export default {
+  components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
@@ -89,21 +54,25 @@ export default {
         {
           title: "性别",
           dataIndex: "gender",
+          width: "80px",
           key: "gender",
         },
         {
           title: "商户状态",
           dataIndex: "merchantStatus",
+          width: "80px",
           key: "merchantStatus",
         },
         {
           title: "联系电话",
           dataIndex: "phone",
+          width: "140px",
           key: "phone",
         },
         {
           title: "证件号码",
           dataIndex: "idCard",
+          width: "200px",
           key: "idCard",
         },
         {
@@ -114,7 +83,41 @@ export default {
         {
           title: "操作",
           key: "operation",
+          width: "120px",
           scopedSlots: { customRender: "operation" },
+        },
+      ];
+    },
+    // 查询字段
+    serachFields() {
+      return [
+        { name: "merchantName", label: "商户名称" },
+        {
+          name: "merchantStatus",
+          label: "商户状态",
+          component: "select",
+          props: {
+            options: [
+              // 1-注销，2-开业，3-停业，4-未开业
+              { value: "1", label: "注销" },
+              { value: "2", label: "开业" },
+              { value: "3", label: "停业" },
+              { value: "4", label: "未开业" },
+            ],
+          },
+        },
+        { name: "phone", label: "联系电话" },
+        {
+          name: "gender",
+          label: "性别",
+          component: "select",
+          props: {
+            options: [
+              { value: "0", label: "保密" },
+              { value: "1", label: "男" },
+              { value: "2", label: "女" },
+            ],
+          },
         },
       ];
     },

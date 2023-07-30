@@ -68,7 +68,7 @@
             ]"
           >
             <a-icon slot="prefix" type="picture" />
-            <img slot="suffix" :src="imgCode" />
+            <img slot="suffix" :src="imgCode" @click="onRefreshImgCode" />
           </a-input>
         </a-form-item>
         <div>
@@ -85,15 +85,6 @@
             >登录</a-button
           >
         </a-form-item>
-        <div>
-          其他登录方式
-          <a-icon class="icon" type="alipay-circle" />
-          <a-icon class="icon" type="taobao-circle" />
-          <a-icon class="icon" type="weibo-circle" />
-          <router-link style="float: right" to="/dashboard/workplace"
-            >注册账户</router-link
-          >
-        </div>
       </a-form>
     </div>
   </common-layout>
@@ -106,6 +97,7 @@ import CommonLayout from "@/layouts/CommonLayout";
 // import { loadRoutes } from "@/utils/routerUtil";
 import { mapMutations } from "vuex";
 import { appService } from "@/services";
+import { runPromiseInSequence } from "../../utils/util";
 
 export default {
   name: "Login",
@@ -114,6 +106,7 @@ export default {
     return {
       logging: false,
       error: "",
+      uid: this.onRefreshImgCode(), // 验证码
       form: this.$form.createForm(this),
     };
   },
@@ -126,7 +119,7 @@ export default {
       return (
         process.env.VUE_APP_API_PREFIX +
         "/logo/sys/img-code/kaptcha?uid=" +
-        Math.random()
+        this.uid
       );
     },
   },
@@ -141,34 +134,19 @@ export default {
           const userName = this.form.getFieldValue("userName");
           const password = this.form.getFieldValue("password");
           const captchaCode = this.form.getFieldValue("captchaCode");
-          // 获取秘钥
-          this.getPublicKey()
-            //  密码加密
-            .then((publicKey) =>
-              this.getEncryptSign({ param: password, publicKey })
-            )
-            // 登录
-            .then((password) =>
-              appService
-                .login({
-                  userName,
-                  password,
-                  captchaCode,
-                })
-                .then((res) => {
-                  // 设置登录信息
-                  const { permissionList = [], ...user } = _.get(
-                    res,
-                    "data",
-                    {}
-                  );
-                  this.$store.commit("account/setPermissions", permissionList);
-                  this.$store.commit("account/setUser", user);
-                  this.$router.push({ path: "/home" });
-                })
-            )
+          console.log("队列执行");
+          // 登录流程
+          runPromiseInSequence([
+            this.getPublicKey,
+            this.getEncryptSign,
+            this.login,
+          ])({ userName, password, captchaCode })
             .finally(() => {
               this.logging = false;
+            })
+            // 登录成功跳首页
+            .then(() => {
+              this.$router.push({ path: "/home" });
             })
             .catch((err) => {
               this.error = _.get(err, "msg", "未知错误");
@@ -176,20 +154,49 @@ export default {
         }
       });
     },
+    // 刷新图片验证码
+    onRefreshImgCode() {
+      return (this.uid = +new Date());
+    },
+    // 登录
+    login(ctx) {
+      return (
+        appService
+          .login(_.pick(ctx, ["userName", "password", "captchaCode"]))
+          // 设置登录信息
+          .then((res) => {
+            const { permissionList = [], ...user } = _.get(res, "data", {});
+            this.setUser(user);
+            this.setPermissions(permissionList);
+          })
+      );
+    },
     // 获取公钥
-    getPublicKey() {
-      const { rsaPublicKey: key } = this;
-      if (key) return Promise.resolve(key);
-      return appService.getPublicKey().then((res) => {
-        const key = _.get(res, "data.publicKey");
-        this.rsaPublicKey = key;
-        return key;
-      });
+    getPublicKey(ctx) {
+      return (
+        appService
+          .getPublicKey()
+          // 写入秘钥
+          .then((res) => {
+            ctx.publicKey = _.get(res, "data.publicKey");
+          })
+      );
     },
     // 获取加密串
-    getEncryptSign(data) {
-      return appService.encrypt(data).then((res) => _.get(res, "data.sign"));
+    getEncryptSign(ctx) {
+      return (
+        appService
+          .encrypt({
+            param: ctx.password,
+            publicKey: ctx.publicKey,
+          })
+          // 写入加密密码串
+          .then((res) => {
+            ctx.password = _.get(res, "data.sign");
+          })
+      );
     },
+
     // afterLogin(res) {
     //   this.logging = false;
     //   const loginRes = res.data;

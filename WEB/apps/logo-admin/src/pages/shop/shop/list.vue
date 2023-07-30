@@ -1,46 +1,9 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
-      <a-form-item label="用户名" name="userName">
-        <a-input v-model="formData.userName" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="邮箱" name="email">
-        <a-input v-model="formData.email" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="是否超管" name="isAdmin">
-        <a-select
-          v-model="formData.isAdmin"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="是否禁用" name="isDisabled">
-        <a-select
-          v-model="formData.isDisabled"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
-    <!-- 操作栏 -->
-    <div class="serach-action-bar">
-      <a-space>
-        <a-button type="primary" @click="onSerach">查询</a-button>
-        <a-button type="danger" @click="onReset">重置</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" @click="onAdd">新增</a-button>
-      </a-space>
-    </div>
+    <form-serach :fields="serachFields" @serach="onSerach">
+      <a-button type="primary" @click="onAdd">新增</a-button>
+    </form-serach>
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
@@ -60,7 +23,10 @@
           >修改</a-button
         >
         <!-- btn:删除 -->
-        <a-popconfirm title="是否确认删除该商铺信息？" @confirm="onDel(record)">
+        <a-popconfirm
+          title="删除后不可恢复，是否确认删除该商铺信息？"
+          @confirm="onDel(record)"
+        >
           <a-button type="link" size="small">删除</a-button>
         </a-popconfirm>
       </template>
@@ -73,7 +39,9 @@ import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
 import { message } from "ant-design-vue";
+import FormSerach from "@/components/form/FormSerach.vue";
 export default {
+  components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
@@ -122,6 +90,24 @@ export default {
         },
       ];
     },
+    // 支持查询字段
+    serachFields() {
+      return [
+        { name: "industryType", label: "行业类型" },
+        { name: "address", label: "店铺地址" },
+        {
+          name: "isOldShops",
+          label: "是否老店",
+          component: "select",
+          props: {
+            options: [
+              { value: "1", label: "是" },
+              { value: "0", label: "否" },
+            ],
+          },
+        },
+      ];
+    },
   },
   setup() {
     // 表格列表功能
@@ -130,9 +116,7 @@ export default {
       list,
       page,
       onSerach,
-      onReset,
       onChange,
-      createDelEvent,
       createModalEvent,
     } = useTable(shopService.getShopsInfoListByPage);
 
@@ -148,15 +132,14 @@ export default {
       onAdd,
       onEdit,
       onSerach,
-      onReset,
       onChange,
     };
   },
-  created(){
-    this.onSerach()
+  created() {
+    this.onSerach();
   },
   methods: {
-    // 重置密码
+    // 删除商铺信息
     onDel(record) {
       shopService
         .deleteShopsInfoById(_.pick(record, ["id"]))
@@ -168,4 +151,3 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped></style>

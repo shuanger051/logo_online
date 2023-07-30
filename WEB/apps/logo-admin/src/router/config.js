@@ -1,85 +1,85 @@
-import TabsView from '@/layouts/tabs/TabsView'
-import PageView from '@/layouts/PageView'
+import TabsView from "@/layouts/tabs/TabsView";
+import PageView from "@/layouts/PageView";
 
 // 路由配置
 const options = {
   routes: [
     {
-      path: '/',
-      name: '首页',
+      path: "/",
+      name: "首页",
       component: TabsView,
-      redirect: '/login',
+      redirect: "/login",
       children: [
         {
-          path: 'home',
-          name: '首页',
+          path: "home",
+          name: "首页",
           meta: {
-            icon: 'file-ppt'
+            icon: "file-ppt",
           },
-          component: () => import('@/pages/demo')
+          component: () => import("@/pages/demo"),
         },
         {
-          path: 'system',
-          name: '系统管理',
+          path: "system",
+          name: "系统管理",
           meta: {
-            icon: 'setting',
+            icon: "setting",
           },
           component: PageView,
           children: [
             {
-              path: 'user',
-              name: '用户管理',
-              component: () => import('@/pages/system/user/list'),
+              path: "user",
+              name: "用户管理",
+              component: () => import("@/pages/system/user/list"),
             },
             {
-              path: 'role',
-              name: '角色管理',
-              component: () => import('@/pages/system/role/list'),
+              path: "role",
+              name: "角色管理",
+              component: () => import("@/pages/system/role/list"),
             },
             {
-              path: 'authority',
-              name: '权限管理',
-              component: () => import('@/pages/system/authority/list'),
+              path: "authority",
+              name: "权限管理",
+              component: () => import("@/pages/system/authority/list"),
             },
             {
-              path: 'dict',
-              name: '字典管理',
-              component: () => import('@/pages/system/dict/list'),
-            }
-          ]
+              path: "dict",
+              name: "字典管理",
+              component: () => import("@/pages/system/dict/list"),
+            },
+          ],
         },
         {
-          path: 'shop',
-          name: '商户管理',
+          path: "shop",
+          name: "商户管理",
           meta: {
-            icon: 'shop'
+            icon: "shop",
           },
           component: PageView,
           children: [
             {
-              path: 'owner',
-              name: '商户信息',
-              component: () => import('@/pages/shop/owner/list'),
+              path: "owner",
+              name: "商户信息",
+              component: () => import("@/pages/shop/owner/list"),
             },
             {
-              path: 'shop',
-              name: '商铺信息',
-              component: () => import('@/pages/shop/shop/list'),
-            }
-          ]
+              path: "shop",
+              name: "商铺信息",
+              component: () => import("@/pages/shop/shop/list"),
+            },
+          ],
         },
         {
-          path: 'signboard',
-          name: '店招管理',
+          path: "signboard",
+          name: "店招管理",
           meta: {
-            icon: 'picture'
+            icon: "picture",
           },
           component: PageView,
           children: [
             {
-              path: 'template',
-              name: '模版管理',
-              component: () => import('@/pages/signboard/template/list'),
+              path: "template",
+              name: "模版管理",
+              component: () => import("@/pages/signboard/template/list"),
             },
             {
               path: '/addTemplate/:id?',
@@ -91,79 +91,88 @@ const options = {
               }
             },
             {
-              path: 'apply',
-              name: '商户店招管理',
-              component: () => import('@/pages/signboard/apply/list'),
+              path: "apply",
+              name: "商户店招管理",
+              component: () => import("@/pages/signboard/apply/list"),
             },
             {
-              path: 'material',
-              name: '素材管理',
-              component: () => import('@/pages/signboard/material/list'),
-            }
-          ]
+              path: "material",
+              name: "素材管理",
+              component: () => import("@/pages/signboard/material/list"),
+            },
+          ],
         },
         {
-          path: 'affiche',
-          name: '公告管理',
+          path: "affiche",
+          name: "公告管理",
           meta: {
-            icon: 'notification'
+            icon: "notification",
           },
           component: PageView,
           children: [
             {
-              path: 'column',
-              name: '栏目管理',
-              component: () => import('@/pages/affiche/column/list'),
+              path: "column",
+              name: "栏目管理",
+              component: () => import("@/pages/affiche/column/list"),
             },
             {
-              path: 'inform',
-              name: '通知管理',
-              component: () => import('@/pages/affiche/article/list'),
+              path: "inform",
+              name: "通知管理",
+              component: () => import("@/pages/affiche/article/list"),
             },
             {
-              path: 'policy',
-              name: '政策法规',
-              component: () => import('@/pages/affiche/article/list'),
-            }
-          ]
-        }, {
-          path: 'logs',
-          name: '日志管理',
-          meta: {
-            icon: 'bug'
-          },
-          component: () => import('@/pages/logs/list')
+              path: "policy",
+              name: "政策法规",
+              component: () => import("@/pages/affiche/article/list"),
+            },
+          ],
         },
         {
-          name: '验权页面',
-          path: 'auth/demo',
+          path: "logs",
+          name: "日志管理",
           meta: {
-            icon: 'file-ppt',
-            authority: {
-              permission: 'form',
-              role: 'manager'
+            icon: "bug",
+          },
+          component: PageView,
+          redirect: "/logs/index",
+          children: [
+            {
+              path: "index",
+              name: "日志查询",
+              component: () => import("@/pages/logs/list"),
             },
-            component: () => import('@/pages/demo')
-          }
-        }
-      ]
+          ],
+        },
+        {
+          name: "验权页面",
+          path: "auth/demo",
+          meta: {
+            icon: "file-ppt",
+            authority: {
+              permission: "form",
+              role: "manager",
+            },
+            component: () => import("@/pages/demo"),
+          },
+        },
+      ],
     },
     {
-      path: '/login',
-      name: '登录页',
-      component: () => import('@/pages/login')
+      path: "/login",
+      name: "登录页",
+      component: () => import("@/pages/login"),
     },
     {
-      path: '/403',
-      name: '403',
-      component: () => import('@/pages/exception/403'),
+      path: "/403",
+      name: "403",
+      component: () => import("@/pages/exception/403"),
     },
     {
-      path: '*',
-      name: '404',
-      component: () => import('@/pages/exception/404'),
+      path: "*",
+      name: "404",
+      component: () => import("@/pages/exception/404"),
     },
-  ]
-}
+  ],
+};
 
-export default options
+export default options;

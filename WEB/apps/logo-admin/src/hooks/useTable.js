@@ -7,20 +7,40 @@ import modalConfirm from "ant-design-vue/es/modal/confirm";
  * @param {*} request
  */
 export default function useTable(request) {
-  // 表单查询
-  const formData = reactive({});
   // 页码
   const page = reactive({
     current: 0,
     pageSize: 30,
     total: 0,
   });
+  // 加载状态
+  const loading = ref(false);
   // 数据列表
   const list = ref([]);
+  // 查询条件
+  let condition = {};
 
   // 查询数据
   function queryData(params = {}) {
-    return request(params)
+    const {
+      pageNum = page.current,
+      pageSize = page.pageSize,
+      ...data
+    } = params;
+    // 判断查询条件
+    if (!_.isEmpty(data)) condition = data;
+    // 请求状态
+    loading.value = true;
+    return request(
+      Object.assign(
+        // 参数传入
+        {
+          pageNum,
+          pageSize,
+        },
+        condition
+      )
+    )
       .then((res) => {
         // 更新列表数据
         list.value = _.get(res, "data.list");
@@ -30,6 +50,7 @@ export default function useTable(request) {
         page.current = pageNum;
         page.pageSize = pageSize;
       })
+      .finally(() => (loading.value = false))
       .catch((err) => {
         message.error("查询失败，请稍后再试！");
         console.warn(err);
@@ -37,12 +58,18 @@ export default function useTable(request) {
   }
 
   // 查询
-  function onSerach() {
+  function onSerach(data) {
     return queryData({
       pageNum: 1,
+      ...data,
+    });
+  }
+
+  // 分页、排序、筛选
+  function onChange(page) {
+    return queryData({
+      pageNum: page.current,
       pageSize: page.pageSize,
-      // 查询字段
-      ...formData,
     });
   }
 
@@ -61,7 +88,7 @@ export default function useTable(request) {
   }
 
   // event：弹窗事件
-  function createModalEvent(compt, { props: defaultProps, ...modalConf } = {}) {
+  function createModalEvent(compt, { props: defProps, ...modalConf } = {}) {
     return (props) => {
       let el = null; // 子元素引用
       return modalConfirm(
@@ -78,7 +105,7 @@ export default function useTable(request) {
             onCancel: () => el?.onCancel && el.onCancel(),
             content: (h) =>
               h(compt, {
-                props: Object.assign({}, defaultProps, props),
+                props: Object.assign({}, defProps, props),
                 ref: (e) => (el = e),
               }),
           }
@@ -87,28 +114,13 @@ export default function useTable(request) {
     };
   }
 
-  // 重置查询
-  function onReset() {
-    Object.keys(formData).forEach((key) => (formData[key] = null));
-  }
-
-  // 分页、排序、筛选
-  function onChange(page) {
-    return queryData({
-      pageNum: page.current,
-      pageSize: page.pageSize,
-      ...formData,
-    });
-  }
-
   return {
     // data
     list,
     page,
-    formData,
+    loading,
     // method
     onSerach,
-    onReset,
     onChange,
     createModalEvent,
     createDelEvent,

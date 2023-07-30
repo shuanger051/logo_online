@@ -2,16 +2,15 @@
 module.exports = {
   theme: {
     color: '#1890ff',
-    mode: 'light',
     success: '#52c41a',
     warning: '#faad14',
     error: '#f5222f'
   },
-  multiPage: true,
+  // multiPage: true,
   animate: {
-    disabled: false,
+    disabled: true,
     name: 'lightSpeed',
     direction: 'left'
   }
 }
-      
+            

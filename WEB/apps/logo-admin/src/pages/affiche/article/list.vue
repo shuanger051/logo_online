@@ -1,50 +1,14 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
-      <a-form-item label="用户名" name="userName">
-        <a-input v-model="formData.userName" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="邮箱" name="email">
-        <a-input v-model="formData.email" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="是否超管" name="isAdmin">
-        <a-select
-          v-model="formData.isAdmin"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="是否禁用" name="isDisabled">
-        <a-select
-          v-model="formData.isDisabled"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="0">否</a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
-    <!-- 操作栏 -->
-    <div class="serach-action-bar">
-      <a-space>
-        <a-button type="primary" @click="onSerach">查询</a-button>
-        <a-button type="danger" @click="onReset">重置</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" @click="onAdd">新增</a-button>
-      </a-space>
-    </div>
+    <form-serach :fields="serachFields" @serach="onSerach">
+      <a-button type="primary" @click="onAdd">新增</a-button>
+    </form-serach>
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
       size="small"
+      :loading="loading"
       :bordered="true"
       :data-source="list"
       :pagination="page"
@@ -56,19 +20,30 @@
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onDel(record)"
-          >删除</a-button
+        <a-button
+          v-if="record.status == '1'"
+          type="link"
+          size="small"
+          @click="onAudit({ record })"
+          >审核</a-button
         >
+        <!-- btn:删除 -->
+        <a-popconfirm title="是否确认删除该文章？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
 </template>
 <script>
 import Detail from "./detail";
+import Audit from "./audit";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { afficheService } from "@/services";
+import FormSerach from "@/components/form/FormSerach.vue";
 export default {
+  components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
@@ -77,23 +52,47 @@ export default {
         {
           title: "标题",
           dataIndex: "contentExt.title",
-          key: "title",
+          key: "contentExt.title",
+        },
+        {
+          title: "副标题",
+          dataIndex: "contentExt.shortTitle",
+          key: "contentExt.shortTitle",
+        },
+        {
+          title: "栏目id",
+          dataIndex: "channelId",
+          key: "channelId",
+        },
+        {
+          title: "是否推荐",
+          dataIndex: "isRecommend",
+          key: "isRecommend",
+        },
+        {
+          title: "状态",
+          dataIndex: "status",
+          key: "status",
+        },
+        {
+          title: "日访问数",
+          dataIndex: "viewsDay",
+          key: "viewsDay",
+        },
+        {
+          title: "作者",
+          dataIndex: "contentExt.author",
+          key: "contentExt.author",
         },
         {
           title: "摘要",
           dataIndex: "contentExt.description",
-          key: "description",
+          key: "contentExt.description",
         },
         {
-          title: "是否超管",
-          dataIndex: "isAdmin",
-          key: "isAdmin",
-        },
-        {
-          title: "是否禁用",
-          dataIndex: "isDisabled",
-          key: "isDisabled",
-          scopedSlots: { customRender: "isDisabled" },
+          title: "来源",
+          dataIndex: "contentExt.origin",
+          key: "contentExt.origin",
         },
         {
           title: "操作",
@@ -102,44 +101,68 @@ export default {
         },
       ];
     },
+    serachFields() {
+      return [
+        { name: "title", label: "标题" },
+        { name: "status", label: "状态" },
+        {
+          name: "isRecommend",
+          label: "是否推荐",
+          component: "select",
+          props: {
+            options: [
+              { value: "1", label: "是" },
+              { value: "0", label: "否" },
+            ],
+          },
+        },
+      ];
+    },
   },
   setup() {
     // 表格列表功能
     const {
       formData,
+      loading,
       list,
       page,
       onSerach,
-      onReset,
       onChange,
-      createDelEvent,
       createModalEvent,
     } = useTable(afficheService.getContentListByPage);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, { title: "新增用户" });
+    const onAdd = createModalEvent(Detail, { title: "新增文章" });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, { title: "编辑用户" });
-    // 删除事件
-    const onDel = createDelEvent((data) =>
-      afficheService.deleteContentById(_.pick(data, ["id"]))
-    );
+    const onEdit = createModalEvent(Detail, { title: "编辑文章" });
+    // 审核
+    const onAudit = createModalEvent(Audit, { title: "审核意见" });
 
     return {
       formData,
+      loading,
       list,
       page,
-      onDel,
       onAdd,
       onEdit,
+      onAudit,
       onSerach,
-      onReset,
       onChange,
     };
   },
+  created() {
+    this.onSerach();
+  },
   methods: {
-    // 重置密码
-    onResetPwd() {},
+    // event：删除
+    onDel(record) {
+      afficheService
+        .deleteContentById(_.pick(record, ["id"]))
+        .then(() => this.$message.success("删除成功"))
+        .catch((err) =>
+          this.$message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
+        );
+    },
   },
 };
 </script>
