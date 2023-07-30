@@ -66,4 +66,10 @@ public interface ShopsInfoService {
          */
         List<ShopsInfoDTO> getShopsInfoByMerchantId(Long merchantId);
 
+        /**
+         * 保存店铺附件
+         * @param list
+         */
+        void saveShopsAttachments(List<ShopsAttachmentDTO> list);
+
 }

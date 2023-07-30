@@ -1,5 +1,6 @@
 package com.qinghua.website.api.controller;
 
+import cn.hutool.core.lang.UUID;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
@@ -17,22 +18,28 @@ import com.qinghua.website.server.utils.RSACryptoHelper;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/app")
 public class OpenAPIAPPController {
+
+    @Value("${uploadPath.savePath}")
+    private String savePath;   //图标物理存储路径
+
+    @Value("${uploadPath.urlPath}")
+    private String urlPath;   //图标映射路径
 
     @Autowired
     private CustomerInfoService customerInfoService;
@@ -48,6 +55,9 @@ public class OpenAPIAPPController {
 
     @Autowired
     private ContentService contentService;
+
+    @Autowired
+    private LogoInfoService logoInfoService;
 
     /**
      * APP注册客户信息
@@ -217,13 +227,51 @@ public class OpenAPIAPPController {
 
     /**
      * APP上传店招信息
-     * @param logoInfoSaveIO
+     * @param multipartFile
+     * @param request
      * @return
      */
-    @LogAnnotation(logType = "save",logDesc = "APP上传店招信息API")
-    @RequestMapping("/saveLogoInfoAPI")
-    public ResponseResult<Object> saveLogoInfoAPI(@Validated @RequestBody LogoInfoSaveIO logoInfoSaveIO){
-        return null;
+    @LogAnnotation(logType = "upload",logDesc = "APP上传店招信息API")
+    @RequestMapping(value = "/saveLogoInfoAPI", method = RequestMethod.POST)
+    public ResponseResult<Object> saveLogoInfoAPI(@RequestPart("file") MultipartFile multipartFile, Long shopsId, Long merchantId , HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/logo/" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(frontPath);
+                logoInfoService.saveLogoInfo(logoInfoDTO);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
     }
 
     /**
@@ -237,6 +285,26 @@ public class OpenAPIAPPController {
         ContentDTO res = contentService.getContentByIDAPI(id);
         ContentVO vo = BeanToolsUtil.copyOrReturnNull(res,ContentVO.class);
         return ResponseResult.success(vo);
+    }
+
+    /**
+     * 校验文件是否合法
+     * @param file
+     * @return
+     */
+    public void checkFile(MultipartFile file){
+
+        if (!file.isEmpty()) {
+            //文件名称
+            int begin = Objects.requireNonNull(file.getOriginalFilename()).indexOf(".");
+            //文件名称长度
+            int last = file.getOriginalFilename().length();
+            if (file.getSize() > 5242880) {
+                throw new IllegalArgumentException("上传文件不可超5M");
+            }
+        } else {
+            throw new IllegalArgumentException("该文件无数据");
+        }
     }
 
 }

@@ -36,6 +36,9 @@ public class MaterialController {
         MaterialDTO queryDTO = BeanToolsUtil.copyOrReturnNull(materialQueryIO,MaterialDTO.class);
         PageInfo<MaterialDTO> pageList =  materialService.getMaterialListByPage(queryDTO);
         List<MaterialVO> materialVOList =  BeanToolsUtil.copyAsList(pageList.getList(),MaterialVO.class);
+
+        materialVOList.forEach(item->item.setUrlPath("/savePath/material/" + item.getFilePath() + "/" + item.getFileName()));
+
         PageListVO<MaterialVO> resp = new PageListVO<>();
         resp.setList(materialVOList);
         resp.setTotal(pageList.getTotal());
@@ -54,7 +57,10 @@ public class MaterialController {
     public ResponseResult<Object> getMaterialByID(@RequestParam("id") Long id){
         MaterialDTO material = materialService.getMaterialById(id);
         MaterialVO materialVO = BeanToolsUtil.copyOrReturnNull(material,MaterialVO.class);
-        return ResponseResult.success(materialVO);
+        if(null != materialVO){
+            materialVO.setUrlPath("/savePath/material/" + materialVO.getFilePath() + "/" + materialVO.getFileName());
+        }
+        return ResponseResult.success(null == materialVO ? "无数据" : materialVO);
     }
 
     /**

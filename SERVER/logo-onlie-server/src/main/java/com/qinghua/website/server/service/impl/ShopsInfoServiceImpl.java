@@ -38,8 +38,8 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     /**
      * 文章附件上传路径地址
      */
-    @Value("${upload.path.shops}")
-    private String shopsPath;
+    @Value("${uploadPath.savePath}")
+    private String savePath;
 
     @Override
     public List<ShopsInfoDTO> getShopsInfoList(ShopsInfoDTO bean) {
@@ -91,7 +91,7 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
         if(null != resList && resList.size() > 0){
             for(int i=0;i<resList.size();i++){
                 //先执行服务器文件清除动作
-                String filePath = shopsPath + File.separator + resList.get(i).getAttachmentPath() + "\\" + resList.get(i).getAttachmentName();
+                String filePath = savePath + "shops/" + File.separator + resList.get(i).getAttachmentPath() + "\\" + resList.get(i).getAttachmentName();
                 //首先清除服务器文件
                 FileUtils.deleteFile(filePath);
             }
@@ -125,7 +125,7 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
         ShopsAttachmentDTO res = attachmentMapper.getShopsAttachmentByAttachmentName(attachmentName);
         if(null != res){
             //先执行服务器文件清除动作
-            String filePath = shopsPath + File.separator + res.getAttachmentPath() + "\\" + attachmentName;
+            String filePath = savePath + "shops/" + File.separator + res.getAttachmentPath() + "\\" + attachmentName;
             //首先清除服务器文件
             FileUtils.deleteFile(filePath);
             //执行数据库清除
@@ -143,6 +143,14 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     @Override
     public List<ShopsInfoDTO> getShopsInfoByMerchantId(Long merchantId){
         return shopsInfoMapper.getShopsInfoByMerchantId(merchantId);
+    }
+
+    /**
+     * 保存店铺附件
+     * @param list
+     */
+    public void saveShopsAttachments(List<ShopsAttachmentDTO> list){
+        attachmentMapper.saveShopsAttachmentByList(list);
     }
 
 }

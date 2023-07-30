@@ -4,11 +4,15 @@ import cn.hutool.core.lang.UUID;
 import com.google.common.base.Preconditions;
 import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.vo.FileVO;
+import com.qinghua.website.api.controller.vo.ShopsAttachmentVO;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
-import com.qinghua.website.server.domain.ContentAttachmentDTO;
+import com.qinghua.website.server.domain.*;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.ContentAttachmentService;
+import com.qinghua.website.server.service.LogoInfoService;
+import com.qinghua.website.server.service.MaterialService;
+import com.qinghua.website.server.service.ShopsInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +28,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,33 +41,24 @@ import java.util.Objects;
 @RequestMapping("/attachment")
 public class AttachmentController {
 
-    /**
-     * 文章附件上传路径地址
-     */
-    @Value("${upload.path.content}")
-    private String contentPath;
+    @Value("${uploadPath.savePath}")
+    private String savePath;   //图标物理存储路径
 
-    /**
-     * 商铺附件上传路径
-     */
-    @Value("${upload.path.shops}")
-    private String shopsPath;
-
-    /**
-     * 素材附件上传路径
-     */
-    @Value("${upload.path.material}")
-    private String materialPath;
-
-    /**
-     * 店招附件上传路径
-     */
-    @Value("${upload.path.logo}")
-    private String logoPath;
+    @Value("${uploadPath.urlPath}")
+    private String urlPath;   //图标映射路径
 
 
     @Autowired
     private ContentAttachmentService attachmentService;
+
+    @Autowired
+    private ShopsInfoService shopsInfoService;
+
+    @Autowired
+    private MaterialService materialService;
+
+    @Autowired
+    private LogoInfoService logoInfoService;
 
     /**
      * 上传文章附件
@@ -72,7 +69,7 @@ public class AttachmentController {
     @LogAnnotation(logType = "upload",logDesc = "上传文章附件")
     @RequestMapping(value = "/uploadContentAttachment", method = RequestMethod.POST)
     @RequiresPermissions("/attachment/uploadContentAttachment")
-    public ResponseResult<Object> uploadContentAttachment(@RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseResult<Object> uploadContentAttachment(@RequestPart("file") MultipartFile multipartFile, Long contentId, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -81,73 +78,36 @@ public class AttachmentController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
-            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
-            boolean mkdirs = new File(contentPath + "\\" + frontPath).mkdirs();
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File(savePath + "/content/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
-            String relativeFileName = frontPath + "\\" + newFileName  ;
-            String fullName = contentPath + "\\" + relativeFileName;
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/content/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            if(null != contentId){
+                ContentAttachmentDTO attachmentDTO = new ContentAttachmentDTO();
+                attachmentDTO.setContentId(contentId);
+                attachmentDTO.setContentId(1L);
+                attachmentDTO.setFilename(fileName);
+                attachmentDTO.setAttachmentName(newFileName);
+                attachmentDTO.setAttachmentPath(frontPath);
+                attachmentService.saveContentAttachment(attachmentDTO);
+            }
 
             FileVO fileVO = new FileVO();
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath + "content/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
         }
-    }
-
-    /**
-     * 下载文章附件
-     * @param attachmentName
-     * @param request
-     * @param response
-     * @return
-     */
-    @LogAnnotation(logType = "download",logDesc = "下载文章附件")
-    @RequestMapping(value = "/downloadContentAttachment", method = RequestMethod.GET)
-    @RequiresPermissions("/attachment/downloadContentAttachment")
-    public void downloadContentAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
-
-        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
-
-        try {
-            ContentAttachmentDTO attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
-            if(null != attachment && null != attachment.getAttachmentPath() && null != attachment.getAttachmentName()){
-                String relativeFileName = attachment.getAttachmentPath() +"\\"+ attachment.getAttachmentName();
-
-                String fullName = contentPath + File.separator + relativeFileName;
-                File file = new File(fullName);
-                FileInputStream fileInputStream = new FileInputStream(file);
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                response.reset();
-                response.setCharacterEncoding("utf-8");
-                response.setContentType("application/octet-stream");
-                response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
-                response.setHeader("Content-Length", String.valueOf(file.length()));
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
-                byte[] bytes = new byte[1024];
-                int len;
-                while ((len = bufferedInputStream.read(bytes)) > 0) {
-                    bufferedOutputStream.write(bytes, 0, len);
-                }
-                bufferedInputStream.close();
-                bufferedOutputStream.flush();
-
-                //更新下载次数
-                attachmentService.updateDownloadTimes(attachment.getId());
-            }else{
-                throw new BizException(SysConstant.ERROR_GET_ATTACHMENT_INFO_FAIL);
-            }
-        } catch (Exception exception) {
-            throw new BizException(SysConstant.ERROR_DOWNLOAD_FAIL);
-        }
-
     }
 
     /**
@@ -159,7 +119,7 @@ public class AttachmentController {
     @LogAnnotation(logType = "upload",logDesc = "上传商铺附件")
     @RequestMapping(value = "/uploadShopsAttachment", method = RequestMethod.POST)
     @RequiresPermissions("/attachment/uploadShopsAttachment")
-    public ResponseResult<Object> uploadShopsAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseResult<Object> uploadShopsAttachment(@RequestPart("file")  MultipartFile multipartFile,Long shopsId, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -168,68 +128,38 @@ public class AttachmentController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
-            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
-            boolean mkdirs = new File( shopsPath + "\\" + frontPath).mkdirs();
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
-            String relativeFileName = frontPath + "\\" + newFileName  ;
-            String fullName = shopsPath + "\\" + relativeFileName;
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/shops/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(frontPath);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+                shopsInfoService.saveShopsAttachments(list);
+            }
 
             FileVO fileVO = new FileVO();
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
-        }
-    }
-
-    /**
-     * 下载商铺附件
-     * @param attachmentName
-     * @param request
-     * @param response
-     * @return
-     */
-    @LogAnnotation(logType = "download",logDesc = "下载商铺附件")
-    @RequestMapping(value = "/downloadShopsAttachment", method = RequestMethod.GET)
-    @RequiresPermissions("/attachment/downloadShopsAttachment")
-    public void downloadShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
-
-        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
-
-        try {
-            ContentAttachmentDTO attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
-            if(null != attachment && null != attachment.getAttachmentPath() && null != attachment.getAttachmentName()){
-                String relativeFileName = attachment.getAttachmentPath() +"\\"+ attachment.getAttachmentName();
-
-                String fullName = shopsPath + File.separator + relativeFileName;
-                File file = new File(fullName);
-                FileInputStream fileInputStream = new FileInputStream(file);
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                response.reset();
-                response.setCharacterEncoding("utf-8");
-                response.setContentType("application/octet-stream");
-                response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
-                response.setHeader("Content-Length", String.valueOf(file.length()));
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
-                byte[] bytes = new byte[1024];
-                int len;
-                while ((len = bufferedInputStream.read(bytes)) > 0) {
-                    bufferedOutputStream.write(bytes, 0, len);
-                }
-                bufferedInputStream.close();
-                bufferedOutputStream.flush();
-            }else{
-                throw new BizException(SysConstant.ERROR_GET_ATTACHMENT_INFO_FAIL);
-            }
-        } catch (Exception exception) {
-            throw new BizException(SysConstant.ERROR_DOWNLOAD_FAIL);
         }
     }
 
@@ -251,21 +181,35 @@ public class AttachmentController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
-            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
-            boolean mkdirs = new File( materialPath + "\\" + frontPath).mkdirs();
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/material/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
-            String relativeFileName = frontPath + "\\" + newFileName  ;
-            String fullName = materialPath + "\\" + relativeFileName;
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/material/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //更新素材
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setName(fileName);
+            materialDTO.setFileName(newFileName);
+            materialDTO.setFilePath(frontPath);
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG")){
+                materialDTO.setFileType("1");
+            }else{
+                materialDTO.setFileType("2");
+            }
+
+            materialService.saveMaterial(materialDTO);
 
             FileVO fileVO = new FileVO();
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+ "material/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
@@ -281,7 +225,7 @@ public class AttachmentController {
     @LogAnnotation(logType = "upload",logDesc = "上传店招附件")
     @RequestMapping(value = "/uploadLogoAttachment", method = RequestMethod.POST)
     @RequiresPermissions("/attachment/uploadLogoAttachment")
-    public ResponseResult<Object> uploadLogoAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseResult<Object> uploadLogoAttachment(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,Long merchantId ,HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -290,21 +234,32 @@ public class AttachmentController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
-            String frontPath = new SimpleDateFormat("yyyy\\MM\\dd").format(new Date());
-            boolean mkdirs = new File( logoPath + "\\" + frontPath).mkdirs();
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
-            String relativeFileName = frontPath + "\\" + newFileName  ;
-            String fullName = logoPath + "\\" + relativeFileName;
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/logo/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(frontPath);
+                logoInfoService.saveLogoInfo(logoInfoDTO);
+            }
 
             FileVO fileVO = new FileVO();
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
@@ -330,8 +285,5 @@ public class AttachmentController {
             throw new IllegalArgumentException("该文件无数据");
         }
     }
-
-
-
 
 }

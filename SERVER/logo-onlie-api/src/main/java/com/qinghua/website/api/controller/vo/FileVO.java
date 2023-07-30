@@ -20,6 +20,11 @@ public class FileVO {
      */
     private String attachmentName;
 
+    /**
+     * 文件预览映射路径
+     */
+    private String urlPath;
+
     @Override
     public String toString() {
         return "FileVO{" +

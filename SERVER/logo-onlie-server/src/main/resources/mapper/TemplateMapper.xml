@@ -83,7 +83,7 @@
     </update>
 
     <!--保存-->
-    <insert id="saveTemplate" parameterType="com.qinghua.website.server.domain.TemplateDTO">
+    <insert id="saveTemplate" parameterType="com.qinghua.website.server.domain.TemplateDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_template
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name !=null and name !=''">name,</if>

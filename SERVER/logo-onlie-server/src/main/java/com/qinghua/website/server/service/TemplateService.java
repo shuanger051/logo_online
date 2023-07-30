@@ -34,7 +34,7 @@ public interface TemplateService {
          * 新增
          * @param bean
          */
-        void saveTemplate(TemplateDTO bean);
+        Long saveTemplate(TemplateDTO bean);
 
         /**
          * 根据ID修改
