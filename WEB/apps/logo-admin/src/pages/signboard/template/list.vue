@@ -196,9 +196,10 @@ export default {
       let prefix = process.env.VUE_APP_API_BASE_URL;
       try {
         json = JSON.parse(record.domItem);
-        src = isDev
-          ? '/api/logo' + json.cover_image_url
-          : prefix + '/logo/'+ json.cover_image_url;
+        // src = isDev
+        //   ? '/api/logo' + json.cover_image_url
+        //   : prefix + '/logo/'+ json.cover_image_url;
+        src = '/api/logo' + json.cover_image_url
       } catch (e) {
         console.log(e);
       }

@@ -5,6 +5,6 @@ export const resolveImgUrl = (url) => {
   if (reg.test(url)) {
     return url
   }
-  return isDev ? '/api/logo'+url : prefix + '/logo/'+url
-
+  // return isDev ? '/api/logo'+url : prefix + '/logo/'+url
+  return '/api/logo'+url
 }
