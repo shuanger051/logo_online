@@ -22,24 +22,12 @@
         value: 'sans-serif'
       },
       {
-        label: '鸿雷行书简体',
-        value: 'hongleihangshujianti'
-      },
-      {
         label: '鸿雷拙书简体',
         value: 'hongleizhuoshujianti'
       },
       {
         label: '钟齐志莽行书',
         value: 'zhongqizhimanghangshu'
-      },
-      {
-        label: '荆南麦圆体',
-        value: 'jingnanmaiyuanti'
-      },
-      {
-        label: '荆南缘默体',
-        value: 'jingnanyuanmoti'
       },
       {
         label: '美呗嘿嘿体',
@@ -86,14 +74,6 @@
         value: 'pangmenzhengdaoxixianti'
       },
       {
-        label: '寒蝉高黑体',
-        value: 'hanchangaoheiti'
-      },
-      {
-        label: '寒蝉宽黑体',
-        value: 'hanchankuanheiti'
-      },
-      {
         label: '宅在家麦克笔',
         value: 'zhaizaijiamaikebi'
       },
@@ -138,10 +118,6 @@
         value: 'chuangketiejingangti'
       },
       {
-        label: '优设标题圆',
-        value: 'youshebiaotiyuan'
-      },
-      {
         label: '仓迹高德国妙黑',
         value: 'cangjigaodeguomiaohei'
       },
@@ -172,10 +148,6 @@
       {
         label: 'kuaikanshijieti',
         value: 'kuaikanshijieti'
-      },
-      {
-        label: 'douyuFont',
-        value: 'douyufont'
       },
       {
         label: 'YuFanXinYu-Regular',
@@ -256,18 +228,6 @@
       {
         label: 'CKTBMZL',
         value: 'cktbmzl'
-      },
-      {
-        label: 'Alimama_DongFangDaKai_Regular',
-        value: 'alimama_dongfangdakai_regular'
-      },
-      {
-        label: 'AlimamaShuHeiTi-Bold',
-        value: 'alimamashuheiti-bold'
-      },
-      {
-        label: 'AlimamaDaoLiTi',
-        value: 'alimamadaoliti'
       },
     ]
     export default lists

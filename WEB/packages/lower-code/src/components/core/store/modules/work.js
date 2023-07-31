@@ -92,10 +92,11 @@ export const actions = {
     let flag = false
     const handlerLoading = showOrHideLoading(dispatch)
     const loadingTip = createSaveLoading(dispatch)
-
+    commit('setEditingElement', null)
     try {
       handlerLoading(true)
       loadingTip("正在生成封面图片...")
+      await sleep(500);
       const file = await takeScreenshot();
       loadingTip("正在上传封面图片...")
       const form = new FormData()

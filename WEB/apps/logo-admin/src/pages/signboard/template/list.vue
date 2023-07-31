@@ -148,7 +148,6 @@ export default {
   setup() {
     // 表格列表功能
     const {
-      formData,
       list,
       page,
       onSerach,
@@ -159,7 +158,7 @@ export default {
     } = useTable(signboardService.getTemplateListByPage);
 
     const formStyle = ref([]);
-
+    const formData = ref({});
     // 删除事件
     const onDel = createDelEvent(async ({ record, index }) => {
       const data = await signboardService.deleteTemplateByID(
@@ -171,7 +170,6 @@ export default {
     const changeStyle = (v) => {
       formData.style = v.join(",");
     };
-
     return {
       formData,
       list,
@@ -196,9 +194,6 @@ export default {
       let prefix = process.env.VUE_APP_API_BASE_URL;
       try {
         json = JSON.parse(record.domItem);
-        // src = isDev
-        //   ? '/api/logo' + json.cover_image_url
-        //   : prefix + '/logo/'+ json.cover_image_url;
         src = '/api/logo' + json.cover_image_url
       } catch (e) {
         console.log(e);

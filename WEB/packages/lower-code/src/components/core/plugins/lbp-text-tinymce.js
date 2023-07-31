@@ -12,7 +12,8 @@ export default {
       backgroundColor: this.backgroundColor || 'unset',
       lineHeight: `${this.lineHeight}em`,
       border: `${this.borderWidth}px solid ${this.borderColor}`,
-      borderRadius: `${this.borderRadius}px`
+      borderRadius: `${this.borderRadius}px`,
+      fontSize: `${this.fontSize}px` || '14px'
     }
     return <div style={style} domPropsInnerHTML={this.text} class="ql-editor ql-container"></div>
   },
@@ -25,6 +26,7 @@ export default {
   props: {
     fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
     fontFamily: PropTypes.select({ defaultValue: '', label: '字体', options: font }),
+    fontSize: PropTypes.number({ defaultValue: 14, label: '字体大小(px)', options: font }),
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
     borderRadius: PropTypes.number({ label: '圆角(px)' }),
     borderColor: PropTypes.color({ label: '边框颜色' }),

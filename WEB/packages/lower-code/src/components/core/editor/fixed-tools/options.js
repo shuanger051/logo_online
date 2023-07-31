@@ -7,6 +7,30 @@ const fixedTools = [
     action(){ this.saveWork() }
   },
   {
+    i18nTooltip: 'editor.fixedTool.moveToTop',
+    label: '置顶',
+    icon: 'arrow-circle-up',
+    action: function () { this.elementManager({ type: 'move2Top' }) }
+  },
+  {
+    i18nTooltip: 'editor.fixedTool.moveToBottom',
+    label: '置底',
+    icon: 'arrow-circle-down',
+    action: function () { this.elementManager({ type: 'move2Bottom' }) }
+  },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.moveUp',
+  //   label: '上移',
+  //   icon: 'arrow-up',
+  //   action: function () { this.elementManager({ type: 'addZindex' }) }
+  // },
+  // {
+  //   i18nTooltip: 'editor.fixedTool.moveDown',
+  //   label: '下移',
+  //   icon: 'arrow-down',
+  //   action: function () { this.elementManager({ type: 'minusZindex' }) }
+  // },
+  {
     i18nTooltip: 'editor.fixedTool.undo',
     icon: 'mail-reply',
     action: () => undoRedoHistory.undo(),

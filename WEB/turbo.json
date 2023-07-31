@@ -18,6 +18,9 @@
     "serve": {
       "cache": false
     },
+    "font": {
+      "cache": false
+    },
     "test": {
       "outputs": []
     }

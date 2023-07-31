@@ -18,6 +18,7 @@ export default {
     ])
   },
   render () {
+    // <a-icon class={['shortcut-icon', 'fa', `fa-${tool.icon}`, ]} type={tool.icon} aria-hidden='true' />
     return (
       <a-layout-sider
         width="40"

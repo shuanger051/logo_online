@@ -1,7 +1,12 @@
 const { glob } = require("glob");
 const pinyin = require("pinyin");
+const path = require('path')
 const fs = require('fs');
 const ejs = require('ejs')
+
+const resolve = (str) => {
+  return path.resolve(__dirname, str)
+}
 
 const pyConfig = {
   style: 0,
@@ -34,7 +39,7 @@ const cssTemp = `
     @font-face {
       font-family: '<%= item.value %>';
       <% for (let ext of item.exts) {%>
-      src: url('./font/<%= item.alias+'.'+ext %>');
+      src: url('./font/<%= item.alias+'.'+ext %>') format('<%= item.fontMeta[ext].format %>');
       <% } %>
     }
   <% } %>
@@ -50,11 +55,21 @@ const jsTemp = `
     export default lists
 `;
 
+const fontMeta = {
+  ttf: {
+    priority: 1,
+    format: 'truetype'
+  },
+  woff2: {
+    priority: 2,
+    format: 'woff2'
+  }
+}
 const getFontList = async () => {
   let fontList = [];
   const pyMap = new Map();
   const aliasMap = new Map();
-  const results = await glob("./font/*.{ttf,otf}", {
+  const results = await glob(resolve("./font/*.{ttf,woff2}"), {
     stat: true,
     withFileTypes: true,
   });
@@ -74,7 +89,8 @@ const getFontList = async () => {
       item = {
         exts: [ext],
         alias: alias,
-        value: py
+        value: py,
+        fontMeta
       }
       fontList.push(item)
       aliasMap.set(alias, item)
@@ -82,6 +98,10 @@ const getFontList = async () => {
     }
   })
 
+  fontList.forEach((item) => {
+    item.exts.sort((a, b) => item.fontMeta[a]?.priority > item.fontMeta[b]?.priority ? 1 : -1)
+  })
+  
   return fontList;
 };
 
@@ -96,8 +116,8 @@ const createFile = (data) => {
       ...data.fontList
     ]
   })
-  fs.writeFileSync('./font.scss',cssStr)
-  fs.writeFileSync('./fontMap.js',jsStr)
+  fs.writeFileSync(resolve('./font.scss'),cssStr)
+  fs.writeFileSync(resolve('./fontMap.js'),jsStr)
 
 }
 

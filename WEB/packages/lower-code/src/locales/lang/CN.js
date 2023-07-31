@@ -79,6 +79,10 @@ export default {
       }
     },
     fixedTool: {
+      moveToTop: '置顶',
+      moveToBottom: '置底',
+      moveUp: '上移',
+      moveDown: '下移',
       undo: '撤销{hotkey}',
       redo: '重做{hotkey}',
       preview: '预览',

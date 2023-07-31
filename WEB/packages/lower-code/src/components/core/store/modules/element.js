@@ -106,7 +106,10 @@ export const mutations = {
       case 'minusZindex':
         const maxZindex = elements.length
         const eleZindex = editingElement.commonStyle.zindex
-        if (eleZindex === maxZindex || eleZindex === 1) return
+        console.log(eleZindex,maxZindex, 888)
+        if ((type === 'addZindex' && eleZindex == maxZindex) || (type === 'minusZindex' && eleZindex == 1)) {
+          return 
+        }
 
         const flag = type === 'addZindex' ? 1 : -1
         const swapElement = elements.find(ele => ele.commonStyle.zindex === eleZindex + flag * 1)
