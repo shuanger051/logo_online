@@ -1,47 +1,86 @@
 <template>
   <a-form-model
     ref="formRef"
+    class="edit-form"
     :model="formData"
     :rules="rules"
     :label-col="{ span: 6 }"
     :wrapper-col="{ span: 18 }"
   >
-    暂未完成
-    <!-- <a-form-model-item label="模块ID" prop="modelId">
-      <a-input placeholder="请输入" v-model="formData.modelId" />
-    </a-form-model-item>
-    <a-form-model-item label="父级ID" prop="parentId">
-      <a-input placeholder="请输入" v-model="formData.parentId" />
-    </a-form-model-item>
-    <a-form-model-item label="模块名称" prop="name">
-      <a-input placeholder="请输入" v-model="formData.name" />
-    </a-form-model-item>
-    <a-form-model-item label="排序编号" prop="orderNo">
-      <a-input placeholder="请输入" v-model="formData.orderNo" />
-    </a-form-model-item>
-    <a-form-model-item label="是否显示" prop="isDisplay">
-      <a-input placeholder="请输入" v-model="formData.isDisplay" />
-    </a-form-model-item>
-    <a-form-model-item label="模块描述" prop="description">
-      <a-input placeholder="请输入" v-model="formData.description" />
-    </a-form-model-item>
-    <a-form-model-item label="访问级别" prop="commentControl">
-      <a-input placeholder="请输入" v-model="formData.commentControl" />
-    </a-form-model-item>
-    <a-form-model-item label="是否开放" prop="allowUpdown">
-      <a-input placeholder="请输入" v-model="formData.allowUpdown" />
-    </a-form-model-item>
-    <a-form-model-item label="模块路径" prop="channelPath">
-      <a-input placeholder="请输入" v-model="formData.channelPath" />
-    </a-form-model-item> -->
+    <!-- 富文本编辑器 -->
+    <a-row>
+      <a-col :span="12">
+        <a-form-model-item label="所属栏目" prop="channelId">
+          <a-input placeholder="请输入" v-model="formData.channelId" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="标题" prop="title">
+          <a-input placeholder="请输入" v-model="formData.contentExt.title" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="副标题" prop="shortTitle">
+          <a-input
+            placeholder="请输入"
+            v-model="formData.contentExt.shortTitle"
+          />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="作者" prop="author">
+          <a-input placeholder="请输入" v-model="formData.contentExt.author" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="是否推荐" prop="isRecommend">
+          <a-select placeholder="请选择" v-model="formData.isRecommend">
+            <a-select-option value="0">否</a-select-option>
+            <a-select-option value="1">是</a-select-option>
+          </a-select>
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="摘要" prop="description">
+          <a-input
+            placeholder="请输入"
+            v-model="formData.contentExt.description"
+          />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="来源" prop="origin">
+          <a-input placeholder="请输入" v-model="formData.contentExt.origin" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-model-item label="来源地址" prop="originUrl">
+          <a-input
+            placeholder="请输入"
+            v-model="formData.contentExt.originUrl"
+          />
+        </a-form-model-item>
+      </a-col>
+    </a-row>
+    <!-- 富文本编辑器 -->
+    <quill-editor
+      :content="formData.contentExt.content"
+      @change="onEditorChange"
+    />
   </a-form-model>
 </template>
 
 <script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+
+import { quillEditor } from "vue-quill-editor";
 import { reactive, ref } from "vue";
 import { afficheService } from "@/services";
 import { message } from "ant-design-vue";
 export default {
+  components: { quillEditor },
   props: {
     record: {
       type: Object,
@@ -50,22 +89,15 @@ export default {
   computed: {
     rules() {
       return {
-        modelId: [{ required: true, message: "请输入" }],
-        parentId: [{ required: true, message: "请输入" }],
-        name: [{ required: true, message: "请输入" }],
-        orderNo: [{ required: true, message: "请输入" }],
-        isDisplay: [{ required: true, message: "请输入" }],
-        description: [{ required: true, message: "请输入" }],
-        commentControl: [{ required: true, message: "请输入" }],
-        allowUpdown: [{ required: true, message: "请输入" }],
         channelPath: [{ required: true, message: "请输入" }],
       };
     },
   },
   setup(props) {
-    const { record = {} } = props;
+    // 获取表单默认值
+    const defVal = _.get(props, "record", { contentExt: {} });
     const formRef = ref();
-    const formData = reactive(record);
+    const formData = reactive(defVal);
 
     // 新增
     function saveChannel() {
@@ -110,12 +142,25 @@ export default {
       );
     }
 
+    function onEditorChange(evt) {
+      formData.contentExt.content = evt.html;
+    }
+
     return {
       formData,
       formRef,
       // method
       onOk,
+      onEditorChange,
     };
   },
 };
 </script>
+
+<style lang="less" scoped>
+.edit-form {
+  :deep(.ql-editor) {
+    height: 280px;
+  }
+}
+</style>

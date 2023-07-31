@@ -132,9 +132,15 @@ export default {
     } = useTable(afficheService.getContentListByPage);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, { title: "新增文章" });
+    const onAdd = createModalEvent(Detail, {
+      title: "新增文章",
+      width: "800px",
+    });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, { title: "编辑文章" });
+    const onEdit = createModalEvent(Detail, {
+      title: "编辑文章",
+      width: "800px",
+    });
     // 审核
     const onAudit = createModalEvent(Audit, { title: "审核意见" });
 
