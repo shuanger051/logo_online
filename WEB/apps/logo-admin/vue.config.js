@@ -20,8 +20,6 @@ const assetsCDN = {
     '@antv/data-set': 'DataSet',
     'js-cookie': 'Cookies'
   },
-  css: [
-  ],
   js: [
     '//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
     '//cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
@@ -84,9 +82,9 @@ module.exports = {
       }))
     }
     // if prod, add externals
-    if (isProd) {
-      config.externals = assetsCDN.externals
-    }
+    // if (isProd) {
+    //   config.externals = assetsCDN.externals
+    // }
     webpackMixin(config)
   },
   chainWebpack: config => {
@@ -99,13 +97,13 @@ module.exports = {
         })
     }
     // 生产环境下使用CDN
-    if (isProd) {
-      config.plugin('html')
-        .tap(args => {
-          args[0].cdn = assetsCDN
-          return args
-        })
-    }
+    // if (isProd) {
+    //   config.plugin('html')
+    //     .tap(args => {
+    //       args[0].cdn = assetsCDN
+    //       return args
+    //     })
+    // }
   },
   css: {
     loaderOptions: {

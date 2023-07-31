@@ -1,69 +1,29 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <a-form layout="inline" class="serach-form" :model="formData">
-      <a-form-item label="模板名称" name="tempName">
-        <a-input v-model="formData.tempName" placeholder="请输入" />
-      </a-form-item>
-      <a-form-item label="模板风格" name="style">
-        <a-select
-          v-model="formStyle"
-          style="width: 200px"
-          allowClear
-          mode="multiple"
-          :maxTagCount="1"
-          @change="changeStyle"
-          placeholder="请选择"
-        >
-          <a-select-option
-            v-for="(item, index) in styleMap"
-            :key="`style-${index}`"
-            :value="item.value"
-            >{{ item.label }}</a-select-option
-          >
-        </a-select>
-      </a-form-item>
-      <a-form-item label="是否发布" name="releaseStatus">
-        <a-select
-          v-model="formData.releaseStatus"
-          style="width: 120px"
-          allowClear
-          placeholder="请选择"
-        >
-          <a-select-option value="1">是</a-select-option>
-          <a-select-option value="2">否</a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
-    <!-- 操作栏 -->
-    <div class="serach-action-bar">
-      <a-space>
-        <a-button type="primary" @click="onSerach">查询</a-button>
-        <a-button type="danger" @click="onReset">重置</a-button>
-      </a-space>
-      <a-space>
-        <a-button type="primary" @click="onAdd">新增模板</a-button>
-      </a-space>
-    </div>
+    <form-serach :fields="serachFields" @serach="onSerach">
+      <a-button type="primary" @click="onAdd">新增模板</a-button>
+    </form-serach>
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
       size="small"
+      :loading="loading"
       :bordered="true"
       :data-source="list"
       :pagination="page"
       :columns="columns"
       @change="onChange"
     >
-      <template slot="releaseStatus" slot-scope="text, record, index">
+      <template slot="releaseStatus" slot-scope="text">
         {{ text == "1" ? "已发布" : "未发布" }}
       </template>
-      <template slot="shortImage" slot-scope="text, record, index">
+      <template slot="shortImage" slot-scope="text, record">
         <img
           v-if="!!getImageSrc(record)"
           width="100px"
           height="100px"
-          :style="{objectFit: 'cover'}"
+          :style="{ objectFit: 'cover' }"
           :src="getImageSrc(record)"
         />
         <span v-else>无缩略图</span>
@@ -81,11 +41,11 @@
   </div>
 </template>
 <script>
-import Detail from "./detail";
 import useTable from "@/hooks/useTable";
 import { ref } from "vue";
 import { mapState } from "vuex";
 import { signboardService } from "@/services";
+import FormSerach from "@/components/form/FormSerach.vue";
 const styleMap = [
   { value: "1", label: "古典风" },
   { value: "2", label: "现代风" },
@@ -99,6 +59,7 @@ const styleMap = [
 ];
 
 export default {
+  components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
     // 表格列配置
@@ -134,7 +95,7 @@ export default {
         {
           title: "缩略图",
           key: "shortImage",
-          align: 'center',
+          align: "center",
           scopedSlots: { customRender: "shortImage" },
         },
         {
@@ -144,17 +105,41 @@ export default {
         },
       ];
     },
+    // 查询字段
+    serachFields() {
+      return [
+        { name: "tempName", label: "模版名称" },
+        {
+          name: "style",
+          label: "模版风格",
+          component: "select",
+          props: {
+            options: styleMap,
+          },
+        },
+        {
+          name: "releaseStatus",
+          label: "发布状态",
+          component: "select",
+          props: {
+            options: [
+              { value: "1", label: "已发布" },
+              { value: "2", label: "未发布" },
+            ],
+          },
+        },
+      ];
+    },
   },
   setup() {
     // 表格列表功能
     const {
+      loading,
       list,
       page,
       onSerach,
-      onReset,
       onChange,
       createDelEvent,
-      createModalEvent,
     } = useTable(signboardService.getTemplateListByPage);
 
     const formStyle = ref([]);
@@ -172,18 +157,14 @@ export default {
     };
     return {
       formData,
+      loading,
       list,
       page,
       onDel,
       onSerach,
-      onReset: () => {
-        formStyle.value = [];
-        return onReset;
-      },
       onChange,
       styleMap,
       formStyle,
-      changeStyle,
     };
   },
   methods: {

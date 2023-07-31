@@ -77,6 +77,11 @@ const options = {
           component: PageView,
           children: [
             {
+              path: "apply",
+              name: "店招申请",
+              component: () => import("@/pages/signboard/apply/list"),
+            },
+            {
               path: "template",
               name: "模版管理",
               component: () => import("@/pages/signboard/template/list"),
@@ -89,11 +94,6 @@ const options = {
                 invisible: true,
                 cacheAble:false
               }
-            },
-            {
-              path: "apply",
-              name: "商户店招管理",
-              component: () => import("@/pages/signboard/apply/list"),
             },
             {
               path: "material",
