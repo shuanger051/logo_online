@@ -28,6 +28,7 @@ export default {
     },
     record: {
       type: Object,
+      default: () => ({}),
     },
   },
   computed: {
@@ -37,8 +38,7 @@ export default {
   },
   setup(props) {
     // 判断传入的记录
-    const { record = {} } = props;
-    const formData = reactive(record);
+    const formData = reactive(_.cloneDeep(props.record));
     const formRef = ref();
 
     // 新增角色

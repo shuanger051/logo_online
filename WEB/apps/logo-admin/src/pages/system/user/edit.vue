@@ -54,7 +54,7 @@ export default {
   },
   setup(props) {
     // 判断传入的记录
-    const formData = reactive(props.record);
+    const formData = reactive(_.cloneDeep(props.record));
     const formRef = ref();
 
     // 编辑用户

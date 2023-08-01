@@ -44,6 +44,7 @@ export default {
   props: {
     record: {
       type: Object,
+      default: () => ({}),
     },
   },
   computed: {
@@ -62,9 +63,8 @@ export default {
     },
   },
   setup(props) {
-    const { record = {} } = props;
     const formRef = ref();
-    const formData = reactive(record);
+    const formData = reactive(_.cloneDeep(props.record));
 
     // 新增
     function saveChannel() {
