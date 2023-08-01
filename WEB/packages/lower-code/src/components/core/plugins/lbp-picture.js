@@ -23,7 +23,7 @@ export default {
       );
     } else {
       style.flexDirection = "column";
-      style.return(
+      return(
         <div style={style}>
           <img src={url} width="100%" />
         </div>
