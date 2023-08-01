@@ -1,38 +1,59 @@
-import PropTypes from '@luban-h5/plugin-common-props'
-import {resolveImgUrl} from 'core/support/imgUrl'
+import PropTypes from "@luban-h5/plugin-common-props";
+import { resolveImgUrl } from "core/support/imgUrl";
 
-import placeholderImg from './lbp-picture-placeholder.png' // issue #34
+import placeholderImg from "./lbp-picture-placeholder.png"; // issue #34
 export default {
-  name: 'lbp-picture',
-  render () {
-    return <img src={this.getUrl(this.imgSrc || placeholderImg)} style={{ objectFit: this.fillType }} alt="" srcset="" width="100%" />
+  name: "lbp-picture",
+  render() {
+    const url = this.getUrl(this.imgSrc || placeholderImg);
+    const style = {
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      overflow: "hidden",
+      justifyContent: "center",
+    };
+    if (this.fillType == "none") {
+      return <img src={url} alt="" srcset="" width="100%" height="100%" />;
+    } else if (this.fillType == "horizontally") {
+      return (
+        <div style={style}>
+          <img src={url} height="100%" />
+        </div>
+      );
+    } else {
+      style.flexDirection = "column";
+      style.return(
+        <div style={style}>
+          <img src={url} width="100%" />
+        </div>
+      );
+    }
   },
   props: {
     imgSrc: PropTypes.image(),
     fillType: {
       type: String,
-      default: 'contain',
+      default: "vertical-center",
       editor: {
-        type: 'a-select',
-        label: '填充方式',
+        type: "a-select",
+        label: "填充方式",
         props: {
           options: [
-            { label: 'contain 短边缩放', value: 'contain' },
-            { label: 'cover 长边缩放', value: 'cover' },
-            { label: 'fill 拉伸', value: 'fill' },
-            { label: 'none 原始', value: 'none' },
-            { label: 'scale-down 弹性缩放', value: 'scale-down' }
-          ]
-        }
-      }
-    }
+            { label: "原始", value: "none" },
+            { label: "水平居中", value: "vertical-center" },
+            { label: "垂直居中", value: "horizontally" },
+          ],
+        },
+      },
+    },
   },
   data: () => ({
-    placeholderImg
+    placeholderImg,
   }),
   methods: {
     getUrl(url) {
-      return resolveImgUrl(url)
-    }
-  }
-}
+      return resolveImgUrl(url);
+    },
+  },
+};
