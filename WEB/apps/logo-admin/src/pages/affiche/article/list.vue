@@ -20,11 +20,7 @@
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button
-          v-if="record.status == '1'"
-          type="link"
-          size="small"
-          @click="onAudit({ record })"
+        <a-button type="link" size="small" @click="onAudit({ record })"
           >审核</a-button
         >
         <!-- btn:删除 -->
@@ -142,7 +138,12 @@ export default {
       width: "800px",
     });
     // 审核
-    const onAudit = createModalEvent(Audit, { title: "审核意见" });
+    const onAudit = createModalEvent(Audit, {
+      title: "审核意见",
+      okText: "通过",
+      cancelText: "退回",
+      maskClosable: true,
+    });
 
     return {
       formData,
