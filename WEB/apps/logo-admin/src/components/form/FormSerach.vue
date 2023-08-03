@@ -7,6 +7,7 @@
             :is="item.component"
             :name="item.name"
             :allowClear="true"
+            placeholder="请输入"
             v-decorator="[item.name]"
             v-bind="item.props"
           />
@@ -28,7 +29,6 @@
   </a-form>
 </template>
 <script>
-import { Select } from "ant-design-vue";
 export default {
   props: {
     // 查询字段
@@ -44,7 +44,7 @@ export default {
         // 组件
         switch (item.component) {
           case "select":
-            item.component = Select;
+            item.component = 'a-select';
             break;
           default:
             if (!item.component) item.component = "a-input";

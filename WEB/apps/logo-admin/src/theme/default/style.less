@@ -36,12 +36,15 @@
   // background-color: @base-bg-color;
   // padding: 24px;
 }
-.serach-action-bar {
-  padding: 12px 0;
-  margin-bottom: 12px;
-  & > .ant-space {
-    &:not(:last-child) {
-      margin-right: 18px;
+
+// 弹窗表单
+.ant-modal-form {
+  .ant-modal {
+    &-close {
+      display: block;
+    }
+    &-confirm-btns {
+      margin-top: 12px;
     }
   }
 }

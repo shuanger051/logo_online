@@ -34,7 +34,8 @@
 <script>
 import Detail from "./detail";
 import Audit from "./audit";
-import useTable from "@/hooks/useTable";
+import useTable, { queryDictCache } from "@/hooks/useTable";
+import { mapDictObject, mapDictArray } from "@/store/helpers";
 import { mapState } from "vuex";
 import { afficheService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
@@ -42,8 +43,30 @@ export default {
   components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
+    ...mapState({
+      // 文章状态
+      DictStatus: mapDictObject("status"),
+      // 栏目列表
+      ColumnArr: (state) => {
+        const list = _.get(state, ["cache", "channel"], []);
+        // select 使用
+        return list.map((item) => {
+          item.label = item.name;
+          item.value = item.id;
+          return item;
+        });
+      },
+    }),
+    ColumnObject() {
+      return this.ColumnArr.reduce((dtm, item) => {
+        const { name, id } = item;
+        dtm[id] = name;
+        return dtm;
+      }, {});
+    },
     // 表格列配置
     columns() {
+      const { DictStatus = {} } = this;
       return [
         {
           title: "标题",
@@ -56,9 +79,10 @@ export default {
           key: "contentExt.shortTitle",
         },
         {
-          title: "栏目id",
+          title: "所属栏目",
           dataIndex: "channelId",
           key: "channelId",
+          customRender: (val) => this.ColumnObject[val],
         },
         {
           title: "是否推荐",
@@ -69,6 +93,7 @@ export default {
           title: "状态",
           dataIndex: "status",
           key: "status",
+          customRender: (val) => DictStatus[val],
         },
         {
           title: "日访问数",
@@ -98,8 +123,17 @@ export default {
       ];
     },
     serachFields() {
+      // 栏目列表
       return [
-        { name: "title", label: "标题" },
+        {
+          name: "channelId",
+          label: "所属栏目",
+          component: "select",
+          props: {
+            options: this.ColumnArr,
+          },
+        },
+        { name: "title", label: "文章标题" },
         { name: "status", label: "状态" },
         {
           name: "isRecommend",
@@ -142,6 +176,7 @@ export default {
       title: "审核意见",
       okText: "通过",
       cancelText: "退回",
+      closable: true,
       maskClosable: true,
     });
 
@@ -159,6 +194,16 @@ export default {
   },
   created() {
     this.onSerach();
+    // 获取字典项
+    queryDictCache(["status"]);
+    // 栏目列表
+    afficheService
+      .getChannelList()
+      // 添加到字典缓存
+      .then((res) => {
+        const list = _.get(res, "data");
+        this.$store.commit("cache/setCache", { key: "channel", val: list });
+      });
   },
   methods: {
     // event：删除
