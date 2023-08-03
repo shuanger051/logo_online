@@ -1,6 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
+import "./core/lazy_use";
+import "lib-flexible";
 import router from "./router";
 import store from "./store";
 
