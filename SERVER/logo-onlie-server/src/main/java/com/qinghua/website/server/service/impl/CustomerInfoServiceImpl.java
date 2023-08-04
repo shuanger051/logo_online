@@ -100,4 +100,16 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         }
     }
 
+    /**
+     * 根据账号和密码校验账户信息
+     * @param customerName
+     * @param pwd
+     * @return
+     */
+    @Override
+    public CustomerInfoDTO checkCustomerByPWDAndAccount(String customerName,String pwd){
+        CustomerInfoDTO res = customerInfoMapper.checkCustomerByPWDAndAccount(customerName,pwd);
+        return res;
+    }
+
 }

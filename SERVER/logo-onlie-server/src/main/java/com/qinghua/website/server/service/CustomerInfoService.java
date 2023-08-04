@@ -67,4 +67,12 @@ public interface CustomerInfoService {
          */
         void updateCustomerPwdByID(Long id,String oldPwd,String newPwd);
 
+        /**
+         * 根据账号和密码校验账户信息
+         * @param customerName
+         * @param pwd
+         * @return
+         */
+        CustomerInfoDTO checkCustomerByPWDAndAccount(String customerName,String pwd);
+
 }

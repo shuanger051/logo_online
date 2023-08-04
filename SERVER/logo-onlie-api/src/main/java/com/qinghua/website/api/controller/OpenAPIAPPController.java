@@ -89,13 +89,22 @@ public class OpenAPIAPPController {
         String password = RSACryptoHelper.decrypt(loginIO.getPassword());
         //将密码转为MD5
         String pwd = StringUtils.lowerCase(MD5Util.toMD5String(password));
-        //根据账号密码生成TOKEN
-        String token = TokenTools.genToken(loginIO.getCustomerName(),pwd);
 
-        log.info("APP登录成功,返回token:{}",token);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("token",token);
-        return ResponseResult.success(map);
+        //先到数据库校验数据合法性，若不合法则不生成token，方便前端页面处理
+        CustomerInfoDTO checkDTO = customerInfoService.checkCustomerByPWDAndAccount(loginIO.getCustomerName(),pwd);
+
+        if(null != checkDTO){
+            //根据账号密码生成TOKEN
+            String token = TokenTools.genToken(loginIO.getCustomerName(),pwd);
+            log.info("APP登录成功,返回token:{}",token);
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("token",token);
+            return ResponseResult.success(map);
+        }else{
+            log.info("APP登录失败,返回null");
+            return ResponseResult.error("账户密码错误!");
+        }
+
     }
 
     /**

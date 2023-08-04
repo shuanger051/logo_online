@@ -66,4 +66,12 @@ public interface CustomerInfoMapper {
          */
         void updateCustomerPwdByID(CustomerInfoDTO customerInfoDTO);
 
+        /**
+         * 根據账号密码校验账号有效性
+         * @param customerName
+         * @param pwd
+         * @return
+         */
+        CustomerInfoDTO checkCustomerByPWDAndAccount(@Param("customerName") String customerName,@Param("pwd") String pwd);
+
 }
