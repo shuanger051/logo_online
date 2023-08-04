@@ -12,8 +12,9 @@ import {
   Image,
   Form,
   Field,
-  Popup
+  Popup,
 } from "vant";
+import SubmitBar from "@/components/SubmitBar";
 
 Vue.use(Panel);
 Vue.use(Button);
@@ -24,7 +25,9 @@ Vue.use(NavBar);
 Vue.use(List);
 Vue.use(Cell);
 Vue.use(CellGroup);
-Vue.use(Image)
-Vue.use(Form)
-Vue.use(Field)
-Vue.use(Popup)
+Vue.use(Image);
+Vue.use(Form);
+Vue.use(Field);
+Vue.use(Popup);
+
+Vue.use(SubmitBar);
