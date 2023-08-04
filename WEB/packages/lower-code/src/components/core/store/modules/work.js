@@ -84,6 +84,7 @@ export const actions = {
         commit("setWork", workData);
         commit("setEditingPage");
       } catch (e) {
+        console.log(e)
         Vue.prototype.$message.error("请输入正确的id");
       }
     });
@@ -134,7 +135,10 @@ export const mutations = {
   setWork(state, work) {
     window.__work = work;
     work.pages = work.pages.map((page) => {
-      page.elements = page.elements.map((element) => new Element(element));
+      page.elements = page.elements.map((element) => {
+        return new Element(element).completeAttr()
+
+      });
       return new Page(page);
     });
     state.work = new Work(work);

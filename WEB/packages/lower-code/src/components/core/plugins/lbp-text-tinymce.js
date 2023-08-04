@@ -1,7 +1,14 @@
 // https://github.com/luban-h5-components/plugin-common-props
 import PropTypes from '@luban-h5/plugin-common-props'
 import font from 'core/styles/fontMap'
-
+const writingModeMap = [{
+  label: '水平从左往右',
+  value: 'horizontal-tb'
+},
+{
+  label: '垂直从上往下',
+  value: 'vertical-lr'
+}]
 export default {
   render (h) {
     const style = {
@@ -13,7 +20,10 @@ export default {
       lineHeight: `${this.lineHeight}em`,
       border: `${this.borderWidth}px solid ${this.borderColor}`,
       borderRadius: `${this.borderRadius}px`,
-      fontSize: `${this.fontSize}px` || '14px'
+      fontSize: `${this.fontSize}px` || '14px',
+      writingMode: this.writingMode || 'horizontal-tb',
+      letterSpacing: `${this.letterSpacing || 0}px`
+
     }
     return <div style={style} domPropsInnerHTML={this.text} class="ql-editor ql-container"></div>
   },
@@ -27,6 +37,8 @@ export default {
     fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
     fontFamily: PropTypes.select({ defaultValue: '', label: '字体', options: font }),
     fontSize: PropTypes.number({ defaultValue: 14, label: '字体大小(px)', options: font }),
+    letterSpacing: PropTypes.number({ defaultValue: 0, label: '字体间距(px)' }),
+    writingMode: PropTypes.select({ defaultValue: 'horizontal-tb', label: '字体方向', options: writingModeMap }),
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
     borderRadius: PropTypes.number({ label: '圆角(px)' }),
     borderColor: PropTypes.color({ label: '边框颜色' }),

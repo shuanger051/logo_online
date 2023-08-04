@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { parsePx, guid } from '@editor/utils/element.js'
 import { bindData } from '@editor/utils/data-binding.js'
+import {getVM } from '@editor/utils/element'
 
 // #! 编辑状态，不可以点击的按钮，因为点击按钮会触发一些默认动作，比如表单提交等
 const disabledPluginsForEditMode = ['lbp-form-input', 'lbp-form-button', 'lbp-video']
@@ -280,6 +281,19 @@ export default class Element {
       return handlers
     }, {})
     return handlers
+  }
+
+  completeAttr() {
+    const vm = getVM(this.name);
+    const basicElement = vm.$options
+    const defaultPluginProps = this.getPluginProps(basicElement)
+    Object.keys(defaultPluginProps).forEach((key) => {
+      if (!this.pluginProps.hasOwnProperty(key)) {
+        this.pluginProps[key] = defaultPluginProps[key]
+      }
+    })
+    return this
+
   }
 
   registerGlobalComponent () {

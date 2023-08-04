@@ -81,16 +81,16 @@ export default {
         referElementsXCoords.forEach(referX => {
           let offset = referX - eX
           if (Math.abs(offset) <= 5) {
-            if (isPointMove) {
-              // issue #360
-               if (hasL) {
-                 this.setElementPosition({ width: commonStyle.width - offset, left: eleft + offset })
-               } else if (hasR) {
-                 this.setElementPosition({ width: commonStyle.width + offset })
-               }
-            } else {
-              this.setElementPosition({ left: eleft + offset })
-            }
+            // if (isPointMove) {
+            //   // issue #360
+            //    if (hasL) {
+            //      this.setElementPosition({ width: commonStyle.width - offset, left: eleft + offset })
+            //    } else if (hasR) {
+            //      this.setElementPosition({ width: commonStyle.width + offset })
+            //    }
+            // } else {
+            //   this.setElementPosition({ left: eleft + offset })
+            // }
             this.drawVLine(referX)
             hasVLine = true
           }
@@ -100,16 +100,16 @@ export default {
         referElementsYCoords.forEach(referY => {
           let offset = referY - eY
           if (Math.abs(offset) <= 5) {
-            if (isPointMove) {
-              // issue #360
-              if (hasT) {
-               this.setElementPosition({ height: eheight - offset, top: offset + commonStyle.top })
-              } else if (hasB) {
-               this.setElementPosition({ height: eheight + offset })
-              }
-            } else {
-              this.setElementPosition({ top: etop + offset })
-            }
+            // if (isPointMove) {
+            //   // issue #360
+            //   if (hasT) {
+            //    this.setElementPosition({ height: eheight - offset, top: offset + commonStyle.top })
+            //   } else if (hasB) {
+            //    this.setElementPosition({ height: eheight + offset })
+            //   }
+            // } else {
+            //   this.setElementPosition({ top: etop + offset })
+            // }
             this.drawHLine(referY)
             hasHLine = true
           }
