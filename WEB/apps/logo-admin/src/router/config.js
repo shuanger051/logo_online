@@ -87,13 +87,13 @@ const options = {
               component: () => import("@/pages/signboard/template/list"),
             },
             {
-              path: '/addTemplate/:id?',
-              name: '新建模板',
-              component: () => import('@/pages/signboard/template/addTemplate'),
+              path: "/addTemplate/:id?",
+              name: "新建模板",
+              component: () => import("@/pages/signboard/template/addTemplate"),
               meta: {
                 invisible: true,
-                cacheAble:false
-              }
+                cacheAble: false,
+              },
             },
             {
               path: "material",
@@ -116,13 +116,8 @@ const options = {
               component: () => import("@/pages/affiche/column/list"),
             },
             {
-              path: "inform",
-              name: "通知管理",
-              component: () => import("@/pages/affiche/article/list"),
-            },
-            {
-              path: "policy",
-              name: "政策法规",
+              path: "article",
+              name: "文章管理",
               component: () => import("@/pages/affiche/article/list"),
             },
           ],

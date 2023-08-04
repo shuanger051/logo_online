@@ -8,7 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "lib-flexible": "^0.3.2",
     "register-service-worker": "^1.7.1",
     "vant": "2.12.54",
     "vue": "^2.7.14",
@@ -24,11 +26,13 @@
     "@vue/cli-service": "~4.5.17",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-import": "^1.13.8",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "postcss-pxtorem": "5.1.1",
     "prettier": "^2.2.1",
     "vue-template-compiler": "^2.6.11"
   }
