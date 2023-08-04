@@ -82,8 +82,8 @@ public class OpenAPIAPPController {
      * @return
      */
     @LogAnnotation(logType = "login",logDesc = "用户登录APP获取TOKEN")
-    @RequestMapping("/getTokenAPI")
-    public ResponseResult<Object> getTokenAPI(@Validated APPLoginIO loginIO, HttpServletRequest request){
+    @RequestMapping(value = "/getTokenAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> getTokenAPI(@Validated  @RequestBody APPLoginIO loginIO, HttpServletRequest request){
 
         //先将前端传进来的RSA密码进行解密
         String password = RSACryptoHelper.decrypt(loginIO.getPassword());
