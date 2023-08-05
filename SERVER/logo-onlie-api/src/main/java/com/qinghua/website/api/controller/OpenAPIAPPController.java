@@ -102,6 +102,8 @@ public class OpenAPIAPPController {
 
             //添加用户信息返回
             CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO,CustomerInfoVO.class);
+            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
             map.put("customerInfo",vo);
 
             return ResponseResult.success(map);
