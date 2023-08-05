@@ -168,6 +168,9 @@ importers:
 
   apps/logo-miniapp:
     dependencies:
+      axios:
+        specifier: ^0.19.2
+        version: 0.19.2
       core-js:
         specifier: ^3.6.5
         version: 3.6.5
