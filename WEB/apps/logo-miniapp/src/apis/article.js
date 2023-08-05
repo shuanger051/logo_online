@@ -1,6 +1,6 @@
-import { axiosPost } from "../utils/request";
+import { axiosGet } from "../utils/request";
 
 /**
  * == 获取文章详情 ==
  */
-export const getContentByIDAPI = axiosPost("logo/app/getContentByIDAPI");
+export const getContentByIDAPI = axiosGet("logo/app/getContentByIDAPI");

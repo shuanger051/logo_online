@@ -14,20 +14,21 @@
   </div>
 </template>
 <script>
+// import { articleService } from "@/apis";
 export default {
   data() {
     return {
       loading: false,
       list: [
         {
-          id: "1",
+          id: "482",
           channelId: "1",
           title: "测试",
           description: "测试摘要",
           imgUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
         },
         {
-          id: "3",
+          id: "483",
           title: "测试测试测试测试测试",
           channelId: "1",
           description: "测试摘要测试摘要测试摘要测试摘要测试摘要测试摘要测",
@@ -35,6 +36,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    queryArticleList() {
+      // articleService.
+    },
   },
 };
 </script>
