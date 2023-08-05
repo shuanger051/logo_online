@@ -70,10 +70,11 @@ export default {
       })
         // 失败提示
         .catch((err) => {
-          console.log(err)
-          this.$message.error("登录失败：" + err.msg)
+          console.log(err);
+          this.$toast.fail("登录失败：" + err.msg);
         });
     },
+    // 登录
     login(ctx) {
       return accountService
         .getTokenAPI({
@@ -81,9 +82,20 @@ export default {
           password: ctx.password,
         })
         .then((res) => {
-          this.show = false
-          store.commit("setUserToken", res.data.token);
+          this.show = false;
+          store.commit("user/setToken", res.data.token);
         });
+    },
+    // 获取登录用户信息
+    getUserProfiles() {
+      return (
+        accountService
+          .queryCustomerByIdAPI()
+          // 缓存用户信息
+          .then((res) => {
+            store.commit("user/setUserInfo", res.data);
+          })
+      );
     },
     // 获取公钥
     getPublicKey(ctx) {

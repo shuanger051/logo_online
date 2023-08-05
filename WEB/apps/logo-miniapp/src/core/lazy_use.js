@@ -13,6 +13,7 @@ import {
   Form,
   Field,
   Popup,
+  Toast,
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -29,5 +30,6 @@ Vue.use(Image);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Popup);
+Vue.use(Toast);
 
-Vue.use(SubmitBar);
+Vue.component("submit-bar", SubmitBar);

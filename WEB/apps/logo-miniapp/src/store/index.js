@@ -1,17 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import user from "./modules/user";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    userToken: null,
-  },
-  mutations: {
-    setUserToken: (state, val) => {
-      state.userToken = val;
-    },
-  },
+  state: {},
+  mutations: {},
   actions: {},
-  modules: {},
+  modules: {
+    user,
+  },
 });

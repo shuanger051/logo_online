@@ -8,9 +8,9 @@ axios.defaults.baseURL = "/api";
 
 // 请求拦截
 axios.interceptors.request.use(function onFulfilled(config) {
-  console.log(store.state)
-  const { userToken } = store.state;
-  config.headers["token"] = userToken;
+  // 添加token
+  const { user } = store.state;
+  config.headers["token"] = user.token;
   return config;
 });
 
