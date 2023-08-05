@@ -99,6 +99,11 @@ public class OpenAPIAPPController {
             log.info("APP登录成功,返回token:{}",token);
             Map<String,Object> map = new HashMap<String,Object>();
             map.put("token",token);
+
+            //添加用户信息返回
+            CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO,CustomerInfoVO.class);
+            map.put("customerInfo",vo);
+
             return ResponseResult.success(map);
         }else{
             log.info("APP登录失败,返回null");
