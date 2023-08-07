@@ -196,6 +196,12 @@ public class OpenAPIAPPController {
     @RequestMapping("/saveMerchantAPI")
     public ResponseResult<Object> saveMerchantAPI(@Validated @RequestBody MerchantInfoSaveIO merchantInfoSaveIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoSaveIO,MerchantInfoDTO.class);
+        if(null != merchant && null != merchant.getPhone()){
+            merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
+        }
+        if(null != merchant && null != merchant.getIdCard()) {
+            merchant.setIdCard(Sm4Utils.encrypt(merchant.getIdCard()));
+        }
         merchantInfoService.saveMerchantInfo(merchant);
         return ResponseResult.success();
     }
@@ -209,6 +215,12 @@ public class OpenAPIAPPController {
     @RequestMapping("/updateMerchantAPI")
     public ResponseResult<Object> updateMerchantAPI(@Validated @RequestBody MerchantInfoUpdateIO merchantInfoUpdateIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoUpdateIO,MerchantInfoDTO.class);
+        if(null != merchant && null != merchant.getPhone()){
+            merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
+        }
+        if(null != merchant && null != merchant.getIdCard()) {
+            merchant.setIdCard(Sm4Utils.encrypt(merchant.getIdCard()));
+        }
         merchantInfoService.updateMerchantInfoById(merchant);
         return ResponseResult.success();
     }
