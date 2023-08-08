@@ -351,7 +351,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺附件API")
     @RequestMapping(value = "/uploadShopsAttachmentAPI", method = RequestMethod.POST)
-    public ResponseResult<Object> uploadShopsAttachmentAPI(@RequestPart("file")  MultipartFile multipartFile,Long shopsId, HttpServletRequest request) {
+    public ResponseResult<Object> uploadShopsAttachmentAPI(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,String attachmentType, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -378,6 +378,7 @@ public class OpenAPIAPPController {
                 shopsAttachmentDTO.setFileName(fileName);
                 shopsAttachmentDTO.setAttachmentName(newFileName);
                 shopsAttachmentDTO.setAttachmentPath(frontPath);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
 
                 List<ShopsAttachmentDTO> list = new ArrayList<>();
                 list.add(shopsAttachmentDTO);
@@ -388,6 +389,7 @@ public class OpenAPIAPPController {
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
