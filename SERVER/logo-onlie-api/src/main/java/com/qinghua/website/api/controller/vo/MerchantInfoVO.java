@@ -38,14 +38,6 @@ public class MerchantInfoVO {
      */
     private String remark;
 
-    public String getPhone() {
-        return Sm4Utils.decrypt(phone);
-    }
-
-    public String getIdCard() {
-        return Sm4Utils.decrypt(idCard);
-    }
-
     @Override
     public String toString() {
         return "MerchantInfoVO{" +

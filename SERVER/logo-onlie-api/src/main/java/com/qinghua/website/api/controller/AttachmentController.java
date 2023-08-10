@@ -119,7 +119,7 @@ public class AttachmentController {
     @LogAnnotation(logType = "upload",logDesc = "上传商铺附件")
     @RequestMapping(value = "/uploadShopsAttachment", method = RequestMethod.POST)
     @RequiresPermissions("/attachment/uploadShopsAttachment")
-    public ResponseResult<Object> uploadShopsAttachment(@RequestPart("file")  MultipartFile multipartFile,Long shopsId, HttpServletRequest request) {
+    public ResponseResult<Object> uploadShopsAttachment(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,String attachmentType, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -146,6 +146,7 @@ public class AttachmentController {
                 shopsAttachmentDTO.setFileName(fileName);
                 shopsAttachmentDTO.setAttachmentName(newFileName);
                 shopsAttachmentDTO.setAttachmentPath(frontPath);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
 
                 List<ShopsAttachmentDTO> list = new ArrayList<>();
                 list.add(shopsAttachmentDTO);
@@ -156,6 +157,7 @@ public class AttachmentController {
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {

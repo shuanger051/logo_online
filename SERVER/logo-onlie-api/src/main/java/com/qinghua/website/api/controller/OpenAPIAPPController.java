@@ -99,6 +99,13 @@ public class OpenAPIAPPController {
             log.info("APP登录成功,返回token:{}",token);
             Map<String,Object> map = new HashMap<String,Object>();
             map.put("token",token);
+
+            //添加用户信息返回
+            CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO,CustomerInfoVO.class);
+            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+            map.put("customerInfo",vo);
+
             return ResponseResult.success(map);
         }else{
             log.info("APP登录失败,返回null");
@@ -189,6 +196,12 @@ public class OpenAPIAPPController {
     @RequestMapping("/saveMerchantAPI")
     public ResponseResult<Object> saveMerchantAPI(@Validated @RequestBody MerchantInfoSaveIO merchantInfoSaveIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoSaveIO,MerchantInfoDTO.class);
+        if(null != merchant && null != merchant.getPhone()){
+            merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
+        }
+        if(null != merchant && null != merchant.getIdCard()) {
+            merchant.setIdCard(Sm4Utils.encrypt(merchant.getIdCard()));
+        }
         merchantInfoService.saveMerchantInfo(merchant);
         return ResponseResult.success();
     }
@@ -202,7 +215,41 @@ public class OpenAPIAPPController {
     @RequestMapping("/updateMerchantAPI")
     public ResponseResult<Object> updateMerchantAPI(@Validated @RequestBody MerchantInfoUpdateIO merchantInfoUpdateIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoUpdateIO,MerchantInfoDTO.class);
+        if(null != merchant && null != merchant.getPhone()){
+            merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
+        }
+        if(null != merchant && null != merchant.getIdCard()) {
+            merchant.setIdCard(Sm4Utils.encrypt(merchant.getIdCard()));
+        }
         merchantInfoService.updateMerchantInfoById(merchant);
+        return ResponseResult.success();
+    }
+
+    /**
+     * APP 登记商铺信息
+     * @param shopsInfoSaveIO
+     * @return
+     */
+    @LogAnnotation(logType = "save",logDesc = "APP 登记商铺信息API")
+    @RequestMapping(value = "/saveShopsInfoAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPISaveIO shopsInfoSaveIO){
+        ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoSaveIO, ShopsInfoDTO.class);
+        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
+        shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
+        return ResponseResult.success();
+    }
+
+    /**
+     * APP修改商铺信息
+     * @param shopsInfoUpdateIO
+     * @return
+     */
+    @LogAnnotation(logType = "update",logDesc = "APP 修改商铺信息API")
+    @RequestMapping(value = "/updateShopsInfoAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPIUpdateIO shopsInfoUpdateIO){
+        ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoUpdateIO, ShopsInfoDTO.class);
+        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoUpdateIO.getList(),ShopsAttachmentDTO.class);
+        shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();
     }
 
@@ -294,6 +341,60 @@ public class OpenAPIAPPController {
         ContentDTO res = contentService.getContentByIDAPI(id);
         ContentVO vo = BeanToolsUtil.copyOrReturnNull(res,ContentVO.class);
         return ResponseResult.success(vo);
+    }
+
+    /**
+     * APP 上传商铺附件
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺附件API")
+    @RequestMapping(value = "/uploadShopsAttachmentAPI", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadShopsAttachmentAPI(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,String attachmentType, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/shops/" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(frontPath);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+                shopsInfoService.saveShopsAttachments(list);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
+            fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
     }
 
     /**

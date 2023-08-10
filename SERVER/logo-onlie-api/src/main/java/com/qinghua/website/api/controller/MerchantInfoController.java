@@ -41,6 +41,10 @@ public class MerchantInfoController {
     public ResponseResult<Object> getMerchantInfoListByPage(@Validated MerchantQueryIO merchantQueryIO){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
         PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
+
+        //解密DTO中的mobile加密串
+        pageList.getList().forEach(item -> {item.setPhone(Sm4Utils.decrypt(item.getPhone()));item.setIdCard(Sm4Utils.decrypt(item.getIdCard()));});
+
         List<MerchantInfoVO> merchantInfoDTOList =  BeanToolsUtil.copyAsList(pageList.getList(), MerchantInfoVO.class);
         PageListVO<MerchantInfoVO> result = new PageListVO<>();
         result.setList(merchantInfoDTOList);
@@ -58,6 +62,10 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/getMerchantInfoById")
     public ResponseResult<Object> getMerchantInfoById(@RequestParam("id") Long id){
         MerchantInfoDTO merchantInfoDTO = merchantInfoService.getMerchantInfoById(id);
+        if(null != merchantInfoDTO) {
+            merchantInfoDTO.setPhone(Sm4Utils.decrypt(merchantInfoDTO.getPhone()));
+            merchantInfoDTO.setIdCard(Sm4Utils.decrypt(merchantInfoDTO.getIdCard()));
+        }
         MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchantInfoDTO,MerchantInfoVO.class);
         return ResponseResult.success(merchantInfoVO);
     }
