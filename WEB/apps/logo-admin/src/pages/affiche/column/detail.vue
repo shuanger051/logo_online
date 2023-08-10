@@ -6,12 +6,6 @@
     :label-col="{ span: 6 }"
     :wrapper-col="{ span: 18 }"
   >
-    <a-form-model-item label="模块ID" prop="modelId">
-      <a-input placeholder="请输入" v-model="formData.modelId" />
-    </a-form-model-item>
-    <a-form-model-item label="父级ID" prop="parentId">
-      <a-input placeholder="请输入" v-model="formData.parentId" />
-    </a-form-model-item>
     <a-form-model-item label="模块名称" prop="name">
       <a-input placeholder="请输入" v-model="formData.name" />
     </a-form-model-item>
@@ -44,14 +38,12 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => ({}),
+      default: () => ({ parentId: 0 }),
     },
   },
   computed: {
     rules() {
       return {
-        modelId: [{ required: true, message: "请输入" }],
-        parentId: [{ required: true, message: "请输入" }],
         name: [{ required: true, message: "请输入" }],
         orderNo: [{ required: true, message: "请输入" }],
         isDisplay: [{ required: true, message: "请输入" }],

@@ -88,6 +88,7 @@ export default {
           title: "是否推荐",
           dataIndex: "isRecommend",
           key: "isRecommend",
+          customRender: (val) => (val == "1" ? "是" : "否"),
         },
         {
           title: "状态",

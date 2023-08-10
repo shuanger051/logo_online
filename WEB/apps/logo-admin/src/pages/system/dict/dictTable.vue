@@ -1,27 +1,32 @@
 <template>
-  <a-table
-    rowKey="id"
-    size="small"
-    :bordered="true"
-    :scroll="{ y: 300 }"
-    :custom-row="customRow"
-    :data-source="list"
-    :pagination="page"
-    :columns="columns"
-    @change="onChange"
-  >
-    <!-- 操作列 -->
-    <template slot="operation" slot-scope="text, record">
-      <!-- 修改 -->
-      <a-button type="link" size="small" @click="onEdit({ record })"
-        >修改</a-button
-      >
-      <!-- 删除 -->
-      <a-popconfirm title="是否确认删除该字典项？" @confirm="onDel(record)">
-        <a-button type="link" size="small">删除</a-button>
-      </a-popconfirm>
-    </template>
-  </a-table>
+  <div>
+    <div class="action-bar">
+      <a-button type="primary" @click="onAdd">新增</a-button>
+    </div>
+    <a-table
+      rowKey="id"
+      size="small"
+      :bordered="true"
+      :scroll="{ y: 300 }"
+      :custom-row="customRow"
+      :data-source="list"
+      :pagination="page"
+      :columns="columns"
+      @change="onChange"
+    >
+      <!-- 操作列 -->
+      <template slot="operation" slot-scope="text, record">
+        <!-- 修改 -->
+        <a-button type="link" size="small" @click="onEdit({ record })"
+          >修改</a-button
+        >
+        <!-- 删除 -->
+        <a-popconfirm title="是否确认删除该字典项？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
+      </template>
+    </a-table>
+  </div>
 </template>
 <script>
 import { systemService } from "@/services";
@@ -103,3 +108,9 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+.action-bar {
+  margin-bottom: 12px;
+}
+</style>

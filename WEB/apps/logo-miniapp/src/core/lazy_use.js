@@ -43,9 +43,7 @@ Vue.use(Picker);
 Vue.use(Uploader);
 Vue.use(Pagination);
 Vue.use(Dialog);
-
 Vue.use(Empty)
 Vue.use(Divider)
-Vue.use(Uploader)
 
 Vue.component("submit-bar", SubmitBar);

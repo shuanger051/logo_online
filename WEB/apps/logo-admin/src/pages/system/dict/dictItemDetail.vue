@@ -20,6 +20,7 @@ import { systemService } from "@/services";
 import { message } from "ant-design-vue";
 export default {
   props: {
+    dictKey: String,
     record: {
       type: Object,
       default: () => ({}),
@@ -35,7 +36,8 @@ export default {
   },
   setup(props) {
     // 判断传入的记录
-    const formData = reactive(_.cloneDeep(props.record));
+    const { record, dictKey } = props;
+    const formData = reactive(_.extend({}, record, { dictKey }));
     const formRef = ref();
 
     // 新增字典项
@@ -62,7 +64,7 @@ export default {
       formRef.value.validate().then((valid) => {
         if (valid) {
           // 修改
-          if (formData.id) return updateDictItemById();
+          if (record.itemKey) return updateDictItemById();
           // 新增
           else return saveDictItem();
         }
