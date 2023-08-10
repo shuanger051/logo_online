@@ -1,5 +1,6 @@
 // https://github.com/luban-h5-components/plugin-common-props
 import PropTypes from '@luban-h5/plugin-common-props'
+import MobilePropTypes from 'core/mobile/basicProps/mobile-plugin-props'
 import font from 'core/styles/fontMap'
 const writingModeMap = [{
   label: '水平从左往右',
@@ -33,9 +34,37 @@ export default {
       innerText: this.text || '双击修改文字'
     }
   },
+  mobileProps: {
+    fontColor: MobilePropTypes.color({ label: '颜色', defaultValue: '#000' }),
+    fontFamily: MobilePropTypes.select({ defaultValue: '宋体', label: '字体', options: font }),
+    fontSize: MobilePropTypes.number({ defaultValue: 14, label: '字体大小(px)', props: {
+      "inputWidth":"50px",
+      "buttonSize": "42px"
+    }, options: font }),
+    text: MobilePropTypes.string({ 
+      label: '内容',
+      defaultValue: '双击修改文字',
+      visible: true,
+      component: 'tinymce-editor',
+      hiddenLabel: true,
+      props: {
+        init: {
+          language:'zh_CN',//注意大小写
+          language_url : '/tinymac/CN.js',
+          menubar: false,
+          width: "90vw",
+          height: '100px',
+          elementpath: false,
+          statusbar: false,
+          toolbar:
+            `formatselect | bold italic |`
+        }
+      }
+    }),
+  },
   props: {
     fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
-    fontFamily: PropTypes.select({ defaultValue: '', label: '字体', options: font }),
+    fontFamily: PropTypes.select({ defaultValue: '宋体', label: '字体', options: font }),
     fontSize: PropTypes.number({ defaultValue: 14, label: '字体大小(px)', options: font }),
     letterSpacing: PropTypes.number({ defaultValue: 0, label: '字体间距(px)' }),
     writingMode: PropTypes.select({ defaultValue: 'horizontal-tb', label: '字体方向', options: writingModeMap }),
@@ -45,16 +74,17 @@ export default {
     text: PropTypes.string({ label: '内容',
       defaultValue: '双击修改文字',
       visible: true,
+      hiddenLabel: true,
       component: 'tinymce-editor',
       props: {
-        init: {
-          menubar: false,
-          toolbar:
-            `undo redo | formatselect | bold italic backcolor | \
-            alignleft aligncenter alignright alignjustify | \
-            bullist numlist outdent indent | removeformat | help`
-        }
+      init: {
+        menubar: false,
+        toolbar:
+        `formatselect | bold italic backcolor | \
+        alignleft aligncenter alignright alignjustify | \
+        bullist numlist outdent indent`
       }
+    }
     }),
     editorMode: PropTypes.string({
       defaultValue: 'preview', // 可选值: preview/edit

@@ -1,6 +1,5 @@
 import Element from "core/models/element";
 import { message } from "ant-design-vue";
-
 import Vue from "vue";
 import Page from "core/models/page";
 import Work from "core/models/work";
@@ -10,8 +9,6 @@ import {
   getTemplateByID,
   uploadMaterialAttachment,
 } from "core/api";
-import editorConfig from "core/Config";
-// import router from '@/router.js'
 import { takeScreenshot,downloadPoster } from "@editor/utils/canvas-helper.js";
 const sleep = async (time) => {
   return new Promise((r) => {
@@ -53,8 +50,8 @@ export const actions = {
   },
 
   async saveWork({ commit, dispatch, state }) {
-    const { currentRoute } = editorConfig.router;
-
+    const { router, handlerSaveSucessJump } = Vue.prototype.$editorConfig;
+    const {currentRoute} = router
     const flag = await dispatch('createCover')
     if (flag) return 
     const data = {
@@ -70,7 +67,7 @@ export const actions = {
       await saveTemplate(data);
       message.success("保存成功");
       await sleep(2);
-      editorConfig.handlerSaveSucessJump();
+      handlerSaveSucessJump();
     }
   },
   fetchWork({ commit, dispatch, state }, workId) {

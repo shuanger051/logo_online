@@ -1,5 +1,7 @@
 const path = require("path");
 const themePath = path.resolve(__dirname, "./src/styles/theme/var.less");
+const webpackMixin =  require('@shop-sign/editor/webpackMixIn');
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -29,4 +31,9 @@ module.exports = {
       },
     },
   },
+  lintOnSave: false,
+
+  configureWebpack: config => {
+    webpackMixin(config)
+  }
 };

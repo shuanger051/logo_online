@@ -1,20 +1,17 @@
 import { mapState, mapActions, mapMutations } from "vuex";
-import Vue from "vue";
+import FixedTools from "core/editor/fixed-tools/index";
+import EditorRightPanel from "core/editor/right-panel/index";
+import EditorCanvas from "core/editor/canvas/index";
+import EditorLeftPanel from "core/editor/left-panel/index";
+import AdjustLineV from "core/support/adjust-line/vertical";
+import store from "core/store/index";
 import "@editor/locales";
 import "core/support/index.js";
 import "core/styles/index.scss";
 import "core/styles/scrollbar.scss";
 import "animate.css";
-
-import FixedTools from "core/editor/fixed-tools/index";
-import EditorRightPanel from "core/editor/right-panel/index";
-import EditorCanvas from "core/editor/canvas/index";
-import EditorLeftPanel from "core/editor/left-panel/index";
-
-import AdjustLineV from "core/support/adjust-line/vertical";
-
-import store from "core/store/index";
 import "@editor/plugins/index";
+
 function AdjustHoc(WrappedComponent) {
   return {
     props: WrappedComponent.props,
@@ -60,7 +57,6 @@ function AdjustHoc(WrappedComponent) {
 
 const AdjustLeftPanel = AdjustHoc(EditorLeftPanel);
 
-window.EditorApp = new Vue(); // event bus
 const CoreEditor = {
   name: "CoreEditor",
   store,

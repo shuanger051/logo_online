@@ -111,8 +111,15 @@ export default {
       const formItemData = {
         props: {
           ...formItemLayout,
-          label: item[`${this.currentLang}-label`] || item.label,
           ...item.layout
+        }
+      }
+      if (!item.hiddenLabel) {
+        formItemData.props.label = item[`${this.currentLang}-label`] || item.label
+      } else {
+        if (formItemLayout.labelCol) {
+          formItemLayout.labelCol.span = 0
+          formItemLayout.wrapperCol.span = 24
         }
       }
       return (

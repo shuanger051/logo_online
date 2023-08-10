@@ -114,6 +114,9 @@ importers:
       babel-eslint:
         specifier: ^10.1.0
         version: 10.1.0(eslint@6.7.2)
+      babel-plugin-component:
+        specifier: ^1.1.1
+        version: 1.1.1
       babel-plugin-transform-remove-console:
         specifier: ^6.9.4
         version: 6.9.4
@@ -196,6 +199,9 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(vuex@3.4.0)
     devDependencies:
+      '@shop-sign/editor':
+        specifier: workspace:*
+        version: link:../../packages/lower-code
       '@vue/cli-plugin-babel':
         specifier: ~4.5.17
         version: 4.5.17(@vue/cli-service@4.5.17)(core-js@3.6.5)(vue@2.7.14)
@@ -220,6 +226,9 @@ importers:
       babel-eslint:
         specifier: ^10.1.0
         version: 10.1.0(eslint@6.7.2)
+      babel-plugin-component:
+        specifier: ^1.1.1
+        version: 1.1.1
       babel-plugin-import:
         specifier: ^1.13.8
         version: 1.13.8
@@ -344,6 +353,9 @@ importers:
       '@babel/plugin-proposal-optional-chaining':
         specifier: ^7.12.16
         version: 7.12.16(@babel/core@7.22.9)
+      '@iconify/vue2':
+        specifier: 2.1.0
+        version: 2.1.0(vue@2.7.14)
       '@vue/cli-plugin-babel':
         specifier: ^3.8.0
         version: 3.8.0
@@ -1985,6 +1997,19 @@ packages:
       '@hapi/hoek': 8.5.1
     dev: true
 
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: true
+
+  /@iconify/vue2@2.1.0(vue@2.7.14):
+    resolution: {integrity: sha512-+R4T9EqrUecMKh/tdiscju/mJS+HCzHFFuJ9XnNcFLaIj3lBOdh8RJolPY9n4k7XRG5V/tY16Lzx+mv+vOmjhA==}
+    peerDependencies:
+      vue: 2.x
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 2.7.14
+    dev: true
+
   /@intervolga/optimize-cssnano-plugin@1.0.6(webpack@4.28.4):
     resolution: {integrity: sha512-zN69TnSr0viRSU6cEDIcuPcP67QcpQ6uHACg58FiN9PDrU6SLyGW3MR4tiISbYxy1kDWAVPwD+XwQTWE5cigAA==}
     peerDependencies:
@@ -2646,7 +2671,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.9
       '@vue/babel-preset-app': 4.5.19(@babel/core@7.22.9)(core-js@3.6.5)(vue@2.7.14)
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@6.1.1)(lodash@4.17.21)(sass-loader@10.4.1)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
       babel-loader: 8.3.0(@babel/core@7.22.9)(webpack@4.46.0)
       cache-loader: 4.1.0(webpack@4.46.0)
@@ -2683,7 +2708,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@6.1.1)(lodash@4.17.21)(sass-loader@10.4.1)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
       eslint: 6.7.2
       eslint-loader: 2.2.1(eslint@6.7.2)(webpack@4.46.0)

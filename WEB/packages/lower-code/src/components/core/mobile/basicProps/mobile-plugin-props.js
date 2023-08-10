@@ -2,12 +2,11 @@ const defaultNumberInputProp = {
   // step: 1,
   // min: 0,
   // max: 144
+  "input-width": "50px",
+  disabled: true
 }
 
-const dataSourceLayout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24, offset: 0 }
-}
+
 
 export default {
   boolean: ({ label = '开关', defaultValue = false, props = {}, visible = true, ...other } = {}) => ({
@@ -61,7 +60,7 @@ export default {
       label,
       // !#zh 为编辑组件指定 props
       props: {
-        size: 'mini',
+        // size: 'mini',
         showAlpha: true
       },
       require: true,
@@ -115,10 +114,11 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'a-select',
+      type: 'mobile-select',
       label,
       props: {
-        options
+        options,
+        label
       },
       ...other
     }

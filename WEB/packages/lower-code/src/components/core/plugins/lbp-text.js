@@ -98,6 +98,9 @@ export default {
       innerText: this.text || '双击修改文字'
     }
   },
+  mobileProps: {
+    
+  },
   props: {
     fontColor: PropTypes.color({ label: '颜色', defaultValue: '#000' }),
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),

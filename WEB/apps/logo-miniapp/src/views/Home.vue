@@ -32,6 +32,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
+  span {
+    font-size: 14px;
+  }
   padding: 12px 0;
   min-height: 100vh;
   background-color: @gray-2;

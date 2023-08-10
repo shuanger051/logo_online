@@ -15,7 +15,6 @@
 import Vue from 'vue'
 import PropMultiTextItemsEditor from './prop-multi-items-editor/text.js'
 import ImageGallery from './image-gallery/gallery.js'
-import LbsExcelEditor from './excel'
 import ColorsPanel from './colors-panel'
 import LbpTextAlign from '@luban-h5/lbs-text-align'
 import 'tinymce/tinymce'
@@ -37,6 +36,5 @@ Vue.component(ColorPicker.name, ColorPicker)
 Vue.component(PropMultiTextItemsEditor.name, PropMultiTextItemsEditor)
 Vue.component(ImageGallery.name, ImageGallery)
 Vue.component(LbpTextAlign.name, LbpTextAlign)
-Vue.component(LbsExcelEditor.name, LbsExcelEditor)
 Vue.component(ColorsPanel.name, ColorsPanel)
 Vue.component('tinymce-editor', Editor)

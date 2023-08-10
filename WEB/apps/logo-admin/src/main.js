@@ -11,16 +11,16 @@ import { initI18n } from "@/utils/i18n";
 import bootstrap from "@/bootstrap";
 import "moment/locale/zh-cn";
 import * as axios from "@/utils/request";
-import editorConfig from "core/Config";
+import adminConfig from "core/adminConfig";
 
 const router = initRouter(store.state.setting.asyncRoutes);
 const i18n = initI18n("CN", "US");
 
 // 初始化编辑器配置
-editorConfig.install(({ initI18n, initRequest, initMode, initRouter, initSaveSucessJump }) => {
+adminConfig.install(({ initI18n, initRequest, initMode, initRouter, initSaveSucessJump }) => {
   initI18n(i18n);
   initRequest(axios);
-  initMode('logo-admin');
+  initMode('admin');
   initRouter(router)
   initSaveSucessJump(() => {
     if ( !router.currentRoute?.params?.id) {

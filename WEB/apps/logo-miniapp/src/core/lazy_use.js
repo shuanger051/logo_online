@@ -14,6 +14,9 @@ import {
   Field,
   Popup,
   Toast,
+  Picker,
+  Stepper,
+  Uploader
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -31,5 +34,9 @@ Vue.use(Form);
 Vue.use(Field);
 Vue.use(Popup);
 Vue.use(Toast);
+Vue.use(Stepper);
+Vue.use(Picker);
+Vue.use(Uploader);
+
 
 Vue.component("submit-bar", SubmitBar);

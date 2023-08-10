@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-import LbpText from 'core/plugins/lbp-text'
 import LbpTextTinymce from 'core/plugins/lbp-text-tinymce'
 import LbpPicture from 'core/plugins/lbp-picture'
 

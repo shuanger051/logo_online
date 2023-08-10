@@ -1,0 +1,12 @@
+<template>
+  <div class="about">
+    <edit-wrap />
+  </div>
+</template>
+
+<script>
+import EditWrap from "core/mobile/view/editWrap";
+export default {
+  components: { EditWrap },
+};
+</script>
