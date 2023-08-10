@@ -72,6 +72,20 @@ public class SysDictItemController {
         return ResponseResult.success(sysDictItemVOList);
     }
 
+    /**
+     * 数据字典通过dict_key查询字典子项列表
+     * @param dictKey
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "数据字典通过dict_key查询字典子项列表")
+    @RequestMapping(value = "/getItemsByDictKeyInDB", method = RequestMethod.GET)
+    @RequiresPermissions("/sys/dict-item/getItemsByDictKeyInDB")
+    public ResponseResult<Object> getItemsByDictKeyInDB(@RequestParam("dictKey") String dictKey) {
+        List<SysDictItemDTO> sysDictItemList = sysDictItemService.getItemsByDictKeyInDB(dictKey);
+        List<SysDictItemVO> sysDictItemVOList = BeanToolsUtil.copyAsList(sysDictItemList,SysDictItemVO.class);
+        return ResponseResult.success(sysDictItemVOList);
+    }
+
 
     /**
      * 数据字典条目子项数据查看

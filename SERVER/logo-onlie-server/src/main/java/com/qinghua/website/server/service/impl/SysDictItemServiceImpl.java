@@ -162,4 +162,15 @@ public class SysDictItemServiceImpl implements SysDictItemService {
         });
         return result;
     }
+
+    /**
+     * 返回字典列表
+     * @param dictKey
+     * @return
+     */
+    public List<SysDictItemDTO> getItemsByDictKeyInDB(String dictKey){
+        List<SysDictItemDTO> list =  sysDictItemMapper.getItemsByDictKeyInDB(dictKey);
+        return list;
+    }
+
 }

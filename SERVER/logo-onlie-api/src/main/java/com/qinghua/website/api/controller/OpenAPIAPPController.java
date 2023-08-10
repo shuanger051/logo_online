@@ -59,6 +59,9 @@ public class OpenAPIAPPController {
     @Autowired
     private LogoInfoService logoInfoService;
 
+    @Autowired
+    private MaterialService materialService;
+
     /**
      * APP注册客户信息
      * @param customerSaveIO
@@ -341,6 +344,24 @@ public class OpenAPIAPPController {
         ContentDTO res = contentService.getContentByIDAPI(id);
         ContentVO vo = BeanToolsUtil.copyOrReturnNull(res,ContentVO.class);
         return ResponseResult.success(vo);
+    }
+
+    /**
+     * APP 分頁查询素材信息API
+     * @param materialQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 分頁查询素材信息API")
+    @RequestMapping("/getMaterialListByPageAPI")
+    public ResponseResult<Object> getMaterialListByPageAPI(@Validated MaterialQueryIO materialQueryIO){
+        MaterialDTO queryDTO = BeanToolsUtil.copyOrReturnNull(materialQueryIO,MaterialDTO.class);
+        PageInfo<MaterialDTO> pageList =  materialService.getMaterialListByPage(queryDTO);
+        List<MaterialVO> materialVOList =  BeanToolsUtil.copyAsList(pageList.getList(),MaterialVO.class);
+        materialVOList.forEach(item->item.setUrlPath("/savePath/material/" + item.getFilePath() + "/" + item.getFileName()));
+        PageListVO<MaterialVO> resp = new PageListVO<>();
+        resp.setList(materialVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
     }
 
     /**

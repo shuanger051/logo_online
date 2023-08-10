@@ -62,4 +62,11 @@ public interface SysDictItemService {
      */
     List<SysDictItemDTO> getItemsByDictKey(String dictKey);
 
+    /**
+     * 返回字典列表
+     * @param dictKey
+     * @return
+     */
+    List<SysDictItemDTO> getItemsByDictKeyInDB(String dictKey);
+
 }

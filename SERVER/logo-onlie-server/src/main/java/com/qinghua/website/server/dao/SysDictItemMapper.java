@@ -70,4 +70,11 @@ public interface SysDictItemMapper {
      * @param item
      */
     void updateSort(SysDictItemDTO item);
+
+    /**
+     * 返回字典列表
+     * @param dictKey
+     * @return
+     */
+    List<SysDictItemDTO> getItemsByDictKeyInDB(@Param("dictKey") String dictKey);
 }

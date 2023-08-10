@@ -46,6 +46,21 @@
         where dict_key = #{dictKey} and ( item_key = #{itemKey} or item_value = #{itemValue})
     </select>
 
+    <!-- 返回字典列表 -->
+    <select id="getItemsByDictKeyInDB" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT DISTINCT
+        t2.id id,
+        t2.dict_key dict_key,
+        t2.item_key item_key,
+        t2.item_value item_value
+        FROM
+        `t_sys_dict_entry` t1,
+        `t_sys_dict_item` t2
+        WHERE
+        t1.dict_key = t2.dict_key
+        AND t1.dict_key = #{dictKey}
+    </select>
+
     <!-- 修改排序 -->
     <update id="updateSort" parameterType="com.qinghua.website.server.domain.SysDictItemDTO">
         update t_sys_dict_item set item_sort = item_sort - 1 where item_sort > #{itemSort} and dict_key=#{dictKey}
