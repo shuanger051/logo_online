@@ -32,7 +32,7 @@
       },
       buttonVal() {
         const item = this.getItemByLabelOrValue(this.value, false)
-        return item ? item.label : this.label
+        return (item ? item.label : this.label).slice(0,4)
       },
       index() {
         const item = this.getItemByLabelOrValue(this.value, false)
@@ -51,9 +51,6 @@
         this.$emit('input', item.value)
         this.showPicker = false;
       },
-    },
-    mounted() {
-      window.ss = this
     }
   }
 </script>

@@ -16,7 +16,9 @@ import {
   Toast,
   Picker,
   Stepper,
-  Uploader
+  Uploader,
+  Pagination,
+  Dialog
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -37,6 +39,7 @@ Vue.use(Toast);
 Vue.use(Stepper);
 Vue.use(Picker);
 Vue.use(Uploader);
-
+Vue.use(Pagination);
+Vue.use(Dialog);
 
 Vue.component("submit-bar", SubmitBar);

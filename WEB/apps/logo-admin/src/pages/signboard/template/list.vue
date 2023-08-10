@@ -34,8 +34,10 @@
           >编辑</a-button
         >
         <a-button type="link" size="small" @click="onDel({ record, index })"
-          >删除</a-button
-        >
+          >删除</a-button>
+          <a-button type="link" size="small" @click="onPublish({ record, index })"
+          >{{record.releaseStatus == '1' ? '取消发布': '发布'}}</a-button>
+        
       </template>
     </a-table>
   </div>
@@ -44,6 +46,8 @@
 import useTable from "@/hooks/useTable";
 import { ref } from "vue";
 import { mapState } from "vuex";
+import { Modal,message } from "ant-design-vue";
+
 import { signboardService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
 const styleMap = [
@@ -152,6 +156,20 @@ export default {
       list.value.splice(index, 1);
       return data;
     });
+    const onPublish = ({record}) => {
+      Modal.confirm({
+        content: "是否"+ record.releaseStatus == "1" ? '取消发布': "发布",
+        okText: "确定",
+        onOk: () => { 
+          signboardService.updateTemplateStatusById({
+            id: record.id,
+            releaseStatus: record.releaseStatus == "1" ? "2" : "1" 
+          })
+          .then(() => {message.success("更改成功"); onSerach()})
+          .catch(() => message.error("更改失败"))
+        }
+      });
+    }
     const changeStyle = (v) => {
       formData.style = v.join(",");
     };
@@ -165,6 +183,7 @@ export default {
       onChange,
       styleMap,
       formStyle,
+      onPublish
     };
   },
   methods: {

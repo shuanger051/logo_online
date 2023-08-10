@@ -1,13 +1,26 @@
 import Vue from 'vue'
-import a from './test'
-const request = Vue.prototype.$request
-export const saveMaterial = request.axiosPost('/logo/material/saveMaterial')
-export const getMaterialListByPage = request.axiosGet('/logo/material/getMaterialListByPage')
-export const saveTemplate = request.axiosPost('/logo/template/saveTemplate')
-export const updateTemplate = request.axiosPost('/logo/template/updateTemplate')
-// export const getTemplateByID = request.axiosGet('/logo/template/getTemplateByID')
-export const uploadMaterialAttachment =  request.axiosPost('logo/attachment/uploadMaterialAttachment')
 
-export const getTemplateByID = async () => {
-  return a
+const wrapRequest = (url, isPost) => {
+  return (...args) => {
+    const request = Vue.prototype.$request
+   return request[isPost ? 'axiosPost' : 'axiosGet'](url)(...args)
+  }
 }
+export const saveMaterial = wrapRequest('/logo/material/saveMaterial', true)
+export const getMaterialListByPage = wrapRequest('/logo/material/getMaterialListByPage', false)
+export const saveTemplate = wrapRequest('/logo/template/saveTemplate', true)
+export const updateTemplate = wrapRequest('/logo/template/updateTemplate', true)
+export const adminGetTemplateByID = wrapRequest('/logo/template/getTemplateByID', false)
+export const uploadMaterialAttachment =  wrapRequest('logo/attachment/uploadMaterialAttachment', true)
+
+export const getTemplateByID = async (...arg) => {
+  if (window.$editorConfig.isApp())  {
+    return appQueryTemplate(...arg)
+  } else {
+    return adminGetTemplateByID(...arg)
+  }
+}
+
+
+export const appGetMaterial = wrapRequest('/logo/app/getMaterialListByPageAPI?fileType=1', false)
+export const appQueryTemplate = wrapRequest('logo/app/queryTemplateByIdAPI', false)

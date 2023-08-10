@@ -1,6 +1,6 @@
 import PropTypes from "@luban-h5/plugin-common-props";
 import { resolveImgUrl } from "core/support/imgUrl";
-
+import MobilePropTypes from 'core/mobile/basicProps/mobile-plugin-props'
 import placeholderImg from "./lbp-picture-placeholder.png"; // issue #34
 export default {
   name: "lbp-picture",
@@ -29,6 +29,9 @@ export default {
         </div>
       );
     }
+  },
+  mobileProps: {
+    imgSrc: MobilePropTypes.image()
   },
   props: {
     imgSrc: PropTypes.image(),

@@ -1,4 +1,6 @@
 import MobileSelect from './MobileSelect.vue'
+import Upload from './Upload.vue'
+
 import { ColorPicker,Button } from 'element-ui'
 import { Icon } from '@iconify/vue2';
 import 'core/mobile/style/index.scss'
@@ -13,5 +15,6 @@ export default {
    [Button.name]: Button,
    'icon-fa': Icon,
    'mobile-select': MobileSelect,
+   'mobile-upload': Upload,
    'tinymce-editor': Editor
   }

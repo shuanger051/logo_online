@@ -103,7 +103,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'lbs-image-gallery',
+      type: 'mobile-upload',
       label,
       ...other
     }
