@@ -177,6 +177,9 @@ importers:
       core-js:
         specifier: ^3.6.5
         version: 3.6.5
+      dayjs:
+        specifier: ^1.11.9
+        version: 1.11.9
       lib-flexible:
         specifier: ^0.3.2
         version: 0.3.2
@@ -6974,6 +6977,10 @@ packages:
 
   /date-fns@2.14.0:
     resolution: {integrity: sha512-1zD+68jhFgDIM0rF05rcwYO8cExdNqxjq4xP1QKM60Q45mnO6zaMWB4tOzrIr4M4GSLntsKeE4c9Bdl2jhL/yw==}
+    dev: false
+
+  /dayjs@1.11.9:
+    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==}
     dev: false
 
   /de-indent@1.0.2:

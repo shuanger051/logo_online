@@ -14,14 +14,14 @@
       />
       <van-field label="性别" placeholder="请输入" v-model="formData.gender" />
       <van-field
-        label="密码"
-        placeholder="请输入"
-        v-model="formData.password"
-      />
-      <van-field
         label="手机号"
         placeholder="请输入"
         v-model="formData.mobile"
+      />
+      <van-field
+        label="密码"
+        placeholder="请输入"
+        v-model="formData.password"
       />
       <!-- 提交栏 -->
       <submit-bar>

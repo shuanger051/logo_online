@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import articleRoute from "./modules/article";
+import shopRoute from './modules/shop'
 
 Vue.use(VueRouter);
 
@@ -28,8 +29,16 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/account/register.vue"),
   },
+  // 商铺管理
+  shopRoute,
   // 文章模块
   articleRoute,
+  // 404
+  {
+    path: "/*",
+    name: "404",
+    redirect: "/",
+  },
 ];
 
 const router = new VueRouter({

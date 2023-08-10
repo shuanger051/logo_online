@@ -2,7 +2,7 @@
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
     <form-serach :fields="serachFields" @serach="onSerach">
-      <a-button type="primary" @click="onAdd">新增</a-button>
+      <!-- <a-button type="primary" @click="onAdd">新增</a-button> -->
     </form-serach>
     <!-- 结果列表 -->
     <a-table
@@ -19,9 +19,9 @@
       </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
-        <a-button type="link" size="small" @click="onEdit({ record })"
+        <!-- <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
-        >
+        > -->
         <!-- btn:删除 -->
         <a-popconfirm
           title="删除后不可恢复，是否确认删除该商铺信息？"

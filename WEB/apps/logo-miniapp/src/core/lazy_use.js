@@ -18,7 +18,9 @@ import {
   Stepper,
   Uploader,
   Pagination,
-  Dialog
+  Dialog,
+  Empty,
+  Divider,
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -41,5 +43,9 @@ Vue.use(Picker);
 Vue.use(Uploader);
 Vue.use(Pagination);
 Vue.use(Dialog);
+
+Vue.use(Empty)
+Vue.use(Divider)
+Vue.use(Uploader)
 
 Vue.component("submit-bar", SubmitBar);
