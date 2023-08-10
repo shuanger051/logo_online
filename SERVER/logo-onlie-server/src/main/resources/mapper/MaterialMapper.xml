@@ -26,7 +26,7 @@
 
     <!--  通过ID来获取对象 -->
     <select id="getMaterialById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT <include refid="Base_Column_List"/> FROM t_material WHERE  id =#{id}
+        SELECT <include refid="Base_Column_List"/> FROM t_material WHERE  id =#{id} ORDER BY create_time DESC
     </select>
 
     <!-- 通过实体来查询分页列表 -->
@@ -35,13 +35,8 @@
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="name !=null and name !=''">AND name like concat('%', #{name}, '%')</if>
         </trim>
-        <trim prefix="ORDER BY ">
-            <if test="sort !=null and sort != ''">
-                #{sort}
-            </if>
-        </trim>
+        order by create_time DESC
     </select>
-
 
     <!-- 根据ID删除 -->
     <delete id="deleteMaterialById" parameterType="java.lang.Long">
