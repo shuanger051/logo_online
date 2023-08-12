@@ -36,6 +36,7 @@
         SELECT <include refid="Base_Column_List"/> FROM t_logo_info
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="logoName !=null and logoName !=''">AND logo_name like concat('%', #{logoName}, '%')</if>
+            <if test="shopsId !=null">AND shops_id = #{shopsId}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">

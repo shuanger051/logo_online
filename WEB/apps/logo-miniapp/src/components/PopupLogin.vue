@@ -35,6 +35,7 @@
 </template>
 <script>
 import store from "@/store";
+import eventBus from "@/core/eventBus";
 import { commonService, accountService } from "@/apis";
 import { runPromiseInSequence } from "@/utils/util";
 export default {
@@ -54,6 +55,9 @@ export default {
         password: [{ required: true, message: "请输入" }],
       };
     },
+  },
+  created() {
+    eventBus.$on("login", () => (this.show = true));
   },
   methods: {
     // event：登录
@@ -86,19 +90,10 @@ export default {
         })
         .then((res) => {
           this.show = false;
-          store.commit("user/setToken", res.data.token);
+          const { token, customerInfo } = res.data;
+          store.commit("user/setToken", token);
+          store.commit("user/setUserInfo", customerInfo);
         });
-    },
-    // 获取登录用户信息
-    getUserProfiles() {
-      return (
-        accountService
-          .queryCustomerByIdAPI()
-          // 缓存用户信息
-          .then((res) => {
-            store.commit("user/setUserInfo", res.data);
-          })
-      );
     },
     // 获取公钥
     getPublicKey(ctx) {

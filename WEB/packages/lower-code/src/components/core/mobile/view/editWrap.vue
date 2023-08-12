@@ -10,6 +10,7 @@
         <edit-panel :elements = "elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
+    <van-uploader :after-read="afterRead" />
     <props-panel />
   </div>
 </template>
@@ -20,7 +21,14 @@
   import store from "core/store/mobileIndex";
   import { ImagePreview } from 'vant';
   import {resolveImgUrl} from 'core/support/imgUrl'
+  import {appSaveLogoInfoAPI} from "core/api"
+  import { Notify } from 'vant';
 
+  const sleep = async (time) => {
+  return new Promise((r) => {
+    setTimeout(() => r(), time);
+  });
+};
 
   export default {
     components: {PropsPanel, EditPanel},
@@ -58,11 +66,19 @@
         return  (w/workWidth)
       },
       async createShopSign() {
-        const flag = await this.mCreateCover({el: "#content_edit"})
-        if (flag) {
+        const ts = this.editPanelStyle.transform
+        this.editPanelStyle.transform = `scale(1)`
+        await sleep(300)
+        try{
+          await this.mCreateCover({el: "#content_edit"})
+          Notify({ type: 'success', message: '创建成功' });
           ImagePreview([resolveImgUrl(this.currentShopSign)]);
+        } catch(e) {
+          Notify({ type: 'danger', message: '创失败' });
         }
-      }
+        this.editPanelStyle.transform = ts
+
+      },
     },
 
     created() {

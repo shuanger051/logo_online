@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class LogoQueryIO extends BaseIO{
 
+    private Long shopsId;
+
     /**
      * 名称
      */

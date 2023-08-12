@@ -24,8 +24,4 @@ export const getTemplateByID = async (...arg) => {
 
 export const appGetMaterial = wrapRequest('/logo/app/getMaterialListByPageAPI?fileType=1', false)
 export const appQueryTemplate = wrapRequest('logo/app/queryTemplateByIdAPI', false)
-export const appSaveLogoInfoAPI = wrapRequest('/logo/app/saveLogoInfoAPI', true, {
-  headers: {
-    'Content-Type': 'multipart/form-data'
-  }
-})
+export const appSaveLogoInfoAPI = wrapRequest('/logo/app/saveLogoInfoAPI', true)

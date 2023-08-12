@@ -35,7 +35,7 @@
 import Detail from "./detail";
 import Audit from "./audit";
 import useTable, { queryDictCache } from "@/hooks/useTable";
-import { mapDictObject, mapDictArray } from "@/store/helpers";
+import { mapDictObject } from "@/store/helpers";
 import { mapState } from "vuex";
 import { afficheService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
@@ -66,7 +66,6 @@ export default {
     },
     // 表格列配置
     columns() {
-      const { DictStatus = {} } = this;
       return [
         {
           title: "标题",
@@ -88,12 +87,13 @@ export default {
           title: "是否推荐",
           dataIndex: "isRecommend",
           key: "isRecommend",
+          customRender: (val) => (val == "1" ? "是" : "否"),
         },
         {
           title: "状态",
           dataIndex: "status",
           key: "status",
-          customRender: (val) => DictStatus[val],
+          customRender: (val) => this.DictStatus[val],
         },
         {
           title: "日访问数",
@@ -195,11 +195,13 @@ export default {
   created() {
     this.onSerach();
     // 获取字典项
-    queryDictCache(["status"]);
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["status"],
+    });
     // 栏目列表
     afficheService
       .getChannelList()
-      // 添加到字典缓存
+      // 添加到缓存
       .then((res) => {
         const list = _.get(res, "data");
         this.$store.commit("cache/setCache", { key: "channel", val: list });

@@ -33,10 +33,16 @@ import { systemService } from "@/services";
 import useTable from "@/hooks/useTable";
 import { message } from "ant-design-vue";
 import FormSerach from "../../../components/form/FormSerach.vue";
+import { mapDictObject } from "@/store/helpers";
 export default {
   components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
+    // 字典项
+    ...mapState({
+      // 角色状态
+      DictRoleStatus: mapDictObject("roleStatus"),
+    }),
     // table 列字段
     columns() {
       return [
@@ -55,6 +61,7 @@ export default {
           title: "角色状态",
           dataIndex: "roleStatus",
           key: "roleStatus",
+          customRender: (val) => this.DictRoleStatus[val],
         },
         {
           title: "操作",
@@ -113,6 +120,10 @@ export default {
   },
   created() {
     this.onSerach();
+    // 获取字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["roleStatus"],
+    });
   },
   methods: {
     // event：删除

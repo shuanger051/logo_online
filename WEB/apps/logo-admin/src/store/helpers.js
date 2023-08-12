@@ -5,7 +5,7 @@
  */
 export function mapDictObject(key) {
   return (state) => {
-    const list = _.get(state, ["cache", "dictionary", key], []);
+    const list = _.get(state, ["cache", "dictionary", `dict__${key}`], []);
     return list.reduce((dtm, item) => {
       const { itemKey, itemValue } = item;
       dtm[itemKey] = itemValue;
@@ -15,9 +15,9 @@ export function mapDictObject(key) {
 }
 
 /**
- * == 获取字典项缓存 == 
- * @param {*} key 
- * @returns 
+ * == 获取字典项缓存 ==
+ * @param {*} key
+ * @returns
  */
 export function mapDictArray(key) {
   return (state) => _.get(state, ["cache", "dictionary", key], []);

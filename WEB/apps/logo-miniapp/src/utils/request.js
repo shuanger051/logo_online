@@ -1,5 +1,7 @@
 import axios from "axios";
 import store from "../store";
+import router from "../router";
+import evnetBus from "../core/eventBus";
 
 // 默认配置
 axios.defaults.timeout = 5000;
@@ -21,6 +23,13 @@ axios.interceptors.response.use(
     const { data } = response;
     // 为0则成功
     if (data.code === "0") return data;
+    // 未登录或登录失效
+    else if (data.code == "401") {
+      router.push({ path: "/" });
+      store.commit("user/setToken");
+      store.commit("user/setUserInfo");
+      evnetBus.$emit("login");
+    }
     // 其他为失败
     else return Promise.reject(data);
   }

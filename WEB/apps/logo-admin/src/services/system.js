@@ -87,7 +87,7 @@ export const getDictItemListByPage = axiosGet(
 /** 根据数据字典KEY查询子项列表 */
 export const getItemsByDictKey = axiosGet(
   "/logo/sys/dict-item/getItemsByDictKey"
-)
+);
 /** 根据数据字典子项ID查询子项列表 */
 export const getDictItemById = axiosGet("/logo/sys/dict-item/getDictItemById");
 /** 数据字典子项添加 */
@@ -99,6 +99,10 @@ export const updateDictItemById = axiosPost(
 /** 根据ID删除数据字典子项 */
 export const deleteDictItemById = axiosPost(
   "/logo/sys/dict-item/deleteDictItemById"
+);
+/** 查询字典子项 */
+export const getItemsByDictKeyInDB = axiosGet(
+  "/logo/sys/dict-item/getItemsByDictKeyInDB"
 );
 
 /** 根据ID查询角色权限信息 */

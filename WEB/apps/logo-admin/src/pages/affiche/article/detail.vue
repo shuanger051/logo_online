@@ -4,10 +4,9 @@
     class="edit-form"
     :model="formData"
     :rules="rules"
-    :label-col="{ span: 6 }"
+    :label-col="{ style: { width: '6em', float: 'left' } }"
     :wrapper-col="{ span: 18 }"
   >
-    <!-- 富文本编辑器 -->
     <a-row>
       <a-col :span="12">
         <a-form-model-item label="所属栏目" prop="channelId">
@@ -61,6 +60,18 @@
           />
         </a-form-model-item>
       </a-col>
+      <!-- 附件列表 -->
+      <a-col :span="24">
+        <a-form-model-item label="附件">
+          <a-upload
+            :remove="doDel"
+            :customRequest="doUpload"
+            :fileList="formData.contentAttachment"
+          >
+            <a-button type="link" icon="upload">上传附件</a-button>
+          </a-upload>
+        </a-form-model-item>
+      </a-col>
     </a-row>
     <!-- 富文本编辑器 -->
     <quill-editor
@@ -74,7 +85,6 @@
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
-
 import { quillEditor } from "vue-quill-editor";
 import { reactive, ref } from "vue";
 import { afficheService } from "@/services";
@@ -84,7 +94,7 @@ export default {
   props: {
     record: {
       type: Object,
-      default: () => ({ contentExt: {} }),
+      default: () => ({ contentExt: {}, contentAttachment: [] }),
     },
   },
   computed: {
@@ -103,9 +113,20 @@ export default {
   },
   setup(props) {
     // 获取表单默认值
-    const defVal = _.cloneDeep(props.record);
+    const { list = [], contentCheck, ...record } = props.record;
     const formRef = ref();
-    const formData = reactive(defVal);
+    const detail = _.cloneDeep(record);
+    // 附件处理
+    detail.contentAttachment = list.map(setAttachmentAttr);
+    const formData = reactive(detail);
+
+    // 设置附件属性
+    function setAttachmentAttr(item, uid) {
+      if (!item.filename) item.filename = item.fileName;
+      item.uid = item.id || uid;
+      item.name = item.filename;
+      return item;
+    }
 
     // 新增
     function saveContent() {
@@ -160,15 +181,46 @@ export default {
       // method
       onOk,
       onEditorChange,
+      setAttachmentAttr,
     };
+  },
+  methods: {
+    // 删除附件
+    doDel(file) {
+      console.log(file);
+      let { contentAttachment: list } = this.formData;
+      this.formData.contentAttachment = list.filter(
+        (item) => item.uid != file.uid
+      );
+    },
+    // 上传
+    doUpload(evt) {
+      const formData = new FormData();
+      formData.append("file", evt.file);
+      return (
+        afficheService
+          // 上传附件
+          .uploadContentAttachment(formData)
+          .then((res) => {
+            const { contentAttachment: list } = this.formData;
+            const uid = Math.random().toString(32).slice(2);
+            const data = this.setAttachmentAttr(res.data, uid);
+            this.formData.contentAttachment = list.concat(data);
+            evt.onSuccess(data, evt);
+          })
+          .catch((err) => {
+            console.error(err);
+            evt.onError(err, evt);
+          })
+      );
+    },
   },
 };
 </script>
-
 <style lang="less" scoped>
 .edit-form {
   :deep(.ql-editor) {
-    height: 280px;
+    height: 240px;
   }
 }
 </style>

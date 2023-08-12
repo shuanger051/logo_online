@@ -9,6 +9,7 @@
         <result column="dom_item" property="domItem" jdbcType="VARCHAR"/>
         <result column="release_status" property="releaseStatus" jdbcType="VARCHAR"/>
         <result column="style" property="style" jdbcType="VARCHAR"/>
+        <result column="is_simple_tpl" property="isSimpleTpl" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -20,6 +21,7 @@
         dom_item,
         release_status,
         style,
+        is_simple_tpl,
         create_time,
         update_time
     </sql>
@@ -41,6 +43,7 @@
             <if test="name !=null and name !=''">AND name like concat('%', #{name}, '%')</if>
             <if test="releaseStatus !=null and releaseStatus !=''">AND release_status = #{releaseStatus}</if>
             <if test="style !=null and style !=''">AND style = #{style}</if>
+            <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -54,6 +57,7 @@
         SELECT <include refid="Base_Column_List"/> FROM t_template
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="style !=null and style !=''">AND style = #{style}</if>
+            <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
             and release_status = '1'
         </trim>
     </select>
@@ -72,6 +76,7 @@
             <if test="domItem !=null and domItem !=''">dom_item = #{domItem},</if>
             <if test="releaseStatus !=null and releaseStatus !=''">release_status = #{releaseStatus},</if>
             <if test="style !=null and style !=''">style = #{style},</if>
+            <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl = #{isSimpleTpl},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -90,6 +95,7 @@
             <if test="domItem !=null and domItem !=''">dom_item,</if>
             release_status,
             <if test="style !=null and style !=''">style,</if>
+            <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -97,6 +103,7 @@
             <if test="domItem !=null and domItem !=''">#{domItem},</if>
             '2',
             <if test="style !=null and style !=''">#{style},</if>
+            <if test="isSimpleTpl !=null and isSimpleTpl !=''">#{isSimpleTpl},</if>
             NOW()
         </trim>
     </insert>
