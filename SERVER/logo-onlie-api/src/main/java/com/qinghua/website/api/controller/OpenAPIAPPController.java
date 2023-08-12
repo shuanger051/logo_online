@@ -172,6 +172,13 @@ public class OpenAPIAPPController {
 
             //根据customer信息查询商户个人信息，通过身份证号关联
             MerchantInfoDTO merchant = merchantInfoService.getMerchantInfoByIdCard(customer.getIdCard());
+            if(null != merchant && null != merchant.getPhone()){
+                merchant.setPhone(Sm4Utils.decrypt(merchant.getPhone()));
+            }
+            if(null != merchant && null != merchant.getIdCard()) {
+                merchant.setIdCard(Sm4Utils.decrypt(merchant.getIdCard()));
+            }
+
             MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchant,MerchantInfoVO.class);
 
             //根据商户信息查询到店铺信息，通过所属关系关联
