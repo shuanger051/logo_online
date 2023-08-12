@@ -334,6 +334,23 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 分页查询查询店招图片列表API
+     * @param logoQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 分页查询查询店招图片列表API")
+    @RequestMapping(value = "/getLogoInfoListPageByNameAPI")
+    public ResponseResult<Object> getLogoInfoListPageByNameAPI(@Validated LogoQueryIO logoQueryIO){
+        LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
+        PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
+        List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
+        PageListVO<LogoInfoVO> resp = new PageListVO<>();
+        resp.setList(logoInfoVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
+    }
+
+    /**
      * 根据ID查询文章详情
      * @param id
      * @return
