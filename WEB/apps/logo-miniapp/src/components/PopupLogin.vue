@@ -92,17 +92,6 @@ export default {
           store.commit("user/setUserInfo", customerInfo);
         });
     },
-    // 获取登录用户信息
-    getUserProfiles() {
-      return (
-        accountService
-          .queryCustomerByIdAPI()
-          // 缓存用户信息
-          .then((res) => {
-            store.commit("user/setUserInfo", res.data);
-          })
-      );
-    },
     // 获取公钥
     getPublicKey(ctx) {
       return commonService

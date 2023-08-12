@@ -14,6 +14,10 @@ const mutations = {
   setUserInfo(state, detail) {
     state.profiles = detail;
   },
+  // 设置商户信息
+  setMerchantInfo(state, detail){
+    state.merchant = detail
+  }
 };
 
 export default {

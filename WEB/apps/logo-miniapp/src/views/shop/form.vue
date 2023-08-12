@@ -7,7 +7,7 @@
           required
           label="行业类型"
           placeholder="请输入"
-          v-model="formData.type"
+          v-model="formData.industryType"
         />
         <van-field
           required
@@ -17,54 +17,46 @@
         />
         <van-field
           required
-          label="营业状态"
+          label="营业年限"
           placeholder="请输入"
-          v-model="formData.merchantStatus"
+          v-model="formData.bizYears"
         />
         <van-field
+          required
+          label="店铺属性"
+          placeholder="请输入"
+          v-model="formData.shopsType"
+        />
+        <van-field
+          required
           label="备注"
           placeholder="请输入"
-          type="textarea"
           v-model="formData.remark"
-        />
-      </van-panel>
-      <!-- 商户信息 -->
-      <van-panel title="商户信息">
-        <van-field
-          required
-          label="姓名"
-          placeholder="请输入"
-          v-model="formData.merchantName"
-        />
-        <van-field
-          required
-          label="性别"
-          placeholder="请输入"
-          v-model="formData.gender"
-        />
-        <van-field
-          required
-          label="身份证号"
-          placeholder="请输入"
-          v-model="formData.idCard"
-        />
-        <van-field
-          required
-          label="联系电话"
-          placeholder="请输入"
-          v-model="formData.phone"
         />
       </van-panel>
       <!-- 材料上传 -->
       <van-panel title="材料上传">
         <van-field label="身份证" required>
-          <van-uploader slot="input" multiline />
+          <van-uploader
+            v-model="attachmentType[1]"
+            slot="input"
+            multiline
+            :after-read="(evt) => doAfterRead(1, evt)"
+          />
         </van-field>
         <van-field label="营业执照" required>
-          <van-uploader slot="input" />
+          <van-uploader
+            v-model="attachmentType[2]"
+            slot="input"
+            :after-read="(evt) => doAfterRead(2, evt)"
+          />
         </van-field>
         <van-field label="租赁合同" required>
-          <van-uploader slot="input" />
+          <van-uploader
+            v-model="attachmentType[3]"
+            slot="input"
+            :after-read="(evt) => doAfterRead(3, evt)"
+          />
         </van-field>
       </van-panel>
       <submit-bar>
@@ -80,11 +72,22 @@ export default {
   data() {
     return {
       formData: {},
+      attachmentType: {
+        // 身份证
+        1: [],
+        // 营业执照
+        2: [],
+        // 租赁合同
+        3: [],
+      },
     };
   },
   computed: {
     ...mapState({
+      // 用户信息
       userInfo: (state) => state.user.profiles,
+      // 商户信息
+      merchantInfo: (state) => state.user.merchant,
     }),
   },
   created() {
@@ -92,20 +95,80 @@ export default {
   },
   methods: {
     onSubmit() {
-      const { formData } = this;
-      shopService.saveMerchantAPI(formData).then((res) => {
-        console.log(res);
-      });
+      const { formData, attachmentType } = this;
+      // 合并档案列表
+      const list = Object.keys(attachmentType).reduce((list, key) => {
+        const arr = attachmentType[key];
+        // 添加档案类型标记
+        arr.forEach((item) => {
+          list.push({
+            attachmentName: item.attachmentName,
+            attachmentPath: item.attachmentPath,
+            attachmentType: item.attachmentType,
+            fileName: item.fileName,
+            fileType: item.urlPath,
+          });
+        });
+        return list;
+      }, []);
+      // 保存商铺信息
+      shopService
+        .saveShopsInfoAPI(
+          Object.assign(
+            {
+              list,
+            },
+            formData
+          )
+        )
+        .then((res) => {
+          console.log(res);
+        });
     },
     // 查询商铺信息
     queryShopInfo() {
-      const { idCard, mobile, nickName, gender } = this.userInfo;
-      Object.assign(this.formData, {
-        idCard,
-        phone: mobile,
-        merchantName: nickName,
-        gender,
-      });
+      const { shopId } = this.$route.query;
+      const { customerName } = this.userInfo;
+      shopService
+        .getCustomerInfoByUserNameAPI({ customerName })
+        // 获取商铺信息
+        .then((res) => {
+          const { shopsList, merchant } = res.data;
+          // 添加商户id
+          this.formData.merchantId = merchant.id;
+          // 存在shopid则为编辑
+          if (shopId) {
+            const item = shopsList.find((item) => (item.id = shopId));
+            // 设置商铺信息
+            Object.keys(item).forEach((key) => {
+              this.$set(this.formData, key, item[key]);
+            });
+            // 更新档案信息
+            this.attachmentType = item.list.reduce((dtm, item) => {
+              const { attachmentType: key } = item;
+              if (!dtm[key]) dtm[key] = [item];
+              else dtm[key].push(item);
+            }, {});
+          }
+        });
+    },
+    // 上传
+    doAfterRead(type, file) {
+      const formData = new FormData();
+      formData.append("file", file.file);
+      formData.append("attachmentType", type);
+      file.status = "uploading";
+      shopService
+        .uploadShopsAttachmentAPI(formData)
+        // 上传成功
+        .then((res) => {
+          Object.assign(file, res.data, { status: "done" });
+        })
+        // 上传失败
+        .catch(() => {
+          file.status = "failed";
+          file.message = "上传失败";
+        });
     },
   },
 };
