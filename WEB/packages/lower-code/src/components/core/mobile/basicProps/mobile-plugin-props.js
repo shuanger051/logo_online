@@ -1,6 +1,6 @@
 const defaultNumberInputProp = {
   // step: 1,
-  // min: 0,
+  min: 0,
   // max: 144
   "input-width": "50px",
   disabled: true

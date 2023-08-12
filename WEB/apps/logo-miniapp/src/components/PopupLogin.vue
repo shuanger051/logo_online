@@ -41,7 +41,10 @@ export default {
   data() {
     return {
       show: true,
-      formData: {},
+      formData: {
+        customerName: process.env.NODE_ENV !== "production" ? "18604298309": '',
+        password: process.env.NODE_ENV !== "production"? "Abc123456": ''
+      },
     };
   },
   computed: {

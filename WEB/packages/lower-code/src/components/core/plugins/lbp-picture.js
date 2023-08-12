@@ -13,6 +13,25 @@ export default {
       overflow: "hidden",
       justifyContent: "center",
     };
+    const {xRate, yRate} = this
+    if (xRate && yRate) {
+       style.alignItems = 'center';
+       const {commonStyle} = this.element
+       let wh = {}
+       let hh
+       if ((hh=commonStyle.width* yRate/xRate) <= commonStyle.height) {
+          wh.w = commonStyle.width;
+          wh.h = hh
+       } else {
+          wh.h = commonStyle.height;
+          wh.w = commonStyle.height * xRate/yRate
+       }
+      return (
+        <div style={style}>
+            <img src={url} height={wh.h + 'px'} width={wh.w + 'px'} />
+        </div>
+      );
+    }
     if (this.fillType == "none") {
       return <img src={url} alt="" srcset="" width="100%" height="100%" />;
     } else if (this.fillType == "horizontally") {
@@ -31,10 +50,28 @@ export default {
     }
   },
   mobileProps: {
-    imgSrc: MobilePropTypes.image()
+    imgSrc: MobilePropTypes.image(),
+    xRate: MobilePropTypes.number({ defaultValue: 0, label: "x轴", showLable: true, props: {
+      "inputWidth":"50px",
+      "buttonSize": "42px",
+      min: 0,
+
+    }}),
+    yRate: MobilePropTypes.number({ defaultValue: 0, label: "y轴",showLable: true, props: {
+      "inputWidth":"50px",
+      "buttonSize": "42px",
+      min: 0,
+    }}),
   },
   props: {
     imgSrc: PropTypes.image(),
+    xRate: PropTypes.number({ defaultValue: 0, visible: false}),
+    yRate: PropTypes.number({ defaultValue: 0, visible: false}),
+    element: {
+      type: Object,
+      visible: false,
+      default: () => {return {}}
+    },
     fillType: {
       type: String,
       default: "vertical-center",

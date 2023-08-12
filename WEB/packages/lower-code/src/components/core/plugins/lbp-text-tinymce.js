@@ -17,8 +17,8 @@ export default {
       position: 'relative',
       color: `${this.fontColor} !important`,
       textDecoration: 'none',
-      backgroundColor: this.backgroundColor || 'unset',
-      lineHeight: `${this.lineHeight}em`,
+      // backgroundColor: this.backgroundColor || 'unset',
+      // lineHeight: `${this.lineHeight}em`,
       border: `${this.borderWidth}px solid ${this.borderColor}`,
       borderRadius: `${this.borderRadius}px`,
       fontSize: `${this.fontSize}px` || '14px',
@@ -40,7 +40,7 @@ export default {
     fontSize: MobilePropTypes.number({ defaultValue: 14, label: '字体大小(px)', props: {
       "inputWidth":"50px",
       "buttonSize": "42px"
-    }, options: font }),
+    }}),
     text: MobilePropTypes.string({ 
       label: '内容',
       defaultValue: '双击修改文字',

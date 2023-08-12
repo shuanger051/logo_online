@@ -14,7 +14,7 @@ const directionKey = {
 
 // #!zh: 四个边角、两条中线上的点
 const points = ["lt", "rt", "lb", "rb", "l", "r", "t", "b"];
-const appPoints = ["lt", "rt", "lb", "rb"];
+const appPoints = [];
 const eventMap = {
   mousemove: "touchmove",
   mouseup: "touchend",
@@ -307,7 +307,16 @@ export default {
               color="#fa7a36"
               width="24"
             />
-
+             <icon-fa 
+              icon="fluent-mdl2:scale-volume"
+              class="icon-fa icon-fa-scale"
+              rotate="1" 
+              data-point='rb'
+              nativeOnMousedown={this.mousedownForMark.bind(this, 'rb')}
+              nativeOnTouchstart={this.mousedownForMark.bind(this, 'rb')}
+              color="#fa7a36"
+              width="16"
+            />
           </div>
         ) : null}
       </div>

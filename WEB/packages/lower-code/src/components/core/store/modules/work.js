@@ -81,7 +81,6 @@ export const actions = {
         commit("setWork", workData);
         commit("setEditingPage");
       } catch (e) {
-        console.log(e)
         Vue.prototype.$message.error("请输入正确的id");
       }
     });

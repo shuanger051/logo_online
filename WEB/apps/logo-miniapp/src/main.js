@@ -7,8 +7,13 @@ import router from "./router";
 import store from "./store";
 import appConfig from "core/appConfig";
 import * as axios from "@/utils/request";
+import VConsole from 'vconsole';
 
 Vue.config.productionTip = false;
+
+if (process.env.NODE_ENV !== "production") {
+  const vConsole = new VConsole();
+}
 appConfig.install(({ initRequest, initMode, initRouter }) => {
   initMode('app')
   initRouter(router)

@@ -42,14 +42,16 @@
         const items = []
         if (mobileProps) {
           Object.entries(mobileProps).forEach(([key, config])=> {
-            items.push({
-              type: config.editor.type,
-              props: config.editor.props,
-              propsName: key
-            })
+            if (config.visible !== false) {
+              items.push({
+                type: config.editor.type,
+                props: config.editor.props,
+                propsName: key,
+                config: config.editor
+              })
+            }
           })
         }
-        console.log(items)
         return items
       }
     }

@@ -46,6 +46,7 @@ export function takeScreenshot ({
       const dataUrl = canvas.toDataURL('image/png', 0.6)
       const blob = dataURItoBlob(dataUrl)
       const file = new window.File([blob], fileName, { type: 'image/png' })
+
       switch (type) {
         case 'canvas':
           resolve(canvas)
@@ -76,15 +77,15 @@ export function takeScreenshot ({
 export function downLoadCanvas (canvas, name) {
   var a = document.createElement('a')
   a.href = canvas.toDataURL()
-  a.download = name
+  //a.download = name
   a.click()
 }
 
 /**
  * 下载海报
  */
-export function downloadPoster () {
-  takeScreenshot({ type: 'canvas' }).then(canvas => {
+export function downloadPoster (object = {}) {
+  takeScreenshot(Object.assign({ type: 'canvas' }, object)).then(canvas => {
     downLoadCanvas(canvas, new Date())
   })
 }

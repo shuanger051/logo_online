@@ -73,6 +73,7 @@ export default {
                   ...element.getProps(), // #6 #3,
                   editorMode: "edit",
                   isEditingElement,
+                  element: element
                 }
               };
               return (

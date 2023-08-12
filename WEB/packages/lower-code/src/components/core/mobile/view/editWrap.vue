@@ -2,10 +2,11 @@
   <div class="edit-wrap">
     <div class="edit-wrap-header">
       <van-button type="primary" class="recover" size="small">恢复</van-button>
-      <span>保存</span>
+      <span @click = "createShopSign">保存</span>
     </div>
+    {{tt}}
     <div class="edit-wrap-content">
-      <div style="width: 90vw; ">
+      <div>
         <edit-panel :elements = "elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
@@ -16,7 +17,10 @@
   import PropsPanel from './propsPanel.vue'
   import EditPanel from './editPanel.js'
   import { mapState, mapActions, mapMutations } from "vuex";
-  import store from "core/store/index";
+  import store from "core/store/mobileIndex";
+  import { ImagePreview } from 'vant';
+  import {resolveImgUrl} from 'core/support/imgUrl'
+
 
   export default {
     components: {PropsPanel, EditPanel},
@@ -28,6 +32,7 @@
         elements: state => state.editingPage.elements,
         pages: state => state.work.pages,
         work: state => state.work,
+        currentShopSign: (state) =>state.mobile.currentShopSign
       }),
       ...mapState('loading', [
         'saveWork_loading',
@@ -38,6 +43,7 @@
     },
     data() {
       return {
+        tt: '',
         editPanelStyle: {
           width: '0px',
           height: '0px',
@@ -46,12 +52,19 @@
       }
     },
     methods: {
-      ...mapActions("editor", ["fetchWork", 'setEditingPage']),
+      ...mapActions("editor", ["fetchWork", 'setEditingPage', 'mCreateCover']),
       calcRate(workWidth) {
         let w = document.documentElement.clientWidth
         return  (w/workWidth)
+      },
+      async createShopSign() {
+        const flag = await this.mCreateCover({el: "#content_edit"})
+        if (flag) {
+          ImagePreview([resolveImgUrl(this.currentShopSign)]);
+        }
       }
     },
+
     created() {
       this.$watch(() => [this.work.width, this.work.height], () => {
         let r = this.calcRate(this.work.width)
