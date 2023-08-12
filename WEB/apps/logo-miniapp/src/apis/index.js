@@ -2,6 +2,7 @@ import * as article from "./article";
 import * as common from "./common";
 import * as account from "./account";
 import * as shop from "./shop";
+import * as signboard from "./signboard";
 
 /** 文章 */
 export const articleService = article;
@@ -11,3 +12,5 @@ export const accountService = account;
 export const commonService = common;
 /** 商铺信息 */
 export const shopService = shop;
+/** 店招信息 */
+export const signboardService = signboard;
