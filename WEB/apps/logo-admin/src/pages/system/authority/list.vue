@@ -32,10 +32,16 @@ import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { systemService } from "@/services";
 import FormSerach from "../../../components/form/FormSerach.vue";
+import { mapDictObject } from "@/store/helpers";
 export default {
   components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
+    // 字典项
+    ...mapState({
+      // 权限类型
+      DictPermissionType: mapDictObject("permissionType"),
+    }),
     // 表格列配置
     columns() {
       return [
@@ -58,6 +64,7 @@ export default {
           title: "权限类型",
           dataIndex: "permissionType",
           key: "permissionType",
+          customRender: (val) => this.DictPermissionType[val],
         },
         {
           title: "权限等级",
@@ -130,6 +137,10 @@ export default {
   },
   created() {
     this.onSerach();
+    // 获取字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["permissionType"],
+    });
   },
 };
 </script>

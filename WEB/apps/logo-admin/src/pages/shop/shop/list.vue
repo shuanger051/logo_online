@@ -1,9 +1,7 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <form-serach :fields="serachFields" @serach="onSerach">
-      <!-- <a-button type="primary" @click="onAdd">新增</a-button> -->
-    </form-serach>
+    <form-serach :fields="serachFields" @serach="onSerach" />
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
@@ -19,9 +17,6 @@
       </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
-        <!-- <a-button type="link" size="small" @click="onEdit({ record })"
-          >修改</a-button
-        > -->
         <!-- btn:删除 -->
         <a-popconfirm
           title="删除后不可恢复，是否确认删除该商铺信息？"
@@ -40,10 +35,20 @@ import { mapState } from "vuex";
 import { shopService } from "@/services";
 import { message } from "ant-design-vue";
 import FormSerach from "@/components/form/FormSerach.vue";
+import { mapDictObject } from "@/store/helpers";
 export default {
   components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
+    // 字典项
+    ...mapState({
+      // 店铺属性
+      DictShopsType: mapDictObject("shopsType"),
+      // 行业类型
+      DictIndustryType: mapDictObject("industryType"),
+      // 营业年限
+      DictBizYears: mapDictObject("bizYears"),
+    }),
     // 表格列配置
     columns() {
       return [
@@ -51,11 +56,13 @@ export default {
           title: "行业类型",
           dataIndex: "industryType",
           key: "industryType",
+          customRender: (val) => this.DictIndustryType[val],
         },
         {
           title: "店铺属性",
           dataIndex: "shopsType",
           key: "shopsType",
+          customRender: (val) => this.DictShopsType[val],
         },
         {
           title: "店铺地址",
@@ -66,11 +73,13 @@ export default {
           title: "营业年限",
           dataIndex: "bizYears",
           key: "bizYears",
+          customRender: (val) => this.DictBizYears[val],
         },
         {
           title: "是否老店",
           dataIndex: "isOldShops",
           key: "isOldShops",
+          customRender: (val) => (val == "1" ? "是" : "否"),
         },
         {
           title: "备注",
@@ -137,6 +146,10 @@ export default {
   },
   created() {
     this.onSerach();
+    // 获取字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["shopsType", "industryType", "bizYears"],
+    });
   },
   methods: {
     // 删除商铺信息

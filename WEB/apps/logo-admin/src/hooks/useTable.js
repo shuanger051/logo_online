@@ -1,8 +1,6 @@
 import { reactive, ref } from "vue";
 import { Modal, message } from "ant-design-vue";
 import modalConfirm from "ant-design-vue/es/modal/confirm";
-import store from "@/store";
-import { systemService } from "@/services";
 
 /**
  * 表格列表
@@ -128,28 +126,4 @@ export default function useTable(request) {
     createModalEvent,
     createDelEvent,
   };
-}
-
-/**
- * == 查询字典项 ==
- */
-export function queryDictCache(keys) {
-  const { cache } = store.state;
-  if (typeof keys == "string") {
-    keys = keys.split(",");
-  }
-  keys.forEach((key) => {
-    // 如果无缓存数据
-    if (!_.get(cache, ["dictionary", key])) {
-      systemService
-        .getItemsByDictKey({ dictKey: key })
-        // 缓存数据
-        .then((res) => {
-          const list = _.get(res, "data");
-          if (list?.length) {
-            store.commit("cache/setDictCache", { key, val: list });
-          }
-        });
-    }
-  });
 }

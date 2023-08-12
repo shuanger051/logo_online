@@ -33,11 +33,19 @@ import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
 import { message } from "ant-design-vue";
+import { mapDictObject } from "@/store/helpers";
 import FormSerach from "@/components/form/FormSerach.vue";
 export default {
   components: { FormSerach },
   computed: {
     ...mapState("setting", ["pageMinHeight"]),
+    // 字典项
+    ...mapState({
+      // 性别
+      DictGender: mapDictObject("gender"),
+      // 商户状态
+      DictMerchantStatus: mapDictObject("merchantStatus"),
+    }),
     // 表格列配置
     columns() {
       return [
@@ -56,12 +64,14 @@ export default {
           dataIndex: "gender",
           width: "80px",
           key: "gender",
+          customRender: (val) => this.DictGender[val],
         },
         {
           title: "商户状态",
           dataIndex: "merchantStatus",
           width: "80px",
           key: "merchantStatus",
+          customRender: (val) => this.DictMerchantStatus[val],
         },
         {
           title: "联系电话",
@@ -163,6 +173,10 @@ export default {
   },
   created() {
     this.onSerach();
+    // 获取字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["gender", "merchantStatus"],
+    });
   },
   methods: {
     // event：删除
