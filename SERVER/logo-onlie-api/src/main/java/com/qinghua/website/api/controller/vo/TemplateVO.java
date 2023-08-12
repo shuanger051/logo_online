@@ -27,6 +27,11 @@ public class TemplateVO {
      */
     private String style;
 
+    /**
+     * 是否简单模板：1-是，0-否
+     */
+    private String isSimpleTpl;
+
     @Override
     public String toString() {
         return "TemplateVO{" +

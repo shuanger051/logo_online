@@ -23,6 +23,12 @@ public class TemplateQueryIO extends BaseIO{
     @DictValidator(value = "style",message = "风格类型参数格式非法")
     private String style;
 
+    /**
+     * 是否简单模板：1-是，0-否
+     */
+    @DictValidator(value = "isSimpleTpl" ,message = "是否简单模板参数格式非法")
+    private String isSimpleTpl;
+
     @Override
     public String toString() {
         return "TemplateQueryIO{" +
