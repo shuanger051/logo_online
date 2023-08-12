@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class ShopsInfoVO {
 
+    private Long id;
+
     /**
      * 店铺地址
      */
