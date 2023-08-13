@@ -62,6 +62,9 @@ public class OpenAPIAPPController {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private SysDictItemService sysDictItemService;
+
     /**
      * APP注册客户信息
      * @param customerSaveIO
@@ -440,6 +443,19 @@ public class OpenAPIAPPController {
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
         }
+    }
+
+    /**
+     * APP 数据字典通过dict_key查询字典子项列表API(數據庫)
+     * @param dictKey
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 数据字典通过dict_key查询字典子项列表API")
+    @RequestMapping(value = "/getItemsByDictKeyInDB", method = RequestMethod.GET)
+    public ResponseResult<Object> getItemsByDictKeyInDB(@RequestParam("dictKey") String dictKey) {
+        List<SysDictItemDTO> sysDictItemList = sysDictItemService.getItemsByDictKeyInDB(dictKey);
+        List<SysDictItemVO> sysDictItemVOList = BeanToolsUtil.copyAsList(sysDictItemList,SysDictItemVO.class);
+        return ResponseResult.success(sysDictItemVOList);
     }
 
     /**

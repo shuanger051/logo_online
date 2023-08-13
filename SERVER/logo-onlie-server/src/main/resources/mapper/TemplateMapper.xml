@@ -42,7 +42,7 @@
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="name !=null and name !=''">AND name like concat('%', #{name}, '%')</if>
             <if test="releaseStatus !=null and releaseStatus !=''">AND release_status = #{releaseStatus}</if>
-            <if test="style !=null and style !=''">AND style = #{style}</if>
+            <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
         </trim>
         <trim prefix="ORDER BY ">
