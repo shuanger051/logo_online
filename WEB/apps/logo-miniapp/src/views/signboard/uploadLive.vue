@@ -18,6 +18,7 @@ export default {
 
     afterRead(file) {
       this.$store.editor
+      console.log(file.file, 999)
       this.setLivePic(URL.createObjectURL(file.file))
       this.$router.push({
         name: 'editLive',

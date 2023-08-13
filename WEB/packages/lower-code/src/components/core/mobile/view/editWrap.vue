@@ -5,7 +5,7 @@
       <span @click="createShopSign">保存</span>
     </div>
     <div class="edit-wrap-content">
-      <div>
+      <div style="min-height: 320px;">
         <edit-panel :elements="elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
@@ -20,6 +20,8 @@ import { mapState, mapActions } from "vuex";
 import store from "core/store/mobileIndex";
 import { Notify } from "vant";
 import { Toast } from "vant";
+import { ImagePreview } from 'vant';
+import { resolveImgUrl } from "core/support/imgUrl";
 
 const sleep = async (time) => {
   return new Promise((r) => {
@@ -80,6 +82,7 @@ export default {
       try {
         await this.mCreateCover({ el: "#content_edit" });
         Notify({ type: "success", message: "创建成功" });
+        // ImagePreview([resolveImgUrl(this.currentShopSign)])
         later(() => {
           this.$router.push({
             name: "uploadLive",
@@ -87,7 +90,7 @@ export default {
               shopId: this.$route.query.shopId,
             },
           });
-        });
+        },1000);
       } catch (e) {
         Notify({ type: "danger", message: "创建失败" });
       }

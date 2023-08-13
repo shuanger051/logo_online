@@ -13,9 +13,19 @@ export const getCustomerInfoByUserNameAPI = axiosGet(
 export const saveMerchantAPI = axiosPost("logo/app/saveMerchantAPI");
 
 /**
+ * == 修改商户信息 ==
+ */
+export const updateMerchantAPI = axiosPost("logo/app/updateMerchantAPI");
+
+/**
  * == 登记商铺信息 ==
  */
 export const saveShopsInfoAPI = axiosPost("logo/app/saveShopsInfoAPI");
+
+/**
+ * == 修改商铺信息 ==
+ */
+export const updateShopsInfoAPI = axiosPost("logo/app/updateShopsInfoAPI");
 
 /**
  * == 上传商铺附件 ==

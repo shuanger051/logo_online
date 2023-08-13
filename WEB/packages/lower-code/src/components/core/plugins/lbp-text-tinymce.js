@@ -23,8 +23,8 @@ export default {
       borderRadius: `${this.borderRadius}px`,
       fontSize: `${this.fontSize}px` || '14px',
       writingMode: this.writingMode || 'horizontal-tb',
-      letterSpacing: `${this.letterSpacing || 0}px`
-
+      letterSpacing: `${this.letterSpacing || 0}px`,
+      lineHeight: `${this.fontSize}px` || '14px'
     }
     return <div style={style} domPropsInnerHTML={this.text} class="ql-editor ql-container"></div>
   },

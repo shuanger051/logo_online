@@ -99,7 +99,7 @@ export default {
       // 合并档案列表
       const list = Object.keys(attachmentType).reduce((list, key) => {
         const arr = attachmentType[key];
-        // 添加档案类型标记
+        // 组装档案数据
         arr.forEach((item) => {
           list.push({
             attachmentName: item.attachmentName,
@@ -111,16 +111,28 @@ export default {
         });
         return list;
       }, []);
+      // 组装提交数据报文
+      const payload = Object.assign({}, formData, { list });
+      // 存在id则为更新
+      if (formData.id) this.doUpdate(payload);
+      // 其他为新增
+      else this.doAdd(payload);
+    },
+    // 新增
+    doAdd(payload) {
       // 保存商铺信息
       shopService
-        .saveShopsInfoAPI(
-          Object.assign(
-            {
-              list,
-            },
-            formData
-          )
-        )
+        .saveShopsInfoAPI(payload)
+        // 保存成功
+        .then((res) => {
+          console.log(res);
+        });
+    },
+    // 更新
+    doUpdate(payload) {
+      shopService
+        .updateShopsInfoAPI(payload)
+        // 保存成功
         .then((res) => {
           console.log(res);
         });
@@ -140,10 +152,10 @@ export default {
           if (shopId) {
             const item = shopsList.find((item) => (item.id = shopId));
             // 设置商铺信息
-            Object.keys(item).forEach((key) => {
-              this.$set(this.formData, key, item[key]);
-            });
-            // 更新档案信息
+            Object.keys(item).forEach((key) =>
+              this.$set(this.formData, key, item[key])
+            );
+            // 档案数据分类
             this.attachmentType = item.list.reduce((dtm, item) => {
               const { attachmentType: key } = item;
               if (!dtm[key]) dtm[key] = [item];

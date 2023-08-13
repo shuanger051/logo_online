@@ -7,6 +7,12 @@ const routes = [
     meta: { title: "模版选择" },
     component: () => import("@/views/signboard/template"),
   },
+  // 店招属性选择
+  {
+    path: "attribute",
+    meta: { title: "类型选择" },
+    component: () => import("@/views/signboard/attribute"),
+  },
   {
     path: "design",
     meta: { title: "店招设计" },

@@ -1,7 +1,5 @@
 <template>
-  <div class="about">
-    <edit-wrap />
-  </div>
+   <edit-wrap />
 </template>
 
 <script>

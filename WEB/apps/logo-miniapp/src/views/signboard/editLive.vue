@@ -110,7 +110,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: calc(100% - 45px);
+  min-height: calc(100% - 45px);
 }
 #edit-live__wrap {
   position: relative;

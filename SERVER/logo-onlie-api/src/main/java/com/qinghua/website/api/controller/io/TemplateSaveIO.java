@@ -24,7 +24,6 @@ public class TemplateSaveIO {
     /**
      * 风格类型：1-古典风，2-现代风,3-商务风，4-极简风，5-欧式风，6-美式风，7-原木风，8-工业风，9-田园风（支持一个模板具有多个风格，多个风格时以','分割）
      */
-    @DictValidator(value = "style" ,message = "风格类型参数格式非法")
     private String style;
 
     /**
