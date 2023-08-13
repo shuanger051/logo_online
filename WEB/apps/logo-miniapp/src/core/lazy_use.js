@@ -21,6 +21,7 @@ import {
   Dialog,
   Empty,
   Divider,
+  Overlay
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -45,5 +46,6 @@ Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Empty)
 Vue.use(Divider)
+Vue.use(Overlay)
 
 Vue.component("submit-bar", SubmitBar);

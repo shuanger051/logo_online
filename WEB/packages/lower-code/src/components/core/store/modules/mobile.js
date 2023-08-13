@@ -11,17 +11,24 @@ export const actions = {
       const res = await appSaveLogoInfoAPI(form)
       commit('setShopSign', res.data.urlPath)
   },
+  setLivePic({commit}, payload) {
+    commit('setLivePic', payload)
+  }
 }
 export const mutations = {
 
   setShopSign(state, payload) {
     state.mobile.currentShopSign = payload;
+  },
+  setLivePic(state, payload) {
+    state.mobile.currentLivePic = payload
   }
 }
 
 export const state = {
   mobile: {
-    currentShopSign: ''
+    currentShopSign: '',
+    currentLivePic: null
   }
 }
 

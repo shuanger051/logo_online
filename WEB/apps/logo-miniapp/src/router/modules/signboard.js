@@ -12,6 +12,22 @@ const routes = [
     meta: { title: "店招设计" },
     component: () => import("@/views/shop/form"),
   },
+  {
+    path: "uploadLive",
+    meta: { title: "实景上传" },
+    component: () => import("@/views/signboard/uploadLive"),
+  },
+  {
+    path: "editLive",
+    meta: { title: "实景编辑" },
+    component: () => import("@/views/signboard/editLive"),
+  },
+  {
+    path: "/editSignboard/:id?",
+    name: "editSignboard",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "@/views/signboard/editSignboard.vue"),
+  },
 ];
 
 // 店招模块路由
