@@ -23,12 +23,17 @@ const styleMap = [
   { value: "8", label: "工业风" },
   { value: "9", label: "田园风" },
 ];
+const tempType = [
+  { value: "1", label: "简单模板" },
+  { value: "0", label: "复杂模板" }, 
+]
 
 export default {
   computed: {
     ...mapState("editor", {
       work: (state) => state.work,
       style: (state) => state.work.style.split(","),
+      isSimpleTpl:(state) => state.work.isSimpleTpl
     }),
     previewUrl() {
       return `${window.location.origin}/works/preview/${this.work.id}?view_mode=preview`;
@@ -51,7 +56,6 @@ export default {
     // 修改标题、描述信息后自动保存
   },
   render(h) {
-    window.aaaa = this;
     return (
       <div class="setting">
         <div class="info">
@@ -75,6 +79,15 @@ export default {
                 placeholder="请选择风格"
               ></a-select>
             </a-form-item>
+            <a-form-item label="模板类型">
+              <a-select
+                class="input"
+                options={tempType}
+                value={this.isSimpleTpl}
+                onChange={(e) => this.autoSave({ isSimpleTpl: e })}
+                placeholder="请选择模板类型"
+              ></a-select>
+            </a-form-item>
             <a-form-item label="背景色">
               <el-color-picker
                 show-alpha
@@ -83,6 +96,7 @@ export default {
                 onChange={(e) => this.autoSave({ backgroundColor: e })}
               ></el-color-picker>
             </a-form-item>
+        
           </a-form>
         </div>
       </div>

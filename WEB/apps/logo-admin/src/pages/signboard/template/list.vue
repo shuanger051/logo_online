@@ -23,7 +23,7 @@
           v-if="!!getImageSrc(record)"
           width="100px"
           height="100px"
-          :style="{ objectFit: 'cover' }"
+          :style="{ objectFit: 'contain' }"
           :src="getImageSrc(record)"
         />
         <span v-else>无缩略图</span>

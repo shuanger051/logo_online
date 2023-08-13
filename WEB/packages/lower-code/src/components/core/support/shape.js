@@ -23,12 +23,12 @@ const createEvent = (obj) => {
   let app = window.$editorConfig.isApp();
   let { el, name, handle } = obj;
   let event = app ? eventMap[name] : name;
-  console.log(app, event,999)
+  console.log(app, event, 999);
 
   el = el || document;
   el.addEventListener(event, handle, app ? { passive: false } : true);
   return () => {
-    el.removeEventListener(event, handle, app ? { passive: false } : true );
+    el.removeEventListener(event, handle, app ? { passive: false } : true);
   };
 };
 
@@ -61,6 +61,7 @@ export default {
     "handlePointMouseUpProp",
     "handleRotationProp",
     "element",
+    "delIcon",
   ],
   computed: {
     position() {
@@ -210,7 +211,6 @@ export default {
         let { clientX: currX, clientY: currY } = getEventParams(moveEvent);
         pos.top = currY - startY + startTop;
         pos.left = currX - startX + startLeft;
-        console.log(currX, currY, 999);
         this.handleElementMoveProp(pos);
       };
 
@@ -236,11 +236,11 @@ export default {
     handleDeleteByKeyboard(event) {
       const key = event.keyCode || event.charCode;
       if (key === 8 || key === 46) {
-        this.deleteEl
+        this.deleteEl;
       }
     },
     deleteEl() {
-      this.$emit('delete')
+      this.$emit("delete");
     },
     /**
      * detect key pressed on keyboard
@@ -254,7 +254,7 @@ export default {
     },
   },
   render(h) {
-    const isApp = window.$editorConfig.isApp()
+    const isApp = window.$editorConfig.isApp();
     return (
       <div onClick={this.handleWrapperClick}>
         <div
@@ -292,13 +292,15 @@ export default {
         )}
         {this.active && isApp ? (
           <div>
-            <icon-fa
-              nativeOnClick = {this.deleteEl}
-              icon="typcn:delete-outline"
-              class="icon-fa icon-fa-del"
-              color="#fa7a36"
-              width="24"
-            />
+            {this.delIcon !== false ? (
+              <icon-fa
+                nativeOnClick={this.deleteEl}
+                icon="typcn:delete-outline"
+                class="icon-fa icon-fa-del"
+                color="#fa7a36"
+                width="24"
+              />
+            ) : null}
             <icon-fa
               nativeOnMousedown={this.handleRotationMousedown}
               nativeOnTouchstart={this.handleRotationMousedown}
@@ -307,13 +309,13 @@ export default {
               color="#fa7a36"
               width="24"
             />
-             <icon-fa 
+            <icon-fa
               icon="fluent-mdl2:scale-volume"
               class="icon-fa icon-fa-scale"
-              rotate="1" 
-              data-point='rb'
-              nativeOnMousedown={this.mousedownForMark.bind(this, 'rb')}
-              nativeOnTouchstart={this.mousedownForMark.bind(this, 'rb')}
+              rotate="1"
+              data-point="rb"
+              nativeOnMousedown={this.mousedownForMark.bind(this, "rb")}
+              nativeOnTouchstart={this.mousedownForMark.bind(this, "rb")}
               color="#fa7a36"
               width="16"
             />

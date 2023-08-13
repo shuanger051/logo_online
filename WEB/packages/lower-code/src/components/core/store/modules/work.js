@@ -57,6 +57,7 @@ export const actions = {
     const data = {
       name: state.work.title,
       style: state.work.style,
+      isSimpleTpl: state.work.isSimpleTpl,
       domItem: JSON.stringify(state.work),
     };
     if (currentRoute.params.id) {

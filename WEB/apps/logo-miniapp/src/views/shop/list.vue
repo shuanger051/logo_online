@@ -10,7 +10,7 @@
           <van-button plain size="small" :to="`/shop/detail?shopId=${item.id}`"
             >信息变更</van-button
           >
-          <van-button plain size="small">店招设计</van-button>
+          <van-button plain size="small" :to="`/signboard/template?shopId=${item.id}`">店招设计</van-button>
         </template>
       </van-panel>
     </template>

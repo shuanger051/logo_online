@@ -18,7 +18,6 @@ export default {
     ]),
 
     handleElementMove(pos) {
-      // console.log(pos, 999)
       this.setElementPosition(pos);
     },
     handleRotation(angle) {

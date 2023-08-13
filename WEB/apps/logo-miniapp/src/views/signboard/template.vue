@@ -7,12 +7,23 @@
       finished-text="没有更多了"
       @load="queryTemplate"
     >
-      <van-cell v-for="item in list" :key="item.id" :title="item.name" />
+      <div v-for="item in list" :key="item.id" @click="go(item.id)">
+        <van-image
+          v-if="item.url"
+          width="100%"
+          height="100px"
+          fit="contain"
+          :src="item.url"
+        />
+        <van-empty v-else description="" />
+      </div>
     </van-list>
   </div>
 </template>
 <script>
 import { signboardService } from "@/apis";
+import {resolveImgUrl} from 'core/support/imgUrl'
+
 export default {
   data() {
     return {
@@ -26,6 +37,25 @@ export default {
     };
   },
   methods: {
+    resolveList(lists) {
+      return lists.map((item) => {
+        const ret = {
+          id: item.id,
+        };
+        try {
+          const { domItem } = item;
+          const data = JSON.parse(domItem);
+          ret.url =resolveImgUrl(data.cover_image_url);
+        } catch (e) {
+          console.log(e)
+          ret.url = null;
+        }
+        return ret;
+      });
+    },
+    go(id) {
+      this.$router.push(`/editSignboard/${id}?shopId=${this.$route.query.shopId}`)
+    },
     // 模版查询
     queryTemplate() {
       const { list: oldArr, page } = this;
@@ -41,7 +71,7 @@ export default {
         .then((res) => {
           page.current = pageNum;
           const { list } = res.data;
-          this.list = oldArr.concat(list);
+          this.list = oldArr.concat(this.resolveList(list));
           this.finished = list.length < size;
         });
     },

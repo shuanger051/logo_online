@@ -19,6 +19,7 @@ export default class Work {
     this.pages = work.pages || [new Page()]
     this.backgroundColor = work.backgroundColor || 'rgba(0, 0, 0, 0)'
     this.style = work.style || '1'
+    this.isSimpleTpl = work.isSimpleTpl || '0'
     this.datasources = (work.datasources || []).map(item => new DataSource(item))
 
     // this.id = this.id

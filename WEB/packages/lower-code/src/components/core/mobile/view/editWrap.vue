@@ -28,8 +28,10 @@ const sleep = async (time) => {
 };
 
 const later = (fn, time) => {
-  setTimeout(() => {fn()}, time)
-}
+  setTimeout(() => {
+    fn();
+  }, time);
+};
 export default {
   components: { PropsPanel, EditPanel },
   store,
@@ -79,16 +81,19 @@ export default {
         await this.mCreateCover({ el: "#content_edit" });
         Notify({ type: "success", message: "创建成功" });
         later(() => {
-          this.$router.push('uploadLive')
-        })
+          this.$router.push({
+            name: "uploadLive",
+            query: {
+              shopId: this.$route.query.shopId,
+            },
+          });
+        });
       } catch (e) {
-        Notify({ type: "danger", message: "创失败" });
-      } finally {
-        this.editPanelStyle.transform = ts;
-        await sleep(300);
-        toast.clear()
-        this.showOverlay = false;
+        Notify({ type: "danger", message: "创建失败" });
       }
+      this.editPanelStyle.transform = ts;
+      toast.clear();
+      this.showOverlay = false;
     },
   },
 
@@ -115,7 +120,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .edit-overlay {
-    background-color: rgba(155,155,155,0.7) ;
-  }
+.edit-overlay {
+  background-color: rgba(155, 155, 155, 0.7);
+}
 </style>

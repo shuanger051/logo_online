@@ -14,11 +14,13 @@ const routes = [
   },
   {
     path: "uploadLive",
+    name: 'uploadLive',
     meta: { title: "实景上传" },
     component: () => import("@/views/signboard/uploadLive"),
   },
   {
     path: "editLive",
+    name: 'editLive',
     meta: { title: "实景编辑" },
     component: () => import("@/views/signboard/editLive"),
   },
@@ -26,7 +28,7 @@ const routes = [
     path: "/editSignboard/:id?",
     name: "editSignboard",
     component: () =>
-      import(/* webpackChunkName: "about" */ "@/views/signboard/editSignboard.vue"),
+      import("@/views/signboard/editSignboard.vue"),
   },
 ];
 

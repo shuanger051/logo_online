@@ -14,7 +14,7 @@ import VConsole from 'vconsole';
 Vue.config.productionTip = false;
 
 if (process.env.NODE_ENV !== "production") {
-  const vConsole = new VConsole();
+ // const vConsole = new VConsole();
 }
 appConfig.install(({ initRequest, initMode, initRouter }) => {
   initMode('app')
