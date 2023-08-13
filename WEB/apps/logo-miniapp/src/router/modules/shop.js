@@ -7,6 +7,11 @@ const routes = [
     component: () => import("@/views/shop/list"),
   },
   {
+    path: "owner",
+    meta: { title: "商户登记" },
+    component: () => import("@/views/shop/owner"),
+  },
+  {
     path: "detail",
     meta: { title: "商铺信息" },
     component: () => import("@/views/shop/form"),

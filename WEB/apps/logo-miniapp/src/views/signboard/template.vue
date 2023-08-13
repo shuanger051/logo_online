@@ -28,6 +28,7 @@ export default {
   methods: {
     // 模版查询
     queryTemplate() {
+      const { styles } = this.$route.query;
       const { list: oldArr, page } = this;
       const { size, current } = page;
       const pageNum = current + 1;
@@ -36,14 +37,15 @@ export default {
         .queryTemplateListPageAPI({
           pageNum,
           pageSize: size,
+          style: styles,
         })
-        .finally(() => (this.loading = false))
         .then((res) => {
           page.current = pageNum;
           const { list } = res.data;
           this.list = oldArr.concat(list);
           this.finished = list.length < size;
-        });
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };

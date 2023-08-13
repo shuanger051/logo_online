@@ -4,14 +4,15 @@
       <van-grid>
         <van-grid-item
           icon-prefix="iconfont icon"
-          icon="xinxigongkainianbao"
-          text="我的商铺"
-          to="/shop/list"
+          icon="zhengfuxinxigongkaishenqing"
+          text="商户登记"
+          to="/shop/owner"
         />
         <van-grid-item
           icon-prefix="iconfont icon"
-          icon="zhengfuxinxigongkaishenqing"
-          text="店招备案"
+          icon="xinxigongkainianbao"
+          text="我的商铺"
+          to="/shop/list"
         />
         <van-grid-item
           icon-prefix="iconfont icon"

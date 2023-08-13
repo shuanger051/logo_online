@@ -21,6 +21,10 @@ import {
   Dialog,
   Empty,
   Divider,
+  Sidebar,
+  SidebarItem,
+  Checkbox,
+  CheckboxGroup
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 
@@ -45,5 +49,11 @@ Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Empty)
 Vue.use(Divider)
+Vue.use(Sidebar)
+Vue.use(SidebarItem)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
 
+
+// 自定义组件
 Vue.component("submit-bar", SubmitBar);
