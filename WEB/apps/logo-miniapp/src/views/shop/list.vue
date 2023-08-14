@@ -2,8 +2,18 @@
   <div class="page-wrap">
     <template v-if="list.length">
       <van-panel v-for="item in list" :key="item.id">
-        <van-cell title="行业类型" :value="item.industryType"></van-cell>
-        <van-cell title="营业年限" :value="item.bizYears"></van-cell>
+        <van-cell
+          title="行业类型"
+          :value="item.industryType | dict(DictIndustryType)"
+        ></van-cell>
+        <van-cell
+          title="营业年限"
+          :value="item.bizYears | dict(DictBizYears)"
+        ></van-cell>
+        <van-cell
+          title="店铺属性"
+          :value="item.shopsType | dict(DictShopsType)"
+        ></van-cell>
         <van-cell title="商铺地址" :value="item.address"></van-cell>
         <van-cell title="备注" :value="item.remark"></van-cell>
         <template slot="footer">
@@ -29,6 +39,7 @@
 <script>
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
+import { mapDictObject } from "@/store/helpers";
 export default {
   data() {
     return {
@@ -39,10 +50,20 @@ export default {
     ...mapState({
       // 用户信息
       userInfo: (state) => state.user.profiles,
+      // 行业类别
+      DictIndustryType: mapDictObject("industryType"),
+      // 营业念想
+      DictBizYears: mapDictObject("bizYears"),
+      // 商铺属性
+      DictShopsType: mapDictObject("shopsType"),
     }),
   },
   created() {
     this.queryShopList();
+    // 查询字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["bizYears", "industryType", "shopsType"],
+    });
   },
   methods: {
     // 查询商铺信息

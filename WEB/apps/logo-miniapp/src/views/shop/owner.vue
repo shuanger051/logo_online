@@ -9,17 +9,19 @@
           v-model="formData.merchantName"
           placeholder="请输入"
         />
-        <van-field
+        <field-picker
           required
           label="性别"
+          placeholder="请选择"
           v-model="formData.gender"
-          placeholder="请输入"
+          :columns="DictGenderArr"
         />
-        <van-field
+        <field-picker
           required
           label="营业状态"
+          placeholder="请选择"
           v-model="formData.merchantStatus"
-          placeholder="请输入"
+          :columns="DictMerchantStatusArr"
         />
         <van-field
           required
@@ -50,6 +52,7 @@
 <script>
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
+import { mapDictOptions } from "@/store/helpers";
 export default {
   data() {
     return {
@@ -60,10 +63,18 @@ export default {
     ...mapState({
       // 用户信息
       userInfo: (state) => state.user.profiles,
+      // 性别
+      DictGenderArr: mapDictOptions("gender"),
+      // 商户状态
+      DictMerchantStatusArr: mapDictOptions("merchantStatus"),
     }),
   },
   created() {
     this.queryMerchantInfo();
+    // 查询字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["gender", "merchantStatus"],
+    });
   },
   methods: {
     onSubmit() {
@@ -79,7 +90,16 @@ export default {
         .saveMerchantAPI(payload)
         // 新增成功
         .then((res) => {
-          console.log(res);
+          this.$toast.success({
+            message: "保存成功",
+            onClose: () => {
+              this.$router.push({ path: "/" });
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$toast.fail("保存失败");
         });
     },
     // 修改商户信息
@@ -88,7 +108,16 @@ export default {
         .updateMerchantAPI(payload)
         // 修改成功
         .then((res) => {
-          console.log(res);
+          this.$toast.success({
+            message: "保存成功",
+            onClose: () => {
+              this.$router.push({ path: "/" });
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$toast.fail("保存失败");
         });
     },
     // 查询商户信息

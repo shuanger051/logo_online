@@ -1,6 +1,7 @@
 const path = require("path");
+const webpack = require('webpack')
 const themePath = path.resolve(__dirname, "./src/styles/theme/var.less");
-const webpackMixin =  require('@shop-sign/editor/webpackMixIn');
+const webpackMixin = require("@shop-sign/editor/webpackMixIn");
 
 module.exports = {
   css: {
@@ -33,7 +34,13 @@ module.exports = {
   },
   lintOnSave: false,
 
-  configureWebpack: config => {
-    webpackMixin(config)
-  }
+  configureWebpack: (config) => {
+    // global var
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        _: "lodash",
+      })
+    );
+    webpackMixin(config);
+  },
 };
