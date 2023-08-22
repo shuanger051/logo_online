@@ -3,6 +3,9 @@ package com.qinghua.website.api.controller.io;
 import com.qinghua.website.api.validation.DictValidator;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Data
 public class ShopsInfoQueryIO {
 
@@ -34,6 +37,22 @@ public class ShopsInfoQueryIO {
      */
     @DictValidator(value = "shopsType",message = "店铺属性参数格式非法")
     private String shopsType;
+
+    /**
+     * 经办人姓名
+     */
+    private String handledByName;
+
+    /**
+     * 经办人电话
+     */
+    private String handledByPhone;
+
+    /**
+     * 经办人身份证号
+     */
+    private String handledByIdCard;
+
 
     @Override
     public String toString() {

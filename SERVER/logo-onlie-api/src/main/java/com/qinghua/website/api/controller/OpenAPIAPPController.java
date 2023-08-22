@@ -247,6 +247,12 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/saveShopsInfoAPI",method = RequestMethod.POST)
     public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPISaveIO shopsInfoSaveIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoSaveIO, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -261,6 +267,12 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/updateShopsInfoAPI",method = RequestMethod.POST)
     public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPIUpdateIO shopsInfoUpdateIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoUpdateIO, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoUpdateIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();

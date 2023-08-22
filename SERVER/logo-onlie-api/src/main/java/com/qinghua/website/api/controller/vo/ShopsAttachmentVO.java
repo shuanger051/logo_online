@@ -27,6 +27,11 @@ public class ShopsAttachmentVO {
      */
     private String fileName;
 
+    /**
+     * 附件类型：1-身份证，2-营业执照，3-租赁合同
+     */
+    private String attachmentType;
+
     @Override
     public String toString() {
         return "ShopsAttachmentVO{" +

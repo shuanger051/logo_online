@@ -20,7 +20,7 @@ public class ShopsInfoVO {
     private String bizYears;
 
     /**
-     * 行业类型
+     * 营业类型：1-餐饮，2-百货，3-服务，4-其他
      */
     private String industryType;
 
@@ -38,6 +38,31 @@ public class ShopsInfoVO {
      * 备注
      */
     private String remark;
+
+    /**
+     * 经办人姓名
+     */
+    private String handledByName;
+
+    /**
+     * 经办人电话
+     */
+    private String handledByPhone;
+
+    /**
+     * 经办人身份证号
+     */
+    private String handledByIdCard;
+
+    /**
+     * 经办人照片-正面
+     */
+    private String handledByPhotoFront;
+
+    /**
+     * 经办人照片-反面
+     */
+    private String handledByPhotoOpposite;
 
     private List<ShopsAttachmentVO> list;
 

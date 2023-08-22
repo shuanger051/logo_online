@@ -12,6 +12,11 @@
         <result column="is_old_shops" property="isOldShops" jdbcType="VARCHAR"/>
         <result column="shops_type" property="shopsType" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="handled_by_name" property="handledByName" jdbcType="VARCHAR"/>
+        <result column="handled_by_phone" property="handledByPhone" jdbcType="VARCHAR"/>
+        <result column="handled_by_id_card" property="handledByIdCard" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_front" property="handledByPhotoFront" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_opposite" property="handledByPhotoOpposite" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="list" ofType="com.qinghua.website.server.domain.ShopsAttachmentDTO"
@@ -28,6 +33,11 @@
         is_old_shops,
         shops_type,
         remark,
+        handled_by_name,
+        handled_by_phone,
+        handled_by_id_card,
+        handled_by_photo_front,
+        handled_by_photo_opposite,
         create_time,
         update_time
     </sql>
@@ -50,6 +60,9 @@
             <if test="industryType !=null and industryType !=''">AND industry_type = #{industryType}</if>
             <if test="isOldShops !=null and isOldShops !=''">AND is_old_shops = #{isOldShops}</if>
             <if test="shopsType !=null and shopsType !=''">AND shops_type = #{shopsType}</if>
+            <if test="handledByName !=null and handledByName !=''">AND handled_by_name = #{handledByName}</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">AND handled_by_phone = #{handledByPhone}</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">AND handled_by_id_card = #{handledByIdCard}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -82,6 +95,11 @@
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops = #{isOldShops},</if>
             <if test="shopsType !=null and shopsType !=''">shops_type = #{shopsType},</if>
             <if test="remark !=null and remark !=''">remark = #{remark},</if>
+            <if test="handledByName !=null and handledByName !=''">handled_by_name = #{handledByName},</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone = #{handledByPhone},</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card = #{handledByIdCard},</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront}</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite}</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -98,6 +116,11 @@
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops,</if>
             <if test="shopsType !=null and shopsType !=''">shops_type,</if>
             <if test="remark !=null and remark !=''">remark,</if>
+            <if test="handledByName !=null and handledByName !=''">handled_by_name,</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone,</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card,</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front,</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -108,6 +131,11 @@
             <if test="isOldShops !=null and isOldShops !=''">#{isOldShops},</if>
             <if test="shopsType !=null and shopsType !=''">#{shopsType},</if>
             <if test="remark !=null and remark !=''">#{remark},</if>
+            <if test="handledByName !=null and handledByName !=''">#{handledByName},</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">#{handledByPhone},</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">#{handledByIdCard},</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">#{handledByPhotoFront},</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">#{handledByPhotoOpposite},</if>
             NOW()
         </trim>
     </insert>
