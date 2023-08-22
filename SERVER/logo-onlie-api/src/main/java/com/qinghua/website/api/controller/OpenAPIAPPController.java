@@ -373,6 +373,19 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 根据商铺ID获取店招信息API
+     * @param shopsId
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据商铺ID获取店招信息API")
+    @RequestMapping(value = "/getLogoInfoByShopsIdAPI",method = RequestMethod.GET)
+    public ResponseResult<Object> getLogoInfoByShopsIdAPI(@RequestParam("shopsId") Long shopsId){
+        LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+        LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
+        return ResponseResult.success(logoInfoVO);
+    }
+
+    /**
      * 根据ID查询文章详情
      * @param id
      * @return

@@ -36,6 +36,7 @@ public class LogoInfoDTO extends BaseDTO {
      */
 	private String logoFileName;
 
+
 	@Override
 	public String toString() {
 	return "LogoInfo{" +

@@ -74,4 +74,17 @@ public class LogoInfoServiceImpl implements LogoInfoService {
             throw new BizException(SysConstant.ERROR_SHOPS_MERCHANT_IS_WRONG);
         }
     }
+
+    /**
+     * 根據商铺ID获取店招信息
+     * @param shopsId
+     * @return
+     */
+    @Override
+    public LogoInfoDTO getLogoInfoByShopsIdAPI(Long shopsId){
+        LogoInfoDTO res = logoInfoMapper.getLogoInfoByShopsIdAPI(shopsId);
+        return res;
+    }
+
+
 }

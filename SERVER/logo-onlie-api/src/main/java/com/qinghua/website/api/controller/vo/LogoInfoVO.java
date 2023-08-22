@@ -32,6 +32,8 @@ public class LogoInfoVO {
      */
     private String logoFileName;
 
+
+
     @Override
     public String toString() {
         return "LogoInfoVO{" +
