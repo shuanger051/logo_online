@@ -366,6 +366,7 @@ public class OpenAPIAPPController {
         LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
         PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
         List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
+        logoInfoVOList.forEach(item->item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName()));
         PageListVO<LogoInfoVO> resp = new PageListVO<>();
         resp.setList(logoInfoVOList);
         resp.setTotal(pageList.getTotal());
@@ -382,6 +383,8 @@ public class OpenAPIAPPController {
     public ResponseResult<Object> getLogoInfoByShopsIdAPI(@RequestParam("shopsId") Long shopsId){
         LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
         LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
+        String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
+        logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
         return ResponseResult.success(logoInfoVO);
     }
 

@@ -32,7 +32,10 @@ public class LogoInfoVO {
      */
     private String logoFileName;
 
-
+    /**
+     * 文件预览映射路径
+     */
+    private String urlPath;
 
     @Override
     public String toString() {
