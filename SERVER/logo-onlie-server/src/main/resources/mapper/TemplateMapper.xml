@@ -10,6 +10,7 @@
         <result column="release_status" property="releaseStatus" jdbcType="VARCHAR"/>
         <result column="style" property="style" jdbcType="VARCHAR"/>
         <result column="is_simple_tpl" property="isSimpleTpl" jdbcType="VARCHAR"/>
+        <result column="material" property="material" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -22,6 +23,7 @@
         release_status,
         style,
         is_simple_tpl,
+        material,
         create_time,
         update_time
     </sql>
@@ -44,6 +46,7 @@
             <if test="releaseStatus !=null and releaseStatus !=''">AND release_status = #{releaseStatus}</if>
             <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
+            <if test="material !=null and material !=''">AND material = #{material}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -56,7 +59,8 @@
     <select id="queryTemplateListPageAPI" parameterType="com.qinghua.website.server.domain.TemplateDTO" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/> FROM t_template
         <trim prefix="where" prefixOverrides="AND || OR">
-            <if test="style !=null and style !=''">AND style = #{style}</if>
+            <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
+            <if test="material !=null and material !=''">AND material like concat('%', #{material}, '%')</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
             and release_status = '1'
         </trim>
@@ -76,6 +80,7 @@
             <if test="domItem !=null and domItem !=''">dom_item = #{domItem},</if>
             <if test="releaseStatus !=null and releaseStatus !=''">release_status = #{releaseStatus},</if>
             <if test="style !=null and style !=''">style = #{style},</if>
+            <if test="material !=null and material !=''">material = #{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl = #{isSimpleTpl},</if>
             update_time = NOW()
         </set>
@@ -95,6 +100,7 @@
             <if test="domItem !=null and domItem !=''">dom_item,</if>
             release_status,
             <if test="style !=null and style !=''">style,</if>
+            <if test="material !=null and material !=''">material,</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl,</if>
             create_time
         </trim>
@@ -103,6 +109,7 @@
             <if test="domItem !=null and domItem !=''">#{domItem},</if>
             '2',
             <if test="style !=null and style !=''">#{style},</if>
+            <if test="material !=null and material !=''">#{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">#{isSimpleTpl},</if>
             NOW()
         </trim>

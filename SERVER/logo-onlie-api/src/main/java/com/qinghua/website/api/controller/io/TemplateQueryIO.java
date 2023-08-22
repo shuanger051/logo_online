@@ -18,7 +18,7 @@ public class TemplateQueryIO extends BaseIO{
     private String releaseStatus;
 
     /**
-     * 风格类型：1-古典风，2-现代风
+     * 风格类型:1-仿古，2-商务，3-休闲，4-其他
      */
     private String style;
 
@@ -27,6 +27,11 @@ public class TemplateQueryIO extends BaseIO{
      */
     @DictValidator(value = "isSimpleTpl" ,message = "是否简单模板参数格式非法")
     private String isSimpleTpl;
+
+    /**
+     * 1-木质，2-石质，3-金属，4-其他
+     */
+    private String material;
 
     @Override
     public String toString() {

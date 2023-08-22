@@ -18,7 +18,7 @@ import com.qinghua.website.server.utils.RSACryptoHelper;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
