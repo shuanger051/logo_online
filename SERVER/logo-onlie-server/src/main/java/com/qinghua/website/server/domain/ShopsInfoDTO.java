@@ -12,6 +12,11 @@ public class ShopsInfoDTO extends BaseDTO {
 
 	private Long merchantId;
 
+	/**
+	 * 商鋪名称
+	 */
+	private String shopName;
+
     /**
      * 店铺地址
      */

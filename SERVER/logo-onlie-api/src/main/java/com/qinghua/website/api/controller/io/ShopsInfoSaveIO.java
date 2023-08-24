@@ -18,6 +18,13 @@ public class ShopsInfoSaveIO {
     private Long merchantId;
 
     /**
+     * 商鋪名称
+     */
+    @NotNull(message = "商铺名称不能为空")
+    @Size(max = 50,message = "商铺名称不能超过50个字符")
+    private String shopName;
+
+    /**
      * 店铺地址
      */
     @NotNull(message = "店铺地址不能为空")

@@ -10,6 +10,11 @@ import javax.validation.constraints.Size;
 public class ShopsInfoQueryIO {
 
     /**
+     * 商鋪名称
+     */
+    private String shopName;
+
+    /**
      * 店铺地址
      */
     private String address;

@@ -2,12 +2,19 @@ package com.qinghua.website.api.controller.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 public class ShopsInfoVO {
 
     private Long id;
+
+    /**
+     * 商鋪名称
+     */
+    private String shopName;
 
     /**
      * 店铺地址

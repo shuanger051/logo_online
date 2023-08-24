@@ -6,6 +6,7 @@
 	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ShopsInfoDTO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT"/>
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="biz_years" property="bizYears" jdbcType="VARCHAR"/>
         <result column="industry_type" property="industryType" jdbcType="VARCHAR"/>
@@ -27,6 +28,7 @@
     <sql id="Base_Column_List">
         id,
         merchant_id,
+        shop_name,
         address,
         biz_years,
         industry_type,
@@ -55,6 +57,7 @@
             <include refid="Base_Column_List"/>
         FROM t_shops_info
         <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="shopName !=null and shopName !=''">AND shop_name like concat('%',#{shopName},'%')</if>
             <if test="address !=null and address !=''">AND address = #{address}</if>
             <if test="bizYears !=null and bizYears !=''">AND biz_years = #{bizYears}</if>
             <if test="industryType !=null and industryType !=''">AND industry_type = #{industryType}</if>
@@ -89,6 +92,7 @@
         UPDATE t_shops_info
         <set>
             <if test="merchantId !=null">merchant_id = #{merchantId},</if>
+            <if test="shopName !=null and shopName !=''">shop_name = #{shopName},</if>
             <if test="address !=null and address !=''">address = #{address},</if>
             <if test="bizYears !=null and bizYears !=''">biz_years = #{bizYears},</if>
             <if test="industryType !=null and industryType !=''">industry_type = #{industryType},</if>
@@ -110,6 +114,7 @@
         INSERT INTO t_shops_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="merchantId !=null">merchant_id,</if>
+            <if test="shopName !=null and shopName !=''">shop_name,</if>
             <if test="address !=null and address !=''">address,</if>
             <if test="bizYears !=null and bizYears !=''">biz_years,</if>
             <if test="industryType !=null and industryType !=''">industry_type,</if>
@@ -125,6 +130,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="merchantId !=null">#{merchantId},</if>
+            <if test="shopName !=null and shopName !=''">#{shopName},</if>
             <if test="address !=null and address !=''">#{address},</if>
             <if test="bizYears !=null and bizYears !=''">#{bizYears},</if>
             <if test="industryType !=null and industryType !=''">#{industryType},</if>
