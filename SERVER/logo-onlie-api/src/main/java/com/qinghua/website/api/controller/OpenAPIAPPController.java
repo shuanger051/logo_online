@@ -295,15 +295,31 @@ public class OpenAPIAPPController {
     }
 
     /**
-     * 根据ID查询模板详情
+     * APP 根据ID查询模板详情API
      * @return
      */
-    @LogAnnotation(logType = "query",logDesc = "根据ID查询模板详情")
+    @LogAnnotation(logType = "query",logDesc = "APP 根据ID查询模板详情API")
     @RequestMapping("/queryTemplateByIdAPI")
     public ResponseResult<Object> queryTemplateByIdAPI(@RequestParam("id") Long id){
         TemplateDTO template = templateService.getTemplateByIdAPI(id);
         TemplateVO templateVO = BeanToolsUtil.copyOrReturnNull(template,TemplateVO.class);
         return ResponseResult.success(templateVO);
+    }
+
+    /**
+     * APP 随机查询简单模板数据API
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 随机查询简单模板数据API")
+    @RequestMapping("/querySimpleTemplateByRandAPI")
+    public ResponseResult<Object> querySimpleTemplateByRandAPI(@Validated TemplateQueryAPIIO templateQueryIO){
+        TemplateDTO template = BeanToolsUtil.copyOrReturnNull(templateQueryIO,TemplateDTO.class);
+        PageInfo<TemplateDTO> resList = templateService.querySimpleTemplateByRandAPI(template);
+        List<TemplateVO> templateVOS = BeanToolsUtil.copyList(resList.getList(),TemplateVO.class);
+        PageListVO<TemplateVO> result = new PageListVO<>();
+        result.setList(templateVOS);
+        result.setTotal(resList.getTotal());
+        return ResponseResult.success(result);
     }
 
     /**

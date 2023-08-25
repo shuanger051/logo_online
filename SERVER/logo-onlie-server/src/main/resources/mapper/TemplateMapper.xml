@@ -66,6 +66,17 @@
         </trim>
     </select>
 
+    <!-- APP 随机查询简单模板数据API -->
+    <select id="querySimpleTemplateByRandAPI" parameterType="com.qinghua.website.server.domain.TemplateDTO" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_template
+        <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
+            <if test="material !=null and material !=''">AND material like concat('%', #{material}, '%')</if>
+            and release_status = '1'
+            and is_simple_tpl = '1'
+        </trim>
+        ORDER BY RAND()
+    </select>
 
     <!-- 根据ID删除 -->
     <delete id="deleteTemplateById" parameterType="java.lang.Long">

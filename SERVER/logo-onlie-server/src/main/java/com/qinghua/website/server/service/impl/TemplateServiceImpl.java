@@ -95,4 +95,16 @@ public class TemplateServiceImpl implements TemplateService {
         return new PageInfo<>(list);
     }
 
+    /**
+     * APP 随机查询简单模板数据API
+     * @param bean
+     * @return
+     */
+    @Override
+    public PageInfo<TemplateDTO> querySimpleTemplateByRandAPI(TemplateDTO bean){
+        PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
+        List<TemplateDTO> list = templateMapper.querySimpleTemplateByRandAPI(bean);
+        return new PageInfo<>(list);
+    }
+
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 public class TemplateQueryAPIIO extends BaseIO{
 
     /**
-     * 风格类型:1-仿古，2-商务，3-休闲，4-其他
+     * 风格类型:1-自主设计，2-商务正式，3-古典文艺，4-休闲创意
      */
     private String style;
 
