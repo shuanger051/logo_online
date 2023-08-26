@@ -44,8 +44,12 @@ public class ShopsInfoController {
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
         List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);
         for (ShopsInfoVO item : shopsInfoVOS) {
-            item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
-            item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+            if(null != item && null != item.getHandledByPhone()){
+                item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+            }
+            if(null != item && null != item.getHandledByIdCard()){
+                item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+            }
         }
         PageListVO<ShopsInfoVO> result = new PageListVO<>();
         result.setList(shopsInfoVOS);
