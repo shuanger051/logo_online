@@ -56,10 +56,17 @@ public interface TemplateMapper {
         void updateTemplateStatusById(TemplateDTO bean);
 
         /**
-         * 分页查询模板信息列表
+         * APP 分页查询模板信息列表
          * @param templateDTO
          * @return
          */
         List<TemplateDTO> queryTemplateListPageAPI(TemplateDTO templateDTO);
+
+        /**
+         * APP 随机查询简单模板数据API
+         * @param templateDTO
+         * @return
+         */
+        List<TemplateDTO> querySimpleTemplateByRandAPI(TemplateDTO templateDTO);
 
 }

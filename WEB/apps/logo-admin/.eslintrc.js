@@ -1,12 +1,14 @@
-
 module.exports = {
-  "globals": {
-    "_": true
+  root: true,
+  env: {
+    node: true,
   },
-  "parserOptions": {
-    "parser": 'babel-eslint',
+  globals: {
+    _: true,
   },
-  "extends": [
-    "plugin:vue/recommended",
-  ]
-}
+  extends: ["plugin:vue/essential"],
+  parserOptions: {
+    parser: "babel-eslint",
+  },
+  extends: ["plugin:vue/recommended"],
+};

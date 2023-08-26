@@ -18,7 +18,7 @@ import com.qinghua.website.server.utils.RSACryptoHelper;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -74,9 +74,17 @@ public class OpenAPIAPPController {
     @RequestMapping("/registerCustomerAPI")
     public ResponseResult<Object> registerCustomerAPI(@Validated @RequestBody CustomerSaveIO customerSaveIO){
         CustomerInfoDTO save = BeanToolsUtil.copyOrReturnNull(customerSaveIO,CustomerInfoDTO.class);
-        save.setPassword(MD5Util.toMD5String(save.getPassword()));
-        save.setMobile(Sm4Utils.encrypt(save.getMobile()));
-        save.setIdCard(Sm4Utils.encrypt(save.getIdCard()));
+
+        if(null != save && null != save.getPassword()){
+            save.setPassword(MD5Util.toMD5String(save.getPassword()));
+        }
+        if(null != save && null != save.getMobile()){
+            save.setMobile(Sm4Utils.encrypt(save.getMobile()));
+        }
+        if (null != save && null != save.getIdCard()){
+            save.setIdCard(Sm4Utils.encrypt(save.getIdCard()));
+        }
+
         customerInfoService.saveCustomerInfo(save);
         return ResponseResult.success();
     }
@@ -108,8 +116,12 @@ public class OpenAPIAPPController {
 
             //添加用户信息返回
             CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO,CustomerInfoVO.class);
-            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
-            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+            if(null != vo && null != vo.getMobile()){
+                vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+            }
+            if(null != vo && null != vo.getIdCard()){
+                vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+            }
             map.put("customerInfo",vo);
 
             return ResponseResult.success(map);
@@ -128,8 +140,12 @@ public class OpenAPIAPPController {
     public ResponseResult<Object> queryCustomerByIdAPI(@RequestParam("id") Long id){
         CustomerInfoDTO customer = customerInfoService.getCustomerInfoById(id);
         CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(customer, CustomerInfoVO.class);
-        vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
-        vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+        if(null != vo && null != vo.getMobile()){
+            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+        }
+        if(null != vo && null != vo.getIdCard()){
+            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+        }
         return ResponseResult.success(vo);
     }
 
@@ -175,18 +191,37 @@ public class OpenAPIAPPController {
 
             //根据customer信息查询商户个人信息，通过身份证号关联
             MerchantInfoDTO merchant = merchantInfoService.getMerchantInfoByIdCard(customer.getIdCard());
-            if(null != merchant && null != merchant.getPhone()){
-                merchant.setPhone(Sm4Utils.decrypt(merchant.getPhone()));
-            }
-            if(null != merchant && null != merchant.getIdCard()) {
-                merchant.setIdCard(Sm4Utils.decrypt(merchant.getIdCard()));
-            }
 
             MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchant,MerchantInfoVO.class);
+            if(null != merchantInfoVO && null != merchantInfoVO.getPhone()){
+                merchantInfoVO.setPhone(Sm4Utils.decrypt(merchantInfoVO.getPhone()));
+            }
+            if(null != merchantInfoVO && null != merchantInfoVO.getIdCard()){
+                merchantInfoVO.setIdCard(Sm4Utils.decrypt(merchantInfoVO.getIdCard()));
+            }
 
             //根据商户信息查询到店铺信息，通过所属关系关联
             List<ShopsInfoDTO> shopsList = shopsInfoService.getShopsInfoByMerchantId(merchant == null ? 0L :merchant.getId());
             List<ShopsInfoVO> shopsInfoVOList = BeanToolsUtil.copyList(shopsList,ShopsInfoVO.class);
+
+            if(null != shopsInfoVOList && 0 != shopsInfoVOList.size()){
+                shopsInfoVOList.forEach(item -> {
+                    //国密数据解密
+                    if(null != item && null != item.getHandledByPhone()){
+                        item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+                    }
+                    if(null != item && null != item.getHandledByIdCard()){
+                        item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+                    }
+                    //拼接映射URL
+                    item.getList().forEach(dom ->{
+                        if(null != dom){
+                            String relativeFileName = dom.getAttachmentPath()  + "/" +  dom.getAttachmentName() ;
+                            dom.setUrlPath(urlPath+"shops/" + relativeFileName);
+                        }
+                    });
+                });
+            }
 
             Map<String,Object> map = new HashMap<>();
             map.put("customerInfo",customerInfoVO);
@@ -247,6 +282,12 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/saveShopsInfoAPI",method = RequestMethod.POST)
     public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPISaveIO shopsInfoSaveIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoSaveIO, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -261,6 +302,12 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/updateShopsInfoAPI",method = RequestMethod.POST)
     public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPIUpdateIO shopsInfoUpdateIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoUpdateIO, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoUpdateIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -283,15 +330,31 @@ public class OpenAPIAPPController {
     }
 
     /**
-     * 根据ID查询模板详情
+     * APP 根据ID查询模板详情API
      * @return
      */
-    @LogAnnotation(logType = "query",logDesc = "根据ID查询模板详情")
+    @LogAnnotation(logType = "query",logDesc = "APP 根据ID查询模板详情API")
     @RequestMapping("/queryTemplateByIdAPI")
     public ResponseResult<Object> queryTemplateByIdAPI(@RequestParam("id") Long id){
         TemplateDTO template = templateService.getTemplateByIdAPI(id);
         TemplateVO templateVO = BeanToolsUtil.copyOrReturnNull(template,TemplateVO.class);
         return ResponseResult.success(templateVO);
+    }
+
+    /**
+     * APP 随机查询简单模板数据API
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 随机查询简单模板数据API")
+    @RequestMapping("/querySimpleTemplateByRandAPI")
+    public ResponseResult<Object> querySimpleTemplateByRandAPI(@Validated TemplateQueryAPIIO templateQueryIO){
+        TemplateDTO template = BeanToolsUtil.copyOrReturnNull(templateQueryIO,TemplateDTO.class);
+        PageInfo<TemplateDTO> resList = templateService.querySimpleTemplateByRandAPI(template);
+        List<TemplateVO> templateVOS = BeanToolsUtil.copyList(resList.getList(),TemplateVO.class);
+        PageListVO<TemplateVO> result = new PageListVO<>();
+        result.setList(templateVOS);
+        result.setTotal(resList.getTotal());
+        return ResponseResult.success(result);
     }
 
     /**
@@ -329,7 +392,15 @@ public class OpenAPIAPPController {
                 logoInfoDTO.setLogoName(fileName);
                 logoInfoDTO.setLogoFileName(newFileName);
                 logoInfoDTO.setLogoFilePath(frontPath);
-                logoInfoService.saveLogoInfo(logoInfoDTO);
+
+                //根据shopsId判断数据是新增还是更新
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                if(null != res){
+                    logoInfoDTO.setId(res.getId());
+                    logoInfoService.updateLogoInfoById(logoInfoDTO);
+                }else{
+                    logoInfoService.saveLogoInfo(logoInfoDTO);
+                }
             }
 
             FileVO fileVO = new FileVO();
@@ -354,10 +425,30 @@ public class OpenAPIAPPController {
         LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
         PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
         List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
+        logoInfoVOList.forEach(item->item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName()));
         PageListVO<LogoInfoVO> resp = new PageListVO<>();
         resp.setList(logoInfoVOList);
         resp.setTotal(pageList.getTotal());
         return ResponseResult.success(resp);
+    }
+
+    /**
+     * APP 根据商铺ID获取店招信息API
+     * @param shopsId
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据商铺ID获取店招信息API")
+    @RequestMapping(value = "/getLogoInfoByShopsIdAPI",method = RequestMethod.GET)
+    public ResponseResult<Object> getLogoInfoByShopsIdAPI(@RequestParam("shopsId") Long shopsId){
+        LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+        if(null != res){
+            LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
+            String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
+            logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            return ResponseResult.success(logoInfoVO);
+        }else{
+           return ResponseResult.success("未查询到数据");
+        }
     }
 
     /**

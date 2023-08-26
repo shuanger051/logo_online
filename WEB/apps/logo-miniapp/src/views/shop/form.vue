@@ -3,11 +3,12 @@
     <van-form @submit="onSubmit">
       <!-- 商铺信息 -->
       <van-panel title="商铺信息">
-        <van-field
+        <field-picker
           required
           label="行业类型"
-          placeholder="请输入"
+          placeholder="请选择"
           v-model="formData.industryType"
+          :columns="DictIndustryTypeArr"
         />
         <van-field
           required
@@ -15,20 +16,21 @@
           placeholder="请输入"
           v-model="formData.address"
         />
-        <van-field
+        <field-picker
           required
           label="营业年限"
-          placeholder="请输入"
+          placeholder="请选择"
           v-model="formData.bizYears"
+          :columns="DictBizYearsArr"
         />
-        <van-field
+        <field-picker
           required
           label="店铺属性"
-          placeholder="请输入"
+          placeholder="请选择"
           v-model="formData.shopsType"
+          :columns="DictShopsTypeArr"
         />
         <van-field
-          required
           label="备注"
           placeholder="请输入"
           v-model="formData.remark"
@@ -67,7 +69,8 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import { shopService } from "../../apis";
+import { shopService } from "@/apis";
+import { mapDictOptions } from "@/store/helpers";
 export default {
   data() {
     return {
@@ -88,10 +91,20 @@ export default {
       userInfo: (state) => state.user.profiles,
       // 商户信息
       merchantInfo: (state) => state.user.merchant,
+      // 行业类别
+      DictIndustryTypeArr: mapDictOptions("industryType"),
+      // 营业念想
+      DictBizYearsArr: mapDictOptions("bizYears"),
+      // 商铺属性
+      DictShopsTypeArr: mapDictOptions("shopsType"),
     }),
   },
   created() {
     this.queryShopInfo();
+    // 查询字典项
+    this.$store.dispatch("cache/queryDictByKey", {
+      keys: ["bizYears", "industryType", "shopsType"],
+    });
   },
   methods: {
     onSubmit() {
@@ -125,8 +138,14 @@ export default {
         .saveShopsInfoAPI(payload)
         // 保存成功
         .then((res) => {
-          console.log(res);
-        });
+          this.$toast.success({
+            message: "保存成功",
+            onClose: () => {
+              this.$router.push({ path: "/" });
+            },
+          });
+        })
+        .catch(() => this.$toast.fail("保存失败"));
     },
     // 更新
     doUpdate(payload) {
@@ -134,8 +153,14 @@ export default {
         .updateShopsInfoAPI(payload)
         // 保存成功
         .then((res) => {
-          console.log(res);
-        });
+          this.$toast.success({
+            message: "保存成功",
+            onClose: () => {
+              this.$router.push({ path: "/" });
+            },
+          });
+        })
+        .catch(() => this.$toast.fail("保存失败"));
     },
     // 查询商铺信息
     queryShopInfo() {

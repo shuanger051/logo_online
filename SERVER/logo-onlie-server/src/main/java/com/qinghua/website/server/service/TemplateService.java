@@ -61,4 +61,11 @@ public interface TemplateService {
          */
         PageInfo<TemplateDTO> queryTemplateListPageAPI(TemplateDTO templateDTO);
 
+        /**
+         * APP 随机查询简单模板数据API
+         * @param templateDTO
+         * @return
+         */
+        PageInfo<TemplateDTO> querySimpleTemplateByRandAPI(TemplateDTO templateDTO);
+
 }

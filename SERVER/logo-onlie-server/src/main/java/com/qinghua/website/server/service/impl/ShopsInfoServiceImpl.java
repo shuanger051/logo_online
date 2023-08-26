@@ -71,6 +71,35 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
 
         shopsInfoMapper.saveShopsInfo(bean);
         List<ShopsAttachmentDTO> paramList = new ArrayList<>();
+
+        //校验图片个数
+        int yyzz = 0;//营业执照 1 张
+        int zlht = 0;//租赁合同，最大3张
+        int spzp = 0;//商铺照片 1 张
+
+        if(null != list && list.size() > 0){
+            for (int i = 0;i<list.size();i++){
+                ShopsAttachmentDTO res = list.get(i);
+                if(res.getAttachmentType().equals("1")){
+                    spzp = spzp+1;
+                }else if(res.getAttachmentType().equals("2")){
+                    yyzz = yyzz+1;
+                }else if(res.getAttachmentType().equals("3")){
+                    zlht = zlht+1;
+                }
+            }
+        }
+
+        if(yyzz > 1){
+            throw new BizException("只能上传1张营业执照照片",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+        if(zlht > 3){
+            throw new BizException("租赁合同照片最多只能上传3张",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+        if(spzp > 1){
+            throw new BizException("只能上传1张商铺照片",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
         //新增附件
         if(null != list && list.size() >0){
             for(int i=0;i<list.size();i++){
@@ -104,6 +133,35 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     @Override
     public void updateShopsInfoById(ShopsInfoDTO bean,List<ShopsAttachmentDTO> list) {
         shopsInfoMapper.updateShopsInfoById(bean);
+
+        //校验图片个数
+        int yyzz = 0;//营业执照 1 张
+        int zlht = 0;//租赁合同，最大3张
+        int spzp = 0;//商铺照片 1 张
+
+        if(null != list && list.size() > 0){
+            for (int i = 0;i<list.size();i++){
+                ShopsAttachmentDTO res = list.get(i);
+                if(res.getAttachmentType().equals("1")){
+                    spzp = spzp+1;
+                }else if(res.getAttachmentType().equals("2")){
+                    yyzz = yyzz+1;
+                }else if(res.getAttachmentType().equals("3")){
+                    zlht = zlht+1;
+                }
+            }
+        }
+
+        if(yyzz > 1){
+            throw new BizException("只能上传1张营业执照照片",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+        if(zlht > 3){
+            throw new BizException("租赁合同照片最多只能上传3张",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+        if(spzp > 1){
+            throw new BizException("只能上传1张商铺照片",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
         //更新附件信息，清除表中附件数据
         if(null != list && list.size() > 0){
             for (int i = 0; i<list.size(); i++){

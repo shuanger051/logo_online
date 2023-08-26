@@ -43,7 +43,14 @@ public class MerchantInfoController {
         PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
 
         //解密DTO中的mobile加密串
-        pageList.getList().forEach(item -> {item.setPhone(Sm4Utils.decrypt(item.getPhone()));item.setIdCard(Sm4Utils.decrypt(item.getIdCard()));});
+        pageList.getList().forEach(item -> {
+            if(null != item.getPhone()){
+                item.setPhone(Sm4Utils.decrypt(item.getPhone()));
+            }
+            if(null != item.getIdCard()){
+                item.setIdCard(Sm4Utils.decrypt(item.getIdCard()));
+            }
+        });
 
         List<MerchantInfoVO> merchantInfoDTOList =  BeanToolsUtil.copyAsList(pageList.getList(), MerchantInfoVO.class);
         PageListVO<MerchantInfoVO> result = new PageListVO<>();
@@ -62,8 +69,10 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/getMerchantInfoById")
     public ResponseResult<Object> getMerchantInfoById(@RequestParam("id") Long id){
         MerchantInfoDTO merchantInfoDTO = merchantInfoService.getMerchantInfoById(id);
-        if(null != merchantInfoDTO) {
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getPhone()) {
             merchantInfoDTO.setPhone(Sm4Utils.decrypt(merchantInfoDTO.getPhone()));
+        }
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getIdCard()) {
             merchantInfoDTO.setIdCard(Sm4Utils.decrypt(merchantInfoDTO.getIdCard()));
         }
         MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchantInfoDTO,MerchantInfoVO.class);
@@ -80,8 +89,13 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/saveMerchantInfo")
     public ResponseResult<Object> saveMerchantInfo(@Validated @RequestBody MerchantInfoSaveIO bean){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
-        merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
-        merchantInfoDTO.setIdCard(Sm4Utils.encrypt(merchantInfoDTO.getIdCard()));
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getPhone()){
+            merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
+        }
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getIdCard()){
+            merchantInfoDTO.setIdCard(Sm4Utils.encrypt(merchantInfoDTO.getIdCard()));
+        }
+
         merchantInfoService.saveMerchantInfo(merchantInfoDTO);
         return ResponseResult.success();
     }
@@ -96,8 +110,12 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/updateMerchantInfoById")
     public ResponseResult<Object> updateMerchantInfoById(@Validated @RequestBody MerchantInfoUpdateIO bean){
         MerchantInfoDTO merchantInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
-        merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
-        merchantInfoDTO.setIdCard(Sm4Utils.encrypt(merchantInfoDTO.getIdCard()));
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getPhone()){
+            merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
+        }
+        if(null != merchantInfoDTO && null != merchantInfoDTO.getIdCard()){
+            merchantInfoDTO.setIdCard(Sm4Utils.encrypt(merchantInfoDTO.getIdCard()));
+        }
         merchantInfoService.updateMerchantInfoById(merchantInfoDTO);
         return ResponseResult.success();
     }

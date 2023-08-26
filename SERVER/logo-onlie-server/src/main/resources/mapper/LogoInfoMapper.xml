@@ -45,6 +45,10 @@
         </trim>
     </select>
 
+    <!-- 根據商铺ID获取店招信息 -->
+    <select id="getLogoInfoByShopsIdAPI" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM t_logo_info WHERE  shops_id =#{shopsId}
+    </select>
 
     <!-- 根据ID删除 -->
     <delete id="deleteLogoInfoById" parameterType="java.lang.Long">

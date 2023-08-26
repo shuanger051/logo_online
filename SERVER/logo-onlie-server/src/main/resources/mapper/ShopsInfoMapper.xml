@@ -6,12 +6,18 @@
 	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.ShopsInfoDTO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT"/>
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="biz_years" property="bizYears" jdbcType="VARCHAR"/>
         <result column="industry_type" property="industryType" jdbcType="VARCHAR"/>
         <result column="is_old_shops" property="isOldShops" jdbcType="VARCHAR"/>
         <result column="shops_type" property="shopsType" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="handled_by_name" property="handledByName" jdbcType="VARCHAR"/>
+        <result column="handled_by_phone" property="handledByPhone" jdbcType="VARCHAR"/>
+        <result column="handled_by_id_card" property="handledByIdCard" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_front" property="handledByPhotoFront" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_opposite" property="handledByPhotoOpposite" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="list" ofType="com.qinghua.website.server.domain.ShopsAttachmentDTO"
@@ -22,12 +28,18 @@
     <sql id="Base_Column_List">
         id,
         merchant_id,
+        shop_name,
         address,
         biz_years,
         industry_type,
         is_old_shops,
         shops_type,
         remark,
+        handled_by_name,
+        handled_by_phone,
+        handled_by_id_card,
+        handled_by_photo_front,
+        handled_by_photo_opposite,
         create_time,
         update_time
     </sql>
@@ -45,11 +57,15 @@
             <include refid="Base_Column_List"/>
         FROM t_shops_info
         <trim prefix="where" prefixOverrides="AND || OR">
+            <if test="shopName !=null and shopName !=''">AND shop_name like concat('%',#{shopName},'%')</if>
             <if test="address !=null and address !=''">AND address = #{address}</if>
             <if test="bizYears !=null and bizYears !=''">AND biz_years = #{bizYears}</if>
             <if test="industryType !=null and industryType !=''">AND industry_type = #{industryType}</if>
             <if test="isOldShops !=null and isOldShops !=''">AND is_old_shops = #{isOldShops}</if>
             <if test="shopsType !=null and shopsType !=''">AND shops_type = #{shopsType}</if>
+            <if test="handledByName !=null and handledByName !=''">AND handled_by_name = #{handledByName}</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">AND handled_by_phone = #{handledByPhone}</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">AND handled_by_id_card = #{handledByIdCard}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -76,12 +92,18 @@
         UPDATE t_shops_info
         <set>
             <if test="merchantId !=null">merchant_id = #{merchantId},</if>
+            <if test="shopName !=null and shopName !=''">shop_name = #{shopName},</if>
             <if test="address !=null and address !=''">address = #{address},</if>
             <if test="bizYears !=null and bizYears !=''">biz_years = #{bizYears},</if>
             <if test="industryType !=null and industryType !=''">industry_type = #{industryType},</if>
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops = #{isOldShops},</if>
             <if test="shopsType !=null and shopsType !=''">shops_type = #{shopsType},</if>
             <if test="remark !=null and remark !=''">remark = #{remark},</if>
+            <if test="handledByName !=null and handledByName !=''">handled_by_name = #{handledByName},</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone = #{handledByPhone},</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card = #{handledByIdCard},</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront},</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -92,22 +114,34 @@
         INSERT INTO t_shops_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="merchantId !=null">merchant_id,</if>
+            <if test="shopName !=null and shopName !=''">shop_name,</if>
             <if test="address !=null and address !=''">address,</if>
             <if test="bizYears !=null and bizYears !=''">biz_years,</if>
             <if test="industryType !=null and industryType !=''">industry_type,</if>
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops,</if>
             <if test="shopsType !=null and shopsType !=''">shops_type,</if>
             <if test="remark !=null and remark !=''">remark,</if>
+            <if test="handledByName !=null and handledByName !=''">handled_by_name,</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone,</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card,</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front,</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="merchantId !=null">#{merchantId},</if>
+            <if test="shopName !=null and shopName !=''">#{shopName},</if>
             <if test="address !=null and address !=''">#{address},</if>
             <if test="bizYears !=null and bizYears !=''">#{bizYears},</if>
             <if test="industryType !=null and industryType !=''">#{industryType},</if>
             <if test="isOldShops !=null and isOldShops !=''">#{isOldShops},</if>
             <if test="shopsType !=null and shopsType !=''">#{shopsType},</if>
             <if test="remark !=null and remark !=''">#{remark},</if>
+            <if test="handledByName !=null and handledByName !=''">#{handledByName},</if>
+            <if test="handledByPhone !=null and handledByPhone !=''">#{handledByPhone},</if>
+            <if test="handledByIdCard !=null and handledByIdCard !=''">#{handledByIdCard},</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">#{handledByPhotoFront},</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">#{handledByPhotoOpposite},</if>
             NOW()
         </trim>
     </insert>

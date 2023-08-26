@@ -46,4 +46,11 @@ public interface LogoInfoMapper {
          */
         Integer deleteLogoInfoById(@Param("id") Long id);
 
+        /**
+         * 根據商铺ID获取店招信息
+         * @param shopsId
+         * @return
+         */
+        LogoInfoDTO getLogoInfoByShopsIdAPI(Long shopsId);
+
 }

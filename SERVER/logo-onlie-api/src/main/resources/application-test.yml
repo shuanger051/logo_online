@@ -33,7 +33,7 @@ logging:
       total-size-cap: 1GB
       clean-history-on-start: true
   root:
-    level: INFO
+    level: DEBUG
     path: ./logs
 
 #FILE UPLOAD CONFIG

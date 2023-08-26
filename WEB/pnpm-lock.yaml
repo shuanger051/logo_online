@@ -183,6 +183,9 @@ importers:
       lib-flexible:
         specifier: ^0.3.2
         version: 0.3.2
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       register-service-worker:
         specifier: ^1.7.1
         version: 1.7.1
@@ -225,7 +228,7 @@ importers:
         version: 4.5.17(@vue/cli-service@4.5.17)
       '@vue/cli-service':
         specifier: ~4.5.17
-        version: 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+        version: 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/eslint-config-prettier':
         specifier: ^6.0.0
         version: 6.0.0(eslint-plugin-prettier@3.3.1)(eslint@6.7.2)(prettier@2.2.1)
@@ -2680,7 +2683,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.9
       '@vue/babel-preset-app': 4.5.19(@babel/core@7.22.9)(core-js@3.6.5)(vue@2.7.14)
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
       babel-loader: 8.3.0(@babel/core@7.22.9)(webpack@4.46.0)
       cache-loader: 4.1.0(webpack@4.46.0)
@@ -2717,7 +2720,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
       eslint: 6.7.2
       eslint-loader: 2.2.1(eslint@6.7.2)(webpack@4.46.0)
@@ -2748,7 +2751,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
       webpack: 4.46.0
       workbox-webpack-plugin: 4.3.1(webpack@4.46.0)
@@ -2763,7 +2766,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
       '@vue/cli-shared-utils': 4.5.19
     dev: true
 
@@ -2792,7 +2795,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14)
+      '@vue/cli-service': 4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14)
     dev: true
 
   /@vue/cli-service@3.8.0(babel-core@7.0.0-bridge.0)(ejs@3.1.9)(lodash@4.17.21)(vue-template-compiler@2.6.11):
@@ -2921,7 +2924,7 @@ packages:
       - whiskers
     dev: true
 
-  /@vue/cli-service@4.5.17(less-loader@5.0.0)(vue-template-compiler@2.6.11)(vue@2.7.14):
+  /@vue/cli-service@4.5.17(less-loader@5.0.0)(lodash@4.17.21)(vue-template-compiler@2.6.11)(vue@2.7.14):
     resolution: {integrity: sha512-MqfkRYIcIUACe3nYlzNrYstJTWRXHlIqh6JCkbWbdnXWN+IfaVdlG8zw5Q0DVcSdGvkevUW7zB4UhtZB4uyAcA==}
     engines: {node: '>=8'}
     hasBin: true

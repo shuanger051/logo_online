@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.io.*;
+import com.qinghua.website.api.controller.vo.ShopsAttachmentVO;
 import com.qinghua.website.api.controller.vo.ShopsInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
@@ -11,6 +12,7 @@ import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.ShopsAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsInfoDTO;
 import com.qinghua.website.server.service.ShopsInfoService;
+import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,14 @@ public class ShopsInfoController {
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
         List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);
+        for (ShopsInfoVO item : shopsInfoVOS) {
+            if(null != item && null != item.getHandledByPhone()){
+                item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+            }
+            if(null != item && null != item.getHandledByIdCard()){
+                item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+            }
+        }
         PageListVO<ShopsInfoVO> result = new PageListVO<>();
         result.setList(shopsInfoVOS);
         result.setTotal(pageList.getTotal());
@@ -58,6 +68,15 @@ public class ShopsInfoController {
     public ResponseResult<Object> getShopsInfoById(@RequestParam("id") Long id){
         ShopsInfoDTO shopsInfoDTO = shopsInfoService.getShopsInfoById(id);
         ShopsInfoVO shopsInfoVO = BeanToolsUtil.copyOrReturnNull(shopsInfoDTO,ShopsInfoVO.class);
+        if(null != shopsInfoVO && shopsInfoVO.getHandledByPhone() != null){
+            shopsInfoVO.setHandledByPhone(Sm4Utils.decrypt(shopsInfoVO.getHandledByPhone()));
+        }
+        if(null != shopsInfoVO && shopsInfoVO.getHandledByIdCard() != null) {
+            shopsInfoVO.setHandledByIdCard(Sm4Utils.decrypt(shopsInfoVO.getHandledByIdCard()));
+        }
+
+        shopsInfoVO.setList(BeanToolsUtil.copyList(shopsInfoDTO.getList(), ShopsAttachmentVO.class));
+
         return ResponseResult.success(shopsInfoVO);
     }
 
@@ -71,6 +90,12 @@ public class ShopsInfoController {
     @RequiresPermissions("/shops-info/saveShopsInfo")
     public ResponseResult<Object> saveShopsInfo(@Validated @RequestBody ShopsInfoSaveIO bean){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -86,6 +111,12 @@ public class ShopsInfoController {
     @RequiresPermissions("/shops-info/updateShopsInfoById")
     public ResponseResult<Object> updateShopsInfoById(@Validated @RequestBody ShopsInfoUpdateIO bean){
         ShopsInfoDTO shopsInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, ShopsInfoDTO.class);
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();
