@@ -5,7 +5,7 @@
       <span @click="createShopSign">保存</span>
     </div>
     <div class="edit-wrap-content">
-      <div style="min-height: 320px;">
+      <div style="min-height: 320px">
         <edit-panel :elements="elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
@@ -20,7 +20,7 @@ import { mapState, mapActions } from "vuex";
 import store from "core/store/mobileIndex";
 import { Notify } from "vant";
 import { Toast } from "vant";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 import { resolveImgUrl } from "core/support/imgUrl";
 
 const sleep = async (time) => {
@@ -82,15 +82,14 @@ export default {
       try {
         await this.mCreateCover({ el: "#content_edit" });
         Notify({ type: "success", message: "创建成功" });
-        // ImagePreview([resolveImgUrl(this.currentShopSign)])
         later(() => {
           this.$router.push({
-            name: "uploadLive",
+            name: "editLive",
             query: {
               shopId: this.$route.query.shopId,
             },
           });
-        },1000);
+        }, 1000);
       } catch (e) {
         Notify({ type: "danger", message: "创建失败" });
       }
@@ -98,8 +97,19 @@ export default {
       toast.clear();
       this.showOverlay = false;
     },
+    async initEdit() {
+      if (this.$route.params.id) {
+        const toast = Toast.loading({
+          message: "加载中...",
+          forbidClick: true,
+          duration: 0,
+        });
+        this.fetchWork({id: this.$route.params.id, hasWork: this.$route.query.hasWork});
+        await sleep(2000);
+        toast.clear();
+      }
+    },
   },
-
   created() {
     this.$watch(
       () => [this.work.width, this.work.height],
@@ -114,10 +124,7 @@ export default {
       }
     );
     this.setEditingPage();
-
-    if (this.$route.params.id) {
-      this.fetchWork(this.$route.params.id);
-    }
+    this.initEdit();
   },
 };
 </script>

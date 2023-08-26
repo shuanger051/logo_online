@@ -58,6 +58,7 @@ export const actions = {
       name: state.work.title,
       style: state.work.style,
       isSimpleTpl: state.work.isSimpleTpl,
+      material: state.work.material,
       domItem: JSON.stringify(state.work),
     };
     if (currentRoute.params.id) {
@@ -71,9 +72,22 @@ export const actions = {
       handlerSaveSucessJump();
     }
   },
-  fetchWork({ commit, dispatch, state }, workId) {
+  fetchWork({ commit, dispatch, state, rootState }, obj) {
+    let id
+    let hasWork = false
+    if (typeof obj == 'object') {
+      id = obj.id
+      hasWork = obj.hasWork
+    } else {
+      id = obj
+    }
+    if (hasWork) {
+      commit("setWork", state.mobile.currentWorkData);
+      commit("setEditingPage");
+      return
+    }
     return getTemplateByID({
-      id: workId,
+      id,
     }).then((entry) => {
       const { data } = entry;
       try {

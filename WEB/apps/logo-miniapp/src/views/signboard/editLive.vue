@@ -17,20 +17,22 @@
           :delIcon="false"
           :style="getStyle()"
           class="shape_wrap"
+          v-if = 'currentShopSign'
         >
           <div class="shape_content">
             <img :src="currentShopSign" width="100%" />
           </div>
         </shape>
 
-        <van-image width="100%" :src="currentLivePic" />
+        <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
       </div>
     </div>
   </div>
 </template>
 <script>
 import store from "core/store/mobileIndex";
-import { mapState } from "vuex";
+import appStore from '@/store'
+import {appGetLogoInfoByShopsId, appGetCustomerInfoByUserNameAPI} from 'core/api'
 import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
 import { Toast } from "vant";
@@ -52,18 +54,33 @@ export default {
       style: {
         left: 20,
         top: 20,
-        width: 100,
-        height: 50,
+        width: 300,
+        height: 300,
         angle: 0,
       },
       active: true,
+      currentLivePic: null,
+      currentShopSign: null
+
     };
   },
-  computed: {
-    ...mapState("editor", {
-      currentLivePic: (state) => state.mobile.currentLivePic,
-      currentShopSign: (state) => resolveImgUrl(state.mobile.currentShopSign),
-    }),
+  created() {
+    appGetLogoInfoByShopsId({
+      shopsId: this.$route.query.shopId
+    }).then((data) => {
+      this.currentShopSign = resolveImgUrl(data.data.urlPath)
+    })
+    appGetCustomerInfoByUserNameAPI({
+      customerName: appStore.state.user.profiles.customerName
+    }).then(({data}) => {
+      const shopLists = data.shopsList.find((item) => item.id == this.$route.query.shopId)
+      if (shopLists) {
+        const list = shopLists.list.find((item) => item.attachmentType == '1')
+        if (list) {
+          this.currentLivePic = resolveImgUrl(list.urlPath)
+        }
+      }
+    })
   },
   methods: {
     handleElementMove(pos) {
@@ -95,7 +112,11 @@ export default {
     getStyle() {
       const style = Object.assign({}, this.style);
       Object.entries(style).forEach(([key, val]) => {
-        style[key] = val + "px";
+        if (typeof val == 'string') {
+          style[key] = val
+        } else {
+          style[key] = val + "px";
+        }
       });
       style.transform = `rotate(${this.style.angle}deg)`;
       return style;

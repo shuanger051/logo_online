@@ -1,6 +1,16 @@
 <template>
   <div class="page-wrap">
-    <van-divider>设计风格</van-divider>
+    <van-divider>材质</van-divider>
+    <van-checkbox-group v-model="formData.material" direction="horizontal">
+      <van-checkbox
+        v-for="item in attrs.material"
+        :key="item.value"
+        :name="item.value"
+      >
+        {{ item.label }}
+      </van-checkbox>
+    </van-checkbox-group>
+    <van-divider>类型</van-divider>
     <van-checkbox-group v-model="formData.styles" direction="horizontal">
       <van-checkbox
         v-for="item in attrs.styles"
@@ -17,6 +27,7 @@
 </template>
 <script>
 import SubmitBar from "../../components/SubmitBar.vue";
+import { appGetItemsByDictKeyInDB } from "core/api";
 export default {
   components: { SubmitBar },
   data() {
@@ -25,18 +36,24 @@ export default {
       // 属性列表
       attrs: {
         styles: [
-          { value: "1", label: "古典风" },
-          { value: "2", label: "现代风" },
-          { value: "3", label: "商务风" },
-          { value: "4", label: "极简风" },
-          { value: "5", label: "欧式风" },
-          { value: "6", label: "美式风" },
-          { value: "7", label: "原木风" },
-          { value: "8", label: "工业风" },
-          { value: "9", label: "田园风" },
         ],
+        material: []
       },
     };
+  },
+  created() {
+    appGetItemsByDictKeyInDB({dictKey: 'style'}).then(({data}) => {
+      this.attrs.styles = data.map((item) =>{return {
+        value: item.itemKey,
+        label: item.itemValue
+      }})
+    })
+    appGetItemsByDictKeyInDB({dictKey: 'material'}).then(({data}) => {
+      this.attrs.material = data.map((item) =>{return {
+        value: item.itemKey,
+        label: item.itemValue
+      }})
+    })
   },
   methods: {
     onNext() {

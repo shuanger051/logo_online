@@ -6,3 +6,7 @@ import { axiosGet } from "@/utils/request";
 export const queryTemplateListPageAPI = axiosGet(
   "/logo/app/queryTemplateListPageAPI"
 );
+
+export const querySimpleTemplateByRandAPI = axiosGet(
+  "/logo/app/querySimpleTemplateByRandAPI"
+);

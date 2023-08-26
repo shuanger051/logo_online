@@ -14,6 +14,11 @@ const routes = [
     component: () => import("@/views/signboard/attribute"),
   },
   {
+    path: "editSelect",
+    meta: { title: "编辑选择" },
+    component: () => import("@/views/signboard/editSelect"),
+  },
+  {
     path: "design",
     meta: { title: "店招设计" },
     component: () => import("@/views/shop/form"),
@@ -25,10 +30,28 @@ const routes = [
     component: () => import("@/views/signboard/uploadLive"),
   },
   {
+    path: "selfEdit",
+    name: 'selfEdit',
+    meta: { title: "自主设计" },
+    component: () => import("@/views/signboard/selfEdit"),
+  },
+  {
     path: "editLive",
     name: 'editLive',
     meta: { title: "实景编辑" },
     component: () => import("@/views/signboard/editLive"),
+  },
+  {
+    path: "intelligenceTemplate",
+    name: 'intelligenceTemplate',
+    meta: { title: "模板选择" },
+    component: () => import("@/views/signboard/intelligenceTemplate"),
+  },
+  {
+    path: "intelligenceDesign",
+    name: 'intelligenceDesign',
+    meta: { title: "智能设计" },
+    component: () => import("@/views/signboard/intelligenceDesign"),
   },
   {
     path: "/editSignboard/:id?",

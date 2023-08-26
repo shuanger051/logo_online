@@ -71,6 +71,7 @@ export default {
     borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
     borderRadius: PropTypes.number({ label: '圆角(px)' }),
     borderColor: PropTypes.color({ label: '边框颜色' }),
+    isShopName: PropTypes.boolean({label: '店招名称'}),
     text: PropTypes.string({ label: '内容',
       defaultValue: '双击修改文字',
       visible: true,

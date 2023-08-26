@@ -5,11 +5,10 @@ import { actions as pageActions, mutations as pageMutations } from './page'
 import { actions as elementActions, mutations as elementMutations } from './element'
 import { actions as workActions, mutations as workMutations } from './work'
 import { actions as dataSourceActions, mutations as dataSourceMutations } from './data-source'
-let wk = new Work()
-window.wk = wk
+
 const state = {
   works: [],
-  work: wk,
+  work: new Work(),
   editingPage: { elements: [] },
   editingElement: null,
   formDetailOfWork: {

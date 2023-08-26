@@ -1,5 +1,6 @@
 import { mapState, mapActions } from "vuex";
 import "./share-info.scss";
+import {	getDictById } from 'core/api'
 const debounce = function debounce(func, wait) {
   let timerId = 0;
   return function (...args) {
@@ -12,17 +13,7 @@ const debounce = function debounce(func, wait) {
   };
 };
 
-const styleMap = [
-  { value: "1", label: "古典风" },
-  { value: "2", label: "现代风" },
-  { value: "3", label: "商务风" },
-  { value: "4", label: "极简风" },
-  { value: "5", label: "欧式风" },
-  { value: "6", label: "美式风" },
-  { value: "7", label: "原木风" },
-  { value: "8", label: "工业风" },
-  { value: "9", label: "田园风" },
-];
+
 const tempType = [
   { value: "1", label: "简单模板" },
   { value: "0", label: "复杂模板" }, 
@@ -33,6 +24,7 @@ export default {
     ...mapState("editor", {
       work: (state) => state.work,
       style: (state) => state.work.style.split(","),
+      material: (state) => state.work.material.split(","),
       isSimpleTpl:(state) => state.work.isSimpleTpl
     }),
     previewUrl() {
@@ -40,6 +32,12 @@ export default {
     },
     releaseUrl() {
       return `${window.location.origin}/works/preview/${this.work.id}`;
+    }
+  },
+  data() {
+    return {
+      styleMap: [],
+      materialMap: []
     }
   },
   methods: {
@@ -54,6 +52,18 @@ export default {
   },
   mounted() {
     // 修改标题、描述信息后自动保存
+    getDictById({dictKey: 'style'}).then(({data}) => {
+      this.styleMap = data.map((item) =>{return {
+        value: item.itemKey,
+        label: item.itemValue
+      }})
+    })
+    getDictById({dictKey: 'material'}).then(({data}) => {
+      this.materialMap = data.map((item) =>{return {
+        value: item.itemKey,
+        label: item.itemValue
+      }})
+    })
   },
   render(h) {
     return (
@@ -72,11 +82,21 @@ export default {
             <a-form-item label="风格">
               <a-select
                 class="input"
-                options={styleMap}
+                options={this.styleMap}
                 mode="multiple"
                 value={this.style}
                 onChange={(e) => this.autoSave({ style: e.join(",") })}
                 placeholder="请选择风格"
+              ></a-select>
+            </a-form-item>
+            <a-form-item label="材质">
+              <a-select
+                class="input"
+                options={this.materialMap}
+                mode="multiple"
+                value={this.material}
+                onChange={(e) => this.autoSave({ material: e.join(",") })}
+                placeholder="请选择材质"
               ></a-select>
             </a-form-item>
             <a-form-item label="模板类型">

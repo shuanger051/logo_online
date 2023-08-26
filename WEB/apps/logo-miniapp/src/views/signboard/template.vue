@@ -58,7 +58,7 @@ export default {
     },
     // 模版查询
     queryTemplate() {
-      const { styles } = this.$route.query;
+      const { styles,material } = this.$route.query;
       const { list: oldArr, page } = this;
       const { size, current } = page;
       const pageNum = current + 1;
@@ -68,6 +68,7 @@ export default {
           pageNum,
           pageSize: size,
           style: styles,
+          material
         })
         .then((res) => {
           page.current = pageNum;

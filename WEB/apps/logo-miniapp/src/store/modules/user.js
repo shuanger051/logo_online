@@ -19,7 +19,6 @@ const mutations = {
     state.merchant = detail
   }
 };
-
 export default {
   namespaced: true,
   mutations,

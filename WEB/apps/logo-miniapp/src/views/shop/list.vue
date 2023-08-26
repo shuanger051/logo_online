@@ -13,7 +13,7 @@
           <van-button
             plain
             size="small"
-            :to="`/signboard/attribute?shopId=${item.id}`"
+            :to="`/signboard/editSelect?shopId=${item.id}`"
             >店招设计</van-button
           >
         </template>
