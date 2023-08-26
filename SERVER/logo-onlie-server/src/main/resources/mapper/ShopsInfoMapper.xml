@@ -102,8 +102,8 @@
             <if test="handledByName !=null and handledByName !=''">handled_by_name = #{handledByName},</if>
             <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone = #{handledByPhone},</if>
             <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card = #{handledByIdCard},</if>
-            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront}</if>
-            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite}</if>
+            <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront},</if>
+            <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
