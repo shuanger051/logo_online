@@ -32,6 +32,11 @@ public class ShopsAttachmentVO {
      */
     private String attachmentType;
 
+    /**
+     * 文件预览映射路径
+     */
+    private String urlPath;
+
     @Override
     public String toString() {
         return "ShopsAttachmentVO{" +

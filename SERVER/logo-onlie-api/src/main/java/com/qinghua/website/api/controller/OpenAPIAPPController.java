@@ -191,18 +191,38 @@ public class OpenAPIAPPController {
 
             //根据customer信息查询商户个人信息，通过身份证号关联
             MerchantInfoDTO merchant = merchantInfoService.getMerchantInfoByIdCard(customer.getIdCard());
-            if(null != merchant && null != merchant.getPhone()){
-                merchant.setPhone(Sm4Utils.decrypt(merchant.getPhone()));
-            }
-            if(null != merchant && null != merchant.getIdCard()) {
-                merchant.setIdCard(Sm4Utils.decrypt(merchant.getIdCard()));
-            }
 
             MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchant,MerchantInfoVO.class);
+            if(null != merchantInfoVO && null != merchantInfoVO.getPhone()){
+                merchantInfoVO.setPhone(Sm4Utils.decrypt(merchantInfoVO.getPhone()));
+            }
+            if(null != merchantInfoVO && null != merchantInfoVO.getIdCard()){
+                merchantInfoVO.setIdCard(Sm4Utils.decrypt(merchantInfoVO.getIdCard()));
+            }
 
             //根据商户信息查询到店铺信息，通过所属关系关联
             List<ShopsInfoDTO> shopsList = shopsInfoService.getShopsInfoByMerchantId(merchant == null ? 0L :merchant.getId());
             List<ShopsInfoVO> shopsInfoVOList = BeanToolsUtil.copyList(shopsList,ShopsInfoVO.class);
+
+            if(null != shopsInfoVOList && 0 != shopsInfoVOList.size()){
+                shopsInfoVOList.forEach(item -> {
+                    //国密数据解密
+                    if(null != item && null != item.getHandledByPhone()){
+                        item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+                    }
+                    if(null != item && null != item.getHandledByIdCard()){
+                        item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+                    }
+                    //拼接映射URL
+                    item.getList().forEach(dom ->{
+                        if(null != dom){
+                            String relativeFileName = dom.getAttachmentPath() == null ? "--":dom.getAttachmentPath()
+                                    + "/" + dom.getAttachmentName() == null ? "--" : dom.getAttachmentName();
+                            dom.setUrlPath(urlPath+"shops/"+relativeFileName);
+                        }
+                    });
+                });
+            }
 
             Map<String,Object> map = new HashMap<>();
             map.put("customerInfo",customerInfoVO);
@@ -373,7 +393,15 @@ public class OpenAPIAPPController {
                 logoInfoDTO.setLogoName(fileName);
                 logoInfoDTO.setLogoFileName(newFileName);
                 logoInfoDTO.setLogoFilePath(frontPath);
-                logoInfoService.saveLogoInfo(logoInfoDTO);
+
+                //根据shopsId判断数据是新增还是更新
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                if(null != res){
+                    logoInfoDTO.setId(res.getId());
+                    logoInfoService.updateLogoInfoById(logoInfoDTO);
+                }else{
+                    logoInfoService.saveLogoInfo(logoInfoDTO);
+                }
             }
 
             FileVO fileVO = new FileVO();
