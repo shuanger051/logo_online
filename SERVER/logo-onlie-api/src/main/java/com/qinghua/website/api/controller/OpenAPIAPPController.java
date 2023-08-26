@@ -216,9 +216,8 @@ public class OpenAPIAPPController {
                     //拼接映射URL
                     item.getList().forEach(dom ->{
                         if(null != dom){
-                            String relativeFileName = dom.getAttachmentPath() == null ? "--":dom.getAttachmentPath()
-                                    + "/" + dom.getAttachmentName() == null ? "--" : dom.getAttachmentName();
-                            dom.setUrlPath(urlPath+"shops/"+relativeFileName);
+                            String relativeFileName = dom.getAttachmentPath()  + "/" +  dom.getAttachmentName() ;
+                            dom.setUrlPath(urlPath+"shops/" + relativeFileName);
                         }
                     });
                 });
