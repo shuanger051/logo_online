@@ -43,7 +43,14 @@ public class MerchantInfoController {
         PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
 
         //解密DTO中的mobile加密串
-        pageList.getList().forEach(item -> {item.setPhone(Sm4Utils.decrypt(item.getPhone()));item.setIdCard(Sm4Utils.decrypt(item.getIdCard()));});
+        pageList.getList().forEach(item -> {
+            if(null != item.getPhone()){
+                item.setPhone(Sm4Utils.decrypt(item.getPhone()));
+            }
+            if(null != item.getIdCard()){
+                item.setIdCard(Sm4Utils.decrypt(item.getIdCard()));
+            }
+        });
 
         List<MerchantInfoVO> merchantInfoDTOList =  BeanToolsUtil.copyAsList(pageList.getList(), MerchantInfoVO.class);
         PageListVO<MerchantInfoVO> result = new PageListVO<>();
