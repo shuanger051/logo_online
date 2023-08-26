@@ -74,9 +74,17 @@ public class OpenAPIAPPController {
     @RequestMapping("/registerCustomerAPI")
     public ResponseResult<Object> registerCustomerAPI(@Validated @RequestBody CustomerSaveIO customerSaveIO){
         CustomerInfoDTO save = BeanToolsUtil.copyOrReturnNull(customerSaveIO,CustomerInfoDTO.class);
-        save.setPassword(MD5Util.toMD5String(save.getPassword()));
-        save.setMobile(Sm4Utils.encrypt(save.getMobile()));
-        save.setIdCard(Sm4Utils.encrypt(save.getIdCard()));
+
+        if(null != save && null != save.getPassword()){
+            save.setPassword(MD5Util.toMD5String(save.getPassword()));
+        }
+        if(null != save && null != save.getMobile()){
+            save.setMobile(Sm4Utils.encrypt(save.getMobile()));
+        }
+        if (null != save && null != save.getIdCard()){
+            save.setIdCard(Sm4Utils.encrypt(save.getIdCard()));
+        }
+
         customerInfoService.saveCustomerInfo(save);
         return ResponseResult.success();
     }
@@ -108,8 +116,12 @@ public class OpenAPIAPPController {
 
             //添加用户信息返回
             CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO,CustomerInfoVO.class);
-            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
-            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+            if(null != vo && null != vo.getMobile()){
+                vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+            }
+            if(null != vo && null != vo.getIdCard()){
+                vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+            }
             map.put("customerInfo",vo);
 
             return ResponseResult.success(map);
@@ -128,8 +140,12 @@ public class OpenAPIAPPController {
     public ResponseResult<Object> queryCustomerByIdAPI(@RequestParam("id") Long id){
         CustomerInfoDTO customer = customerInfoService.getCustomerInfoById(id);
         CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(customer, CustomerInfoVO.class);
-        vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
-        vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+        if(null != vo && null != vo.getMobile()){
+            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+        }
+        if(null != vo && null != vo.getIdCard()){
+            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+        }
         return ResponseResult.success(vo);
     }
 
@@ -398,10 +414,14 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/getLogoInfoByShopsIdAPI",method = RequestMethod.GET)
     public ResponseResult<Object> getLogoInfoByShopsIdAPI(@RequestParam("shopsId") Long shopsId){
         LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
-        LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
-        String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
-        logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
-        return ResponseResult.success(logoInfoVO);
+        if(null != res){
+            LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
+            String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
+            logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            return ResponseResult.success(logoInfoVO);
+        }else{
+           return ResponseResult.success("未查询到数据");
+        }
     }
 
     /**
