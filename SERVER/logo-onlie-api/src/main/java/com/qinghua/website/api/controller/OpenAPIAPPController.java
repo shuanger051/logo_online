@@ -542,6 +542,7 @@ public class OpenAPIAPPController {
 
                 List<ShopsAttachmentDTO> list = new ArrayList<>();
                 list.add(shopsAttachmentDTO);
+
                 shopsInfoService.saveShopsAttachments(list);
             }
 
