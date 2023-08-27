@@ -108,6 +108,7 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
                 paramList.add(res);
             }
         }
+
         attachmentMapper.saveShopsAttachmentByList(paramList);
     }
 
@@ -209,6 +210,23 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
      */
     @Override
     public void saveShopsAttachments(List<ShopsAttachmentDTO> list){
+        list.forEach(item->{
+            //先执行服务器文件清除动作
+            String filePath = savePath + "shops/" + File.separator + item.getAttachmentPath() + "\\" + item.getAttachmentName();
+            //首先清除服务器文件
+            FileUtils.deleteFile(filePath);
+            //逻辑代码特殊处理,每次提交文件时将原有数据剔除
+            if(null != item.getAttachmentType() && "4".equals(item.getAttachmentType())){
+                attachmentMapper.deleteShopsAttachmentByShopsIdAnd4Type(item.getShopsId());
+            }else if(null != item.getAttachmentType() && "3".equals(item.getAttachmentType())){
+                attachmentMapper.deleteShopsAttachmentByShopsIdAnd3Type(item.getShopsId());
+            }else if(null != item.getAttachmentType() && "2".equals(item.getAttachmentType())){
+                attachmentMapper.deleteShopsAttachmentByShopsIdAnd2Type(item.getShopsId());
+            }else if(null != item.getAttachmentType() && "1".equals(item.getAttachmentType())){
+                attachmentMapper.deleteShopsAttachmentByShopsIdAnd1Type(item.getShopsId());
+            }
+        });
+
         attachmentMapper.saveShopsAttachmentByList(list);
     }
 

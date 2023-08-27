@@ -136,4 +136,21 @@
         DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId}
     </delete>
 
+    <!-- 根据shopsId删除 -->
+    <delete id="deleteShopsAttachmentByShopsIdAnd4Type" parameterType="java.lang.Long">
+        DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId} and attachment_type = '4'
+    </delete>
+
+    <delete id="deleteShopsAttachmentByShopsIdAnd3Type" parameterType="java.lang.Long">
+        DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId} and attachment_type = '3'
+    </delete>
+
+    <delete id="deleteShopsAttachmentByShopsIdAnd2Type" parameterType="java.lang.Long">
+        DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId} and attachment_type = '2'
+    </delete>
+
+    <delete id="deleteShopsAttachmentByShopsIdAnd1Type" parameterType="java.lang.Long">
+        DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId} and attachment_type = '1'
+    </delete>
+
 </mapper>

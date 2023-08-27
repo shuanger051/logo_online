@@ -78,4 +78,13 @@ public interface ShopsAttachmentMapper {
          */
         void deleteShopsAttachmentByShopsId(@Param("shopsId")Long shopsId);
 
+        /**
+         * 删除数据库对应类型的数据
+         * @param shopsId
+         */
+        void deleteShopsAttachmentByShopsIdAnd4Type(@Param("shopsId") Long shopsId);
+        void deleteShopsAttachmentByShopsIdAnd3Type(@Param("shopsId") Long shopsId);
+        void deleteShopsAttachmentByShopsIdAnd2Type(@Param("shopsId") Long shopsId);
+        void deleteShopsAttachmentByShopsIdAnd1Type(@Param("shopsId") Long shopsId);
+
 }
