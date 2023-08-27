@@ -73,6 +73,7 @@ export default {
           title: "是否超管",
           dataIndex: "isAdmin",
           key: "isAdmin",
+          customRender: (val) => (val == "1" ? "是" : "否"),
         },
         {
           title: "是否禁用",

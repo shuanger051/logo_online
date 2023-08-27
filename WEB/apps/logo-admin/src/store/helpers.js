@@ -20,5 +20,19 @@ export function mapDictObject(key) {
  * @returns
  */
 export function mapDictArray(key) {
-  return (state) => _.get(state, ["cache", "dictionary", key], []);
+  return (state) => _.get(state, ["cache", "dictionary", `dict__${key}`], []);
+}
+
+/**
+ * == create select options ==
+ * @param {*} key 
+ * @returns 
+ */
+export function mapDictOptions(key) {
+  return (state) =>
+    _.get(state, ["cache", "dictionary", `dict__${key}`], []).map((item) => {
+      item.value = item.itemKey;
+      item.label = item.itemValue;
+      return item;
+    });
 }

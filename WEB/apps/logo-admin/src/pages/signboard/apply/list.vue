@@ -13,6 +13,10 @@
       :columns="columns"
       @change="onChange"
     >
+      <!-- 店招预览图 -->
+      <template slot="logoImg" slot-scope="val, record">
+        <img :src="`/api/logo/${record.logoFilePath}/${val}`" />
+      </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
         <!-- btn:删除 -->
@@ -40,40 +44,26 @@ export default {
     columns() {
       return [
         {
-          title: "店铺地址",
-          dataIndex: "address",
-          key: "address",
+          title: "商户编号",
+          dataIndex: "merchantId",
+          key: "merchantId",
         },
         {
-          title: "营业年限",
-          dataIndex: "bizYears",
-          key: "bizYears",
+          title: "商铺编号",
+          dataIndex: "shopsId",
+          key: "shopsId",
         },
         {
-          title: "行业类型",
-          dataIndex: "industryType",
-          key: "industryType",
+          title: "店招名称",
+          dataIndex: "logoName",
+          key: "logoName",
         },
         {
-          title: "是否老店",
-          dataIndex: "isOldShops",
-          key: "isOldShops",
+          title: "店招预览",
+          dataIndex: "logoFileName",
+          key: "logoFileName",
+          scopedSlots: { customRender: "logoImg" },
         },
-        {
-          title: "店铺属性",
-          dataIndex: "shopsType",
-          key: "shopsType",
-        },
-        {
-          title: "备注",
-          dataIndex: "remark",
-          key: "remark",
-        },
-        {
-          title: "备案资料",
-          key: "archives",
-        },
-        ,
         {
           title: "操作",
           key: "operation",

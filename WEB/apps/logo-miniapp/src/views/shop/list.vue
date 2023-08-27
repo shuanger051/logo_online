@@ -1,7 +1,12 @@
 <template>
   <div class="page-wrap">
-    <template v-if="list.length">
-      <van-panel v-for="item in list" :key="item.id">
+    <van-collapse v-if="list.length" v-model="activeId">
+      <van-collapse-item
+        v-for="item in list"
+        :key="item.id"
+        :title="item.shopName"
+        :name="item.id"
+      >
         <van-cell
           title="行业类型"
           :value="item.industryType | dict(DictIndustryType)"
@@ -16,7 +21,7 @@
         ></van-cell>
         <van-cell title="商铺地址" :value="item.address"></van-cell>
         <van-cell title="备注" :value="item.remark"></van-cell>
-        <template slot="footer">
+        <van-cell>
           <van-button plain size="small" :to="`/shop/detail?shopId=${item.id}`"
             >信息变更</van-button
           >
@@ -26,9 +31,9 @@
             :to="`/signboard/editSelect?shopId=${item.id}`"
             >店招设计</van-button
           >
-        </template>
-      </van-panel>
-    </template>
+        </van-cell>
+      </van-collapse-item>
+    </van-collapse>
     <van-empty v-else description="暂无关联商铺">
       <van-button round block plain icon="plus" size="small" to="/shop/detail"
         >新增商铺</van-button
@@ -44,6 +49,7 @@ export default {
   data() {
     return {
       list: [],
+      activeId: [],
     };
   },
   computed: {
@@ -95,15 +101,25 @@ export default {
       }
     }
   }
-  :deep(.van-panel) {
-    &:not(:last-child) {
-      margin-bottom: 12px;
+  :deep(.van-collapse-item) {
+    &__title {
+      &.van-cell--clickable:active {
+        background-color: #fff !important;
+      }
     }
-    &__footer {
-      text-align: right;
-      .van-button {
-        &:not(:last-child) {
-          margin-right: 8px;
+    &__content {
+      padding: 0;
+      &::after {
+        content: "";
+        display: block;
+        height: 12px;
+        background-color: @gray-2;
+      }
+      .van-cell {
+        .van-button {
+          &:not(:last-child) {
+            margin-right: 8px;
+          }
         }
       }
     }

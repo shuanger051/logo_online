@@ -3,9 +3,15 @@
     <van-form @submit="onSubmit">
       <!-- 商铺信息 -->
       <van-panel title="商铺信息">
+        <van-field
+          required
+          label="商铺名称"
+          placeholder="请输入"
+          v-model="formData.shopName"
+        />
         <field-picker
           required
-          label="行业类型"
+          label="营业类型"
           placeholder="请选择"
           v-model="formData.industryType"
           :columns="DictIndustryTypeArr"
@@ -36,28 +42,68 @@
           v-model="formData.remark"
         />
       </van-panel>
+      <!-- 经办人信息 -->
+      <van-panel title="经办人信息">
+        <van-field
+          required
+          label="姓名"
+          placeholder="请输入"
+          v-model="formData.handledByName"
+        />
+        <van-field
+          required
+          label="身份证号"
+          placeholder="请输入"
+          v-model="formData.handledByIdCard"
+        />
+        <van-field
+          required
+          label="联系电话"
+          placeholder="请输入"
+          v-model="formData.handledByPhone"
+        />
+      </van-panel>
       <!-- 材料上传 -->
       <van-panel title="材料上传">
-        <van-field label="身份证" required>
+        <van-field label="身份证正面" required>
           <van-uploader
-            v-model="attachmentType[1]"
+            v-model="formData.handledByPhotoFront"
             slot="input"
             multiline
-            :after-read="(evt) => doAfterRead(1, evt)"
+            :max-count="1"
+            :after-read="(evt) => doAfterRead(evt)"
+          />
+        </van-field>
+        <van-field label="身份证反面" required>
+          <van-uploader
+            v-model="formData.handledByPhotoOpposite"
+            slot="input"
+            multiline
+            :max-count="1"
+            :after-read="(evt) => doAfterRead(evt)"
           />
         </van-field>
         <van-field label="营业执照" required>
           <van-uploader
             v-model="attachmentType[2]"
             slot="input"
-            :after-read="(evt) => doAfterRead(2, evt)"
+            :max-count="1"
+            :after-read="(evt) => doAfterRead(evt, 2)"
           />
         </van-field>
         <van-field label="租赁合同" required>
           <van-uploader
             v-model="attachmentType[3]"
             slot="input"
-            :after-read="(evt) => doAfterRead(3, evt)"
+            :after-read="(evt) => doAfterRead(evt, 3)"
+          />
+        </van-field>
+        <van-field label="商铺正面照" required>
+          <van-uploader
+            v-model="attachmentType[1]"
+            slot="input"
+            :max-count="1"
+            :after-read="(evt) => doAfterRead(evt, 1)"
           />
         </van-field>
       </van-panel>
@@ -70,7 +116,12 @@
 <script>
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
+import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictOptions } from "@/store/helpers";
+
+const PREFIX_IMG_JPG = "data:image/jpeg;base64,";
+const BASE64_REGX = /^data(.+)base64,/;
+
 export default {
   data() {
     return {
@@ -114,18 +165,28 @@ export default {
         const arr = attachmentType[key];
         // 组装档案数据
         arr.forEach((item) => {
-          list.push({
-            attachmentName: item.attachmentName,
-            attachmentPath: item.attachmentPath,
-            attachmentType: item.attachmentType,
-            fileName: item.fileName,
-            fileType: item.urlPath,
-          });
+          list.push(
+            _.omit(item, [
+              "isImage",
+              "content",
+              "message",
+              "status",
+              "file",
+              "url",
+            ])
+          );
         });
         return list;
       }, []);
       // 组装提交数据报文
       const payload = Object.assign({}, formData, { list });
+
+      // 身份证数据
+      ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
+        const data = _.get(formData, [key, 0, "content"]);
+        payload[key] = data.replace(BASE64_REGX, "");
+      });
+
       // 存在id则为更新
       if (formData.id) this.doUpdate(payload);
       // 其他为新增
@@ -176,21 +237,38 @@ export default {
           // 存在shopid则为编辑
           if (shopId) {
             const item = shopsList.find((item) => (item.id = shopId));
+
+            // 身份证图片数据
+            ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
+              if (item[key])
+                item[key] = [
+                  { content: PREFIX_IMG_JPG + item[key], isImage: true },
+                ];
+              else item[key] = [];
+            });
+
             // 设置商铺信息
             Object.keys(item).forEach((key) =>
               this.$set(this.formData, key, item[key])
             );
+
             // 档案数据分类
             this.attachmentType = item.list.reduce((dtm, item) => {
               const { attachmentType: key } = item;
-              if (!dtm[key]) dtm[key] = [item];
-              else dtm[key].push(item);
+              // 存在key则保存
+              if (key) {
+                item.isImage = true;
+                item.url = resolveImgUrl(item.urlPath);
+                if (!dtm[key]) dtm[key] = [item];
+                else dtm[key].push(item);
+              }
+              return dtm;
             }, {});
           }
         });
     },
     // 上传
-    doAfterRead(type, file) {
+    doAfterRead(file, type) {
       const formData = new FormData();
       formData.append("file", file.file);
       formData.append("attachmentType", type);
@@ -199,7 +277,10 @@ export default {
         .uploadShopsAttachmentAPI(formData)
         // 上传成功
         .then((res) => {
-          Object.assign(file, res.data, { status: "done" });
+          Object.assign(file, res.data, {
+            status: "done",
+            shopsId: this.formData.id,
+          });
         })
         // 上传失败
         .catch(() => {
@@ -215,6 +296,9 @@ export default {
   padding: 12px 0 60px;
   background-color: @gray-2;
   :deep(.van-panel) {
+    &__header {
+      font-weight: 700;
+    }
     &:not(:last-child) {
       margin-bottom: 12px;
     }

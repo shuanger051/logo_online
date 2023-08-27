@@ -19,9 +19,10 @@
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onDel(record)"
-          >删除</a-button
-        >
+        <!-- btn:删除 -->
+        <a-popconfirm title="是否确认删除该权限？" @confirm="onDel(record)">
+          <a-button type="link" size="small">删除</a-button>
+        </a-popconfirm>
       </template>
     </a-table>
   </div>
@@ -106,29 +107,26 @@ export default {
   setup() {
     // 表格列表功能
     const {
-      formData,
       list,
       page,
+      formData,
       onSerach,
       onChange,
-      createDelEvent,
       createModalEvent,
     } = useTable(systemService.getSysPermissionListByPage);
 
     // 新增事件
-    const onAdd = createModalEvent(Detail, { title: "新增用户" });
+    const onAdd = createModalEvent(Detail, {
+      title: "新增权限",
+    });
     // 编辑事件
-    const onEdit = createModalEvent(Detail, { title: "编辑用户" });
-    // 删除事件
-    const onDel = createDelEvent((data) =>
-      systemService.deleteSysPermissionById(_.pick(data, ["id"]))
-    );
-
+    const onEdit = createModalEvent(Detail, {
+      title: "编辑权限",
+    });
     return {
       formData,
       list,
       page,
-      onDel,
       onAdd,
       onEdit,
       onSerach,
@@ -141,6 +139,16 @@ export default {
     this.$store.dispatch("cache/queryDictByKey", {
       keys: ["permissionType"],
     });
+  },
+  methods: {
+    onDel(record) {
+      systemService
+        .deleteSysPermissionById(_.pick(record, ["id"]))
+        .then(() => message.success("删除成功"))
+        .catch((err) =>
+          message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
+        );
+    },
   },
 };
 </script>

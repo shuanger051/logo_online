@@ -1,12 +1,12 @@
 <template>
   <div class="page-wrap">
-    <van-panel title="常用功能">
+    <van-panel title="店招承诺备案">
       <van-grid>
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaishenqing"
-          text="商户登记"
-          to="/shop/owner"
+          text="商铺登记"
+          to="/shop/detail"
         />
         <van-grid-item
           icon-prefix="iconfont icon"
@@ -14,27 +14,6 @@
           text="我的商铺"
           to="/shop/list"
         />
-        <van-grid-item
-          icon-prefix="iconfont icon"
-          icon="zhengfuxinxigongkaizhinan"
-          text="备案进度"
-        />
-      </van-grid>
-    </van-panel>
-    <van-panel title="模板测试">
-      <van-grid>
-        <van-grid-item text="模板测试35" to="/editTemplate/35" />
-        <van-grid-item text="模板测试36" to="/editTemplate/36" />
-        <van-grid-item text="模板测试37" to="/editTemplate/37" />
-        <van-grid-item text="模板测试38" to="/editTemplate/38" />
-        <van-grid-item text="模板测试39" to="/editTemplate/39" />
-        <van-grid-item text="模板测试40" to="/editTemplate/40" />
-        <van-grid-item text="模板测试41" to="/editTemplate/41" />
-        <van-grid-item text="模板测试42" to="/editTemplate/42" />
-        <van-grid-item text="模板测试43" to="/editTemplate/43" />
-        <van-grid-item text="模板测试44" to="/editTemplate/44" />
-        <van-grid-item text="模板测试45" to="/editTemplate/45" />
-        <van-grid-item text="模板测试46" to="/editTemplate/46" />
       </van-grid>
     </van-panel>
     <van-panel title="备案信息">
@@ -43,12 +22,13 @@
           icon-prefix="iconfont icon"
           icon="zhishiku"
           text="法律法规"
-          to="/article/1/list"
+          to="/article/1/detail?pid=483"
         />
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaizhinan"
           text="备案流程"
+          to="/article/1/detail?pid=482"
         />
       </van-grid>
     </van-panel>

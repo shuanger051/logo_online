@@ -42,7 +42,7 @@ export default {
     const formRef = ref();
 
     // 新增角色
-    function saveSysRole() {
+    function save() {
       return systemService
         .saveSysRole(formData)
         .then(() => message.success("新增成功"))
@@ -51,7 +51,8 @@ export default {
         );
     }
 
-    function updateSysRoleById() {
+    // 修改角色
+    function update() {
       systemService
         .updateSysRoleById(formData)
         .then(() => message.success("修改成功"))
@@ -64,12 +65,10 @@ export default {
     function onOk() {
       formRef.value.validate().then((valid) => {
         if (valid) {
-          switch (props.action) {
-            case "add":
-              return saveSysRole();
-            case "edit":
-              return updateSysRoleById();
-          }
+          // 存在id则为修改
+          if (formData.id) return update();
+          // 其他为新增
+          else save();
         }
         // 未通过
         else return Promise.reject();

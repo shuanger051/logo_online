@@ -9,6 +9,8 @@ import {
   List,
   Cell,
   CellGroup,
+  Collapse,
+  CollapseItem,
   Image,
   Form,
   Field,
@@ -56,6 +58,8 @@ Vue.use(Sidebar);
 Vue.use(SidebarItem);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
 
 // 自定义组件
 Vue.component("submit-bar", SubmitBar);

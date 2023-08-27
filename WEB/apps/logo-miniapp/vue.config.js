@@ -1,5 +1,5 @@
 const path = require("path");
-const webpack = require('webpack')
+const webpack = require("webpack");
 const themePath = path.resolve(__dirname, "./src/styles/theme/var.less");
 const webpackMixin = require("@shop-sign/editor/webpackMixIn");
 
@@ -42,5 +42,9 @@ module.exports = {
       })
     );
     webpackMixin(config);
+  },
+  pwa: {
+    name: "菜单式店招设计与承诺备案",
+    // themeColor
   },
 };

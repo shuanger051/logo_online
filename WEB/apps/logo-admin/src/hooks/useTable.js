@@ -1,6 +1,7 @@
 import { reactive, ref } from "vue";
 import { Modal, message } from "ant-design-vue";
 import modalConfirm from "ant-design-vue/es/modal/confirm";
+import store from "@/store";
 
 /**
  * 表格列表
@@ -106,6 +107,7 @@ export default function useTable(request) {
             onCancel: () => el?.onCancel && el.onCancel(),
             content: (h) =>
               h(compt, {
+                $store: store,
                 props: Object.assign({}, defProps, props),
                 ref: (e) => (el = e),
               }),
