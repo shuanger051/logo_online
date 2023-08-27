@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.qinghua.website.server.utils.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
  *  服务实现类
  * @since 2023-06-28
  */
+@Slf4j
 @Service
 public class ShopsInfoServiceImpl implements ShopsInfoService {
 
@@ -211,10 +213,6 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     @Override
     public void saveShopsAttachments(List<ShopsAttachmentDTO> list){
         list.forEach(item->{
-            //先执行服务器文件清除动作
-            String filePath = savePath + "shops/" + File.separator + item.getAttachmentPath() + "\\" + item.getAttachmentName();
-            //首先清除服务器文件
-            FileUtils.deleteFile(filePath);
             //逻辑代码特殊处理,每次提交文件时将原有数据剔除
             if(null != item.getAttachmentType() && "4".equals(item.getAttachmentType())){
                 attachmentMapper.deleteShopsAttachmentByShopsIdAnd4Type(item.getShopsId());
