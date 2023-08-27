@@ -101,6 +101,9 @@
 
     <!-- 批量新增附件信息 -->
     <insert id="saveShopsAttachmentByList" parameterType="java.util.List">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
         insert into t_shops_attachment (
             shops_id,
             attachment_path,
@@ -118,6 +121,13 @@
                 #{item.attachmentType},
                 NOW()
             )
+            ON DUPLICATE KEY UPDATE
+            shops_id = VALUES(shops_id),
+            attachment_path = VALUES(attachment_path),
+            attachment_name = VALUES(attachment_name),
+            file_name = VALUES(file_name),
+            attachment_type = VALUES(attachment_type),
+            create_time = VALUES(create_time)
         </foreach>
     </insert>
 
