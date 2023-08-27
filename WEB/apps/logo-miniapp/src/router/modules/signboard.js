@@ -24,12 +24,6 @@ const routes = [
     component: () => import("@/views/shop/form"),
   },
   {
-    path: "uploadLive",
-    name: 'uploadLive',
-    meta: { title: "实景上传" },
-    component: () => import("@/views/signboard/uploadLive"),
-  },
-  {
     path: "selfEdit",
     name: 'selfEdit',
     meta: { title: "自主设计" },

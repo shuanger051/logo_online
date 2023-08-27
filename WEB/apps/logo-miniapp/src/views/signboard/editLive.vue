@@ -1,7 +1,10 @@
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%">
     <div class="edit-live-header">
-      <van-button type="primary" class="recover" @click="creatLivePic" >保存</van-button>
+      <van-button type="primary" class="recover" @click="creatLivePic"
+        >提交承诺备案</van-button
+      >
+      <span @click="download">下载</span>
     </div>
     <div class="edit-live">
       <div id="edit-live__wrap">
@@ -17,37 +20,37 @@
           :delIcon="false"
           :style="getStyle()"
           class="shape_wrap"
-          v-if = 'currentShopSign'
+          v-if="currentShopSign"
         >
           <div class="shape_content">
             <img :src="currentShopSign" width="100%" />
           </div>
         </shape>
-
         <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
       </div>
     </div>
+    <putRecordPopup ref="putRecordPopup" />
   </div>
 </template>
 <script>
 import store from "core/store/mobileIndex";
-import appStore from '@/store'
-import {appGetLogoInfoByShopsId, appGetCustomerInfoByUserNameAPI} from 'core/api'
+import appStore from "@/store";
+import {
+  appGetLogoInfoByShopsId,
+  appGetCustomerInfoByUserNameAPI,
+  appUploadShopsAttachmentAPI,
+} from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
+import putRecordPopup from './putRecordPopup';
 import { Toast } from "vant";
-import { takeScreenshot} from "@editor/utils/canvas-helper.js";
+import { takeScreenshot } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
-import { ImagePreview } from 'vant';
-const sleep = async (time) => {
-  return new Promise((r) => {
-    setTimeout(() => r(), time);
-  });
-};
 export default {
   store,
   components: {
     shape,
+    putRecordPopup
   },
   data() {
     return {
@@ -60,27 +63,28 @@ export default {
       },
       active: true,
       currentLivePic: null,
-      currentShopSign: null
-
+      currentShopSign: null,
     };
   },
   created() {
     appGetLogoInfoByShopsId({
-      shopsId: this.$route.query.shopId
+      shopsId: this.$route.query.shopId,
     }).then((data) => {
-      this.currentShopSign = resolveImgUrl(data.data.urlPath)
-    })
+      this.currentShopSign = resolveImgUrl(data.data.urlPath);
+    });
     appGetCustomerInfoByUserNameAPI({
-      customerName: appStore.state.user.profiles.customerName
-    }).then(({data}) => {
-      const shopLists = data.shopsList.find((item) => item.id == this.$route.query.shopId)
+      customerName: appStore.state.user.profiles.customerName,
+    }).then(({ data }) => {
+      const shopLists = data.shopsList.find(
+        (item) => item.id == this.$route.query.shopId
+      );
       if (shopLists) {
-        const list = shopLists.list.find((item) => item.attachmentType == '1')
+        const list = shopLists.list.find((item) => item.attachmentType == "1");
         if (list) {
-          this.currentLivePic = resolveImgUrl(list.urlPath)
+          this.currentLivePic = resolveImgUrl(list.urlPath);
         }
       }
-    })
+    });
   },
   methods: {
     handleElementMove(pos) {
@@ -89,17 +93,22 @@ export default {
         ...pos,
       };
     },
+    download() {},
     async creatLivePic() {
       const toast = Toast.loading({
         message: "生成中...",
         forbidClick: true,
         duration: 0,
       });
-       try {
-        const url = await takeScreenshot({ selector: "#edit-live__wrap", type: 'dataUrl' });
+      try {
+        const file = await takeScreenshot({ selector: "#edit-live__wrap" });
+        const form = new FormData();
+        form.append("file", file);
+        form.append("shopsId", this.$route.query.shopId);
+        form.append("attachmentType", 4);
+        await appUploadShopsAttachmentAPI(form);
         Notify({ type: "success", message: "创建成功" });
-        await sleep(1000);
-        ImagePreview([url]);
+        this.$refs.putRecordPopup.open()
       } catch (e) {
         Notify({ type: "danger", message: "创建失败" });
       }
@@ -112,8 +121,8 @@ export default {
     getStyle() {
       const style = Object.assign({}, this.style);
       Object.entries(style).forEach(([key, val]) => {
-        if (typeof val == 'string') {
-          style[key] = val
+        if (typeof val == "string") {
+          style[key] = val;
         } else {
           style[key] = val + "px";
         }
@@ -166,5 +175,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  > span {
+    color: #fa7a36;
+    position: absolute;
+    right: 10px;
+  }
 }
 </style>

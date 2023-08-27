@@ -30,3 +30,5 @@ export const appGetLogoInfoByShopsId = wrapRequest('/logo/app/getLogoInfoByShops
 export const appGetItemsByDictKeyInDB = wrapRequest('/logo/app/getItemsByDictKeyInDB', false)
 export const appGetCustomerInfoByUserNameAPI = wrapRequest('/logo/app/getCustomerInfoByUserNameAPI', false)
 export const appQuerySimpleTemplateByRandAPI = wrapRequest('/logo/app/querySimpleTemplateByRandAPI', false)
+export const appUploadShopsAttachmentAPI = wrapRequest('/logo/app/uploadShopsAttachmentAPI', true)
+export const appUpdateShopsFilingsStatusAPI = wrapRequest('/logo/app/updateShopsFilingsStatusAPI', true)

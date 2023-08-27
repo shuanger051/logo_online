@@ -1,8 +1,8 @@
 <template>
   <div class="edit-wrap">
     <div class="edit-wrap-header">
-      <van-button type="primary" class="recover" size="small">恢复</van-button>
-      <span @click="createShopSign">保存</span>
+      <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
+      <span @click="download">下载</span>
     </div>
     <div class="edit-wrap-content">
       <div style="min-height: 320px">
@@ -20,8 +20,6 @@ import { mapState, mapActions } from "vuex";
 import store from "core/store/mobileIndex";
 import { Notify } from "vant";
 import { Toast } from "vant";
-import { ImagePreview } from "vant";
-import { resolveImgUrl } from "core/support/imgUrl";
 
 const sleep = async (time) => {
   return new Promise((r) => {
@@ -65,6 +63,7 @@ export default {
   },
   methods: {
     ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover"]),
+    download() {},
     calcRate(workWidth) {
       let w = document.documentElement.clientWidth;
       return w / workWidth;

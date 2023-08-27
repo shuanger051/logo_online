@@ -8,7 +8,7 @@
       @load="queryTemplate"
     >
       <div v-for="item in list" :key="item.id" @click="go(item.id, item)">
-        <div class="preview-wrap">
+        <div class="preview-wrap" :style="{height: item.height}">
           <preview :elements = "item.elements" :style = item.style />
       </div>
       </div>
@@ -73,6 +73,7 @@ export default {
             transform: `scale(${r})`,
             transformOrigin: "left top",
           }
+          ret.height = data.height*r + 'px!important'
         } catch (e) {
           ret.element = null
         }
