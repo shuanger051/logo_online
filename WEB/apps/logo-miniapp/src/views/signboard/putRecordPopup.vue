@@ -30,11 +30,13 @@
             @click="showImage(item)"
             width="100"
             height="100"
+            fit="contain"
+            style="margin-right: 5px;"
             :src="item.url"
           />
         </template>
       </van-cell>
-      <van-form @submit="onSubmit">
+      <van-form @submit="onSubmit" style="padding: 0 10px;">
         <van-checkbox v-model="form.checked" fit="contain" required>本人承诺所提交信息真实、无误，如有信息不实，本人愿承诺所有责任</van-checkbox>
 
         <div style="margin: 16px">
@@ -134,10 +136,10 @@ export default {
       })
       Notify({ type: "success", message: "备案成功" });
       setTimeout(() => {
-        this.push(this.$router({
+        this.$router.push({
           name: 'Home'
-        }), 1000)
-      })
+        })
+      },1000)
     },
     open() {
       this.form = {};

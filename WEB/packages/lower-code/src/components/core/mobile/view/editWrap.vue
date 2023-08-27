@@ -18,6 +18,8 @@ import PropsPanel from "./propsPanel.vue";
 import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
 import store from "core/store/mobileIndex";
+import { downloadPoster} from "@editor/utils/canvas-helper.js";
+
 import { Notify } from "vant";
 import { Toast } from "vant";
 

@@ -272,6 +272,8 @@ export default {
       const formData = new FormData();
       formData.append("file", file.file);
       formData.append("attachmentType", type);
+      // formData.append("shopsId", this.$route.query.shopId);
+
       file.status = "uploading";
       shopService
         .uploadShopsAttachmentAPI(formData)

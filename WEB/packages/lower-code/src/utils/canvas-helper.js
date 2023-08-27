@@ -90,3 +90,21 @@ export function downloadPoster (object = {}) {
     downLoadCanvas(canvas, new Date())
   })
 }
+
+export function saveStills(str){
+  let Url = str //图片路径，也可以传值进来
+  var triggerEvent = "touchstart"; //指定下载方式
+  var blob = new Blob([''], {
+      type: 'application/octet-stream'
+  }); //二进制大型对象blob
+  var url = URL.createObjectURL(blob); //创建一个字符串路径空位
+  var a = document.createElement('a'); //创建一个 a 标签
+  a.href = Url; //把路径赋到a标签的href上
+  a.download = Url.replace(/(.*\/)*([^.]+.*)/ig, "$2").split("?")[0];
+  
+  var e = new MouseEvent('click', (true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null));
+  //派遣后，它将不再执行任何操作。执行保存到本地
+  a.dispatchEvent(e);
+  URL.revokeObjectURL(url);
+
+}

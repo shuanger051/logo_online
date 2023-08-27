@@ -19,7 +19,6 @@ export const actions = {
       // await appUploadShopsAttachmentAPI(form)
 
       await appSaveLogoInfoAPI(form)
-      // await appUploadShopsAttachmentAPI(form)
   },
   setCurrentWorkData({commit}, payload) {
     commit('setCurrentWorkData', payload)
