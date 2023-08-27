@@ -1,5 +1,5 @@
 import { takeScreenshot,downloadPoster} from "@editor/utils/canvas-helper.js";
-import {appSaveLogoInfoAPI} from "core/api"
+import {appSaveLogoInfoAPI, appUploadShopsAttachmentAPI} from "core/api"
 import router from '@/router'
 import appStore from '@/store'
 export const actions = {
@@ -16,6 +16,7 @@ export const actions = {
       form.append('shopsId', shopsId)
       form.append('merchantId', merchantId)
       // form.append('attachmentType', 1)
+      // await appUploadShopsAttachmentAPI(form)
 
       await appSaveLogoInfoAPI(form)
       // await appUploadShopsAttachmentAPI(form)
