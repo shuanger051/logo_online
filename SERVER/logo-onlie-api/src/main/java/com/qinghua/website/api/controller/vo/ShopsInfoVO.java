@@ -42,6 +42,11 @@ public class ShopsInfoVO {
     private String shopsType;
 
     /**
+     * 备案状态: 0-未备案，1-已提交未审核，2-已备案
+     */
+    private String isFilings;
+
+    /**
      * 备注
      */
     private String remark;
