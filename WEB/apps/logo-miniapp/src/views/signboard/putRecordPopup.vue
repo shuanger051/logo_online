@@ -35,7 +35,7 @@
         </template>
       </van-cell>
       <van-form @submit="onSubmit">
-        <van-checkbox v-model="form.checked" required>本人承诺所提交信息真实、无误，如有信息不实，本人愿承诺所有责任</van-checkbox>
+        <van-checkbox v-model="form.checked" fit="contain" required>本人承诺所提交信息真实、无误，如有信息不实，本人愿承诺所有责任</van-checkbox>
 
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit"
