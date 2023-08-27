@@ -72,4 +72,10 @@ public interface ShopsInfoService {
          */
         void saveShopsAttachments(List<ShopsAttachmentDTO> list);
 
+        /**
+         * 修改店铺备案状态
+         * @param bean
+         */
+        void updateShopsFilingsStatusAPI(ShopsInfoDTO bean);
+
 }

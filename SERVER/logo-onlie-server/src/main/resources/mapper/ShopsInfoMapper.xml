@@ -12,6 +12,7 @@
         <result column="industry_type" property="industryType" jdbcType="VARCHAR"/>
         <result column="is_old_shops" property="isOldShops" jdbcType="VARCHAR"/>
         <result column="shops_type" property="shopsType" jdbcType="VARCHAR"/>
+        <result column="is_filings" property="isFilings" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="handled_by_name" property="handledByName" jdbcType="VARCHAR"/>
         <result column="handled_by_phone" property="handledByPhone" jdbcType="VARCHAR"/>
@@ -34,6 +35,7 @@
         industry_type,
         is_old_shops,
         shops_type,
+        is_filings,
         remark,
         handled_by_name,
         handled_by_phone,
@@ -63,6 +65,7 @@
             <if test="industryType !=null and industryType !=''">AND industry_type = #{industryType}</if>
             <if test="isOldShops !=null and isOldShops !=''">AND is_old_shops = #{isOldShops}</if>
             <if test="shopsType !=null and shopsType !=''">AND shops_type = #{shopsType}</if>
+            <if test="isFilings !=null and isFilings !=''">AND is_filings = #{isFilings}</if>
             <if test="handledByName !=null and handledByName !=''">AND handled_by_name = #{handledByName}</if>
             <if test="handledByPhone !=null and handledByPhone !=''">AND handled_by_phone = #{handledByPhone}</if>
             <if test="handledByIdCard !=null and handledByIdCard !=''">AND handled_by_id_card = #{handledByIdCard}</if>
@@ -109,6 +112,16 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 修改商铺备案状态 -->
+    <update id="updateShopsFilingsStatusAPI" parameterType="com.qinghua.website.server.domain.ShopsInfoDTO" >
+        UPDATE t_shops_info
+        <set>
+            is_filings = #{isFilings},
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
     <!--保存-->
     <insert id="saveShopsInfo" parameterType="com.qinghua.website.server.domain.ShopsInfoDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_shops_info
@@ -120,6 +133,7 @@
             <if test="industryType !=null and industryType !=''">industry_type,</if>
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops,</if>
             <if test="shopsType !=null and shopsType !=''">shops_type,</if>
+            is_filings,
             <if test="remark !=null and remark !=''">remark,</if>
             <if test="handledByName !=null and handledByName !=''">handled_by_name,</if>
             <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone,</if>
@@ -136,6 +150,7 @@
             <if test="industryType !=null and industryType !=''">#{industryType},</if>
             <if test="isOldShops !=null and isOldShops !=''">#{isOldShops},</if>
             <if test="shopsType !=null and shopsType !=''">#{shopsType},</if>
+            '0',
             <if test="remark !=null and remark !=''">#{remark},</if>
             <if test="handledByName !=null and handledByName !=''">#{handledByName},</if>
             <if test="handledByPhone !=null and handledByPhone !=''">#{handledByPhone},</if>

@@ -53,4 +53,10 @@ public interface ShopsInfoMapper {
          */
         List<ShopsInfoDTO> getShopsInfoByMerchantId(@Param("merchantId")Long merchantId);
 
+        /**
+         * 修改商铺备案状态
+         * @param bean
+         */
+        void updateShopsFilingsStatusAPI(ShopsInfoDTO bean);
+
 }

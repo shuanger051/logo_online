@@ -207,8 +207,23 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
      * 保存店铺附件
      * @param list
      */
+    @Override
     public void saveShopsAttachments(List<ShopsAttachmentDTO> list){
         attachmentMapper.saveShopsAttachmentByList(list);
+    }
+
+    /**
+     * 修改店铺备案状态
+     * @param bean
+     */
+    @Override
+    public void updateShopsFilingsStatusAPI(ShopsInfoDTO bean){
+        ShopsInfoDTO res = shopsInfoMapper.getShopsInfoById(bean.getId());
+        if(null != res){
+            shopsInfoMapper.updateShopsFilingsStatusAPI(bean);
+        }else{
+            throw new BizException("没有查询到ID为"+bean.getId()+"的数据信息",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
     }
 
 }

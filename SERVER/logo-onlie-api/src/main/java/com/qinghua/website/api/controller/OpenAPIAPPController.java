@@ -26,7 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -64,6 +69,9 @@ public class OpenAPIAPPController {
 
     @Autowired
     private SysDictItemService sysDictItemService;
+
+    @Autowired
+    private ContentAttachmentService attachmentService;
 
     /**
      * APP注册客户信息
@@ -290,6 +298,19 @@ public class OpenAPIAPPController {
         }
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
+        return ResponseResult.success();
+    }
+
+    /**
+     * APP 修改店铺备案状态API
+     * @param shopsInfoStatusIO
+     * @return
+     */
+    @LogAnnotation(logType = "save",logDesc = "APP 修改店铺备案状态API")
+    @RequestMapping(value = "/updateShopsFilingsStatusAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> updateShopsFilingsStatusAPI(@Validated @RequestBody ShopsInfoStatusIO shopsInfoStatusIO){
+        ShopsInfoDTO bean = BeanToolsUtil.copyOrReturnNull(shopsInfoStatusIO,ShopsInfoDTO.class);
+        shopsInfoService.updateShopsFilingsStatusAPI(bean);
         return ResponseResult.success();
     }
 
@@ -547,6 +568,53 @@ public class OpenAPIAPPController {
         List<SysDictItemDTO> sysDictItemList = sysDictItemService.getItemsByDictKeyInDB(dictKey);
         List<SysDictItemVO> sysDictItemVOList = BeanToolsUtil.copyAsList(sysDictItemList,SysDictItemVO.class);
         return ResponseResult.success(sysDictItemVOList);
+    }
+
+    /**
+     * APP 下载文章附件API
+     * @param attachmentName
+     * @param request
+     * @param response
+     * @return
+     */
+    @LogAnnotation(logType = "download",logDesc = "APP 下载文章附件API")
+    @RequestMapping(value = "/downloadContentAttachment", method = RequestMethod.GET)
+    public void download(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
+
+        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
+
+        try {
+            ContentAttachmentDTO attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
+            if(null != attachment && null != attachment.getAttachmentPath() && null != attachment.getAttachmentName()){
+                String relativeFileName = attachment.getAttachmentPath() +"\\"+ attachment.getAttachmentName();
+
+                String fullName = savePath + "content/" + relativeFileName;
+                File file = new File(fullName);
+                FileInputStream fileInputStream = new FileInputStream(file);
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+                response.reset();
+                response.setCharacterEncoding("utf-8");
+                response.setContentType("application/octet-stream");
+                response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
+                response.setHeader("Content-Length", String.valueOf(file.length()));
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
+                byte[] bytes = new byte[1024];
+                int len;
+                while ((len = bufferedInputStream.read(bytes)) > 0) {
+                    bufferedOutputStream.write(bytes, 0, len);
+                }
+                bufferedInputStream.close();
+                bufferedOutputStream.flush();
+
+                //更新下载次数
+                attachmentService.updateDownloadTimes(attachment.getId());
+            }else{
+                throw new BizException(SysConstant.ERROR_GET_ATTACHMENT_INFO_FAIL);
+            }
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_DOWNLOAD_FAIL);
+        }
+
     }
 
     /**

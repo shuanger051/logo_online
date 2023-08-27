@@ -150,4 +150,18 @@ public class ShopsInfoController {
         return ResponseResult.success();
     }
 
+    /**
+     * 修改店铺备案状态
+     * @param shopsInfoStatusIO
+     * @return
+     */
+    @LogAnnotation(logType = "save",logDesc = "修改店铺备案状态")
+    @RequestMapping(value = "/shops-info/updateShopsFilingsStatus",method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/updateShopsFilingsStatus")
+    public ResponseResult<Object> updateShopsFilingsStatus(@Validated @RequestBody ShopsInfoStatusIO shopsInfoStatusIO){
+        ShopsInfoDTO bean = BeanToolsUtil.copyOrReturnNull(shopsInfoStatusIO,ShopsInfoDTO.class);
+        shopsInfoService.updateShopsFilingsStatusAPI(bean);
+        return ResponseResult.success();
+    }
+
 }
