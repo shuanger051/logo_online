@@ -361,6 +361,11 @@ public class OpenAPIAPPController {
             vo.setHandledByIdCard(Sm4Utils.decrypt(vo.getHandledByIdCard()));
         }
 
+        vo.getList().forEach(item ->{
+            String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
+            item.setUrlPath(urlPath+"shops/" + relativeFileName);
+        });
+
         return ResponseResult.success(vo);
     }
 
