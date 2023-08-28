@@ -43,6 +43,13 @@ module.exports = {
     );
     webpackMixin(config);
   },
+  chainWebpack: config =>{
+    config.plugin('html')
+      .tap(args => {
+        args[0].title = "菜单式店招设计与承诺备案";
+        return args;
+      })
+  },
   pwa: {
     name: "菜单式店招设计与承诺备案",
     // themeColor

@@ -12,8 +12,8 @@
           $router.push(`/signboard/selfEdit?shopId=${$route.query.shopId}`)
         "
       >
-        <span>自主设计</span>
-        <icon-fa icon="iconoir:design-pencil" color="#e98c49" width="80%" />
+        <span>菜单式<br/>在线设计</span>
+        <icon-fa icon="fluent:design-ideas-20-regular" color="#e98c49" width="80%" />
       </div>
       <van-uploader
         :after-read="afterRead"
