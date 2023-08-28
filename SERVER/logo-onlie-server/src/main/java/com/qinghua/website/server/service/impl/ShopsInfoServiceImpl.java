@@ -242,4 +242,15 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
         }
     }
 
+    /**
+     * 根据商铺ID获取身份证正反面信息
+     * @param shopsId
+     * @return
+     */
+    @Override
+    public ShopsInfoDTO getShopsInfoByIdAPI(Long shopsId){
+        ShopsInfoDTO res = shopsInfoMapper.getShopsInfoByIdAPI(shopsId);
+        return res;
+    }
+
 }

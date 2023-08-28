@@ -2,12 +2,10 @@ package com.qinghua.website.api.controller.vo;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
-public class ShopsInfoVO {
+public class ShopsInfoAPIVO {
 
     private Long id;
 
@@ -66,17 +64,35 @@ public class ShopsInfoVO {
      */
     private String handledByIdCard;
 
+    /**
+     * 经办人照片-正面
+     */
+    private String handledByPhotoFront;
+
+    /**
+     * 经办人照片-反面
+     */
+    private String handledByPhotoOpposite;
+
     private List<ShopsAttachmentVO> list;
 
     @Override
     public String toString() {
-        return "ShopsInfoVO{" +
-                "address='" + address + '\'' +
+        return "ShopsInfoAPIVO{" +
+                "id=" + id +
+                ", shopName='" + shopName + '\'' +
+                ", address='" + address + '\'' +
                 ", bizYears='" + bizYears + '\'' +
                 ", industryType='" + industryType + '\'' +
                 ", isOldShops='" + isOldShops + '\'' +
                 ", shopsType='" + shopsType + '\'' +
+                ", isFilings='" + isFilings + '\'' +
                 ", remark='" + remark + '\'' +
+                ", handledByName='" + handledByName + '\'' +
+                ", handledByPhone='" + handledByPhone + '\'' +
+                ", handledByIdCard='" + handledByIdCard + '\'' +
+                ", list=" + list +
                 '}';
     }
+
 }
