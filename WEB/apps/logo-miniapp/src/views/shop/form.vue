@@ -187,7 +187,7 @@ export default {
         handledByName: [{ required: true, message: "请输入" }],
         handledByIdCard: [
           { required: true, message: "请输入" },
-          { validator: validator.checkIdCard, message: "手机号格式不正确" },
+          { validator: validator.checkIdCard, message: "身份证格式不正确" },
         ],
         handledByPhone: [
           { required: true, message: "请输入" },
