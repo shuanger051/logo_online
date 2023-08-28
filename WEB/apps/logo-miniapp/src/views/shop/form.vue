@@ -7,38 +7,49 @@
           required
           label="商铺名称"
           placeholder="请输入"
+          name="shopName"
           v-model="formData.shopName"
+          :rules="rules.shopName"
         />
         <field-picker
           required
           label="营业类型"
           placeholder="请选择"
+          name="industryType"
           v-model="formData.industryType"
           :columns="DictIndustryTypeArr"
+          :rules="rules.industryType"
         />
         <van-field
           required
           label="商铺地址"
           placeholder="请输入"
+          name="address"
           v-model="formData.address"
+          :rules="rules.address"
         />
         <field-picker
           required
           label="营业年限"
           placeholder="请选择"
+          name="bizYears"
           v-model="formData.bizYears"
           :columns="DictBizYearsArr"
+          :rules="rules.bizYears"
         />
         <field-picker
           required
           label="店铺属性"
           placeholder="请选择"
+          name="shopsType"
           v-model="formData.shopsType"
           :columns="DictShopsTypeArr"
+          :rules="rules.shopsType"
         />
         <van-field
           label="备注"
           placeholder="请输入"
+          name="remark"
           v-model="formData.remark"
         />
       </van-panel>
@@ -48,24 +59,34 @@
           required
           label="姓名"
           placeholder="请输入"
+          name="handledByName"
           v-model="formData.handledByName"
+          :rules="rules.handledByName"
         />
         <van-field
           required
           label="身份证号"
           placeholder="请输入"
+          name="handledByIdCard"
           v-model="formData.handledByIdCard"
+          :rules="rules.handledByIdCard"
         />
         <van-field
           required
           label="联系电话"
           placeholder="请输入"
+          name="handledByPhone"
           v-model="formData.handledByPhone"
+          :rules="rules.handledByPhone"
         />
       </van-panel>
       <!-- 材料上传 -->
       <van-panel title="材料上传">
-        <van-field label="身份证正面" required>
+        <van-field
+          label="身份证正面"
+          required
+          :rules="rules.handledByPhotoFront"
+        >
           <van-uploader
             v-model="formData.handledByPhotoFront"
             slot="input"
@@ -74,7 +95,11 @@
             :after-read="(evt) => doAfterRead(evt)"
           />
         </van-field>
-        <van-field label="身份证反面" required>
+        <van-field
+          label="身份证反面"
+          required
+          :rules="rules.handledByPhotoOpposite"
+        >
           <van-uploader
             v-model="formData.handledByPhotoOpposite"
             slot="input"
@@ -83,7 +108,7 @@
             :after-read="(evt) => doAfterRead(evt)"
           />
         </van-field>
-        <van-field label="营业执照" required>
+        <van-field label="营业执照" required :rules="rules.attachmentType2">
           <van-uploader
             v-model="attachmentType[2]"
             slot="input"
@@ -91,14 +116,15 @@
             :after-read="(evt) => doAfterRead(evt, 2)"
           />
         </van-field>
-        <van-field label="租赁合同" required>
+        <van-field label="租赁合同" required :rules="rules.attachmentType3">
           <van-uploader
             v-model="attachmentType[3]"
             slot="input"
+            :max-count="3"
             :after-read="(evt) => doAfterRead(evt, 3)"
           />
         </van-field>
-        <van-field label="商铺正面照" required>
+        <van-field label="商铺正面照" required :rules="rules.attachmentType1">
           <van-uploader
             v-model="attachmentType[1]"
             slot="input"
@@ -118,6 +144,7 @@ import { mapState } from "vuex";
 import { shopService } from "@/apis";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictOptions } from "@/store/helpers";
+import * as validator from "@/utils/validator";
 
 const PREFIX_IMG_JPG = "data:image/jpeg;base64,";
 const BASE64_REGX = /^data(.+)base64,/;
@@ -127,7 +154,7 @@ export default {
     return {
       formData: {},
       attachmentType: {
-        // 身份证
+        // 商铺正面照
         1: [],
         // 营业执照
         2: [],
@@ -149,6 +176,34 @@ export default {
       // 商铺属性
       DictShopsTypeArr: mapDictOptions("shopsType"),
     }),
+    // 校验规则
+    rules() {
+      return {
+        shopName: [{ required: true, message: "请输入" }],
+        industryType: [{ required: true, message: "请输入" }],
+        address: [{ required: true, message: "请输入" }],
+        bizYears: [{ required: true, message: "请选择" }],
+        shopsType: [{ required: true, message: "请选择" }],
+        handledByName: [{ required: true, message: "请输入" }],
+        handledByIdCard: [
+          { required: true, message: "请输入" },
+          { validator: validator.checkIdCard, message: "手机号格式不正确" },
+        ],
+        handledByPhone: [
+          { required: true, message: "请输入" },
+          { validator: validator.checkMobile, message: "手机号格式不正确" },
+        ],
+        handledByPhotoFront: [
+          { required: true, message: "请上传身份证正面照" },
+        ],
+        handledByPhotoOpposite: [
+          { required: true, message: "请上传身份证反面照" },
+        ],
+        attachmentType1: [{ required: true, message: "请上传商铺正面照" }],
+        attachmentType2: [{ required: true, message: "请上传营业执照" }],
+        attachmentType3: [{ required: true, message: "请上传租赁合同" }],
+      };
+    },
   },
   created() {
     this.queryShopInfo();

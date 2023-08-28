@@ -27,7 +27,7 @@
     <van-cell title="">
       <!-- 已备案 -->
       <van-button
-        v-if="detail.isFilings == '2'"
+        v-if="detail.isFilings == '2' || detail.isFilings == '1'"
         disabled
         plain
         icon="lock"
@@ -35,14 +35,14 @@
         >已备案</van-button
       >
       <!-- 备案中 -->
-      <van-button
+      <!-- <van-button
         v-else-if="detail.isFilings == '1'"
         disabled
         plain
         size="small"
         icon="underway"
         >备案中</van-button
-      >
+      > -->
       <!-- 未备案 -->
       <template v-else>
         <van-button plain size="small" :to="`/shop/detail?shopId=${detail.id}`"
