@@ -81,7 +81,13 @@
         />
       </van-panel>
       <!-- 材料上传 -->
-      <van-panel title="材料上传">
+      <van-panel>
+        <van-cell
+          class="van-panel__header"
+          slot="header"
+          title="材料上传"
+          value="*图片大小请控制在500KB~5M以内"
+        />
         <van-field
           label="身份证正面"
           required
@@ -206,7 +212,9 @@ export default {
     },
   },
   created() {
-    this.queryShopInfo();
+    const { shopId } = this.$route.query;
+    // 如果穿了shopId则查询详情
+    if (shopId) this.queryShopInfo(shopId);
     // 查询字典项
     this.$store.dispatch("cache/queryDictByKey", {
       keys: ["bizYears", "industryType", "shopsType"],
@@ -214,7 +222,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      const { formData, attachmentType } = this;
+      const { formData, attachmentType, merchantInfo } = this;
       // 合并档案列表
       const list = Object.keys(attachmentType).reduce((list, key) => {
         const arr = attachmentType[key];
@@ -234,7 +242,10 @@ export default {
         return list;
       }, []);
       // 组装提交数据报文
-      const payload = Object.assign({}, formData, { list });
+      const payload = Object.assign({}, formData, {
+        list, // 档案材料
+        merchantId: merchantInfo.id, // 商户id
+      });
 
       // 身份证数据
       ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
@@ -249,9 +260,12 @@ export default {
     },
     // 新增
     doAdd(payload) {
+      const load = this.$toast.loading("请稍等...");
       // 保存商铺信息
       shopService
         .saveShopsInfoAPI(payload)
+        // 关闭加载中
+        .finally(load.clear)
         // 保存成功
         .then((res) => {
           this.$toast.success({
@@ -265,8 +279,11 @@ export default {
     },
     // 更新
     doUpdate(payload) {
+      const load = this.$toast.loading("请稍等...");
       shopService
         .updateShopsInfoAPI(payload)
+        // 关闭加载中
+        .finally(load.clear)
         // 保存成功
         .then((res) => {
           this.$toast.success({
@@ -279,47 +296,43 @@ export default {
         .catch(() => this.$toast.fail("保存失败"));
     },
     // 查询商铺信息
-    queryShopInfo() {
-      const { shopId } = this.$route.query;
-      const { customerName } = this.userInfo;
+    queryShopInfo(shopsId) {
       shopService
-        .getCustomerInfoByUserNameAPI({ customerName })
+        .getShopsInfoByIdAPI({ shopsId })
         // 获取商铺信息
         .then((res) => {
-          const { shopsList, merchant } = res.data;
-          // 添加商户id
-          this.formData.merchantId = merchant.id;
-          // 存在shopid则为编辑
-          if (shopId) {
-            const item = shopsList.find((item) => (item.id = shopId));
+          let item = res.data;
+          // 身份证图片数据
+          ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
+            if (item[key]) {
+              const data = PREFIX_IMG_JPG + item[key];
+              item[key] = [
+                {
+                  url: data,
+                  content: data,
+                  isImage: true,
+                },
+              ];
+            } else item[key] = [];
+          });
 
-            // 身份证图片数据
-            ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
-              if (item[key])
-                item[key] = [
-                  { content: PREFIX_IMG_JPG + item[key], isImage: true },
-                ];
-              else item[key] = [];
-            });
+          // 设置商铺信息
+          Object.keys(item).forEach((key) =>
+            this.$set(this.formData, key, item[key])
+          );
 
-            // 设置商铺信息
-            Object.keys(item).forEach((key) =>
-              this.$set(this.formData, key, item[key])
-            );
-
-            // 档案数据分类
-            this.attachmentType = item.list.reduce((dtm, item) => {
-              const { attachmentType: key } = item;
-              // 存在key则保存
-              if (key) {
-                item.isImage = true;
-                item.url = resolveImgUrl(item.urlPath);
-                if (!dtm[key]) dtm[key] = [item];
-                else dtm[key].push(item);
-              }
-              return dtm;
-            }, {});
-          }
+          // 档案数据分类
+          this.attachmentType = item.list.reduce((dtm, item) => {
+            const { attachmentType: key } = item;
+            // 存在key则保存
+            if (key) {
+              item.isImage = true;
+              item.url = resolveImgUrl(item.urlPath);
+              if (!dtm[key]) dtm[key] = [item];
+              else dtm[key].push(item);
+            }
+            return dtm;
+          }, {});
         });
     },
     // 上传
@@ -355,6 +368,15 @@ export default {
   :deep(.van-panel) {
     &__header {
       font-weight: 700;
+      .van-cell {
+        &__title {
+          flex: 0 1 auto;
+        }
+        &__value {
+          font-weight: normal;
+          color: @red;
+        }
+      }
     }
     &:not(:last-child) {
       margin-bottom: 12px;

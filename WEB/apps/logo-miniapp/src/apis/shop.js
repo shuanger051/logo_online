@@ -8,6 +8,11 @@ export const getCustomerInfoByUserNameAPI = axiosGet(
 );
 
 /**
+ * == 获取商铺详情 ==
+ */
+export const getShopsInfoByIdAPI = axiosGet("logo/app/getShopsInfoByIdAPI");
+
+/**
  * == 登记商户信息 ==
  */
 export const saveMerchantAPI = axiosPost("logo/app/saveMerchantAPI");
