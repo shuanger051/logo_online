@@ -353,6 +353,12 @@ public class OpenAPIAPPController {
     public ResponseResult<Object> getShopsInfoByIdAPI(@RequestParam("shopsId")Long shopsId){
         Preconditions.checkNotNull(shopsId,"参数：shopsId,不能为空");
         ShopsInfoDTO res = shopsInfoService.getShopsInfoByIdAPI(shopsId);
+
+        res.getList().forEach(item ->{
+            String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
+            item.setUrlPath(urlPath+"shops/" + relativeFileName);
+        });
+
         ShopsInfoAPIVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoAPIVO.class);
         if(null != vo && null != vo.getHandledByPhone()){
             vo.setHandledByPhone(Sm4Utils.decrypt(vo.getHandledByPhone()));
@@ -360,11 +366,6 @@ public class OpenAPIAPPController {
         if(null != vo && null != vo.getHandledByIdCard()){
             vo.setHandledByIdCard(Sm4Utils.decrypt(vo.getHandledByIdCard()));
         }
-
-        vo.getList().forEach(item ->{
-            String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
-            item.setUrlPath(urlPath+"shops/" + relativeFileName);
-        });
 
         return ResponseResult.success(vo);
     }
