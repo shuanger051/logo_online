@@ -38,3 +38,10 @@ export const uploadShopsAttachmentAPI = axiosPost(
     },
   }
 );
+
+/**
+ * == 获取店招图 ==
+ */
+export const getLogoInfoByShopsIdAPI = axiosGet(
+  "logo/app/getLogoInfoByShopsIdAPI"
+);

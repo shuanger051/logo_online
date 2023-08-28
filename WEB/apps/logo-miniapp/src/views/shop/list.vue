@@ -7,31 +7,7 @@
         :title="item.shopName"
         :name="item.id"
       >
-        <van-cell
-          title="行业类型"
-          :value="item.industryType | dict(DictIndustryType)"
-        ></van-cell>
-        <van-cell
-          title="营业年限"
-          :value="item.bizYears | dict(DictBizYears)"
-        ></van-cell>
-        <van-cell
-          title="店铺属性"
-          :value="item.shopsType | dict(DictShopsType)"
-        ></van-cell>
-        <van-cell title="商铺地址" :value="item.address"></van-cell>
-        <van-cell title="备注" :value="item.remark"></van-cell>
-        <van-cell>
-          <van-button plain size="small" :to="`/shop/detail?shopId=${item.id}`"
-            >信息变更</van-button
-          >
-          <van-button
-            plain
-            size="small"
-            :to="`/signboard/editSelect?shopId=${item.id}`"
-            >店招设计</van-button
-          >
-        </van-cell>
+        <shop-detail :detail="item" />
       </van-collapse-item>
     </van-collapse>
     <van-empty v-else description="暂无关联商铺">
@@ -45,7 +21,9 @@
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
 import { mapDictObject } from "@/store/helpers";
+import ShopDetail from "./components/ShopDetail";
 export default {
+  components: { ShopDetail },
   data() {
     return {
       list: [],
@@ -56,12 +34,6 @@ export default {
     ...mapState({
       // 用户信息
       userInfo: (state) => state.user.profiles,
-      // 行业类别
-      DictIndustryType: mapDictObject("industryType"),
-      // 营业念想
-      DictBizYears: mapDictObject("bizYears"),
-      // 商铺属性
-      DictShopsType: mapDictObject("shopsType"),
     }),
   },
   created() {
