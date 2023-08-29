@@ -28,6 +28,7 @@ import {
   SidebarItem,
   Checkbox,
   CheckboxGroup,
+  NoticeBar,
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 import FieldPicker from "@/components/FieldPicker";
@@ -60,6 +61,7 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
+Vue.use(NoticeBar)
 
 // 自定义组件
 Vue.component("submit-bar", SubmitBar);

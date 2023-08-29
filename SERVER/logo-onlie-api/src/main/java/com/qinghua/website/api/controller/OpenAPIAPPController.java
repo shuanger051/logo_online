@@ -15,6 +15,7 @@ import com.qinghua.website.server.domain.*;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.*;
 import com.qinghua.website.server.utils.RSACryptoHelper;
+import com.qinghua.website.server.utils.RedisUtil;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
@@ -221,6 +223,7 @@ public class OpenAPIAPPController {
                     if(null != item && null != item.getHandledByIdCard()){
                         item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
                     }
+
                     //拼接映射URL
                     item.getList().forEach(dom ->{
                         if(null != dom){
@@ -296,21 +299,9 @@ public class OpenAPIAPPController {
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
         }
+
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
-        return ResponseResult.success();
-    }
-
-    /**
-     * APP 修改店铺备案状态API
-     * @param shopsInfoStatusIO
-     * @return
-     */
-    @LogAnnotation(logType = "save",logDesc = "APP 修改店铺备案状态API")
-    @RequestMapping(value = "/updateShopsFilingsStatusAPI",method = RequestMethod.POST)
-    public ResponseResult<Object> updateShopsFilingsStatusAPI(@Validated @RequestBody ShopsInfoStatusIO shopsInfoStatusIO){
-        ShopsInfoDTO bean = BeanToolsUtil.copyOrReturnNull(shopsInfoStatusIO,ShopsInfoDTO.class);
-        shopsInfoService.updateShopsFilingsStatusAPI(bean);
         return ResponseResult.success();
     }
 
@@ -329,9 +320,54 @@ public class OpenAPIAPPController {
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
         }
-        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoUpdateIO.getList(),ShopsAttachmentDTO.class);
-        shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
+
+        ShopsInfoDTO res = shopsInfoService.getShopsInfoById(shopsInfoUpdateIO.getId());
+        if(null != res){
+            List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoUpdateIO.getList(),ShopsAttachmentDTO.class);
+            shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
+            return ResponseResult.success();
+        }else{
+            return ResponseResult.success("商铺信息不存在");
+        }
+    }
+
+    /**
+     * APP 修改店铺备案状态API
+     * @param shopsInfoStatusIO
+     * @return
+     */
+    @LogAnnotation(logType = "save",logDesc = "APP 修改店铺备案状态API")
+    @RequestMapping(value = "/updateShopsFilingsStatusAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> updateShopsFilingsStatusAPI(@Validated @RequestBody ShopsInfoStatusIO shopsInfoStatusIO){
+        ShopsInfoDTO bean = BeanToolsUtil.copyOrReturnNull(shopsInfoStatusIO,ShopsInfoDTO.class);
+        shopsInfoService.updateShopsFilingsStatusAPI(bean);
         return ResponseResult.success();
+    }
+
+    /**
+     * APP 根据商铺Id获取商铺详情信API
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据商铺Id获取商铺详情信API")
+    @RequestMapping(value = "/getShopsInfoByIdAPI",method = RequestMethod.GET)
+    public ResponseResult<Object> getShopsInfoByIdAPI(@RequestParam("shopsId")Long shopsId){
+        Preconditions.checkNotNull(shopsId,"参数：shopsId,不能为空");
+        ShopsInfoDTO res = shopsInfoService.getShopsInfoByIdAPI(shopsId);
+
+        res.getList().forEach(item ->{
+            String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
+            item.setUrlPath(urlPath+"shops/" + relativeFileName);
+        });
+
+        ShopsInfoAPIVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoAPIVO.class);
+        if(null != vo && null != vo.getHandledByPhone()){
+            vo.setHandledByPhone(Sm4Utils.decrypt(vo.getHandledByPhone()));
+        }
+        if(null != vo && null != vo.getHandledByIdCard()){
+            vo.setHandledByIdCard(Sm4Utils.decrypt(vo.getHandledByIdCard()));
+        }
+
+        return ResponseResult.success(vo);
     }
 
     /**

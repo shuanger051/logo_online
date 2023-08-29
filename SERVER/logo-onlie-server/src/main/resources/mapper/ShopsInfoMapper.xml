@@ -46,6 +46,25 @@
         update_time
     </sql>
 
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Not_Have_IdCard">
+        id,
+        merchant_id,
+        shop_name,
+        address,
+        biz_years,
+        industry_type,
+        is_old_shops,
+        shops_type,
+        is_filings,
+        remark,
+        handled_by_name,
+        handled_by_phone,
+        handled_by_id_card,
+        create_time,
+        update_time
+    </sql>
+
     <!--  通过ID来获取对象 -->
     <select id="getShopsInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT
@@ -80,8 +99,15 @@
     <!-- 根据商户ID查询商铺信息集合 -->
     <select id="getShopsInfoByMerchantId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List_Not_Have_IdCard"/>
         FROM t_shops_info where merchant_id = #{merchantId}
+    </select>
+
+    <!-- 根据商铺ID查询身份证正反面照片 -->
+    <select id="getShopsInfoByIdAPI" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_shops_info where id = #{shopsId}
     </select>
 
     <!-- 根据ID删除 -->
@@ -105,8 +131,11 @@
             <if test="handledByName !=null and handledByName !=''">handled_by_name = #{handledByName},</if>
             <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone = #{handledByPhone},</if>
             <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card = #{handledByIdCard},</if>
+            <!-- TODO 身份证占位符不做修改 -->
+            <!--
             <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront},</if>
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite},</if>
+            -->
             update_time = NOW()
         </set>
         WHERE id = #{id}

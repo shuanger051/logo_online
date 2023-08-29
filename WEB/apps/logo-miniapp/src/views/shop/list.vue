@@ -20,7 +20,6 @@
 <script>
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
-import { mapDictObject } from "@/store/helpers";
 import ShopDetail from "./components/ShopDetail";
 export default {
   components: { ShopDetail },

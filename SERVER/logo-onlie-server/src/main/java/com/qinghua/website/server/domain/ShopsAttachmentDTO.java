@@ -33,6 +33,11 @@ public class ShopsAttachmentDTO extends BaseDTO {
 	 */
 	private String attachmentType;
 
+	/**
+	 * 文件预览映射路径
+	 */
+	private String urlPath;
+
 	@Override
 	public String toString() {
 		return "ShopsAttachmentDTO{" +

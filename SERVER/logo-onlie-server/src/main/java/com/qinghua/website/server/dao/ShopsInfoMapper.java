@@ -59,4 +59,11 @@ public interface ShopsInfoMapper {
          */
         void updateShopsFilingsStatusAPI(ShopsInfoDTO bean);
 
+        /**
+         * 根据商铺ID获取身份证正反面照片
+         * @param shopsId
+         * @return
+         */
+        ShopsInfoDTO getShopsInfoByIdAPI(Long shopsId);
+
 }
