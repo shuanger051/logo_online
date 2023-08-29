@@ -213,6 +213,8 @@ export default {
   },
   created() {
     const { shopId } = this.$route.query;
+    // 查询商户信息
+    this.queryMerchantInfo();
     // 如果穿了shopId则查询详情
     if (shopId) this.queryShopInfo(shopId);
     // 查询字典项
@@ -294,6 +296,18 @@ export default {
           });
         })
         .catch(() => this.$toast.fail("保存失败"));
+    },
+    // 查询商户信息
+    queryMerchantInfo() {
+      const { customerName } = this.userInfo;
+      shopService
+        .getCustomerInfoByUserNameAPI({ customerName })
+        // 获取商户信息
+        .then((res) => {
+          const { merchant } = res.data;
+          // 更新本地商户信息
+          this.$store.commit("user/setMerchantInfo", merchant);
+        });
     },
     // 查询商铺信息
     queryShopInfo(shopsId) {

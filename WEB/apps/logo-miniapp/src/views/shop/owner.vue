@@ -129,7 +129,7 @@ export default {
         .then((res) => {
           const { merchant } = res.data;
           // 添加商户信息
-          this.formData = merchant;
+          this.formData = merchant || {};
         });
     },
   },
