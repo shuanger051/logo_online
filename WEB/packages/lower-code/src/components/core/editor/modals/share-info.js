@@ -18,6 +18,11 @@ const tempType = [
   { value: "0", label: "复杂模板" },
 ];
 
+const isTopArr = [
+  { value: "0", label: "否" },
+  { value: "1", label: "是" },
+]
+
 export default {
   computed: {
     ...mapState("editor", {
@@ -109,6 +114,15 @@ export default {
                 value={this.isSimpleTpl}
                 onChange={(e) => this.autoSave({ isSimpleTpl: e })}
                 placeholder="请选择模板类型"
+              ></a-select>
+            </a-form-item>
+            <a-form-item label="是否置顶">
+            <a-select
+                class="input"
+                options={isTopArr}
+                value={this.work.isTop}
+                onChange={(e) => this.autoSave({ isTop: e })}
+                placeholder="请选择"
               ></a-select>
             </a-form-item>
             <a-form-item label="排序编号">
