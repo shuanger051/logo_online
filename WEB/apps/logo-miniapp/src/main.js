@@ -9,7 +9,7 @@ import router from "./router";
 import store from "./store";
 import appConfig from "core/appConfig";
 import * as axios from "@/utils/request";
-
+import vconsole from 'vconsole';
 Vue.config.productionTip = false;
 
 appConfig.install(({ initRequest, initMode, initRouter }) => {
@@ -18,6 +18,9 @@ appConfig.install(({ initRequest, initMode, initRouter }) => {
   initRequest(axios);
 })
 
+if (process.env.NODE_ENV !== "production") {
+  new vconsole()
+}
 new Vue({
   router,
   store,

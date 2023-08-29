@@ -10,7 +10,6 @@
       </div>
     </div>
     <props-panel />
-    <van-overlay :show="showOverlay" class="edit-overlay" />
   </div>
 </template>
 <script>
@@ -65,21 +64,29 @@ export default {
   },
   methods: {
     ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover"]),
-    download() {},
-    calcRate(workWidth) {
-      let w = document.documentElement.clientWidth;
-      return w / workWidth;
-    },
-    async createShopSign() {
-      this.showOverlay = true;
+    async download() {
       const toast = Toast.loading({
         message: "生成中...",
         forbidClick: true,
         duration: 0,
       });
-      const ts = this.editPanelStyle.transform;
-      this.editPanelStyle.transform = `scale(1)`;
-      await sleep(300);
+      try {
+        await downloadPoster({ el: "#content_edit" });
+      } catch (e) {
+        Notify({ type: "danger", message: "创建失败" });
+      }
+      toast.clear();
+    },
+    calcRate(workWidth) {
+      let w = document.documentElement.clientWidth;
+      return w / workWidth;
+    },
+    async createShopSign() {
+      const toast = Toast.loading({
+        message: "生成中...",
+        forbidClick: true,
+        duration: 0,
+      });
       try {
         await this.mCreateCover({ el: "#content_edit" });
         Notify({ type: "success", message: "创建成功" });
@@ -92,11 +99,10 @@ export default {
           });
         }, 1000);
       } catch (e) {
-        Notify({ type: "danger", message: "创建失败" });
+
+         Notify({ type: "danger", message: "创建失败" });
       }
-      this.editPanelStyle.transform = ts;
       toast.clear();
-      this.showOverlay = false;
     },
     async initEdit() {
       if (this.$route.params.id) {

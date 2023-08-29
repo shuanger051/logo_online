@@ -44,7 +44,7 @@ import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
 import putRecordPopup from './putRecordPopup';
 import { Toast } from "vant";
-import { takeScreenshot } from "@editor/utils/canvas-helper.js";
+import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
 export default {
   store,
@@ -93,7 +93,19 @@ export default {
         ...pos,
       };
     },
-    download() {},
+    async download() {
+      const toast = Toast.loading({
+        message: "生成中...",
+        forbidClick: true,
+        duration: 0,
+      });
+      try {
+        await downloadPoster({ selector: "#edit-live__wrap" });
+      } catch (e) {
+        Notify({ type: "danger", message: "创建失败" });
+      }
+      toast.clear();
+    },
     async creatLivePic() {
       const toast = Toast.loading({
         message: "生成中...",

@@ -33,18 +33,25 @@ const createEvent = (obj) => {
 };
 
 const getEventParams = (e) => {
-  let app = window.$editorConfig.isApp();
+  try {
+    let app = window.$editorConfig.isApp();
 
-  if (app) {
+    if (app) {
+      return {
+        clientX: e.changedTouches[0].clientX,
+        clientY: e.changedTouches[0].clientY,
+      };
+    } else {
+      return {
+        clientX: e.clientX,
+        clientY: e.clientY,
+      };
+    }
+  } catch(e) {
     return {
-      clientX: e.changedTouches[0].clientX,
-      clientY: e.changedTouches[0].clientY,
-    };
-  } else {
-    return {
-      clientX: e.clientX,
-      clientY: e.clientY,
-    };
+      clientX: 0,
+        clientY: 0,
+    }
   }
 };
 
