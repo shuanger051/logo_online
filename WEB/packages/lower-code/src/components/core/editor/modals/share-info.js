@@ -1,6 +1,6 @@
 import { mapState, mapActions } from "vuex";
 import "./share-info.scss";
-import {	getDictById } from 'core/api'
+import { getDictById } from "core/api";
 const debounce = function debounce(func, wait) {
   let timerId = 0;
   return function (...args) {
@@ -13,11 +13,10 @@ const debounce = function debounce(func, wait) {
   };
 };
 
-
 const tempType = [
   { value: "1", label: "简单模板" },
-  { value: "0", label: "复杂模板" }, 
-]
+  { value: "0", label: "复杂模板" },
+];
 
 export default {
   computed: {
@@ -25,20 +24,20 @@ export default {
       work: (state) => state.work,
       style: (state) => state.work.style.split(","),
       material: (state) => state.work.material.split(","),
-      isSimpleTpl:(state) => state.work.isSimpleTpl
+      isSimpleTpl: (state) => state.work.isSimpleTpl,
     }),
     previewUrl() {
       return `${window.location.origin}/works/preview/${this.work.id}?view_mode=preview`;
     },
     releaseUrl() {
       return `${window.location.origin}/works/preview/${this.work.id}`;
-    }
+    },
   },
   data() {
     return {
       styleMap: [],
-      materialMap: []
-    }
+      materialMap: [],
+    };
   },
   methods: {
     ...mapActions("editor", ["updateWork"]),
@@ -52,18 +51,22 @@ export default {
   },
   mounted() {
     // 修改标题、描述信息后自动保存
-    getDictById({dictKey: 'style'}).then(({data}) => {
-      this.styleMap = data.map((item) =>{return {
-        value: item.itemKey,
-        label: item.itemValue
-      }})
-    })
-    getDictById({dictKey: 'material'}).then(({data}) => {
-      this.materialMap = data.map((item) =>{return {
-        value: item.itemKey,
-        label: item.itemValue
-      }})
-    })
+    getDictById({ dictKey: "style" }).then(({ data }) => {
+      this.styleMap = data.map((item) => {
+        return {
+          value: item.itemKey,
+          label: item.itemValue,
+        };
+      });
+    });
+    getDictById({ dictKey: "material" }).then(({ data }) => {
+      this.materialMap = data.map((item) => {
+        return {
+          value: item.itemKey,
+          label: item.itemValue,
+        };
+      });
+    });
   },
   render(h) {
     return (
@@ -108,6 +111,15 @@ export default {
                 placeholder="请选择模板类型"
               ></a-select>
             </a-form-item>
+            <a-form-item label="排序编号">
+              <a-input
+                class="input"
+                type="number"
+                value={this.work.sortNo}
+                onChange={(e) => this.autoSave({ sortNo: e.target.value })}
+                placeholder="请输入排序编号"
+              ></a-input>
+            </a-form-item>
             <a-form-item label="背景色">
               <el-color-picker
                 show-alpha
@@ -116,7 +128,6 @@ export default {
                 onChange={(e) => this.autoSave({ backgroundColor: e })}
               ></el-color-picker>
             </a-form-item>
-        
           </a-form>
         </div>
       </div>

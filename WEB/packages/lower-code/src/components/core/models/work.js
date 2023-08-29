@@ -35,6 +35,7 @@ export default class Work {
     // this.created_at = new Date()
     // this.updated_at = new Date()
 
+    this.sortNo = work.sortNo
     this.is_publish = !!work.is_publish
     this.is_template = false
     this.width = work.width || 320
