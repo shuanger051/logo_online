@@ -15,9 +15,6 @@ export const actions = {
       form.append('file', fileData)
       form.append('shopsId', shopsId)
       form.append('merchantId', merchantId)
-      // form.append('attachmentType', 1)
-      // await appUploadShopsAttachmentAPI(form)
-
       await appSaveLogoInfoAPI(form)
   },
   setCurrentWorkData({commit}, payload) {
