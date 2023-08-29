@@ -42,6 +42,16 @@ public class TemplateDTO extends BaseDTO {
 	 */
 	private String material;
 
+	/**
+	 * 是否置顶：0-否，1-是
+	 */
+	private String isTop;
+
+	/**
+	 * 排序编号
+	 */
+	private Long sortNo;
+
 	@Override
 	public String toString() {
 	return "Template{" +

@@ -11,6 +11,8 @@
         <result column="style" property="style" jdbcType="VARCHAR"/>
         <result column="is_simple_tpl" property="isSimpleTpl" jdbcType="VARCHAR"/>
         <result column="material" property="material" jdbcType="VARCHAR"/>
+        <result column="is_top" property="isTop" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" jdbcType="BIGINT"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -24,6 +26,8 @@
         style,
         is_simple_tpl,
         material,
+        is_top,
+        sort_no,
         create_time,
         update_time
     </sql>
@@ -48,11 +52,7 @@
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
             <if test="material !=null and material !=''">AND material = #{material}</if>
         </trim>
-        <trim prefix="ORDER BY ">
-            <if test="sort !=null and sort != ''">
-                #{sort}
-            </if>
-        </trim>
+        ORDER BY is_top DESC,sort_no ASC
     </select>
 
     <!-- 分页查询模板信息列表API -->
@@ -64,6 +64,7 @@
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
             and release_status = '1'
         </trim>
+        ORDER BY is_top DESC,sort_no ASC
     </select>
 
     <!-- APP 随机查询简单模板数据API -->
@@ -75,7 +76,7 @@
             and release_status = '1'
             and is_simple_tpl = '1'
         </trim>
-        ORDER BY RAND()
+        ORDER BY RAND(),sort_no ASC
     </select>
 
     <!-- 根据ID删除 -->
@@ -93,6 +94,8 @@
             <if test="style !=null and style !=''">style = #{style},</if>
             <if test="material !=null and material !=''">material = #{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl = #{isSimpleTpl},</if>
+            <if test="isTop !=null and isTop !=''">is_top = #{isTop},</if>
+            <if test="sortNo !=null">sort_no = #{sortNo},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -113,6 +116,8 @@
             <if test="style !=null and style !=''">style,</if>
             <if test="material !=null and material !=''">material,</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl,</if>
+            <if test="isTop !=null and isTop !=''">is_top,</if>
+            <if test="sortNo !=null">sort_no,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -122,6 +127,8 @@
             <if test="style !=null and style !=''">#{style},</if>
             <if test="material !=null and material !=''">#{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">#{isSimpleTpl},</if>
+            <if test="isTop !=null and isTop !=''">#{isTop},</if>
+            <if test="sortNo !=null">#{sortNo},</if>
             NOW()
         </trim>
     </insert>
