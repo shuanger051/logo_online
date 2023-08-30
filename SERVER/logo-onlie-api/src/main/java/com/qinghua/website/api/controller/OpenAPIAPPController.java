@@ -1,6 +1,7 @@
 package com.qinghua.website.api.controller;
 
 import cn.hutool.core.lang.UUID;
+import com.fasterxml.jackson.core.json.UTF8StreamJsonParser;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
@@ -15,10 +16,13 @@ import com.qinghua.website.server.domain.*;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.*;
 import com.qinghua.website.server.utils.RSACryptoHelper;
-import com.qinghua.website.server.utils.RedisUtil;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.misc.BASE64Decoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,13 +30,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -467,7 +467,76 @@ public class OpenAPIAPPController {
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
-            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+    /**
+     * APP 上传店招Base64文件信息API
+     * @param base64
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传店招Base64文件信息API")
+    @RequestMapping(value = "/saveLogoInfoBase64API", method = RequestMethod.POST)
+    public ResponseResult<Object> saveLogoInfoBase64API(@RequestPart("base64") String base64, Long shopsId, Long merchantId , HttpServletRequest request) {
+
+        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/logo/" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(frontPath);
+
+                //根据shopsId判断数据是新增还是更新
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                if(null != res){
+                    logoInfoDTO.setId(res.getId());
+                    logoInfoService.updateLogoInfoById(logoInfoDTO);
+                }else{
+                    logoInfoService.saveLogoInfo(logoInfoDTO);
+                }
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
         }
     }
 
@@ -590,7 +659,11 @@ public class OpenAPIAPPController {
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
-            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
         }
     }
 
@@ -655,10 +728,164 @@ public class OpenAPIAPPController {
     }
 
     /**
-     * 校验文件是否合法
-     * @param file
+     * APP 上传商铺Base64文件API
+     * @param base64
+     * @param shopsId
+     * @param attachmentType
+     * @param request
      * @return
      */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API")
+    @RequestMapping(value = "/uploadContentAttachmentBase64", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
+        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.split("\\.")[1];
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "/shops/" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(frontPath);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+
+                shopsInfoService.saveShopsAttachments(list);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
+            fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+
+    }
+
+    /**
+     * Base64 转 MultipartFile
+     * @param base64
+     * @return
+     * @throws IOException
+     */
+    public static CommonsMultipartFile base64toMultipartFile(String base64) {
+        final File file = base64ToFile(base64);
+        DiskFileItem item = (DiskFileItem) new DiskFileItemFactory().createItem(file.getName(), "image/jpeg", false, file.getName());
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
+        OutputStream os = null;
+        try {
+            os = item.getOutputStream();
+            if (input != null) {
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+            }
+        } catch (IOException e) {
+            throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        } finally {
+            if (null != os) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+            if (null != input) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+
+        }
+        return new CommonsMultipartFile(item);
+    }
+
+    /**
+     * Base64 转 File
+     * @param base64
+     * @return
+     */
+    public static File base64ToFile(String base64) {
+
+        if (base64 == null || "".equals(base64)) {
+            throw new BizException("Base64参数不能为空",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
+        String[] str = base64.split(",");
+        //getRealImgeStr 方法 截取bese64字符串 逗号后半部分有用的字符串
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] buff = new byte[0];
+        try {
+            buff = decoder.decodeBuffer(str[1]);
+        } catch (IOException e) {
+            throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
+        File file = null;
+        FileOutputStream fout = null;
+        try {
+            file = File.createTempFile("tmp", ".jpg");
+            fout = new FileOutputStream(file);
+            fout.write(buff);
+        } catch (IOException e) {
+            throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        } finally {
+            if (fout != null) {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+        }
+        return file;
+    }
+
+
+    /**
+      * 校验文件是否合法
+      * @param file
+      * @return
+      */
     public void checkFile(MultipartFile file){
 
         if (!file.isEmpty()) {
