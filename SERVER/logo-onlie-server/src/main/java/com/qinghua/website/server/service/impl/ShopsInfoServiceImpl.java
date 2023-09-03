@@ -165,14 +165,10 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
             throw new BizException("只能上传1张商铺照片",SysConstant.SYSTEM_ERROR_400.getCode());
         }
 
-        //更新附件信息，清除表中附件数据
-        if(null != list && list.size() > 0){
-            for (int i = 0; i<list.size(); i++){
-                attachmentMapper.deleteAttachmentByName(list.get(i).getAttachmentName());
-            }
-            //保存新的附件信息数据
-            attachmentMapper.saveShopsAttachmentByList(list);
-        }
+        //根据shopId删除表中历史数据
+        attachmentMapper.deleteShopsAttachmentByShopsId(bean.getId());
+        //保存新的附件信息数据
+        attachmentMapper.saveShopsAttachmentByList(list);
     }
 
     /**
