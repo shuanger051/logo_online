@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <div class="shop-detail-box">
     <!-- 店招图  -->
     <van-cell v-if="shopLogo.logoUrl">
-      <van-image
+      <!-- <van-image
         :src="shopLogo.logoUrl"
         :alt="shopLogo.logoName"
         :title="shopLogo.logoName"
+      /> -->
+      <van-image
+        width="100%"
+        :src="shopImg"
+        title="店招备案效果图"
+        alt="店招备案效果图"
       />
     </van-cell>
     <!-- 商铺信息 -->
@@ -84,6 +90,13 @@ export default {
       // 商铺属性
       DictShopsType: mapDictObject("shopsType"),
     }),
+    // 店招备案效果图图信息
+    shopImg() {
+      const { list = [] } = this.detail;
+      const item = list.find((item) => item.attachmentType == "4");
+      if (item) return resolveImgUrl(item.urlPath);
+      return null;
+    },
   },
   created() {
     const { id, isFilings } = this.detail;
@@ -108,10 +121,21 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.van-cell {
-  .van-button {
-    &:not(:last-child) {
-      margin-right: 8px;
+.shop-detail-box {
+  :deep(.van-collapse-item) {
+    &__content {
+      .van-cell {
+        &__title {
+          color: @gray-5;
+        }
+      }
+    }
+  }
+  .van-cell {
+    .van-button {
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
     }
   }
 }

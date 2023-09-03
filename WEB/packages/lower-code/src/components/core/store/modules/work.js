@@ -57,6 +57,8 @@ export const actions = {
     const data = {
       name: state.work.title,
       style: state.work.style,
+      isTop: state.work.isTop,
+      sortNo: state.work.sortNo,
       isSimpleTpl: state.work.isSimpleTpl,
       material: state.work.material,
       domItem: JSON.stringify(state.work),

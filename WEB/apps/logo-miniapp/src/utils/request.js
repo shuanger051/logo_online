@@ -4,7 +4,7 @@ import router from "../router";
 import evnetBus from "../core/eventBus";
 
 // 默认配置
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "/api";
 
