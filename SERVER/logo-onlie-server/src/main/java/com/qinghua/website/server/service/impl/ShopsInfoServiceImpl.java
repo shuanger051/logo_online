@@ -165,6 +165,21 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
             throw new BizException("只能上传1张商铺照片",SysConstant.SYSTEM_ERROR_400.getCode());
         }
 
+        //附件与店铺的关系数据判断，更新接口的数据必须修改当前店铺下的附件，否则报错
+        if(null != list && 0 != list.size()){
+            for(ShopsAttachmentDTO att : list){
+                if(bean.getId() != att.getShopsId()){
+                    String type = att.getAttachmentType();
+                    switch (type){
+                        case "1" : throw new BizException("商铺照片所属的店铺ID不匹配",SysConstant.SYSTEM_ERROR_400.getCode());
+                        case "2" : throw new BizException("营业执照所属的店铺ID不匹配",SysConstant.SYSTEM_ERROR_400.getCode());
+                        case "3" : throw new BizException("租赁合同所属的店铺ID不匹配",SysConstant.SYSTEM_ERROR_400.getCode());
+                        default: throw new BizException("附件所属的店铺ID不匹配",SysConstant.SYSTEM_ERROR_400.getCode());
+                    }
+                }
+            }
+        }
+
         //根据shopId删除表中历史数据
         attachmentMapper.deleteShopsAttachmentByShopsId(bean.getId());
         //保存新的附件信息数据
