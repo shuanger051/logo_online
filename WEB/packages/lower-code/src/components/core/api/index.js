@@ -25,6 +25,9 @@ export const getTemplateByID = async (...arg) => {
 export const appGetMaterial = wrapRequest('/logo/app/getMaterialListByPageAPI?fileType=1', false)
 export const appQueryTemplate = wrapRequest('logo/app/queryTemplateByIdAPI', false)
 export const appSaveLogoInfoAPI = wrapRequest('/logo/app/saveLogoInfoAPI', true)
+export const appSaveLogoInfoBase64API =  wrapRequest('/logo/app/saveLogoInfoBase64API', true) 
+export const appUploadContentAttachmentBase64 = wrapRequest('/logo/app/uploadContentAttachmentBase64', true) 
+
 //APP 根据商铺ID获取店招信息API
 export const appGetLogoInfoByShopsId = wrapRequest('/logo/app/getLogoInfoByShopsIdAPI', false)
 export const appGetItemsByDictKeyInDB = wrapRequest('/logo/app/getItemsByDictKeyInDB', false)

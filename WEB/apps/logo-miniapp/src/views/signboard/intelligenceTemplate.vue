@@ -121,5 +121,6 @@ export default {
 .preview-wrap {
   width: 100%;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 </style>

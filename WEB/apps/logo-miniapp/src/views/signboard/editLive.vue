@@ -38,7 +38,7 @@ import appStore from "@/store";
 import {
   appGetLogoInfoByShopsId,
   appGetCustomerInfoByUserNameAPI,
-  appUploadShopsAttachmentAPI,
+  appUploadContentAttachmentBase64,
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
@@ -113,12 +113,12 @@ export default {
         duration: 0,
       });
       try {
-        const file = await takeScreenshot({ selector: "#edit-live__wrap" });
+        const file = await takeScreenshot({ selector: "#edit-live__wrap", type: 'dataUrl'});
         const form = new FormData();
-        form.append("file", file);
+        form.append("base64", file);
         form.append("shopsId", this.$route.query.shopId);
         form.append("attachmentType", 4);
-        await appUploadShopsAttachmentAPI(form);
+        await appUploadContentAttachmentBase64(form);
         Notify({ type: "success", message: "创建成功" });
         this.$refs.putRecordPopup.open()
       } catch (e) {

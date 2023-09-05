@@ -112,7 +112,7 @@ export default {
           duration: 0,
         });
         this.fetchWork({id: this.$route.params.id, hasWork: this.$route.query.hasWork});
-        await sleep(2000);
+        await sleep(1000);
         toast.clear();
       }
     },
@@ -135,9 +135,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.edit-overlay {
-  background-color: rgba(155, 155, 155, 0.7);
-}
-</style>

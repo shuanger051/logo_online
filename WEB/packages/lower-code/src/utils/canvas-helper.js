@@ -62,10 +62,6 @@ export function takeScreenshot ({
           resolve(file)
           break
       }
-      // canvas.toBlob(blob => {
-      //   const file = new window.File([blob], fileName, { type: 'image/png' })
-      //   resolve(file)
-      // })
     })
   })
 }

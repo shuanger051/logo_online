@@ -7,7 +7,7 @@
       finished-text="没有更多了"
       @load="queryTemplate"
     >
-      <div v-for="item in list" :key="item.id" @click="go(item.id)">
+      <div v-for="item in list" :key="item.id" @click="go(item.id)" class="page-list">
         <van-image
           v-if="item.url"
           width="100%"
@@ -81,3 +81,10 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.page-wrap {
+  .page-list {
+    margin-bottom: 10px;
+  }
+}
+</style>
