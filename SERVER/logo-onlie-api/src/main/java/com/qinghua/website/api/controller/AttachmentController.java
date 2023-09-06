@@ -80,12 +80,12 @@ public class AttachmentController {
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-            boolean mkdirs = new File(savePath + "/content/" + frontPath).mkdirs();
+            boolean mkdirs = new File(savePath + "content/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
             String relativeFileName = frontPath + "/" + newFileName  ;
-            String fullName = savePath + "/content/" + relativeFileName;
+            String fullName = savePath + "content/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
@@ -130,15 +130,15 @@ public class AttachmentController {
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-            boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
+            boolean mkdirs = new File( savePath + "shops/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
             String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
             String relativeFileName = frontPath + "/" + newFileName;
             String compressRelativeFileName = frontPath + "/" + newCompressFileName;
-            String fullName = savePath + "/shops/" + relativeFileName;
-            String compressPath = savePath + "/shops/" + frontPath;
+            String fullName = savePath + "shops/" + relativeFileName;
+            String compressPath = savePath + "shops/" + frontPath;
 
 
             File file = new File(fullName);
@@ -193,12 +193,12 @@ public class AttachmentController {
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-            boolean mkdirs = new File( savePath + "/material/" + frontPath).mkdirs();
+            boolean mkdirs = new File( savePath + "material/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
 
             String relativeFileName = frontPath + "/" + newFileName  ;
-            String fullName = savePath + "/material/" + relativeFileName;
+            String fullName = savePath + "material/" + relativeFileName;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
@@ -208,7 +208,7 @@ public class AttachmentController {
             materialDTO.setName(fileName);
             materialDTO.setFileName(newFileName);
             materialDTO.setFilePath(frontPath);
-            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG")){
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG") || fileType.equals("PNG")){
                 materialDTO.setFileType("1");
             }else{
                 materialDTO.setFileType("2");
@@ -246,15 +246,15 @@ public class AttachmentController {
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-            boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
+            boolean mkdirs = new File( savePath + "logo/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
             String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
             String relativeFileName = frontPath + "/" + newFileName  ;
             String compressRelativeFileName = frontPath + "/" + newCompressFileName;
-            String fullName = savePath + "/logo/" + relativeFileName;
-            String compressPath = savePath + "/logo/" + frontPath;
+            String fullName = savePath + "logo/" + relativeFileName;
+            String compressPath = savePath + "logo/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
