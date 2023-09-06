@@ -67,12 +67,12 @@ public class ShopsInfoAPIVO {
     /**
      * 经办人照片-正面
      */
-    private String handledByPhotoFront;
+    private String handledByPhotoFrontCompress;
 
     /**
      * 经办人照片-反面
      */
-    private String handledByPhotoOpposite;
+    private String handledByPhotoOppositeCompress;
 
     private List<ShopsAttachmentVO> list;
 

@@ -38,5 +38,5 @@ logging:
 
 #FILE UPLOAD CONFIG
 uploadPath:
-  savePath: '/usr/local/webapp/server/upload/'  #图标存储路径
+  savePath: '/usr/local/webapp/server/upload'  #图标存储路径
   urlPath: '/savePath/'  #图标的映射路径

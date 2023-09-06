@@ -66,4 +66,11 @@ public interface ShopsInfoMapper {
          */
         ShopsInfoDTO getShopsInfoByIdAPI(Long shopsId);
 
+        /**
+         * 根据五要素查询
+         * @param bean
+         * @return
+         */
+        ShopsInfoDTO getShopsInfoByIndex(ShopsInfoDTO bean);
+
 }

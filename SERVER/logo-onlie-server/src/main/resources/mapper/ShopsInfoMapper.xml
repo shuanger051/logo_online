@@ -19,6 +19,8 @@
         <result column="handled_by_id_card" property="handledByIdCard" jdbcType="VARCHAR"/>
         <result column="handled_by_photo_front" property="handledByPhotoFront" jdbcType="VARCHAR"/>
         <result column="handled_by_photo_opposite" property="handledByPhotoOpposite" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_front_compress" property="handledByPhotoFrontCompress" jdbcType="VARCHAR"/>
+        <result column="handled_by_photo_opposite_compress" property="handledByPhotoOppositeCompress" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="list" ofType="com.qinghua.website.server.domain.ShopsAttachmentDTO"
@@ -42,11 +44,13 @@
         handled_by_id_card,
         handled_by_photo_front,
         handled_by_photo_opposite,
+        handled_by_photo_front_compress,
+        handled_by_photo_opposite_compress,
         create_time,
         update_time
     </sql>
 
-    <!-- 通用查询结果列 -->
+    <!-- 优化查询 -->
     <sql id="Base_Column_List_Not_Have_IdCard">
         id,
         merchant_id,
@@ -61,6 +65,8 @@
         handled_by_name,
         handled_by_phone,
         handled_by_id_card,
+        handled_by_photo_front_compress,
+        handled_by_photo_opposite_compress,
         create_time,
         update_time
     </sql>
@@ -110,6 +116,13 @@
         FROM t_shops_info where id = #{shopsId}
     </select>
 
+    <!-- 根据五要素查询 -->
+    <select id="getShopsInfoByIndex" parameterType="com.qinghua.website.server.domain.ShopsInfoDTO" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_shops_info WHERE  merchant_id =#{merchantId} and shop_name =#{shopName} and address = #{address} and biz_years=#{bizYears} and industry_type = #{industryType}
+    </select>
+
     <!-- 根据ID删除 -->
     <delete id="deleteShopsInfoById" parameterType="java.lang.Long">
         DELETE FROM t_shops_info
@@ -131,11 +144,10 @@
             <if test="handledByName !=null and handledByName !=''">handled_by_name = #{handledByName},</if>
             <if test="handledByPhone !=null and handledByPhone !=''">handled_by_phone = #{handledByPhone},</if>
             <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card = #{handledByIdCard},</if>
-            <!-- TODO 身份证占位符不做修改 -->
-            <!--
             <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front = #{handledByPhotoFront},</if>
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite},</if>
-            -->
+            <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">handled_by_photo_front_compress = #{handledByPhotoFrontCompress},</if>
+            <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">handled_by_photo_opposite_compress = #{handledByPhotoOppositeCompress},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -169,6 +181,8 @@
             <if test="handledByIdCard !=null and handledByIdCard !=''">handled_by_id_card,</if>
             <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">handled_by_photo_front,</if>
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite,</if>
+            <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">handled_by_photo_front_compress,</if>
+            <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">handled_by_photo_opposite_compress,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -186,6 +200,8 @@
             <if test="handledByIdCard !=null and handledByIdCard !=''">#{handledByIdCard},</if>
             <if test="handledByPhotoFront !=null and handledByPhotoFront !=''">#{handledByPhotoFront},</if>
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">#{handledByPhotoOpposite},</if>
+            <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">#{handledByPhotoFrontCompress},</if>
+            <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">#{handledByPhotoOppositeCompress},</if>
             NOW()
         </trim>
     </insert>

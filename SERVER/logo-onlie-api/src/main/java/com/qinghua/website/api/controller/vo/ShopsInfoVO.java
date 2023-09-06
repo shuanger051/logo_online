@@ -66,6 +66,16 @@ public class ShopsInfoVO {
      */
     private String handledByIdCard;
 
+    /**
+     * 经办人照片-正面(压缩)
+     */
+    private String handledByPhotoFrontCompress;
+
+    /**
+     * 经办人照片-反面（压缩）
+     */
+    private String handledByPhotoOppositeCompress;
+
     private List<ShopsAttachmentVO> list;
 
     @Override

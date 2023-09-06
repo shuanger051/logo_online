@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.vo.FileVO;
 import com.qinghua.website.api.controller.vo.ShopsAttachmentVO;
+import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -132,12 +133,19 @@ public class AttachmentController {
             boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
-            String relativeFileName = frontPath + "/" + newFileName  ;
+            String relativeFileName = frontPath + "/" + newFileName;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/shops/" + relativeFileName;
+            String compressPath = savePath + "/shops/" + frontPath;
+
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId){
                 //更新数据库关系
@@ -159,6 +167,7 @@ public class AttachmentController {
             fileVO.setAttachmentName(newFileName);
             fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "shops/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
@@ -240,12 +249,18 @@ public class AttachmentController {
             boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
             String relativeFileName = frontPath + "/" + newFileName  ;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/logo/" + relativeFileName;
+            String compressPath = savePath + "/logo/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId && null != merchantId){
                 LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
@@ -262,6 +277,7 @@ public class AttachmentController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "logo/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);

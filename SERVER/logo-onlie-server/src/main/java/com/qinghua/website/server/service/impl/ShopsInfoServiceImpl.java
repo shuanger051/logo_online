@@ -71,6 +71,12 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     @Override
     public void saveShopsInfo(ShopsInfoDTO bean,List<ShopsAttachmentDTO> list) {
 
+        //根据五要素判断数据是否重复
+        ShopsInfoDTO check = shopsInfoMapper.getShopsInfoByIndex(bean);
+        if(null != check){
+            throw new BizException("该商铺信息已存在",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
         shopsInfoMapper.saveShopsInfo(bean);
         List<ShopsAttachmentDTO> paramList = new ArrayList<>();
 

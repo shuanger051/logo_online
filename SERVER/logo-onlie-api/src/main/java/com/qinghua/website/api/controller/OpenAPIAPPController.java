@@ -1,7 +1,6 @@
 package com.qinghua.website.api.controller;
 
 import cn.hutool.core.lang.UUID;
-import com.fasterxml.jackson.core.json.UTF8StreamJsonParser;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
@@ -10,6 +9,7 @@ import com.qinghua.website.api.common.TokenTools;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.*;
 import com.qinghua.website.api.utils.BeanToolsUtil;
+import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -300,6 +300,14 @@ public class OpenAPIAPPController {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
         }
 
+        //开始身份证Base64压缩
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoFront() != null){
+            shopsInfoDTO.setHandledByPhotoFrontCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoFront()));
+        }
+        if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
+            shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
+        }
+
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -319,6 +327,15 @@ public class OpenAPIAPPController {
         }
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
+
+        //开始身份证Base64压缩,
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoFront() != null){
+            //修改与新增不同，修改时切记不能将缩略图传过来，要传原图。提醒前端注意。
+            shopsInfoDTO.setHandledByPhotoFrontCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoFront()));
+        }
+        if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
+            shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
         }
 
         ShopsInfoDTO res = shopsInfoService.getShopsInfoById(shopsInfoUpdateIO.getId());
@@ -354,10 +371,13 @@ public class OpenAPIAPPController {
         Preconditions.checkNotNull(shopsId,"参数：shopsId,不能为空");
         ShopsInfoDTO res = shopsInfoService.getShopsInfoByIdAPI(shopsId);
 
-        res.getList().forEach(item ->{
-            String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
-            item.setUrlPath(urlPath+"shops/" + relativeFileName);
-        });
+        if(null != res.getList() && res.getList().size() > 0){
+            for (ShopsAttachmentDTO item: res.getList()) {
+                String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
+                item.setUrlPath(urlPath+"shops/" + relativeFileName);
+                item.setCompressUrlPath(urlPath+"shops/" + item.getAttachmentPath() + "/" + item.getAttachmentName().split("\\.")[0]+"_COMPRESS"+"."+item.getAttachmentName().split("\\.")[1]);
+            }
+        }
 
         ShopsInfoAPIVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoAPIVO.class);
         if(null != vo && null != vo.getHandledByPhone()){
@@ -365,6 +385,12 @@ public class OpenAPIAPPController {
         }
         if(null != vo && null != vo.getHandledByIdCard()){
             vo.setHandledByIdCard(Sm4Utils.decrypt(vo.getHandledByIdCard()));
+        }
+
+        List<ShopsAttachmentVO> voList = new ArrayList<>();
+        if(null != res.getList() && res.getList().size() > 0){
+            voList = BeanToolsUtil.copyList(res.getList(),ShopsAttachmentVO.class);
+            vo.setList(voList);
         }
 
         return ResponseResult.success(vo);
@@ -435,12 +461,18 @@ public class OpenAPIAPPController {
             boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
-            String relativeFileName = frontPath + "/" + newFileName  ;
+            String relativeFileName = frontPath + "/" + newFileName;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/logo/" + relativeFileName;
+            String compressPath = savePath + "/logo/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId && null != merchantId){
                 LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
@@ -465,6 +497,7 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "logo/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if(exception instanceof BizException){
@@ -500,12 +533,18 @@ public class OpenAPIAPPController {
             boolean mkdirs = new File( savePath + "/logo/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
-            String relativeFileName = frontPath + "/" + newFileName  ;
+            String relativeFileName = frontPath + "/" + newFileName;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/logo/" + relativeFileName;
+            String compressPath = savePath + "/logo/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId && null != merchantId){
                 LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
@@ -530,6 +569,7 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "logo/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if(exception instanceof BizException){
@@ -551,7 +591,10 @@ public class OpenAPIAPPController {
         LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
         PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
         List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
-        logoInfoVOList.forEach(item->item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName()));
+        logoInfoVOList.forEach(item->{
+            item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName());
+            item.setCompressUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+item.getLogoFileName().split("\\.")[1]);
+        });
         PageListVO<LogoInfoVO> resp = new PageListVO<>();
         resp.setList(logoInfoVOList);
         resp.setTotal(pageList.getTotal());
@@ -571,6 +614,7 @@ public class OpenAPIAPPController {
             LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
             String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
             logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
+            logoInfoVO.setCompressUrlPath(urlPath+"logo/"+logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+logoInfoVO.getLogoFileName().split("\\.")[1]);
             return ResponseResult.success(logoInfoVO);
         }else{
            return ResponseResult.success("未查询到数据");
@@ -629,12 +673,18 @@ public class OpenAPIAPPController {
             boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
-            String relativeFileName = frontPath + "/" + newFileName  ;
+            String relativeFileName = frontPath + "/" + newFileName;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/shops/" + relativeFileName;
+            String compressPath = savePath + "/shops/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId){
                 //更新数据库关系
@@ -657,6 +707,7 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentName(newFileName);
             fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "shops/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if(exception instanceof BizException){
@@ -753,12 +804,18 @@ public class OpenAPIAPPController {
             boolean mkdirs = new File( savePath + "/shops/" + frontPath).mkdirs();
 
             String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
 
-            String relativeFileName = frontPath + "/" + newFileName  ;
+            String relativeFileName = frontPath + "/" + newFileName;
+            String compressRelativeFileName = frontPath + "/" + newCompressFileName;
             String fullName = savePath + "/shops/" + relativeFileName;
+            String compressPath = savePath + "/shops/" + frontPath;
 
             File file = new File(fullName);
             multipartFile.transferTo(file);
+
+            //生成缩略图
+            ImgUtils.localImageCompress(compressPath,fullName,newCompressFileName);
 
             if(null != shopsId){
                 //更新数据库关系
@@ -781,6 +838,7 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentName(newFileName);
             fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
+            fileVO.setCompressUrlPath(urlPath+ "shops/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if(exception instanceof BizException){

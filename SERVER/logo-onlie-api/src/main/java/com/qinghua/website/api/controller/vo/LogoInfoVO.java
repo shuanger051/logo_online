@@ -37,6 +37,11 @@ public class LogoInfoVO {
      */
     private String urlPath;
 
+    /**
+     * 文件预览映射路径
+     */
+    private String compressUrlPath;
+
     @Override
     public String toString() {
         return "LogoInfoVO{" +

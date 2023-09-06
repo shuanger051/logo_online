@@ -8,6 +8,7 @@ import com.qinghua.website.api.controller.vo.ShopsAttachmentVO;
 import com.qinghua.website.api.controller.vo.ShopsInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
+import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.domain.ShopsAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsInfoDTO;
@@ -96,6 +97,15 @@ public class ShopsInfoController {
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
         }
+
+        //开始身份证Base64压缩
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoFront() != null){
+            shopsInfoDTO.setHandledByPhotoFrontCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoFront()));
+        }
+        if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
+            shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
+        }
+
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -117,6 +127,15 @@ public class ShopsInfoController {
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
             shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
         }
+
+        //开始身份证Base64压缩
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoFront() != null){
+            shopsInfoDTO.setHandledByPhotoFrontCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoFront()));
+        }
+        if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
+            shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
+        }
+
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);
         return ResponseResult.success();

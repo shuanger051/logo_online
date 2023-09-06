@@ -58,6 +58,8 @@
     <poi.version>4.4.0</poi.version>
     <shiro.version>1.4.0</shiro.version>
     <shiro-redis.version>2.8.24</shiro-redis.version>
+    <thumbnailator.version>0.4.19</thumbnailator.version>
+    <webp.version>0.1.6</webp.version>
 
     <jwt.version>3.4.0</jwt.version>
   </properties>
