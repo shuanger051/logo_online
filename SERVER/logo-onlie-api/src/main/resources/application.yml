@@ -7,10 +7,6 @@ spring:
     multipart:
       max-file-size: 10MB #单个文件上传大小
       max-request-size: 100MB #总文件上传大小
-  mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
 
 server:
   port: 9001
