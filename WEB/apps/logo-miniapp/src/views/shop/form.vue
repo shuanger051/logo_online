@@ -315,28 +315,36 @@ export default {
         .getShopsInfoByIdAPI({ shopsId })
         // 获取商铺信息
         .then((res) => {
-          let item = res.data;
-          // 身份证图片数据
-          ["handledByPhotoFront", "handledByPhotoOpposite"].forEach((key) => {
-            if (item[key]) {
-              const data = PREFIX_IMG_JPG + item[key];
-              item[key] = [
-                {
-                  url: data,
-                  content: data,
-                  isImage: true,
-                },
-              ];
-            } else item[key] = [];
-          });
+          let { data } = res;
+          // 获取证件照原图
+          shopService
+            .getShopsIdCardByIdAPI({ id: data.id })
+            .then((res) => {
+              ["handledByPhotoFront", "handledByPhotoOpposite"].forEach(
+                (key) => {
+                  const content = PREFIX_IMG_JPG + _.get(res, ["data", key]);
+                  const list = [
+                    {
+                      content,
+                      url: content,
+                      isImage: true,
+                    },
+                  ];
+                  this.$set(this.formData, key, list);
+                }
+              );
+            })
+            .catch(() => {
+              this.$toast.fail("证件照获取失败，请重新上传");
+            });
 
           // 设置商铺信息
-          Object.keys(item).forEach((key) =>
-            this.$set(this.formData, key, item[key])
+          Object.keys(data).forEach((key) =>
+            this.$set(this.formData, key, data[key])
           );
 
           // 档案数据分类
-          this.attachmentType = item.list.reduce((dtm, item) => {
+          this.attachmentType = data.list.reduce((dtm, item) => {
             const { attachmentType: key } = item;
             // 存在key则保存
             if (key) {
@@ -348,6 +356,13 @@ export default {
             return dtm;
           }, {});
         });
+    },
+    // 获取证件照原图
+    getShopsIdCard() {
+      const { id } = this.formData;
+      shopService.getShopsInfoByIdAPI({ id }).then((res) => {
+        return res.data;
+      });
     },
     // 上传
     doAfterRead(file, type) {

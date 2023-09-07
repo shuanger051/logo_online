@@ -50,3 +50,8 @@ export const uploadShopsAttachmentAPI = axiosPost(
 export const getLogoInfoByShopsIdAPI = axiosGet(
   "logo/app/getLogoInfoByShopsIdAPI"
 );
+
+/**
+ * == 获取证件照原图 ==
+ */
+export const getShopsIdCardByIdAPI = axiosGet("logo/app/getShopsIdCardByIdAPI");
