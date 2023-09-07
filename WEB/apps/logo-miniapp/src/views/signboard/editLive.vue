@@ -34,15 +34,14 @@
 </template>
 <script>
 import store from "core/store/mobileIndex";
-import appStore from "@/store";
 import {
   appGetLogoInfoByShopsId,
-  appGetCustomerInfoByUserNameAPI,
   appUploadContentAttachmentBase64,
+  appGetShopsInfoByIdAPI,
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
-import putRecordPopup from './putRecordPopup';
+import putRecordPopup from "./putRecordPopup";
 import { Toast } from "vant";
 import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
@@ -50,7 +49,7 @@ export default {
   store,
   components: {
     shape,
-    putRecordPopup
+    putRecordPopup,
   },
   data() {
     return {
@@ -72,17 +71,12 @@ export default {
     }).then((data) => {
       this.currentShopSign = resolveImgUrl(data.data.urlPath);
     });
-    appGetCustomerInfoByUserNameAPI({
-      customerName: appStore.state.user.profiles.customerName,
+    appGetShopsInfoByIdAPI({
+      shopsId: this.$route.query.shopId,
     }).then(({ data }) => {
-      const shopLists = data.shopsList.find(
-        (item) => item.id == this.$route.query.shopId
-      );
-      if (shopLists) {
-        const list = shopLists.list.find((item) => item.attachmentType == "1");
-        if (list) {
-          this.currentLivePic = resolveImgUrl(list.urlPath);
-        }
+      const list = data.list.find((item) => item.attachmentType == "1");
+      if (list) {
+        this.currentLivePic = resolveImgUrl(list.urlPath);
       }
     });
   },
@@ -113,14 +107,17 @@ export default {
         duration: 0,
       });
       try {
-        const file = await takeScreenshot({ selector: "#edit-live__wrap", type: 'dataUrl'});
+        const file = await takeScreenshot({
+          selector: "#edit-live__wrap",
+          type: "dataUrl",
+        });
         const form = new FormData();
         form.append("base64", file);
         form.append("shopsId", this.$route.query.shopId);
         form.append("attachmentType", 4);
         await appUploadContentAttachmentBase64(form);
         Notify({ type: "success", message: "创建成功" });
-        this.$refs.putRecordPopup.open()
+        this.$refs.putRecordPopup.open();
       } catch (e) {
         Notify({ type: "danger", message: "创建失败" });
       }

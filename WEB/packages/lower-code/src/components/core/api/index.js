@@ -35,3 +35,4 @@ export const appGetCustomerInfoByUserNameAPI = wrapRequest('/logo/app/getCustome
 export const appQuerySimpleTemplateByRandAPI = wrapRequest('/logo/app/querySimpleTemplateByRandAPI', false)
 export const appUploadShopsAttachmentAPI = wrapRequest('/logo/app/uploadShopsAttachmentAPI', true)
 export const appUpdateShopsFilingsStatusAPI = wrapRequest('/logo/app/updateShopsFilingsStatusAPI', true)
+export const appGetShopsInfoByIdAPI = wrapRequest('/logo/app/getShopsInfoByIdAPI', false)
