@@ -85,4 +85,11 @@ public interface ShopsInfoService {
          */
         ShopsInfoDTO getShopsInfoByIdAPI(Long shopsId);
 
+        /**
+         * 根据ID查询身份证信息
+         * @param id
+         * @return
+         */
+        ShopsInfoDTO getShopsIdCardByIdAPI(Long id);
+
 }

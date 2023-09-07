@@ -73,4 +73,11 @@ public interface ShopsInfoMapper {
          */
         ShopsInfoDTO getShopsInfoByIndex(ShopsInfoDTO bean);
 
+        /**
+         * 根据ID查询身份证信息
+         * @param id
+         * @return
+         */
+        ShopsInfoDTO getShopsIdCardByIdAPI(Long id);
+
 }

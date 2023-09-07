@@ -362,6 +362,21 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 根据ID查询身份证原图信息
+     * @param id
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据ID查询身份证原图信息")
+    @RequestMapping(value = "/getShopsIdCardByIdAPI",method = RequestMethod.GET)
+    public ResponseResult<Object> getShopsIdCardByIdAPI(@RequestParam("id") Long id){
+        Preconditions.checkNotNull(id,"参数：id,不能为空");
+        ShopsInfoDTO res = shopsInfoService.getShopsIdCardByIdAPI(id);
+        ShopsInfoIdCardPhotoVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoIdCardPhotoVO.class);
+        return ResponseResult.success(vo);
+    }
+
+
+    /**
      * APP 根据商铺Id获取商铺详情信API
      * @return
      */

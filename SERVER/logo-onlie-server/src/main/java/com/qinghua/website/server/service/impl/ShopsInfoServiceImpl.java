@@ -270,4 +270,15 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
         return res;
     }
 
+    /**
+     * 根据ID查询身份证信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ShopsInfoDTO getShopsIdCardByIdAPI(Long id){
+        ShopsInfoDTO res = shopsInfoMapper.getShopsIdCardByIdAPI(id);
+        return res;
+    }
+
 }

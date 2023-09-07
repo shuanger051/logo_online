@@ -71,10 +71,24 @@
         update_time
     </sql>
 
+    <!-- 优化查询 -->
+    <sql id="Base_Column_List_IdCard_Info">
+        id,
+        handled_by_photo_front,
+        handled_by_photo_opposite
+    </sql>
+
     <!--  通过ID来获取对象 -->
     <select id="getShopsInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT
             <include refid="Base_Column_List"/>
+        FROM t_shops_info WHERE  id =#{id}
+    </select>
+
+    <!-- 根据ID查询身份证照片信息 -->
+    <select id="getShopsIdCardByIdAPI" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List_IdCard_Info"/>
         FROM t_shops_info WHERE  id =#{id}
     </select>
 
