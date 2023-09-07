@@ -10,6 +10,7 @@
         <result column="attachment_name" property="attachmentName" jdbcType="VARCHAR"/>
         <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
         <result column="attachment_type" property="attachmentType" jdbcType="VARCHAR"/>
+        <result column="compress_flag" property="compressFlag" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -22,6 +23,7 @@
         attachment_name,
         file_name,
         attachment_type,
+        compress_flag,
         create_time,
         update_time
     </sql>
@@ -68,6 +70,7 @@
             <if test="attachmentName !=null and attachmentName !=''">attachment_name = #{attachmentName},</if>
             <if test="fileName !=null and fileName !=''">file_name = #{fileName},</if>
             <if test="attachmentType !=null and attachmentType !=''">attachment_type = #{attachmentType},</if>
+            <if test="attachmentType !=null and attachmentType !=''">compress_flag = '1',</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -82,6 +85,7 @@
             <if test="attachmentName !=null and attachmentName !=''">attachment_name,</if>
             <if test="fileName !=null and fileName !=''">file_name,</if>
             <if test="attachmentType !=null and attachmentType !=''">attachment_type,</if>
+            <if test="attachmentType !=null and attachmentType !=''">compress_flag,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -90,6 +94,7 @@
             <if test="attachmentName !=null and attachmentName !=''">#{attachmentName},</if>
             <if test="fileName !=null and fileName !=''">#{fileName},</if>
             <if test="attachmentType !=null and attachmentType !=''">#{attachmentType},</if>
+            <if test="attachmentType !=null and attachmentType !=''">'1',</if>
             NOW()
         </trim>
     </insert>
@@ -107,6 +112,7 @@
             attachment_name,
             file_name,
             attachment_type,
+            compress_flag,
             create_time
         ) values
         <foreach collection="list" item="item" index="index" separator=",">
@@ -116,6 +122,7 @@
                 #{item.attachmentName},
                 #{item.fileName},
                 #{item.attachmentType},
+                '1',
                 NOW()
             )
         </foreach>

@@ -10,6 +10,7 @@
         <result column="logo_name" property="logoName" jdbcType="VARCHAR"/>
         <result column="logo_file_path" property="logoFilePath" jdbcType="VARCHAR"/>
         <result column="logo_file_name" property="logoFileName" jdbcType="VARCHAR"/>
+        <result column="compress_flag" property="compressFlag" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -22,6 +23,7 @@
         logo_name,
         logo_file_path,
         logo_file_name,
+        compress_flag,
         create_time,
         update_time
     </sql>
@@ -64,6 +66,7 @@
             <if test="logoName !=null and logoName !=''">logo_name = #{logoName},</if>
             <if test="logoFilePath !=null and logoFilePath !=''">logo_file_path = #{logoFilePath},</if>
             <if test="logoFileName !=null and logoFileName !=''">logo_file_name = #{logoFileName},</if>
+            <if test="logoFileName !=null and logoFileName !=''">compress_flag = '1',</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -78,6 +81,7 @@
             <if test="logoName !=null and logoName !=''">logo_name,</if>
             <if test="logoFilePath !=null and logoFilePath !=''">logo_file_path,</if>
             <if test="logoFileName !=null and logoFileName !=''">logo_file_name,</if>
+            <if test="logoFileName !=null and logoFileName !=''">compress_flag,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -86,6 +90,7 @@
             <if test="logoName !=null and logoName !=''">#{logoName},</if>
             <if test="logoFilePath !=null and logoFilePath !=''">#{logoFilePath},</if>
             <if test="logoFileName !=null and logoFileName !=''">#{logoFileName},</if>
+            <if test="logoFileName !=null and logoFileName !=''">'1',</if>
             NOW()
         </trim>
     </insert>
