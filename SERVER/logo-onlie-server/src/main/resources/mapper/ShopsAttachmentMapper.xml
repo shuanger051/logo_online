@@ -128,6 +128,31 @@
         </foreach>
     </insert>
 
+    <insert id="saveShopsAttachmentByListForUpdate" parameterType="java.util.List">
+        insert into t_shops_attachment (
+        shops_id,
+        attachment_path,
+        attachment_name,
+        file_name,
+        attachment_type,
+        compress_flag,
+        create_time,
+        update_time
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.shopsId},
+            #{item.attachmentPath},
+            #{item.attachmentName},
+            #{item.fileName},
+            #{item.attachmentType},
+            '1',
+            NOW(),
+            NOW()
+            )
+        </foreach>
+    </insert>
+
     <!-- 根据shopsId删除 -->
     <delete id="deleteShopsAttachmentByShopsId" parameterType="java.lang.Long">
         DELETE FROM t_shops_attachment WHERE shops_id = #{shopsId}
