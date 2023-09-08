@@ -690,6 +690,7 @@ public class OpenAPIAPPController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
+
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "shops/" + frontPath).mkdirs();
 
@@ -790,6 +791,60 @@ public class OpenAPIAPPController {
 
                 //更新下载次数
                 attachmentService.updateDownloadTimes(attachment.getId());
+            }else{
+                throw new BizException(SysConstant.ERROR_GET_ATTACHMENT_INFO_FAIL);
+            }
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_DOWNLOAD_FAIL);
+        }
+
+    }
+
+    /**
+     * APP 预览文章附件API
+     * @param attachmentName
+     * @param request
+     * @param response
+     * @return
+     */
+    @LogAnnotation(logType = "preview",logDesc = "APP 预览文章附件API")
+    @RequestMapping(value = "/previewContentAttachment", method = RequestMethod.GET)
+    public void previewContentAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request, HttpServletResponse response) {
+
+        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
+
+        try {
+            ContentAttachmentDTO attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
+            if(null != attachment && null != attachment.getAttachmentPath() && null != attachment.getAttachmentName()){
+                String relativeFileName = attachment.getAttachmentPath() +"\\"+ attachment.getAttachmentName();
+
+                String fullName = savePath + "content/" + relativeFileName;
+                File file = new File(fullName);
+                FileInputStream fileInputStream = new FileInputStream(file);
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+                response.reset();
+                response.setCharacterEncoding("utf-8");
+                if(null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("pdf")){
+                    response.setContentType("application/pdf");
+                    response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
+                }else if (null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("docx")){
+                    response.setContentType("application/msword");
+                    response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
+                }else if(null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("txt")){
+                    response.setContentType("text/plain");
+                    response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
+                }
+
+                response.setHeader("Content-Length", String.valueOf(file.length()));
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
+                byte[] bytes = new byte[1024];
+                int len;
+                while ((len = bufferedInputStream.read(bytes)) > 0) {
+                    bufferedOutputStream.write(bytes, 0, len);
+                }
+                bufferedInputStream.close();
+                bufferedOutputStream.flush();
+
             }else{
                 throw new BizException(SysConstant.ERROR_GET_ATTACHMENT_INFO_FAIL);
             }

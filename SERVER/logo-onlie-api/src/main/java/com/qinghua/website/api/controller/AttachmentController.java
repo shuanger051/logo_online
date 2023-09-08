@@ -79,6 +79,11 @@ public class AttachmentController {
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
             String fileType = fileName.split("\\.")[1];
+
+            if(null != fileType && !fileType.toLowerCase().equals("pdf") && !fileType.toLowerCase().equals("docx") && !fileType.toLowerCase().equals("txt")){
+                throw new BizException("文章附件仅支持.PDF/.DOCX/.TXT这些格式文件",SysConstant.SYSTEM_ERROR_400.getCode());
+            }
+
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File(savePath + "content/" + frontPath).mkdirs();
 
@@ -107,7 +112,11 @@ public class AttachmentController {
             fileVO.setUrlPath(urlPath + "content/" + relativeFileName);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
-            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            if (exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_400.getCode());
+            }else{
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
         }
     }
 
