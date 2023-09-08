@@ -119,6 +119,7 @@ export default {
         Notify({ type: "success", message: "创建成功" });
         this.$refs.putRecordPopup.open();
       } catch (e) {
+        console.log(e, 888)
         Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();
