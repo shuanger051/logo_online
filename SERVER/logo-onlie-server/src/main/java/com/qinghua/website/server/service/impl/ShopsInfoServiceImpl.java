@@ -189,7 +189,7 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
         //根据shopId删除表中历史数据
         attachmentMapper.deleteShopsAttachmentByShopsId(bean.getId());
         //保存新的附件信息数据
-        attachmentMapper.saveShopsAttachmentByList(list);
+        attachmentMapper.saveShopsAttachmentByListForUpdate(list);
     }
 
     /**

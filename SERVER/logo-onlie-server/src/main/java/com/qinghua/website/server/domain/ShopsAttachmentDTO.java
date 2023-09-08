@@ -34,6 +34,11 @@ public class ShopsAttachmentDTO extends BaseDTO {
 	private String attachmentType;
 
 	/**
+	 * 是否生成压缩图：0-否，1-是
+	 */
+	private String compressFlag;
+
+	/**
 	 * 文件预览映射路径
 	 */
 	private String urlPath;

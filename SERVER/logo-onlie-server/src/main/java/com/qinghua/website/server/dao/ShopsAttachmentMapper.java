@@ -72,6 +72,8 @@ public interface ShopsAttachmentMapper {
          */
         void saveShopsAttachmentByList(List<ShopsAttachmentDTO> list);
 
+        void saveShopsAttachmentByListForUpdate(List<ShopsAttachmentDTO> list);
+
         /**
          * 根据商铺ID删除附件
          * @param shopsId

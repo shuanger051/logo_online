@@ -390,7 +390,9 @@ public class OpenAPIAPPController {
             for (ShopsAttachmentDTO item: res.getList()) {
                 String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
                 item.setUrlPath(urlPath+"shops/" + relativeFileName);
-                item.setCompressUrlPath(urlPath+"shops/" + item.getAttachmentPath() + "/" + item.getAttachmentName().split("\\.")[0]+"_COMPRESS"+"."+item.getAttachmentName().split("\\.")[1]);
+                if(null != item.getCompressFlag() && "1".equals(item.getCompressFlag())){
+                    item.setCompressUrlPath(urlPath+"shops/" + item.getAttachmentPath() + "/" + item.getAttachmentName().split("\\.")[0]+"_COMPRESS"+"."+item.getAttachmentName().split("\\.")[1]);
+                }
             }
         }
 
@@ -608,7 +610,9 @@ public class OpenAPIAPPController {
         List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
         logoInfoVOList.forEach(item->{
             item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName());
-            item.setCompressUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+item.getLogoFileName().split("\\.")[1]);
+            if(null != item.getCompressFlag() && "1".equals(item.getCompressFlag())){
+                item.setCompressUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+item.getLogoFileName().split("\\.")[1]);
+            }
         });
         PageListVO<LogoInfoVO> resp = new PageListVO<>();
         resp.setList(logoInfoVOList);
@@ -629,7 +633,9 @@ public class OpenAPIAPPController {
             LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
             String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
             logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
-            logoInfoVO.setCompressUrlPath(urlPath+"logo/"+logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+logoInfoVO.getLogoFileName().split("\\.")[1]);
+            if(null != res.getCompressFlag() && "1".equals(res.getCompressFlag())){
+                logoInfoVO.setCompressUrlPath(urlPath+"logo/"+logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+logoInfoVO.getLogoFileName().split("\\.")[1]);
+            }
             return ResponseResult.success(logoInfoVO);
         }else{
            return ResponseResult.success("未查询到数据");
@@ -802,8 +808,8 @@ public class OpenAPIAPPController {
      * @return
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API")
-    @RequestMapping(value = "/uploadContentAttachmentBase64", method = RequestMethod.POST)
-    public ResponseResult<Object> uploadContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
+    @RequestMapping(value = "/uploadShopsContentAttachmentBase64API", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadShopsContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
         Preconditions.checkNotNull(base64,"Base64String 不能为空");
 
         CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
