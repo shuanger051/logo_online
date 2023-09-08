@@ -808,8 +808,8 @@ public class OpenAPIAPPController {
      * @return
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API")
-    @RequestMapping(value = "/uploadContentAttachmentBase64", method = RequestMethod.POST)
-    public ResponseResult<Object> uploadContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
+    @RequestMapping(value = "/uploadShopsContentAttachmentBase64API", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadShopsContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
         Preconditions.checkNotNull(base64,"Base64String 不能为空");
 
         CommonsMultipartFile multipartFile = base64toMultipartFile(base64);

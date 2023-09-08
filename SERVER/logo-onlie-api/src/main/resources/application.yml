@@ -13,7 +13,9 @@ server:
   servlet:
     context-path: /logo
   tomcat:
-    max-http-header-size: 8192
+    max-http-post-size: -1
+    max-http-header-size: -1
+    max-http-form-post-size: -1
 
 #HEALTH CHECK CONFIG
 management:
