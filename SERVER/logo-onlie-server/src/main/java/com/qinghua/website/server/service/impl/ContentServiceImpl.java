@@ -114,13 +114,12 @@ public class ContentServiceImpl implements ContentService {
         Preconditions.checkNotNull(id, "参数:ID不能为空");
         //删除文章信息
         contentMapper.deleteContentById(id);
-        //关联删除附件信息
-        //移除服务器上传的附件
+        //关联删除附件信息,移除服务器上传的附件
         List<ContentAttachmentDTO> attachmentList = attachmentMapper.getAttachmentListByContentId(id);
         if(null != attachmentList && attachmentList.size() > 0){
             for(int i=0;i<attachmentList.size();i++){
                 ContentAttachmentDTO attachment = attachmentList.get(i);
-                String filePath = savePath + "content/" + File.separator + attachment.getAttachmentPath() + "\\" + attachment.getAttachmentName();
+                String filePath = savePath + "content/" + attachment.getAttachmentPath() + File.separator + attachment.getAttachmentName();
                 FileUtils.deleteFile(filePath);
             }
         }

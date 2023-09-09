@@ -78,7 +78,8 @@ public class AttachmentController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
 
             if(null != fileType && !fileType.toLowerCase().equals("pdf") && !fileType.toLowerCase().equals("docx") && !fileType.toLowerCase().equals("txt")){
                 throw new BizException("文章附件仅支持.PDF/.DOCX/.TXT这些格式文件",SysConstant.SYSTEM_ERROR_400.getCode());
@@ -137,7 +138,7 @@ public class AttachmentController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "shops/" + frontPath).mkdirs();
 
@@ -200,7 +201,7 @@ public class AttachmentController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "material/" + frontPath).mkdirs();
 
@@ -253,7 +254,7 @@ public class AttachmentController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "logo/" + frontPath).mkdirs();
 

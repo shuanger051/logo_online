@@ -391,7 +391,7 @@ public class OpenAPIAPPController {
                 String relativeFileName = item.getAttachmentPath()  + "/" +  item.getAttachmentName() ;
                 item.setUrlPath(urlPath+"shops/" + relativeFileName);
                 if(null != item.getCompressFlag() && "1".equals(item.getCompressFlag())){
-                    item.setCompressUrlPath(urlPath+"shops/" + item.getAttachmentPath() + "/" + item.getAttachmentName().split("\\.")[0]+"_COMPRESS"+"."+item.getAttachmentName().split("\\.")[1]);
+                    item.setCompressUrlPath(urlPath+"shops/" + item.getAttachmentPath() + "/" + item.getAttachmentName().substring(0,item.getAttachmentName().lastIndexOf("."))+"_COMPRESS"+"."+item.getAttachmentName().substring(item.getAttachmentName().lastIndexOf(".")+1));
                 }
             }
         }
@@ -473,7 +473,7 @@ public class OpenAPIAPPController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "logo/" + frontPath).mkdirs();
 
@@ -545,7 +545,7 @@ public class OpenAPIAPPController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "logo/" + frontPath).mkdirs();
 
@@ -611,7 +611,7 @@ public class OpenAPIAPPController {
         logoInfoVOList.forEach(item->{
             item.setUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName());
             if(null != item.getCompressFlag() && "1".equals(item.getCompressFlag())){
-                item.setCompressUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+item.getLogoFileName().split("\\.")[1]);
+                item.setCompressUrlPath(urlPath+"logo/"+item.getLogoFilePath()+"/"+item.getLogoFileName().substring(0,item.getLogoFileName().lastIndexOf("."))+"_COMPRESS"+"."+item.getLogoFileName().substring(item.getLogoFileName().lastIndexOf(".")+1));
             }
         });
         PageListVO<LogoInfoVO> resp = new PageListVO<>();
@@ -621,7 +621,7 @@ public class OpenAPIAPPController {
     }
 
     /**
-     * APP 根据商铺ID获取店招信息API
+     * APP 根据商铺ID获取店getLogoInfoByShopsIdAPI招信息API
      * @param shopsId
      * @return
      */
@@ -634,7 +634,7 @@ public class OpenAPIAPPController {
             String relativeFileName = logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName();
             logoInfoVO.setUrlPath(urlPath+"logo/"+relativeFileName);
             if(null != res.getCompressFlag() && "1".equals(res.getCompressFlag())){
-                logoInfoVO.setCompressUrlPath(urlPath+"logo/"+logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName().split("\\.")[0]+"_COMPRESS"+"."+logoInfoVO.getLogoFileName().split("\\.")[1]);
+                logoInfoVO.setCompressUrlPath(urlPath+"logo/"+logoInfoVO.getLogoFilePath() + "/" + logoInfoVO.getLogoFileName().substring(0,logoInfoVO.getLogoFileName().lastIndexOf("."))+"_COMPRESS"+"."+logoInfoVO.getLogoFileName().substring(logoInfoVO.getLogoFileName().lastIndexOf(".")+1));
             }
             return ResponseResult.success(logoInfoVO);
         }else{
@@ -689,7 +689,7 @@ public class OpenAPIAPPController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
 
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "shops/" + frontPath).mkdirs();
@@ -824,13 +824,16 @@ public class OpenAPIAPPController {
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
                 response.reset();
                 response.setCharacterEncoding("utf-8");
-                if(null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("pdf")){
+
+                String fileType = attachment.getAttachmentName().substring(attachment.getAttachmentName().lastIndexOf(".")+1);
+
+                if(null != attachment.getAttachmentName() && fileType.toLowerCase().equals("pdf")){
                     response.setContentType("application/pdf");
                     response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
-                }else if (null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("docx")){
+                }else if (null != attachment.getAttachmentName() && fileType.toLowerCase().equals("docx")){
                     response.setContentType("application/msword");
                     response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
-                }else if(null != attachment.getAttachmentName() && attachment.getAttachmentName().split("\\.")[1].toLowerCase().equals("txt")){
+                }else if(null != attachment.getAttachmentName() && fileType.toLowerCase().equals("txt")){
                     response.setContentType("text/plain");
                     response.setHeader("Content-Disposition", "inline;filename=" + URLEncoder.encode(file.getName(), "utf-8"));
                 }
@@ -875,7 +878,7 @@ public class OpenAPIAPPController {
 
             String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
             String fileName = multipartFile.getOriginalFilename();
-            String fileType = fileName.split("\\.")[1];
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             boolean mkdirs = new File( savePath + "shops/" + frontPath).mkdirs();
 
