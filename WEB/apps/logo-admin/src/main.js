@@ -9,12 +9,11 @@ import "animate.css/source/animate.css";
 import Plugins from "@/plugins";
 import { initI18n } from "@/utils/i18n";
 import bootstrap from "@/bootstrap";
-import "moment/locale/zh-cn";
 import * as axios from "@/utils/request";
 import adminConfig from "core/adminConfig";
 
 const router = initRouter(store.state.setting.asyncRoutes);
-const i18n = initI18n("CN", "US");
+const i18n = initI18n("CN");
 
 // 初始化编辑器配置
 adminConfig.install(({ initI18n, initRequest, initMode, initRouter, initSaveSucessJump }) => {

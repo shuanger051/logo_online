@@ -6,7 +6,7 @@ import evnetBus from "../core/eventBus";
 // 默认配置
 axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = process.env.VUE_APP_API_PREFIX;
 
 // 请求拦截
 axios.interceptors.request.use(function onFulfilled(config) {

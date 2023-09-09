@@ -1,11 +1,11 @@
 <template>
   <div class="page-wrap">
-    <van-empty v-if="!detail.id"></van-empty>
+    <van-empty v-if="!detail.id" description="文章详情找不到了"></van-empty>
     <template v-else>
       <h2 class="title">{{ article.title }}</h2>
       <div class="attribute">
         <span>编辑：{{ article.author }}</span>
-        <span>{{ article.updateTime | date }}</span>
+        <span>{{ updateTime | date }}</span>
       </div>
       <!-- 文章内容 -->
       <div class="content" v-html="article.content"></div>
@@ -39,16 +39,20 @@ export default {
     // 附件
     attachment() {
       const { list = [] } = this.detail;
+      const downloadUrl = [
+        process.env.VUE_APP_API_PREFIX,
+        "logo/app/downloadContentAttachment",
+      ].join("/");
       return list.map((item) => {
         // 拼装下载地址
-        item.downloadUrl = [
-          process.env.VUE_APP_API_BASE_URL,
-          process.env.VUE_APP_API_PREFIX,
-          item.attachmentPath,
-          item.attachmentName,
-        ].join("/");
+        item.downloadUrl = `${downloadUrl}?attachmentName=${item.attachmentName}`;
         return item;
       });
+    },
+    // 时间
+    updateTime() {
+      const { contentExt } = this.detail;
+      return contentExt.updateTime || contentExt.createTime;
     },
   },
   created() {

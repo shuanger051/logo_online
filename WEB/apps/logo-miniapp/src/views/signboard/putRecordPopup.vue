@@ -37,10 +37,9 @@
         </template>
       </van-cell>
       <van-form @submit="onSubmit" style="padding: 0 10px">
-        <van-checkbox v-model="form.checked" fit="contain" required
-          >本人承诺所提交信息真实、无误，如有信息不实，本人愿承诺所有责任</van-checkbox
-        >
-
+        <van-checkbox v-model="form.checked" fit="contain" required>
+          我已仔细阅读《杭州市户外广告设施和招牌指示牌管理条例》和《户外招牌设置管理规范》，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
+        </van-checkbox>
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit"
             >确认</van-button
@@ -97,7 +96,7 @@ export default {
       appGetShopsInfoByIdAPI({
         shopsId: this.$route.query.shopId,
       })
-        .then(({data}) => {
+        .then(({ data }) => {
           // 商户信息
           const items = [];
           data.list.forEach((el) => {

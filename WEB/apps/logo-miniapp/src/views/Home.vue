@@ -22,7 +22,7 @@
           icon-prefix="iconfont icon"
           icon="zhishiku"
           text="法律法规"
-          to="/article/1/detail?pid=483"
+          to="/article/3/detail?pid=486"
         />
         <van-grid-item
           icon-prefix="iconfont icon"

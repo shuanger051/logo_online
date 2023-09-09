@@ -40,6 +40,17 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="12">
+        <a-form-model-item label="发布时间" prop="contentExt.releaseDate">
+          <a-date-picker
+            show-time
+            placeholder="请选择"
+            format="YYYY-MM-DD HH:mm:ss"
+            v-model="formData.contentExt.releaseDate"
+            style="width: 100%"
+          />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12">
         <a-form-model-item label="摘要" prop="contentExt.description">
           <a-input
             placeholder="请输入"
@@ -89,6 +100,7 @@ import { quillEditor } from "vue-quill-editor";
 import { reactive, ref } from "vue";
 import { afficheService } from "@/services";
 import { message } from "ant-design-vue";
+import moment from "moment";
 export default {
   components: { quillEditor },
   props: {
@@ -104,6 +116,7 @@ export default {
         title: [{ required: true, message: "请输入" }],
         shortTitle: [{ required: true, message: "请输入" }],
         author: [{ required: true, message: "请输入" }],
+        releaseDate: [{ required: true, message: "请选择" }],
         isRecommend: [{ required: true, message: "请输入" }],
         description: [{ required: true, message: "请输入" }],
         origin: [{ required: true, message: "请输入" }],
@@ -129,9 +142,9 @@ export default {
     }
 
     // 新增
-    function saveContent() {
+    function saveContent(data) {
       return afficheService
-        .saveContent(formData)
+        .saveContent(data)
         .then(() => {
           message.success("新增成功");
         })
@@ -142,9 +155,9 @@ export default {
     }
 
     // 编辑
-    function updateContent() {
+    function updateContent(data) {
       return afficheService
-        .updateContentById(formData)
+        .updateContentById(data)
         .then(() => {
           message.success("保存成功");
         })
@@ -162,10 +175,17 @@ export default {
           .validate()
           .then((valid) => {
             if (valid) {
+              // 处理日期格式
+              let data = _.cloneDeep(formData);
+              let { contentExt } = data;
+              contentExt.releaseDate = moment(contentExt.releaseDate).format(
+                "YYYY-MM-DD HH:mm:ss"
+              );
+
               // 有id则为更新
-              if (formData.id) return updateContent();
+              if (formData.id) return updateContent(data);
               // 其他为新增
-              else return saveContent();
+              else return saveContent(data);
             } else return Promise.reject();
           })
       );
