@@ -769,7 +769,7 @@ public class OpenAPIAPPController {
         try {
             ContentAttachmentDTO attachment = attachmentService.getAttachmentByAttachmentName(attachmentName);
             if(null != attachment && null != attachment.getAttachmentPath() && null != attachment.getAttachmentName()){
-                String relativeFileName = attachment.getAttachmentPath() +"\\"+ attachment.getAttachmentName();
+                String relativeFileName = attachment.getAttachmentPath() + File.separator + attachment.getAttachmentName();
 
                 String fullName = savePath + "content/" + relativeFileName;
                 File file = new File(fullName);
