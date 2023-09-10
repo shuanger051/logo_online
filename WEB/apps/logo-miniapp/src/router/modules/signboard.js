@@ -36,6 +36,12 @@ const routes = [
     component: () => import("@/views/signboard/editLive"),
   },
   {
+    path: "editConfirm",
+    name: 'editConfirm',
+    meta: { title: "备案确认" },
+    component: () => import("@/views/signboard/editConfirm"),
+  },
+  {
     path: "intelligenceTemplate",
     name: 'intelligenceTemplate',
     meta: { title: "模板选择" },
@@ -50,6 +56,7 @@ const routes = [
   {
     path: "/editSignboard/:id?",
     name: "editSignboard",
+    meta: { title: "店招编辑" },
     component: () =>
       import("@/views/signboard/editSignboard.vue"),
   },

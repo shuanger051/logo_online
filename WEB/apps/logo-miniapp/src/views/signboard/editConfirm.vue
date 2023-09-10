@@ -1,13 +1,6 @@
 <template>
-  <van-popup
-    class="popup-login"
-    v-model="show"
-    :closeable="true"
-    position="bottom"
-    :close-on-click-overlay="false"
-  >
-    <van-nav-bar title="备案确认" />
-    <van-panel>
+  <div class="page-wrap">
+    <van-form @submit="onSubmit">
       <van-cell
         title="行业类型"
         :value="shopData.industryType | dict(DictIndustryType)"
@@ -36,18 +29,26 @@
           />
         </template>
       </van-cell>
-      <van-form @submit="onSubmit" style="padding: 0 10px">
-        <van-checkbox v-model="form.checked" fit="contain" required>
-          我已仔细阅读《杭州市户外广告设施和招牌指示牌管理条例》和《户外招牌设置管理规范》，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
+      <submit-bar>
+        <van-checkbox
+          v-model="form.checked"
+          slot="tips"
+          name="checked"
+          fit="contain"
+          required
+        >
+          我已仔细阅读
+          <span class="agreement" @click="onRead('tiaoli')"
+            >《杭州市户外广告设施和招牌指示牌管理条例》</span
+          >和
+          <span class="agreement" @click="onRead('guifang')">《户外招牌设置管理规范》</span
+          >，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
         </van-checkbox>
-        <div style="margin: 16px">
-          <van-button round block type="info" native-type="submit"
-            >确认</van-button
-          >
-        </div>
-      </van-form>
-    </van-panel>
-  </van-popup>
+        <van-button block type="info" native-type="submit">确认</van-button>
+      </submit-bar>
+      <agreement-popup ref="agree" />
+    </van-form>
+  </div>
 </template>
 <script>
 import store from "@/store";
@@ -61,8 +62,10 @@ import { mapDictObject } from "@/store/helpers";
 import { mapState } from "vuex";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { Notify } from "vant";
+import agreementPopup from "./agreementPopup.vue";
 
 export default {
+  components: { agreementPopup },
   data() {
     return {
       show: false,
@@ -89,6 +92,7 @@ export default {
     this.$store.dispatch("cache/queryDictByKey", {
       keys: ["bizYears", "industryType", "shopsType"],
     });
+    this.queryShopList();
   },
   methods: {
     // 查询商铺信息
@@ -136,14 +140,20 @@ export default {
         });
       }, 1000);
     },
-    open() {
-      this.form = {};
-      this.shopData = {};
-      this.imageList = [];
-      this.show = true;
-      this.queryShopList();
+    onRead(type) {
+      this.$refs.agree.onShow({ type });
     },
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+.page-wrap {
+  padding: 12px 0 60px;
+  background-color: @gray-2;
+  min-height: 100%;
+  box-sizing: border-box;
+  .agreement{
+    color: @blue;
+  }
+}
+</style>

@@ -29,7 +29,6 @@
         <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
       </div>
     </div>
-    <putRecordPopup ref="putRecordPopup" />
   </div>
 </template>
 <script>
@@ -41,7 +40,6 @@ import {
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
 import shape from "core/support/shape";
-import putRecordPopup from "./putRecordPopup";
 import { Toast } from "vant";
 import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
@@ -49,7 +47,6 @@ export default {
   store,
   components: {
     shape,
-    putRecordPopup,
   },
   data() {
     return {
@@ -112,14 +109,18 @@ export default {
           type: "dataUrl",
         });
         const form = new FormData();
+        const { shopId } = this.$route.query;
         form.append("base64", file);
-        form.append("shopsId", this.$route.query.shopId);
+        form.append("shopsId", shopId);
         form.append("attachmentType", 4);
         await appUploadContentAttachmentBase64(form);
         Notify({ type: "success", message: "创建成功" });
-        this.$refs.putRecordPopup.open();
+        this.$router.push({
+          path: "/signboard/editConfirm",
+          query: { shopId },
+        });
       } catch (e) {
-        console.log(e, 888)
+        console.log(e, 888);
         Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();

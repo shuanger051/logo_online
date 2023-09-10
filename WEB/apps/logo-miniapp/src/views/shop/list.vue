@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrap">
-    <van-collapse v-if="list.length" v-model="activeId">
+    <van-collapse v-if="list.length" v-model="activeId" :accordion="true">
       <van-collapse-item
         v-for="item in list"
         :key="item.id"
@@ -64,6 +64,8 @@ export default {
 .page-wrap {
   padding: 12px 0;
   background-color: @gray-2;
+  min-height: 100%;
+  box-sizing: border-box;
   :deep(.van-empty) {
     &__bottom {
       .van-button {
