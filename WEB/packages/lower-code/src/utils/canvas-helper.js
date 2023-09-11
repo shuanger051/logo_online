@@ -74,7 +74,7 @@ export function takeScreenshot ({
 export function downLoadCanvas (canvas, name) {
   var a = document.createElement('a')
   a.href = canvas.toDataURL()
-  //a.download = name
+  a.download = name
   a.click()
 }
 
