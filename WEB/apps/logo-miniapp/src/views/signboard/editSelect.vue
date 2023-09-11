@@ -9,7 +9,7 @@
       <div
         class="line-desing"
         @click="
-          $router.push(`/signboard/selfEdit?shopId=${$route.query.shopId}`)
+          $router.push(`/signboard/attribute?shopId=${$route.query.shopId}`)
         "
       >
         <span>菜单式<br/>在线设计</span>
