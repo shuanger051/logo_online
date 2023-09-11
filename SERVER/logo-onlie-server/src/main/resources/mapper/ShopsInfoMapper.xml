@@ -8,6 +8,7 @@
         <result column="merchant_id" property="merchantId" jdbcType="BIGINT"/>
         <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="address_detail" property="addressDetail" jdbcType="VARCHAR"/>
         <result column="biz_years" property="bizYears" jdbcType="VARCHAR"/>
         <result column="industry_type" property="industryType" jdbcType="VARCHAR"/>
         <result column="is_old_shops" property="isOldShops" jdbcType="VARCHAR"/>
@@ -33,6 +34,7 @@
         merchant_id,
         shop_name,
         address,
+        address_detail,
         biz_years,
         industry_type,
         is_old_shops,
@@ -56,6 +58,7 @@
         merchant_id,
         shop_name,
         address,
+        address_detail,
         biz_years,
         industry_type,
         is_old_shops,
@@ -99,7 +102,6 @@
         FROM t_shops_info
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="shopName !=null and shopName !=''">AND shop_name like concat('%',#{shopName},'%')</if>
-            <if test="address !=null and address !=''">AND address = #{address}</if>
             <if test="bizYears !=null and bizYears !=''">AND biz_years = #{bizYears}</if>
             <if test="industryType !=null and industryType !=''">AND industry_type = #{industryType}</if>
             <if test="isOldShops !=null and isOldShops !=''">AND is_old_shops = #{isOldShops}</if>
@@ -150,6 +152,7 @@
             <if test="merchantId !=null">merchant_id = #{merchantId},</if>
             <if test="shopName !=null and shopName !=''">shop_name = #{shopName},</if>
             <if test="address !=null and address !=''">address = #{address},</if>
+            <if test="addressDetail !=null and addressDetail !=''">address_detail = #{addressDetail},</if>
             <if test="bizYears !=null and bizYears !=''">biz_years = #{bizYears},</if>
             <if test="industryType !=null and industryType !=''">industry_type = #{industryType},</if>
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops = #{isOldShops},</if>
@@ -184,6 +187,7 @@
             <if test="merchantId !=null">merchant_id,</if>
             <if test="shopName !=null and shopName !=''">shop_name,</if>
             <if test="address !=null and address !=''">address,</if>
+            <if test="addressDetail !=null and addressDetail !=''">address_detail,</if>
             <if test="bizYears !=null and bizYears !=''">biz_years,</if>
             <if test="industryType !=null and industryType !=''">industry_type,</if>
             <if test="isOldShops !=null and isOldShops !=''">is_old_shops,</if>
@@ -203,6 +207,7 @@
             <if test="merchantId !=null">#{merchantId},</if>
             <if test="shopName !=null and shopName !=''">#{shopName},</if>
             <if test="address !=null and address !=''">#{address},</if>
+            <if test="addressDetail !=null and addressDetail !=''">#{addressDetail},</if>
             <if test="bizYears !=null and bizYears !=''">#{bizYears},</if>
             <if test="industryType !=null and industryType !=''">#{industryType},</if>
             <if test="isOldShops !=null and isOldShops !=''">#{isOldShops},</if>

@@ -89,6 +89,8 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/saveMerchantInfo")
     public ResponseResult<Object> saveMerchantInfo(@Validated @RequestBody MerchantInfoSaveIO bean){
         MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
+        merchantInfoDTO.setLogoWidth(Double.parseDouble(bean.getLogoWidth()+""));
+        merchantInfoDTO.setLogoHeight(Double.parseDouble(bean.getLogoHeight()+""));
         if(null != merchantInfoDTO && null != merchantInfoDTO.getPhone()){
             merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
         }
@@ -110,6 +112,8 @@ public class MerchantInfoController {
     @RequiresPermissions("/merchantInfo/updateMerchantInfoById")
     public ResponseResult<Object> updateMerchantInfoById(@Validated @RequestBody MerchantInfoUpdateIO bean){
         MerchantInfoDTO merchantInfoDTO = BeanToolsUtil.copyOrReturnNull(bean, MerchantInfoDTO.class);
+        merchantInfoDTO.setLogoWidth(Double.parseDouble(bean.getLogoWidth()+""));
+        merchantInfoDTO.setLogoHeight(Double.parseDouble(bean.getLogoHeight()+""));
         if(null != merchantInfoDTO && null != merchantInfoDTO.getPhone()){
             merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
         }
