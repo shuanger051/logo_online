@@ -100,6 +100,8 @@ public class ShopsInfoVO {
      */
     private Long logoNum;
 
+    private String logoName;
+
     private List<ShopsAttachmentVO> list;
 
     @Override

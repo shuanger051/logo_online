@@ -113,6 +113,8 @@ public class ShopsInfoDTO extends BaseDTO {
 	 */
 	private Long logoNum;
 
+	private String logoName;
+
 	private List<ShopsAttachmentDTO> list;
 
 	@Override

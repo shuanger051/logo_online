@@ -1,6 +1,8 @@
 package com.qinghua.website.api.controller.vo;
 
 import lombok.Data;
+
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -92,6 +94,11 @@ public class ShopsInfoAPIVO {
      * 店招个数
      */
     private Long logoNum;
+
+    /**
+     * 店招个数
+     */
+    private String logoName;
 
     private List<ShopsAttachmentVO> list;
 

@@ -116,6 +116,12 @@ public class ShopsInfoAPISaveIO {
     private Long logoNum;
 
     /**
+     * 店招个数
+     */
+    @Size(max = 50,message = "店招名称不能超过50个字符")
+    private String logoName;
+
+    /**
      * 店铺附件
      */
     private List<ShopsAttachmentIO> list;

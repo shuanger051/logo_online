@@ -123,6 +123,8 @@ public class ShopsInfoSaveIO {
      */
     private Long logoNum;
 
+    private String logoName;
+
     /**
      * 店铺附件
      */

@@ -26,6 +26,7 @@
         <result column="logo_height" property="logoHeight" jdbcType="DOUBLE"/>
         <result column="material" property="material" jdbcType="VARCHAR"/>
         <result column="logo_num" property="logoNum" jdbcType="INTEGER"/>
+        <result column="logo_name" property="logoName" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="list" ofType="com.qinghua.website.server.domain.ShopsAttachmentDTO"
@@ -56,6 +57,7 @@
         logo_height,
         material,
         logo_num,
+        logo_name,
         create_time,
         update_time
     </sql>
@@ -82,6 +84,7 @@
         logo_height,
         material,
         logo_num,
+        logo_name,
         create_time,
         update_time
     </sql>
@@ -182,6 +185,7 @@
             <if test="logoHeight !=null">logo_height = #{logoHeight},</if>
             <if test="material !=null and material !=''">material = #{material},</if>
             <if test="logoNum !=null">logo_num = #{logoNum},</if>
+            <if test="logoName !=null and logoName !=''">logo_name = #{logoName},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -222,6 +226,7 @@
             <if test="logoHeight !=null">logo_height,</if>
             <if test="material !=null and material !=''">material,</if>
             <if test="logoNum !=null">logo_num,</if>
+            <if test="logoName !=null and logoName !=''">logo_name,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -246,6 +251,7 @@
             <if test="logoHeight !=null">#{logoHeight},</if>
             <if test="material !=null and material != ''">#{material},</if>
             <if test="logoNum !=null">#{logoNum},</if>
+            <if test="logoName !=null and logoName != ''">#{logoName},</if>
             NOW()
         </trim>
     </insert>
