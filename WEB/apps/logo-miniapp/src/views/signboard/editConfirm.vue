@@ -13,7 +13,9 @@
         title="店铺属性"
         :value="shopData.shopsType | dict(DictShopsType)"
       ></van-cell>
-      <van-cell title="商铺地址" :value="shopData.address"></van-cell>
+      <van-cell title="商铺地址">
+        {{ shopData.address }}{{ shopData.addressDetail }}
+      </van-cell>
       <van-cell title="备注" :value="shopData.remark"></van-cell>
       <van-cell title="图片">
         <template #label>
@@ -41,7 +43,8 @@
           <span class="agreement" @click="onRead('tiaoli')"
             >《杭州市户外广告设施和招牌指示牌管理条例》</span
           >和
-          <span class="agreement" @click="onRead('guifang')">《户外招牌设置管理规范》</span
+          <span class="agreement" @click="onRead('guifang')"
+            >《户外招牌设置管理规范》</span
           >，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
         </van-checkbox>
         <van-button block type="info" native-type="submit">确认</van-button>
@@ -152,7 +155,7 @@ export default {
   background-color: @gray-2;
   min-height: 100%;
   box-sizing: border-box;
-  .agreement{
+  .agreement {
     color: @blue;
   }
 }

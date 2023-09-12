@@ -89,6 +89,12 @@ export default {
         background-color: @gray-2;
       }
       .van-cell {
+        &__title {
+          color: @gray-6;
+        }
+        &__value {
+          color: @gray-8;
+        }
         .van-button {
           &:not(:last-child) {
             margin-right: 8px;

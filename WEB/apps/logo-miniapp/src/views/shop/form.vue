@@ -20,13 +20,22 @@
           :columns="DictIndustryTypeArr"
           :rules="rules.industryType"
         />
-        <van-field
+        <field-picker
           required
-          label="商铺地址"
-          placeholder="请输入"
+          label="所属地区"
+          placeholder="请选择"
           name="address"
           v-model="formData.address"
+          :columns="area"
           :rules="rules.address"
+        />
+        <van-field
+          required
+          label="详细地址"
+          placeholder="请输入精确到道路和门牌号"
+          name="address"
+          v-model="formData.addressDetail"
+          :rules="rules.addressDetail"
         />
         <field-picker
           required
@@ -51,6 +60,57 @@
           placeholder="请输入"
           name="remark"
           v-model="formData.remark"
+        />
+      </van-panel>
+      <!-- 店招信息 -->
+      <van-panel title="店招信息">
+        <van-field
+          required
+          label="店招名称"
+          placeholder="请输入"
+          name="logoName"
+          v-model="formData.logoName"
+          :rules="rules.logoName"
+        />
+        <van-field
+          required
+          label="店招长度"
+          type="number"
+          placeholder="请输入"
+          name="logoHeight"
+          v-model="formData.logoHeight"
+          :rules="rules.logoHeight"
+        >
+          <template slot="extra">米</template>
+        </van-field>
+        <van-field
+          required
+          label="店招宽度"
+          type="number"
+          placeholder="请输入"
+          name="logoWidth"
+          v-model="formData.logoWidth"
+          :rules="rules.logoWidth"
+        >
+          <template slot="extra">米</template>
+        </van-field>
+        <field-picker
+          required
+          label="店铺材质"
+          placeholder="请选择"
+          name="material"
+          v-model="formData.material"
+          :columns="DictMaterialArr"
+          :rules="rules.material"
+        />
+        <van-field
+          required
+          label="店招数量"
+          type="number"
+          placeholder="请输入"
+          name="logoNum"
+          v-model="formData.logoNum"
+          :rules="rules.logoNum"
         />
       </van-panel>
       <!-- 经办人信息 -->
@@ -158,7 +218,9 @@ const BASE64_REGX = /^data(.+)base64,/;
 export default {
   data() {
     return {
-      formData: {},
+      formData: {
+        logoNum: 1,
+      },
       attachmentType: {
         // 商铺正面照
         1: [],
@@ -181,15 +243,23 @@ export default {
       DictBizYearsArr: mapDictOptions("bizYears"),
       // 商铺属性
       DictShopsTypeArr: mapDictOptions("shopsType"),
+      // 店招材质
+      DictMaterialArr: mapDictOptions("material"),
     }),
     // 校验规则
     rules() {
       return {
         shopName: [{ required: true, message: "请输入" }],
-        industryType: [{ required: true, message: "请输入" }],
-        address: [{ required: true, message: "请输入" }],
+        industryType: [{ required: true, message: "请选择" }],
+        address: [{ required: true, message: "请选择" }],
+        addressDetail: [{ required: true, message: "请输入" }],
         bizYears: [{ required: true, message: "请选择" }],
         shopsType: [{ required: true, message: "请选择" }],
+        logoHeight: [{ required: true, message: "请输入" }],
+        logoWidth: [{ required: true, message: "请输入" }],
+        logoNum: [{ required: true, message: "请输入" }],
+        logoName: [{ required: true, message: "请输入" }],
+        material: [{ required: true, message: "请选择" }],
         handledByName: [{ required: true, message: "请输入" }],
         handledByIdCard: [
           { required: true, message: "请输入" },
@@ -210,6 +280,24 @@ export default {
         attachmentType3: [{ required: true, message: "请上传租赁合同" }],
       };
     },
+    // 所属地区
+    area() {
+      return [
+        { text: "上城区", value: "上城区" },
+        { text: "拱墅区", value: "拱墅区" },
+        { text: "西湖区", value: "西湖区" },
+        { text: "滨江区", value: "滨江区" },
+        { text: "萧山区", value: "萧山区" },
+        { text: "余杭区", value: "余杭区" },
+        { text: "临平区", value: "临平区" },
+        { text: "钱塘区", value: "钱塘区" },
+        { text: "富阳区", value: "富阳区" },
+        { text: "临安区", value: "临安区" },
+        { text: "建德市", value: "建德市" },
+        { text: "桐庐县", value: "桐庐县" },
+        { text: "淳安县", value: "淳安县" },
+      ];
+    },
   },
   created() {
     const { shopId } = this.$route.query;
@@ -219,7 +307,7 @@ export default {
     if (shopId) this.queryShopInfo(shopId);
     // 查询字典项
     this.$store.dispatch("cache/queryDictByKey", {
-      keys: ["bizYears", "industryType", "shopsType"],
+      keys: ["bizYears", "industryType", "shopsType", "material"],
     });
   },
   methods: {
@@ -277,7 +365,7 @@ export default {
             },
           });
         })
-        .catch(() => this.$toast.fail("保存失败"));
+        .catch((err) => this.$toast.fail(err.msg || "保存失败"));
     },
     // 更新
     doUpdate(payload) {
@@ -295,7 +383,7 @@ export default {
             },
           });
         })
-        .catch(() => this.$toast.fail("保存失败"));
+        .catch((err) => this.$toast.fail(err.msg || "保存失败"));
     },
     // 查询商户信息
     queryMerchantInfo() {

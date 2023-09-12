@@ -27,7 +27,9 @@
       title="店铺属性"
       :value="detail.shopsType | dict(DictShopsType)"
     ></van-cell>
-    <van-cell title="商铺地址" :value="detail.address"></van-cell>
+    <van-cell title="商铺地址">
+      {{ detail.address }}{{ detail.addressDetail }}
+    </van-cell>
     <van-cell title="经办人" :value="detail.handledByName"></van-cell>
     <van-cell title="备注" :value="detail.remark"></van-cell>
     <van-cell title="">

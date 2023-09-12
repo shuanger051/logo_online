@@ -68,7 +68,9 @@ export default {
     }
 
     function onConfirm(data) {
-      emit("input", data.value);
+      if (_.isObject(data)) data = data.value;
+      console.log(data);
+      emit("input", data);
       show.value = false;
     }
 
