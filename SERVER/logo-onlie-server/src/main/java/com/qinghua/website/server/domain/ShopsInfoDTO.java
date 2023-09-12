@@ -3,6 +3,7 @@ package com.qinghua.website.server.domain;
 import com.qinghua.website.server.common.BaseDTO;
 import lombok.Data;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -91,6 +92,26 @@ public class ShopsInfoDTO extends BaseDTO {
 	 * 经办人照片-反面（压缩）
 	 */
 	private String handledByPhotoOppositeCompress;
+
+	/**
+	 * 宽度（米）
+	 */
+	private Double logoWidth;
+
+	/**
+	 * 高度(米)
+	 */
+	private Double logoHeight;
+
+	/**
+	 * 材质：1-木质，2-石质，3-金属，4-其他
+	 */
+	private String material;
+
+	/**
+	 * 店招个数
+	 */
+	private Long logoNum;
 
 	private List<ShopsAttachmentDTO> list;
 

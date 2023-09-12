@@ -1,5 +1,7 @@
 package com.qinghua.website.api.controller.vo;
 
+import com.qinghua.website.api.validation.DictValidator;
+import com.qinghua.website.api.validation.NumValidator;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -77,6 +79,26 @@ public class ShopsInfoVO {
      * 经办人照片-反面（压缩）
      */
     private String handledByPhotoOppositeCompress;
+
+    /**
+     * 宽度（米）
+     */
+    private Double logoWidth;
+
+    /**
+     * 高度(米)
+     */
+    private Double logoHeight;
+
+    /**
+     * 材质：1-木质，2-石质，3-金属，4-其他
+     */
+    private String material;
+
+    /**
+     * 店招个数
+     */
+    private Long logoNum;
 
     private List<ShopsAttachmentVO> list;
 

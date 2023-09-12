@@ -34,31 +34,6 @@ public class MerchantInfoVO {
     private String idCard;
 
     /**
-     * 宽度（米）
-     */
-    private Double logoWidth;
-
-    /**
-     * 高度(米)
-     */
-    private Double logoHeight;
-
-    /**
-     * 材质：1-木质，2-石质，3-金属，4-其他
-     */
-    private String material;
-
-    /**
-     * 商铺名称
-     */
-    private String shopsName;
-
-    /**
-     * 店招个数
-     */
-    private Long logoNum;
-
-    /**
      * 备注
      */
     private String remark;

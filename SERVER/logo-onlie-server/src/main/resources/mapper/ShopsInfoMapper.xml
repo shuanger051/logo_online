@@ -22,6 +22,10 @@
         <result column="handled_by_photo_opposite" property="handledByPhotoOpposite" jdbcType="VARCHAR"/>
         <result column="handled_by_photo_front_compress" property="handledByPhotoFrontCompress" jdbcType="VARCHAR"/>
         <result column="handled_by_photo_opposite_compress" property="handledByPhotoOppositeCompress" jdbcType="VARCHAR"/>
+        <result column="logo_width" property="logoWidth" jdbcType="DOUBLE"/>
+        <result column="logo_height" property="logoHeight" jdbcType="DOUBLE"/>
+        <result column="material" property="material" jdbcType="VARCHAR"/>
+        <result column="logo_num" property="logoNum" jdbcType="INTEGER"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <collection property="list" ofType="com.qinghua.website.server.domain.ShopsAttachmentDTO"
@@ -48,6 +52,10 @@
         handled_by_photo_opposite,
         handled_by_photo_front_compress,
         handled_by_photo_opposite_compress,
+        logo_width,
+        logo_height,
+        material,
+        logo_num,
         create_time,
         update_time
     </sql>
@@ -70,6 +78,10 @@
         handled_by_id_card,
         handled_by_photo_front_compress,
         handled_by_photo_opposite_compress,
+        logo_width,
+        logo_height,
+        material,
+        logo_num,
         create_time,
         update_time
     </sql>
@@ -110,6 +122,7 @@
             <if test="handledByName !=null and handledByName !=''">AND handled_by_name = #{handledByName}</if>
             <if test="handledByPhone !=null and handledByPhone !=''">AND handled_by_phone = #{handledByPhone}</if>
             <if test="handledByIdCard !=null and handledByIdCard !=''">AND handled_by_id_card = #{handledByIdCard}</if>
+            <if test="material !=null and material !=''">AND material = #{material}</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -165,6 +178,10 @@
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite = #{handledByPhotoOpposite},</if>
             <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">handled_by_photo_front_compress = #{handledByPhotoFrontCompress},</if>
             <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">handled_by_photo_opposite_compress = #{handledByPhotoOppositeCompress},</if>
+            <if test="logoWidth !=null">logo_width = #{logoWidth},</if>
+            <if test="logoHeight !=null">logo_height = #{logoHeight},</if>
+            <if test="material !=null and material !=''">material = #{material},</if>
+            <if test="logoNum !=null">logo_num = #{logoNum},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -201,6 +218,10 @@
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">handled_by_photo_opposite,</if>
             <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">handled_by_photo_front_compress,</if>
             <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">handled_by_photo_opposite_compress,</if>
+            <if test="logoWidth !=null">logo_width,</if>
+            <if test="logoHeight !=null">logo_height,</if>
+            <if test="material !=null and material !=''">material,</if>
+            <if test="logoNum !=null">logo_num,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -221,6 +242,10 @@
             <if test="handledByPhotoOpposite !=null and handledByPhotoOpposite !=''">#{handledByPhotoOpposite},</if>
             <if test="handledByPhotoFrontCompress !=null and handledByPhotoFrontCompress !=''">#{handledByPhotoFrontCompress},</if>
             <if test="handledByPhotoOppositeCompress !=null and handledByPhotoOppositeCompress !=''">#{handledByPhotoOppositeCompress},</if>
+            <if test="logoWidth !=null">#{logoWidth},</if>
+            <if test="logoHeight !=null">#{logoHeight},</if>
+            <if test="material !=null and material != ''">#{material},</if>
+            <if test="logoNum !=null">#{logoNum},</if>
             NOW()
         </trim>
     </insert>

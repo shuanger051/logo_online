@@ -10,11 +10,6 @@
         <result column="merchant_status" property="merchantStatus" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
-        <result column="logo_width" property="logoWidth" jdbcType="DOUBLE"/>
-        <result column="logo_height" property="logoHeight" jdbcType="DOUBLE"/>
-        <result column="material" property="material" jdbcType="VARCHAR"/>
-        <result column="shops_name" property="shopsName" jdbcType="VARCHAR"/>
-        <result column="logo_num" property="logoNum" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -28,11 +23,6 @@
         merchant_status,
         phone,
         id_card,
-        logo_width,
-        logo_height,
-        material,
-        shops_name,
-        logo_num,
         remark,
         create_time,
         update_time
@@ -58,8 +48,6 @@
             <if test="merchantStatus !=null and merchantStatus !=''">AND merchant_status = #{merchantStatus}</if>
             <if test="phone !=null and phone !=''">AND phone = #{phone}</if>
             <if test="idCard !=null and idCard !=''">AND id_card = #{idCard}</if>
-            <if test="material !=null and material !=''">AND material = #{material}</if>
-            <if test="shopsName !=null and shopsName !=''">AND shops_name like concat('%', #{shopsName}, '%')</if>
         </trim>
         <trim prefix="ORDER BY ">
             <if test="sort !=null and sort != ''">
@@ -82,11 +70,6 @@
             <if test="merchantStatus !=null and merchantStatus !=''">merchant_status = #{merchantStatus},</if>
             <if test="phone !=null and phone !=''">phone = #{phone},</if>
             <if test="idCard !=null and idCard !=''">id_card = #{idCard},</if>
-            <if test="logoWidth !=null">logo_width = #{logoWidth},</if>
-            <if test="logoHeight !=null">logo_height = #{logoHeight},</if>
-            <if test="material !=null and material !=''">material = #{material},</if>
-            <if test="shopsName !=null and shopsName !=''">shops_name = #{shopsName},</if>
-            <if test="logoNum !=null">logo_num = #{logoNum},</if>
             <if test="remark !=null and remark !=''">remark = #{remark},</if>
             update_time = NOW()
         </set>
@@ -102,11 +85,6 @@
             <if test="merchantStatus !=null and merchantStatus !=''">merchant_status,</if>
             <if test="phone !=null and phone !=''">phone,</if>
             <if test="idCard !=null and idCard !=''">id_card,</if>
-            <if test="logoWidth !=null">logo_width,</if>
-            <if test="logoHeight !=null">logo_height,</if>
-            <if test="material !=null and material !=''">material,</if>
-            <if test="shopsName !=null and shopsName !=''">shops_name,</if>
-            <if test="logoNum !=null">logo_num,</if>
             <if test="remark !=null and remark !=''">remark,</if>
             create_time
         </trim>
@@ -116,11 +94,6 @@
             <if test="merchantStatus !=null and merchantStatus !=''">#{merchantStatus},</if>
             <if test="phone !=null and phone !=''">#{phone},</if>
             <if test="idCard !=null and idCard !=''">#{idCard},</if>
-            <if test="logoWidth !=null">#{logoWidth},</if>
-            <if test="logoHeight !=null">#{logoHeight},</if>
-            <if test="material !=null and material != ''">#{material},</if>
-            <if test="shopsName !=null and shopsName !=''">#{shopsName},</if>
-            <if test="logoNum !=null">#{logoNum},</if>
             <if test="remark !=null and remark !=''">#{remark},</if>
             NOW()
         </trim>

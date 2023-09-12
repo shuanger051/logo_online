@@ -76,7 +76,9 @@ public class ShopsInfoController {
             shopsInfoVO.setHandledByIdCard(Sm4Utils.decrypt(shopsInfoVO.getHandledByIdCard()));
         }
 
-        shopsInfoVO.setList(BeanToolsUtil.copyList(shopsInfoDTO.getList(), ShopsAttachmentVO.class));
+        if(null != shopsInfoDTO && null != shopsInfoDTO.getList()){
+            shopsInfoVO.setList(BeanToolsUtil.copyList(shopsInfoDTO.getList(), ShopsAttachmentVO.class));
+        }
 
         return ResponseResult.success(shopsInfoVO);
     }
@@ -105,6 +107,10 @@ public class ShopsInfoController {
         if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
             shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
         }
+
+        //转换类型
+        shopsInfoDTO.setLogoWidth(Double.parseDouble(bean.getLogoWidth()+""));
+        shopsInfoDTO.setLogoHeight(Double.parseDouble(bean.getLogoHeight()+""));
 
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
@@ -135,6 +141,10 @@ public class ShopsInfoController {
         if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
             shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
         }
+
+        //转换类型
+        shopsInfoDTO.setLogoWidth(Double.parseDouble(bean.getLogoWidth()+""));
+        shopsInfoDTO.setLogoHeight(Double.parseDouble(bean.getLogoHeight()+""));
 
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(bean.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.updateShopsInfoById(shopsInfoDTO,list);

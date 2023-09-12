@@ -2,8 +2,10 @@ package com.qinghua.website.api.controller.io;
 
 import com.qinghua.website.api.validation.DictValidator;
 import com.qinghua.website.api.validation.IdCardValidator;
+import com.qinghua.website.api.validation.NumValidator;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -27,6 +29,9 @@ public class ShopsInfoAPISaveIO {
      */
     @NotNull(message = "店铺地址不能为空")
     private String address;
+
+    @NotNull(message = "详细地址不能为空")
+    private String addressDetail;
 
     /**
      * 营业年限，1：3年以内,2：3-5年，3:5-10年，4:10年以上，5：百年老店
@@ -84,6 +89,31 @@ public class ShopsInfoAPISaveIO {
      */
     @NotNull(message = "经办人照片反面不能为空")
     private String handledByPhotoOpposite;
+
+    /**
+     * 宽度（米）
+     */
+    @NumValidator(message = "只允许最多两位小数的数字")
+    @Max(value = 100,message = "宽度不能超过100")
+    private String logoWidth;
+
+    /**
+     * 高度(米)
+     */
+    @NumValidator(message = "只允许两位小数的数字")
+    @Max(value = 100,message = "高度不能超过100")
+    private String logoHeight;
+
+    /**
+     * 材质：1-木质，2-石质，3-金属，4-其他
+     */
+    @DictValidator(value = "material",message = "材质参数格式非法")
+    private String material;
+
+    /**
+     * 店招个数
+     */
+    private Long logoNum;
 
     /**
      * 店铺附件

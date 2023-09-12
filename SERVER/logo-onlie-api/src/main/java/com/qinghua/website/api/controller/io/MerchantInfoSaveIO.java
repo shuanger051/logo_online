@@ -48,37 +48,6 @@ public class MerchantInfoSaveIO {
     private String idCard;
 
     /**
-     * 宽度（米）
-     */
-    @NumValidator(message = "只允许最多两位小数的数字")
-    @Max(value = 100,message = "宽度不能超过100")
-    private String logoWidth;
-
-    /**
-     * 高度(米)
-     */
-    @NumValidator(message = "只允许两位小数的数字")
-    @Max(value = 100,message = "高度不能超过100")
-    private String logoHeight;
-
-    /**
-     * 材质：1-木质，2-石质，3-金属，4-其他
-     */
-    @DictValidator(value = "material",message = "材质参数格式非法")
-    private String material;
-
-    /**
-     * 商铺名称
-     */
-    @Size(max = 50,message = "商鋪名称字数过多")
-    private String shopsName;
-
-    /**
-     * 店招个数
-     */
-    private Long logoNum;
-
-    /**
      * 备注
      */
     private String remark;

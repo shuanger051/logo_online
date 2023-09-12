@@ -255,8 +255,7 @@ public class OpenAPIAPPController {
     @RequestMapping("/saveMerchantAPI")
     public ResponseResult<Object> saveMerchantAPI(@Validated @RequestBody MerchantInfoSaveIO merchantInfoSaveIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoSaveIO,MerchantInfoDTO.class);
-        merchant.setLogoWidth(Double.parseDouble(merchantInfoSaveIO.getLogoWidth()+""));
-        merchant.setLogoHeight(Double.parseDouble(merchantInfoSaveIO.getLogoHeight()+""));
+
         if(null != merchant && null != merchant.getPhone()){
             merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
         }
@@ -276,8 +275,7 @@ public class OpenAPIAPPController {
     @RequestMapping("/updateMerchantAPI")
     public ResponseResult<Object> updateMerchantAPI(@Validated @RequestBody MerchantInfoUpdateIO merchantInfoUpdateIO){
         MerchantInfoDTO merchant = BeanToolsUtil.copyOrReturnNull(merchantInfoUpdateIO,MerchantInfoDTO.class);
-        merchant.setLogoWidth(Double.parseDouble(merchantInfoUpdateIO.getLogoWidth()+""));
-        merchant.setLogoHeight(Double.parseDouble(merchantInfoUpdateIO.getLogoHeight()+""));
+
         if(null != merchant && null != merchant.getPhone()){
             merchant.setPhone(Sm4Utils.encrypt(merchant.getPhone()));
         }
@@ -312,6 +310,10 @@ public class OpenAPIAPPController {
             shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
         }
 
+        //转换类型
+        shopsInfoDTO.setLogoWidth(Double.parseDouble(shopsInfoSaveIO.getLogoWidth()+""));
+        shopsInfoDTO.setLogoHeight(Double.parseDouble(shopsInfoSaveIO.getLogoHeight()+""));
+
         List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
@@ -341,6 +343,10 @@ public class OpenAPIAPPController {
         if (null != shopsInfoDTO && shopsInfoDTO.getHandledByPhotoOpposite() != null){
             shopsInfoDTO.setHandledByPhotoOppositeCompress(ImgUtils.resizeImageTo40K(shopsInfoDTO.getHandledByPhotoOpposite()));
         }
+
+        //转换类型
+        shopsInfoDTO.setLogoWidth(Double.parseDouble(shopsInfoUpdateIO.getLogoWidth()+""));
+        shopsInfoDTO.setLogoHeight(Double.parseDouble(shopsInfoUpdateIO.getLogoHeight()+""));
 
         ShopsInfoDTO res = shopsInfoService.getShopsInfoById(shopsInfoUpdateIO.getId());
         if(null != res){
