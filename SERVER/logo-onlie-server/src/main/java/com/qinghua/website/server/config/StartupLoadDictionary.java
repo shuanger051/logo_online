@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,6 +45,7 @@ public class StartupLoadDictionary implements CommandLineRunner {
             map.put(key, JSON.toJSONString(subMap));
         }
         redisUtil.hPutAll(DictEnum.REDIS_MAP_KEY.getCode(), map);
+        redisUtil.expire(DictEnum.REDIS_MAP_KEY.getCode(),365*3, TimeUnit.DAYS);
         log.info("[消息：] Redis字典缓存成功!");
     }
 

@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 数据库定时任务执行器
@@ -43,7 +44,7 @@ public class DBTask {
             SysConfigDTO sysConfigDTO = sysConfigService.getSysConfigByKey(CLEAR_DAYS_KEY);
             if(null != sysConfigDTO){
                 redisKeysVal = sysConfigDTO.getConfigValue();
-                redisUtil.set(CLEAR_DAYS_KEY,redisKeysVal);
+                redisUtil.set(CLEAR_DAYS_KEY,redisKeysVal,365*3, TimeUnit.DAYS);
             }else{
                 log.error("[错误消息：]表t_sys_config中未找到配置参数为{}的KEY",CLEAR_DAYS_KEY);
                 throw new BizException(SysConstant.ERROR_SYS_CONFIG_KEY_IS_NOT_EXIST);

@@ -21,6 +21,11 @@ public class ShopsInfoAPIVO {
     private String address;
 
     /**
+     * 店铺地址
+     */
+    private String addressDetail;
+
+    /**
      * 营业年限，1：3年以内,2：3-5年，3:5-10年，4:10年以上，5：百年老店
      */
     private String bizYears;
