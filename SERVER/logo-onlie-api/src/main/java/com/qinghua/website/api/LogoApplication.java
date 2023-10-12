@@ -1,11 +1,11 @@
 package com.qinghua.website.api;
 
-import com.qinghua.website.api.listener.CloseListener;
-import com.qinghua.website.api.listener.StartListener;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -15,11 +15,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = "com.qinghua.website", annotationClass = Mapper.class)
 public class LogoApplication {
 
+    private static ConfigurableApplicationContext context;
+
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(LogoApplication.class);
-        application.addListeners(new StartListener());
-        application.addListeners(new CloseListener());
-        application.run(args);
+        context = SpringApplication.run(LogoApplication.class, args);
+    }
+
+    /**
+     * 重启服务
+     */
+    public static void restart() {
+        ApplicationArguments args = context.getBean(ApplicationArguments.class);
+        Thread thread = new Thread(() -> {
+            context.close();
+            context = SpringApplication.run(LogoApplication.class, args.getSourceArgs());
+        });
+        // 设置非守护线程
+        thread.setDaemon(false);
+        thread.start();
     }
 
 }

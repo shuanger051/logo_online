@@ -372,7 +372,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "save",logDesc = "APP 修改店铺备案状态API")
     @RequestMapping(value = "/updateShopsFilingsStatusAPI",method = RequestMethod.POST)
-    public ResponseResult<Object> updateShopsFilingsStatusAPI(@Validated @RequestBody ShopsInfoStatusIO shopsInfoStatusIO){
+    public ResponseResult<Object> updateShopsFilingsStatusAPI(@Validated @RequestBody ShopsInfoStatusAPIIO shopsInfoStatusIO){
         ShopsInfoDTO bean = BeanToolsUtil.copyOrReturnNull(shopsInfoStatusIO,ShopsInfoDTO.class);
         shopsInfoService.updateShopsFilingsStatusAPI(bean);
         return ResponseResult.success();
