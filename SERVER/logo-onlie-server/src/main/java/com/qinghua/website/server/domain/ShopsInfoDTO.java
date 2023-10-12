@@ -49,9 +49,14 @@ public class ShopsInfoDTO extends BaseDTO {
 	private String shopsType;
 
 	/**
-	 * 备案状态: 0-未备案，1-已提交未审核，2-已备案
+	 * 备案状态: 0-未备案，1-已提交未审核，2-已备案,3-审核未通过
 	 */
 	private String isFilings;
+
+	/**
+	 * 审核信息
+	 */
+	private String checkInfo;
 
     /**
      * 备注

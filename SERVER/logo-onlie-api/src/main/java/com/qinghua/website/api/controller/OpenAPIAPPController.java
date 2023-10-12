@@ -328,6 +328,13 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/updateShopsInfoAPI",method = RequestMethod.POST)
     public ResponseResult<Object> saveShopsInfoAPI(@Validated @RequestBody ShopsInfoAPIUpdateIO shopsInfoUpdateIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoUpdateIO, ShopsInfoDTO.class);
+
+        //根据商铺审核状态来判断是否允许修改，审核通过的均不允许修改
+        ShopsInfoDTO checkRes = shopsInfoService.getShopsInfoById(shopsInfoDTO.getId());
+        if(null != checkRes && checkRes.getIsFilings().equals("2")){
+            return ResponseResult.error("已备案成功的信息不允许修改，请联系管理员处理。");
+        }
+
         if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
             shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
         }

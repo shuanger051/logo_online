@@ -14,6 +14,7 @@
         <result column="is_old_shops" property="isOldShops" jdbcType="VARCHAR"/>
         <result column="shops_type" property="shopsType" jdbcType="VARCHAR"/>
         <result column="is_filings" property="isFilings" jdbcType="VARCHAR"/>
+        <result column="check_info" property="checkInfo" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="handled_by_name" property="handledByName" jdbcType="VARCHAR"/>
         <result column="handled_by_phone" property="handledByPhone" jdbcType="VARCHAR"/>
@@ -45,6 +46,7 @@
         is_old_shops,
         shops_type,
         is_filings,
+        check_info,
         remark,
         handled_by_name,
         handled_by_phone,
@@ -74,6 +76,7 @@
         is_old_shops,
         shops_type,
         is_filings,
+        check_info,
         remark,
         handled_by_name,
         handled_by_phone,
@@ -196,6 +199,7 @@
         UPDATE t_shops_info
         <set>
             is_filings = #{isFilings},
+            check_info = #{checkInfo},
             update_time = NOW()
         </set>
         WHERE id = #{id}

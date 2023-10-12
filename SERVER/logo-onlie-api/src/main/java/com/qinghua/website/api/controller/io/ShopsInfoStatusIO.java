@@ -21,6 +21,12 @@ public class ShopsInfoStatusIO {
     @DictValidator(value = "isFilings",message = "备案状态参数非法")
     private String isFilings;
 
+    /**
+     * 审核意见
+     */
+    @NotNull(message = "审核意见不能为空")
+    private String checkInfo;
+
     @Override
     public String toString() {
         return "ShopsInfoStatusIO{" +
