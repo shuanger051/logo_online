@@ -47,6 +47,7 @@ export const actions = {
       ...payload,
     };
     commit("setWork", work);
+    commit("setEditingPage");
   },
 
   async saveWork({ commit, dispatch, state }) {
@@ -63,6 +64,7 @@ export const actions = {
       material: state.work.material,
       domItem: JSON.stringify(state.work),
     };
+
     if (currentRoute.params.id) {
       data.id = currentRoute.params.id;
       await updateTemplate(data);
@@ -155,6 +157,8 @@ export const mutations = {
       return new Page(page);
     });
     state.work = new Work(work);
+    
+
   },
   previewWork(state, { type, value }) {},
   deployWork(state, { type, value }) {},

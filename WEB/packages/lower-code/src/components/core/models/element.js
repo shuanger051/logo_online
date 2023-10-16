@@ -6,7 +6,6 @@ import {getVM } from '@editor/utils/element'
 // #! 编辑状态，不可以点击的按钮，因为点击按钮会触发一些默认动作，比如表单提交等
 const disabledPluginsForEditMode = ['lbp-form-input', 'lbp-form-button', 'lbp-video']
 const cloneObj = (value) => JSON.parse(JSON.stringify(value))
-
 const defaultStyle = {
   top: 100,
   left: 100,
@@ -80,7 +79,6 @@ const defaultStyle = {
   'border-style': 'solid',
   boxModelPart: '' // 可选值 margin、padding、border
 }
-
 const numberReg = /^\d+$/
 export default class Element {
   constructor (ele) {
@@ -298,6 +296,7 @@ export default class Element {
 
   registerGlobalComponent () {
     const basePlugin = Vue.component(this.name)
+    console.log(basePlugin, 990,this.name)
     const mixinList = this.scripts.map(script => new Function(script.content.replace('editorMethods', 'methodsConfig'))())
     basePlugin && this._mixinScript(mixinList, basePlugin)
   }
@@ -341,7 +340,7 @@ export default class Element {
       }
       return mixedPlugin.extend(mixin)
     }, basePlugin)
-
     Vue.component(this.uuid, pluginWithMixins)
+    
   }
 }

@@ -48,6 +48,7 @@ export const mutations = {
       ...state.editingElement.commonStyle,
       ...payload
     }
+    console.log(state.editingElement.commonStyle,state.editingElement, 98)
   },
   /**
    * 元素管理：增/删/复制/上移/下移
@@ -106,7 +107,6 @@ export const mutations = {
       case 'minusZindex':
         const maxZindex = elements.length
         const eleZindex = editingElement.commonStyle.zindex
-        console.log(eleZindex,maxZindex, 888)
         if ((type === 'addZindex' && eleZindex == maxZindex) || (type === 'minusZindex' && eleZindex == 1)) {
           return 
         }
