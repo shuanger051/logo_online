@@ -50,7 +50,7 @@ const options = {
         },
         {
           path: "shop",
-          name: "商户管理",
+          name: "商铺备案管理",
           meta: {
             icon: "shop",
           },
@@ -58,12 +58,12 @@ const options = {
           children: [
             {
               path: "owner",
-              name: "商户信息",
+              name: "经办人信息",
               component: () => import("@/pages/shop/owner/list"),
             },
             {
               path: "shop",
-              name: "商铺信息",
+              name: "商铺备案信息",
               component: () => import("@/pages/shop/shop/list"),
             },
           ],

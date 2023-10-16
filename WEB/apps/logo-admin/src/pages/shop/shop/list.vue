@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap" :style="`min-height: ${pageMinHeight}px`">
     <!-- 搜索条件栏 -->
-    <form-serach :fields="serachFields" @serach="onSerach" />
+    <form-serach ref="serach" :fields="serachFields" @serach="onSerach" />
     <!-- 结果列表 -->
     <a-table
       rowKey="id"
@@ -12,18 +12,20 @@
       :columns="columns"
       @change="onChange"
     >
-      <template slot="archives">
-        <a-button type="link" size="small">查看</a-button>
-      </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
-        <!-- btn:删除 -->
-        <a-popconfirm
-          title="删除后不可恢复，是否确认删除该商铺信息？"
-          @confirm="onDel(record)"
+        <!-- btn:查看 -->
+        <a-button type="link" size="small" @click="onView({ detail: record })"
+          >备案详情</a-button
         >
-          <a-button type="link" size="small">删除</a-button>
-        </a-popconfirm>
+        <!-- btn:审核 -->
+        <a-button
+          v-if="record.isFilings == '1'"
+          type="link"
+          size="small"
+          @click="onAudit(record)"
+          >审核</a-button
+        >
       </template>
     </a-table>
   </div>
@@ -53,33 +55,67 @@ export default {
     columns() {
       return [
         {
+          title: "商铺名称",
+          dataIndex: "shopName",
+          key: "shopName",
+          width: "240px",
+        },
+        {
           title: "行业类型",
           dataIndex: "industryType",
           key: "industryType",
+          width: "100px",
           customRender: (val) => this.DictIndustryType[val],
         },
         {
-          title: "店铺属性",
+          title: "商铺属性",
           dataIndex: "shopsType",
           key: "shopsType",
+          width: "100px",
           customRender: (val) => this.DictShopsType[val],
         },
         {
-          title: "店铺地址",
+          title: "商铺地址",
           dataIndex: "address",
           key: "address",
+          width: "240px",
         },
         {
           title: "营业年限",
           dataIndex: "bizYears",
           key: "bizYears",
+          width: "120px",
           customRender: (val) => this.DictBizYears[val],
+        },
+        {
+          title: "经办人",
+          dataIndex: "handledByName",
+          key: "handledByName",
+          width: "100px",
+        },
+        {
+          title: "经办人手机号",
+          dataIndex: "handledByPhone",
+          key: "handledByPhone",
+          width: "120px",
         },
         {
           title: "是否老店",
           dataIndex: "isOldShops",
           key: "isOldShops",
+          align: "center",
+          width: "80px",
           customRender: (val) => (val == "1" ? "是" : "否"),
+        },
+        {
+          title: "备案状态",
+          dataIndex: "isFilings",
+          key: "isFilings",
+          width: "80px",
+          customRender: (val) => {
+            const dtm = { 0: "未备案", 1: "待审核", 2: "已备案" };
+            return dtm[val];
+          },
         },
         {
           title: "备注",
@@ -87,23 +123,20 @@ export default {
           key: "remark",
         },
         {
-          title: "备案资料",
-          key: "archives",
-          scopedSlots: { customRender: "archives" },
-        },
-        ,
-        {
           title: "操作",
           key: "operation",
           scopedSlots: { customRender: "operation" },
+          width: "140px",
         },
       ];
     },
     // 支持查询字段
     serachFields() {
       return [
+        { name: "shopName", label: "商铺名称" },
+        { name: "handledByName", label: "经办人姓名" },
+        { name: "handledByPhone", label: "经办人手机号" },
         { name: "industryType", label: "行业类型" },
-        { name: "address", label: "店铺地址" },
         {
           name: "isOldShops",
           label: "是否老店",
@@ -133,6 +166,8 @@ export default {
     const onAdd = createModalEvent(Detail, { title: "新增用户" });
     // 编辑事件
     const onEdit = createModalEvent(Detail, { title: "编辑用户" });
+    // 查看事件
+    const onView = createModalEvent(Detail, { title: "备案详情" });
 
     return {
       formData,
@@ -140,16 +175,23 @@ export default {
       page,
       onAdd,
       onEdit,
+      onView,
       onSerach,
       onChange,
     };
   },
   created() {
-    this.onSerach();
     // 获取字典项
     this.$store.dispatch("cache/queryDictByKey", {
       keys: ["shopsType", "industryType", "bizYears"],
     });
+  },
+  mounted() {
+    // 获取查询参数
+    const { query } = this.$route;
+    this.$refs.serach.setFieldsValue(query);
+    // console.log(query)
+    this.onSerach(query);
   },
   methods: {
     // 删除商铺信息
@@ -161,6 +203,8 @@ export default {
           message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
         );
     },
+    // 审核
+    onAudit(data) {},
   },
 };
 </script>

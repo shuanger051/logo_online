@@ -44,7 +44,7 @@ export default {
         // 组件
         switch (item.component) {
           case "select":
-            item.component = 'a-select';
+            item.component = "a-select";
             break;
           default:
             if (!item.component) item.component = "a-input";
@@ -62,6 +62,10 @@ export default {
     };
   },
   methods: {
+    // 设置字段值
+    setFieldsValue(data) {
+      this.form.setFieldsValue(data);
+    },
     // 重置
     onReset() {
       this.form.resetFields();
