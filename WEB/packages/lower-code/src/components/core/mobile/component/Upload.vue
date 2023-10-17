@@ -1,8 +1,17 @@
 <template>
   <div>
-    <van-button color="#7232dd" plain @click="show = true" class="btn"
-      >更换图片</van-button
+    <van-button color="#1989fa" plain @click="show = true" class="btn"
+      >素材库</van-button
     >
+    <van-uploader
+        :after-read="afterRead"
+        :max-size="1024 * 1024 * 2"
+        @oversize="onOversize"
+    >
+      <van-button color="#07c160" plain @click="show = true" class="btn"
+        >本地上传</van-button
+      >
+  </van-uploader>
     <van-dialog v-model="show" title="标题" show-cancel-button @confirm = "configHandler">
       <div class="image-container">
         <van-image 
@@ -25,7 +34,8 @@
 </template>
 <script>
 import { resolveImgUrl } from "core/support/imgUrl";
-import { appGetMaterial } from "core/api/";
+import { appGetMaterial, appUploadMaterialAttachment } from "core/api/";
+import { Toast } from "vant";
 
 export default {
   data() {
@@ -57,6 +67,21 @@ export default {
         this.$emit('input', this.select.url)
       }
     },
+    async afterRead(file) {
+      const toast = Toast.loading({
+        message: "上传中",
+        forbidClick: true,
+        duration: 0,
+      });
+      const form = new FormData()
+      form.append('file', file)
+      const info = await appUploadMaterialAttachment(form);
+ 
+     console.log(info,555)
+    },
+    onOversize(file) {
+      Toast("文件大小不能超过 2M");
+    },
     async getList() {
       const res = await appGetMaterial({
         pageNum: this.page.current,
@@ -87,5 +112,6 @@ export default {
     border: 1px solid #ebedf0;
   }
 }
+.btn {margin-right: 10px;}
 
 </style>

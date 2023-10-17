@@ -59,7 +59,7 @@
         <van-button
           plain
           size="small"
-          :to="`/signboard/editSelect?shopId=${detail.id}`"
+          :to="this.go()"
           >店招设计</van-button
         >
       </template>
@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       shopLogo: {},
+      showIntelligenceDesign: window.miniAppConfig.showIntelligenceDesign != 0
     };
   },
   computed: {
@@ -108,6 +109,10 @@ export default {
     }
   },
   methods: {
+    go() {
+      const {id} = this.detail
+      return window.miniAppConfig.showIntelligenceDesign == 0 ? `/signboard/editSelect?shopId=${id}` : `/signboard/selfEdit?shopId=${id}`
+    },
     // 获取店招
     getShopLogo(shopsId) {
       shopService

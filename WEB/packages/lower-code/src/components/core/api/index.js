@@ -86,3 +86,8 @@ export const appGetShopsInfoByIdAPI = wrapRequest(
   "/logo/app/getShopsInfoByIdAPI",
   false
 );
+
+export const appUploadMaterialAttachment = wrapRequest(
+  "logo/app/uploadMaterialAttachment",
+  true
+);

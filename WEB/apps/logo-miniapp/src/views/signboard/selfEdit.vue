@@ -19,7 +19,7 @@
       <div
         class="line-desing"
         @click="
-          $router.push(`/signboard/attribute?shopId=${$route.query.shopId}`)
+          $router.push(`/signboard/editSelect?shopId=${$route.query.shopId}`)
         "
       >
         <span>自主设计</span>
