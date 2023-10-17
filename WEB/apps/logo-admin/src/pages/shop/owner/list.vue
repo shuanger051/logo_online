@@ -16,6 +16,9 @@
     >
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
+        <router-link :to="`/shop/shop?handledByPhone=${record.phone}`">
+          <a-button type="link" size="small">查看商铺</a-button>
+        </router-link>
         <!-- <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         > -->
@@ -50,20 +53,23 @@ export default {
     columns() {
       return [
         {
-          title: "商户ID",
+          title: "经办人ID",
           dataIndex: "id",
           key: "id",
+          width: "120px",
         },
         {
-          title: "商户名称",
+          title: "经办人名称",
           dataIndex: "merchantName",
           key: "merchantName",
+          width: "180px",
         },
         {
           title: "性别",
           dataIndex: "gender",
           width: "80px",
           key: "gender",
+          width: "120px",
           customRender: (val) => this.DictGender[val],
         },
         {
@@ -71,18 +77,19 @@ export default {
           dataIndex: "merchantStatus",
           width: "80px",
           key: "merchantStatus",
+          width: "120px",
           customRender: (val) => this.DictMerchantStatus[val],
         },
         {
           title: "联系电话",
           dataIndex: "phone",
-          width: "140px",
+          width: "160px",
           key: "phone",
         },
         {
           title: "证件号码",
           dataIndex: "idCard",
-          width: "200px",
+          width: "220px",
           key: "idCard",
         },
         {
@@ -93,7 +100,7 @@ export default {
         {
           title: "操作",
           key: "operation",
-          width: "120px",
+          width: "160px",
           scopedSlots: { customRender: "operation" },
         },
       ];
@@ -101,7 +108,7 @@ export default {
     // 查询字段
     serachFields() {
       return [
-        { name: "merchantName", label: "商户名称" },
+        { name: "merchantName", label: "经办人名称" },
         {
           name: "merchantStatus",
           label: "商户状态",
