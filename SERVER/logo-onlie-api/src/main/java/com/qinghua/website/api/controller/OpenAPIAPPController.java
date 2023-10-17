@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import sun.misc.BASE64Decoder;
 
@@ -688,6 +689,58 @@ public class OpenAPIAPPController {
         resp.setList(materialVOList);
         resp.setTotal(pageList.getTotal());
         return ResponseResult.success(resp);
+    }
+
+    /**
+     * 上传素材附件 API
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传素材附件API")
+    @RequestMapping("/uploadMaterialAttachmentAPI")
+    public ResponseResult<Object> uploadMaterialAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            boolean mkdirs = new File( savePath + "material/" + frontPath).mkdirs();
+
+            String newFileName = fileId + "." + fileType;
+
+            String relativeFileName = frontPath + "/" + newFileName  ;
+            String fullName = savePath + "material/" + relativeFileName;
+
+            File file = new File(fullName);
+            multipartFile.transferTo(file);
+
+            //更新素材
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setName(fileName);
+            materialDTO.setFileName(newFileName);
+            materialDTO.setFilePath(frontPath);
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG") || fileType.equals("PNG")){
+                materialDTO.setFileType("1");
+            }else{
+                materialDTO.setFileType("2");
+            }
+
+            materialService.saveMaterial(materialDTO);
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(frontPath);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(urlPath+ "material/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
     }
 
     /**
