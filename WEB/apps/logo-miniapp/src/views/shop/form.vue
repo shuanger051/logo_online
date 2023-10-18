@@ -8,6 +8,7 @@
           label="商铺名称"
           placeholder="请输入"
           name="shopName"
+          v-explain
           v-model="formData.shopName"
           :rules="rules.shopName"
         />
@@ -16,6 +17,7 @@
           label="营业类型"
           placeholder="请选择"
           name="industryType"
+          v-explain
           v-model="formData.industryType"
           :columns="DictIndustryTypeArr"
           :rules="rules.industryType"
@@ -25,6 +27,7 @@
           label="所属地区"
           placeholder="请选择"
           name="address"
+          v-explain
           v-model="formData.address"
           :columns="area"
           :rules="rules.address"
@@ -33,7 +36,8 @@
           required
           label="详细地址"
           placeholder="请输入精确到道路和门牌号"
-          name="address"
+          name="addressDetail"
+          v-explain
           v-model="formData.addressDetail"
           :rules="rules.addressDetail"
         />
@@ -42,6 +46,7 @@
           label="营业年限"
           placeholder="请选择"
           name="bizYears"
+          v-explain
           v-model="formData.bizYears"
           :columns="DictBizYearsArr"
           :rules="rules.bizYears"
@@ -51,6 +56,7 @@
           label="店铺属性"
           placeholder="请选择"
           name="shopsType"
+          v-explain
           v-model="formData.shopsType"
           :columns="DictShopsTypeArr"
           :rules="rules.shopsType"
@@ -59,6 +65,7 @@
           label="备注"
           placeholder="请输入"
           name="remark"
+          v-explain
           v-model="formData.remark"
         />
       </van-panel>
@@ -69,6 +76,7 @@
           label="店招名称"
           placeholder="请输入"
           name="logoName"
+          v-explain
           v-model="formData.logoName"
           :rules="rules.logoName"
         />
@@ -78,6 +86,7 @@
           type="number"
           placeholder="请输入"
           name="logoHeight"
+          v-explain
           v-model="formData.logoHeight"
           :rules="rules.logoHeight"
         >
@@ -89,6 +98,7 @@
           type="number"
           placeholder="请输入"
           name="logoWidth"
+          v-explain
           v-model="formData.logoWidth"
           :rules="rules.logoWidth"
         >
@@ -96,9 +106,10 @@
         </van-field>
         <field-picker
           required
-          label="店铺材质"
+          label="店招材质"
           placeholder="请选择"
           name="material"
+          v-explain
           v-model="formData.material"
           :columns="DictMaterialArr"
           :rules="rules.material"
@@ -109,6 +120,7 @@
           type="number"
           placeholder="请输入"
           name="logoNum"
+          v-explain
           v-model="formData.logoNum"
           :rules="rules.logoNum"
         />
@@ -120,6 +132,7 @@
           label="姓名"
           placeholder="请输入"
           name="handledByName"
+          v-explain
           v-model="formData.handledByName"
           :rules="rules.handledByName"
         />
@@ -128,6 +141,7 @@
           label="身份证号"
           placeholder="请输入"
           name="handledByIdCard"
+          v-explain
           v-model="formData.handledByIdCard"
           :rules="rules.handledByIdCard"
         />
@@ -136,6 +150,7 @@
           label="联系电话"
           placeholder="请输入"
           name="handledByPhone"
+          v-explain
           v-model="formData.handledByPhone"
           :rules="rules.handledByPhone"
         />
@@ -151,6 +166,8 @@
         <van-field
           label="身份证正面"
           required
+          name="handledByPhotoFront"
+          v-explain
           :rules="rules.handledByPhotoFront"
         >
           <van-uploader
@@ -164,6 +181,8 @@
         <van-field
           label="身份证反面"
           required
+          name="handledByPhotoOpposite"
+          v-explain
           :rules="rules.handledByPhotoOpposite"
         >
           <van-uploader
@@ -174,7 +193,13 @@
             :after-read="(evt) => doAfterRead(evt)"
           />
         </van-field>
-        <van-field label="营业执照" required :rules="rules.attachmentType2">
+        <van-field
+          label="营业执照"
+          required
+          name="attachmentType2"
+          v-explain
+          :rules="rules.attachmentType2"
+        >
           <van-uploader
             v-model="attachmentType[2]"
             slot="input"
@@ -182,7 +207,13 @@
             :after-read="(evt) => doAfterRead(evt, 2)"
           />
         </van-field>
-        <van-field label="租赁合同" required :rules="rules.attachmentType3">
+        <van-field
+          label="租赁合同"
+          required
+          name="attachmentType3"
+          v-explain
+          :rules="rules.attachmentType3"
+        >
           <van-uploader
             v-model="attachmentType[3]"
             slot="input"
@@ -190,7 +221,13 @@
             :after-read="(evt) => doAfterRead(evt, 3)"
           />
         </van-field>
-        <van-field label="商铺正面照" required :rules="rules.attachmentType1">
+        <van-field
+          label="商铺正面照"
+          required
+          name="attachmentType1"
+          v-explain
+          :rules="rules.attachmentType1"
+        >
           <van-uploader
             v-model="attachmentType[1]"
             slot="input"
@@ -217,10 +254,14 @@ const BASE64_REGX = /^data(.+)base64,/;
 
 export default {
   data() {
+    const { fieldExplain } = window.miniAppConfig;
     return {
       formData: {
         logoNum: 1,
       },
+      // 字段说明
+      fieldExplain,
+      // 材料档案
       attachmentType: {
         // 商铺正面照
         1: [],

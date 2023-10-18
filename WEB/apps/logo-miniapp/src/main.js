@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import "./core/lazy_use";
 import "./core/filters";
+import "./core/directives"
 import "lib-flexible";
 import "./styles/iconfont/iconfont.css";
 import router from "./router";
