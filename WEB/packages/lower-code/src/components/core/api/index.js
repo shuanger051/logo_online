@@ -88,6 +88,6 @@ export const appGetShopsInfoByIdAPI = wrapRequest(
 );
 
 export const appUploadMaterialAttachment = wrapRequest(
-  "logo/app/uploadMaterialAttachment",
+  "/logo/app/uploadMaterialAttachmentAPI",
   true
 );

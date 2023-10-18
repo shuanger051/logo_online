@@ -74,10 +74,11 @@ export default {
         duration: 0,
       });
       const form = new FormData()
-      form.append('file', file)
+      form.append('file', file.file)
       const info = await appUploadMaterialAttachment(form);
- 
-     console.log(info,555)
+      const url = info.data.urlPath
+      this.$emit('input', url)
+      toast.clear();
     },
     onOversize(file) {
       Toast("文件大小不能超过 2M");
