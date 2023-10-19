@@ -42,6 +42,14 @@ public class ShopsInfoController {
     @RequiresPermissions("/shops-info/getShopsInfoListByPage")
     public ResponseResult<Object> getShopsInfoListByPage(@Validated ShopsInfoQueryIO shopsInfoQueryIO){
         ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
+
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
+
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
         List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);
         for (ShopsInfoVO item : shopsInfoVOS) {
