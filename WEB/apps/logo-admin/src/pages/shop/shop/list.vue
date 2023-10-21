@@ -19,13 +19,13 @@
           >备案详情</a-button
         >
         <!-- btn:审核 -->
-        <a-button
+        <!-- <a-button
           v-if="record.isFilings == '1'"
           type="link"
           size="small"
           @click="onAudit(record)"
           >审核</a-button
-        >
+        > -->
       </template>
     </a-table>
   </div>

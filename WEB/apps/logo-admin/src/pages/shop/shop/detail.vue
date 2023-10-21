@@ -66,11 +66,17 @@
       <a-col :span="12">
         <a-form-item label="身份证号">{{ detail.handledByIdCard }}</a-form-item>
       </a-col>
+      <!-- 备案材料 -->
+      <a-divider orientation="left">备案材料</a-divider>
+      <a-col :span="6" v-for="item in detail.list" :key="item.id">
+        <img :src="resolveImgUrl(item.urlPath)" />
+      </a-col>
     </a-row>
   </a-form>
 </template>
 <script>
 import store from "@/store";
+import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictObject } from "@/store/helpers";
 export default {
   props: {
@@ -104,6 +110,9 @@ export default {
     dictMap(val, dict) {
       return dict[val];
     },
+  },
+  methods: {
+    resolveImgUrl,
   },
 };
 </script>
