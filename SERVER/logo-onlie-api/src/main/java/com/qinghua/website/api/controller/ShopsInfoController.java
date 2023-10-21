@@ -17,6 +17,7 @@ import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,9 @@ public class ShopsInfoController {
 
     @Autowired
     private ShopsInfoService shopsInfoService;
+
+    @Value("${uploadPath.urlPath}")
+    private String urlPath;   //图标映射路径
 
     /**
      * 分页查询店铺信息列表
@@ -51,6 +55,7 @@ public class ShopsInfoController {
         }
 
         PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
+
         List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);
         for (ShopsInfoVO item : shopsInfoVOS) {
             if(null != item && null != item.getHandledByPhone()){
@@ -59,6 +64,17 @@ public class ShopsInfoController {
             if(null != item && null != item.getHandledByIdCard()){
                 item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
             }
+
+            if(null != item && item.getList().size() > 0){
+                for (ShopsAttachmentVO attachmentVO: item.getList()) {
+                    String relativeFileName = attachmentVO.getAttachmentPath()  + "/" +  attachmentVO.getAttachmentName() ;
+                    attachmentVO.setUrlPath(urlPath+"shops/" + relativeFileName);
+                    if(null != attachmentVO.getCompressFlag() && "1".equals(attachmentVO.getCompressFlag())){
+                        attachmentVO.setCompressUrlPath(urlPath+"shops/" + attachmentVO.getAttachmentPath() + "/" + attachmentVO.getAttachmentName().substring(0,attachmentVO.getAttachmentName().lastIndexOf("."))+"_COMPRESS"+"."+attachmentVO.getAttachmentName().substring(attachmentVO.getAttachmentName().lastIndexOf(".")+1));
+                    }
+                }
+            }
+
         }
         PageListVO<ShopsInfoVO> result = new PageListVO<>();
         result.setList(shopsInfoVOS);
