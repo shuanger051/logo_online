@@ -167,7 +167,10 @@ export default {
     // 编辑事件
     const onEdit = createModalEvent(Detail, { title: "编辑用户" });
     // 查看事件
-    const onView = createModalEvent(Detail, { title: "备案详情" });
+    const onView = createModalEvent(Detail, {
+      title: "备案详情",
+      width: "740px",
+    });
 
     return {
       formData,
