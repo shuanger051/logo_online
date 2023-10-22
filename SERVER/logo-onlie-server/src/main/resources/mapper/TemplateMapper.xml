@@ -12,6 +12,7 @@
         <result column="is_simple_tpl" property="isSimpleTpl" jdbcType="VARCHAR"/>
         <result column="material" property="material" jdbcType="VARCHAR"/>
         <result column="is_top" property="isTop" jdbcType="VARCHAR"/>
+        <result column="street_type" property="streetType" jdbcType="VARCHAR"/>
         <result column="sort_no" property="sortNo" jdbcType="BIGINT"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -27,6 +28,7 @@
         is_simple_tpl,
         material,
         is_top,
+        street_type,
         sort_no,
         create_time,
         update_time
@@ -51,6 +53,7 @@
             <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
             <if test="material !=null and material !=''">AND material = #{material}</if>
+            <if test="streetType !=null and streetType !=''">AND street_type = #{streetType}</if>
         </trim>
         ORDER BY is_top DESC,sort_no ASC
     </select>
@@ -62,6 +65,7 @@
             <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
             <if test="material !=null and material !=''">AND material like concat('%', #{material}, '%')</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">AND is_simple_tpl = #{isSimpleTpl}</if>
+            <if test="streetType !=null and streetType !=''">AND street_type = #{streetType}</if>
             and release_status = '1'
         </trim>
         ORDER BY is_top DESC,sort_no ASC
@@ -73,6 +77,7 @@
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="style !=null and style !=''">AND style like concat('%', #{style}, '%')</if>
             <if test="material !=null and material !=''">AND material like concat('%', #{material}, '%')</if>
+            <if test="streetType !=null and streetType !=''">AND street_type = #{streetType}</if>
             and release_status = '1'
             and is_simple_tpl = '1'
         </trim>
@@ -95,6 +100,7 @@
             <if test="material !=null and material !=''">material = #{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl = #{isSimpleTpl},</if>
             <if test="isTop !=null and isTop !=''">is_top = #{isTop},</if>
+            <if test="streetType !=null and streetType !=''">street_type = #{streetType},</if>
             <if test="sortNo !=null">sort_no = #{sortNo},</if>
             update_time = NOW()
         </set>
@@ -117,6 +123,7 @@
             <if test="material !=null and material !=''">material,</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">is_simple_tpl,</if>
             <if test="isTop !=null and isTop !=''">is_top,</if>
+            <if test="streetType !=null and streetType !=''">street_type,</if>
             <if test="sortNo !=null">sort_no,</if>
             create_time
         </trim>
@@ -128,6 +135,7 @@
             <if test="material !=null and material !=''">#{material},</if>
             <if test="isSimpleTpl !=null and isSimpleTpl !=''">#{isSimpleTpl},</if>
             <if test="isTop !=null and isTop !=''">#{isTop},</if>
+            <if test="streetType !=null and streetType !=''">#{streetType},</if>
             <if test="sortNo !=null">#{sortNo},</if>
             NOW()
         </trim>

@@ -48,6 +48,11 @@ public class TemplateDTO extends BaseDTO {
 	private String isTop;
 
 	/**
+	 * 街道类型：1-商业街道，2-特色街道，3-一般街道
+	 */
+	private String streetType;
+
+	/**
 	 * 排序编号
 	 */
 	private Long sortNo;
