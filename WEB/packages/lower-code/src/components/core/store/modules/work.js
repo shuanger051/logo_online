@@ -62,6 +62,7 @@ export const actions = {
       sortNo: state.work.sortNo,
       isSimpleTpl: state.work.isSimpleTpl,
       material: state.work.material,
+      streetType:state.work.streetType,
       domItem: JSON.stringify(state.work),
     };
 
