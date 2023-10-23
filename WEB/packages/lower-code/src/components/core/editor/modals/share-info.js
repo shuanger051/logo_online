@@ -29,6 +29,7 @@ export default {
       work: (state) => state.work,
       style: (state) => state.work.style.split(","),
       material: (state) => state.work.material.split(","),
+      streetType: (state) => state.work.streetType.split(","),
       isSimpleTpl: (state) => state.work.isSimpleTpl,
     }),
     previewUrl() {
@@ -42,6 +43,7 @@ export default {
     return {
       styleMap: [],
       materialMap: [],
+      streetTypeMap: []
     };
   },
   methods: {
@@ -66,6 +68,14 @@ export default {
     });
     getDictById({ dictKey: "material" }).then(({ data }) => {
       this.materialMap = data.map((item) => {
+        return {
+          value: item.itemKey,
+          label: item.itemValue,
+        };
+      });
+    });
+    getDictById({ dictKey: "streetType" }).then(({ data }) => {
+      this.streetTypeMap = data.map((item) => {
         return {
           value: item.itemKey,
           label: item.itemValue,
@@ -105,6 +115,16 @@ export default {
                 value={this.material}
                 onChange={(e) => this.autoSave({ material: e.join(",") })}
                 placeholder="请选择材质"
+              ></a-select>
+            </a-form-item>
+            <a-form-item label="街道类型">
+              <a-select
+                class="input"
+                options={this.streetTypeMap}
+                mode="multiple"
+                value={this.streetType}
+                onChange={(e) => this.autoSave({ streetType: e.join(",") })}
+                placeholder="请选择街道类型"
               ></a-select>
             </a-form-item>
             <a-form-item label="模板类型">

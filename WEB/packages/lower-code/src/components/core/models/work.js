@@ -21,6 +21,7 @@ export default class Work {
     this.style = work.style || '1'
     this.isSimpleTpl = work.isSimpleTpl || '0'
     this.material = work.material || '1'
+    this.streetType = work.streetType || '1'
     this.datasources = (work.datasources || []).map(item => new DataSource(item))
 
     // this.id = this.id

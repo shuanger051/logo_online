@@ -20,6 +20,16 @@
         {{ item.label }}
       </van-checkbox>
     </van-checkbox-group>
+    <van-divider>街道类型</van-divider>
+    <van-checkbox-group v-model="formData.streetType" direction="horizontal">
+      <van-checkbox
+        v-for="item in attrs.streetType"
+        :key="item.value"
+        :name="item.value"
+      >
+        {{ item.label }}
+      </van-checkbox>
+    </van-checkbox-group>
     <submit-bar>
       <van-button block type="primary" @click="onNext">下一步</van-button>
     </submit-bar>
@@ -37,7 +47,8 @@ export default {
       attrs: {
         styles: [
         ],
-        material: []
+        material: [],
+        streetType: []
       },
     };
   },
@@ -50,6 +61,12 @@ export default {
     })
     appGetItemsByDictKeyInDB({dictKey: 'material'}).then(({data}) => {
       this.attrs.material = data.map((item) =>{return {
+        value: item.itemKey,
+        label: item.itemValue
+      }})
+    })
+    appGetItemsByDictKeyInDB({dictKey: 'streetType'}).then(({data}) => {
+      this.attrs.streetType = data.map((item) =>{return {
         value: item.itemKey,
         label: item.itemValue
       }})
