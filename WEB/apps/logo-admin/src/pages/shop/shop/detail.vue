@@ -69,7 +69,10 @@
       <!-- 备案材料 -->
       <a-divider orientation="left">备案材料</a-divider>
       <a-col :span="6" v-for="item in detail.list" :key="item.id">
-        <img :src="resolveImgUrl(item.urlPath)" />
+        <a-card hoverable>
+          <img slot="cover" :src="resolveImgUrl(item.urlPath)" />
+          <a-card-meta :title="item.attachmentType | fileType" />
+        </a-card>
       </a-col>
     </a-row>
   </a-form>
@@ -110,6 +113,19 @@ export default {
     dictMap(val, dict) {
       return dict[val];
     },
+    // 文件类型
+    fileType(val) {
+      switch (val) {
+        case "1":
+          return "商铺正面照";
+        case "2":
+          return "营业执照";
+        case "3":
+          return "租赁合同";
+        case "4":
+          return "店招效果图";
+      }
+    },
   },
   methods: {
     resolveImgUrl,
@@ -129,10 +145,10 @@ export default {
   }
   :deep(.ant-divider) {
     &::before {
-      width: 0%;
+      width: 1%;
     }
     &::after {
-      width: 100%;
+      width: 99%;
     }
     &-inner-text {
       font-weight: normal;
