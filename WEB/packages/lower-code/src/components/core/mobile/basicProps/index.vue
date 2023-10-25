@@ -1,13 +1,12 @@
 <template>
   <div class="props-wrap">
-    <div v-for="(item) in formItems" :key="item.propsName">
+    <div v-for="(item) in formItems" :key="item.propsName" :style="item.config.itemStyle || {}">
   <van-field name="stepper" :label="item.config.showLable ? item.config.label : ''">
     <template #input>
       <component
         :is="item.type"
         v-model="formModel[item.propsName]"
         v-bind="item.props"
-        label="测试"
       ></component>
       </template>
       </van-field>
@@ -19,6 +18,7 @@
 export default {
   props: ["formItems", "formModel"],
   mounted() {
+    console.log(this.formItems, 8888)
   }
 };
 </script>

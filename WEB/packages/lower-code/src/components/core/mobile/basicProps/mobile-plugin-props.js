@@ -122,5 +122,20 @@ export default {
       },
       ...other
     }
+  }),
+  slider: ({ valueType = String, label = '滑块', defaultValue = 100, visible = true, props = {min: 0, max:100, step: 1}, ...other } = {}) => ({
+    type: Number,
+    default: defaultValue,
+    visible,
+    editor: {
+      type: 'van-slider',
+      label,
+      itemStyle: {
+        width:'300px',
+        height: '50px'
+      },
+      props,
+      ...other
+    }
   })
 }

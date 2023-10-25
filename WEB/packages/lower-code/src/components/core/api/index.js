@@ -16,6 +16,8 @@ export const updateTemplate = wrapRequest(
   "/logo/template/updateTemplate",
   true
 );
+
+export const getMaterialByID =  wrapRequest("/logo/material/getMaterialByID", false)
 export const adminGetTemplateByID = wrapRequest(
   "/logo/template/getTemplateByID",
   false

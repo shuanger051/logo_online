@@ -62,6 +62,7 @@ export default {
     "active",
     "handleMousedownProp",
     "handleElementMoveProp",
+    "handleMouseEndProp",
     "handlePointMoveProp",
     "handleElementMouseUpProp",
     "handlePointMouseUpProp",
@@ -139,6 +140,8 @@ export default {
     },
 
     handleRotationMousedown(e) {
+      e.stopPropagation();
+      e.preventDefault(); // Let's stop this event.
       const pos = { ...this.position };
       let { clientX: startX, clientY: startY } = getEventParams(e);
       let startAngle = pos.angle;
@@ -229,9 +232,17 @@ export default {
       let removeUpEvent = createEvent({ handle: up, name: "mouseup" });
     },
     handleMousedown(e) {
-      if (this.handleMousedownProp) {
-        this.handleMousedownProp();
+      if (this.active) {
+        e.stopPropagation();
+        e.preventDefault();
         this.mousedownForElement(e, this.element);
+      } else {
+        this.handleMousedownProp(e)
+      }
+    },
+    handleMouseEnd(e) {
+      if (this.handleMouseEndProp) {
+        this.handleMouseEndProp(e, this.element)
       }
     },
     /**
@@ -266,8 +277,8 @@ export default {
         <div
           tabIndex="0"
           onKeydown={this.handleKeyPressed}
-          onMousedown={this.handleMousedown}
           onTouchstart={this.handleMousedown}
+          onTouchend = {this.handleMouseEnd}
           class={{ "shape__wrapper-active": this.active, shape__wrapper: true }}
         >
           {this.active &&

@@ -1,9 +1,27 @@
 import { mapState, mapActions } from "vuex";
-import Shape from "core/support/shape";
+import Shape from "core/support/shape_mobile";
+let moveFlag = 0
+
+
+const createEvent = (obj) => {
+  let { el, name, handle } = obj;
+  let event = name;
+
+  el = el || document;
+  el.addEventListener(event, handle, { passive: false });
+  return () => {
+    el.removeEventListener(event, handle,  { passive: false });
+  };
+};
 
 export default {
   props: ["elements", "handleClickElementProp", "handleClickCanvasProp"],
-  data: () => ({}),
+  data: () => ({
+    pos: {
+      left: 0,
+      top: 0
+    }
+  }),
   computed: {
     ...mapState("editor", ["editingElement", "work"]),
   },
@@ -16,7 +34,9 @@ export default {
       "elementManager",
       "updateWork",
     ]),
-
+    changeMoveFlag(flag){
+      moveFlag = flag
+    },
     handleElementMove(pos) {
       this.setElementPosition(pos);
     },
@@ -26,12 +46,35 @@ export default {
     handlePointMove(pos, point) {
       this.setElementPosition(pos);
     },
-    handleClickCanvas(e) {
-      if (!e.target.classList.contains("element-on-edit-canvas")) {
-        this.setEditingElement();
-      }
-    },
+    mousedown(e) {
+      if (moveFlag == 0) {
 
+        let sX = this.pos.left - e.changedTouches[0].clientX;
+        let sY = this.pos.top - e.changedTouches[0].clientY;
+
+        let move = (moveEvent) => {
+          this.changeMoveFlag(1)
+          // !#zh 移动的时候，不需要向后代元素传递事件，只需要单纯的移动就OK
+          moveEvent.stopPropagation();
+          let currX = moveEvent.changedTouches[0].clientX;
+          let currY = moveEvent.changedTouches[0].clientY;
+          this.pos.top = currY + sY;
+          this.pos.left = currX + sX;
+        };
+  
+        let up = (moveEvent) => {
+          removeMoveEvent();
+          removeUpEvent();
+          setTimeout(() => {
+            this.changeMoveFlag(0)
+          }, 500)
+        };
+        let removeMoveEvent = createEvent({ handle: move, name: "touchmove" });
+        let removeUpEvent = createEvent({ handle: up, name: "touchend" });
+      }
+
+    },
+    
     /**
      * TODO 封装 adjust editor scale 组件
      * scale: height/width
@@ -48,12 +91,14 @@ export default {
       return (
         <div
           class="edit-panel-wrap"
-          onClick={(e) => {
-            this.handleClickCanvas(e);
+          style = {{left: this.pos.left + 'px', top: this.pos.top+'px' }}
+ 
+          onTouchstart = {(e) => {
+            this.mousedown(e)
           }}
         >
           <div
-            style={{ height: "100%", background: this.work.backgroundColor }}
+            style={{ height: "100%", background: this.work.backgroundColor}}
             id="content_edit"
           >
             {elements.map((element, index) => {
@@ -82,10 +127,20 @@ export default {
                   defaultPosition={element.commonStyle} // {top, left}
                   element={element}
                   active={this.editingElement === element}
-                  handleMousedownProp={() => {
-                    this.setEditingElement(element);
+                  handleMouseEndProp = {() => {
+                    if (moveFlag == 0) {
+                      this.setEditingElement(element);
+                    } else {
+                      this.changeMoveFlag(0)
+                    }
                   }}
-
+                  handleMousedownProp = {(e) => {
+                    if (this.editingElement && this.editingElement !== element) {
+                      this.setEditingElement()
+                      e.stopPropagation();
+                    }
+                  }}
+                  changeMoveFlag = {this.changeMoveFlag}
                   handlePointMoveProp={this.handlePointMove}
                   handleElementMoveProp={this.handleElementMove}
                   handleRotationProp={this.handleRotation}

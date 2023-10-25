@@ -13,6 +13,9 @@ export default {
       overflow: "hidden",
       justifyContent: "center",
     };
+    const imgStyle = {
+       filter: 'opacity('+(this.opacity == null ? 100: this.opacity)+'%)'
+    }
     const {xRate, yRate} = this
     if (xRate && yRate) {
        style.alignItems = 'center';
@@ -28,23 +31,23 @@ export default {
        }
       return (
         <div style={style}>
-            <img src={url} height={wh.h + 'px'} width={wh.w + 'px'} />
+            <img src={url} height={wh.h + 'px'} width={wh.w + 'px'} style={imgStyle} />
         </div>
       );
     }
     if (this.fillType == "none") {
-      return <img src={url} alt="" srcset="" width="100%" height="100%" />;
+      return <img src={url} alt="" width="100%" height="100%" style={imgStyle} />;
     } else if (this.fillType == "horizontally") {
       return (
         <div style={style}>
-          <img src={url} height="100%" />
+          <img src={url} height="100%" style={imgStyle} />
         </div>
       );
     } else {
       style.flexDirection = "column";
       return(
         <div style={style}>
-          <img src={url} width="100%" />
+          <img src={url} width="100%" style={imgStyle} />
         </div>
       );
     }
@@ -62,11 +65,21 @@ export default {
       "buttonSize": "42px",
       min: 0,
     }}),
+    opacity: MobilePropTypes.slider({
+      defaultValue: 100,
+      label: '透明度',
+      showLable: true
+    })
   },
   props: {
     imgSrc: PropTypes.image(),
     xRate: PropTypes.number({ defaultValue: 0, visible: false}),
     yRate: PropTypes.number({ defaultValue: 0, visible: false}),
+    opacity: PropTypes.number({
+      defaultValue: 100,
+      label: '透明度',
+      visible: false
+    }),
     element: {
       type: Object,
       visible: false,

@@ -4,16 +4,19 @@
       <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
       <span @click="download">下载</span>
     </div>
-    <div class="edit-wrap-content">
+    <div class="edit-wrap-content" @click="() => this.setEditingElement()">
       <div style="min-height: 320px">
         <edit-panel :elements="elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
+   <tool-bar />
     <props-panel />
   </div>
 </template>
 <script>
 import PropsPanel from "./propsPanel.vue";
+import ToolBar from "./toolBar.vue";
+
 import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
 import store from "core/store/mobileIndex";
@@ -34,7 +37,7 @@ const later = (fn, time) => {
   }, time);
 };
 export default {
-  components: { PropsPanel, EditPanel },
+  components: { PropsPanel, EditPanel, ToolBar },
   store,
   computed: {
     ...mapState("editor", {
@@ -63,7 +66,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover"]),
+    ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover", 'setEditingElement']),
     async download() {
       const toast = Toast.loading({
         message: "生成中...",

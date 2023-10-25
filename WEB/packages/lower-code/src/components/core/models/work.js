@@ -27,7 +27,7 @@ export default class Work {
     // this.id = this.id
     // TODO 用id 并不是一个好办法，有心人会得知整个系统中共有多少作品等额外信息，尽量防止信息泄漏
     // this.key = this.key
-    this.cover_image_url = ''
+    this.cover_image_url = work.cover_image_url
     // TODO 后期可以添加一个类似项目组的概念，每个项目组下可以有多个作品
     // this.project_id = 1
 

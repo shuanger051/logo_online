@@ -48,7 +48,6 @@ export const mutations = {
       ...state.editingElement.commonStyle,
       ...payload
     }
-    console.log(state.editingElement.commonStyle,state.editingElement, 98)
   },
   /**
    * 元素管理：增/删/复制/上移/下移

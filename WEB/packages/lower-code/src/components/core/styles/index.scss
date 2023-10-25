@@ -141,3 +141,24 @@
   // 防止拖动延迟
   transition: none !important;
 }
+
+
+.setting .avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+  
+}
+.setting .ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.setting .ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.ant-upload .cover_image_url {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

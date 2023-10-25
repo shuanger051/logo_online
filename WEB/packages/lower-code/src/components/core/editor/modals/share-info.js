@@ -1,6 +1,6 @@
 import { mapState, mapActions } from "vuex";
 import "./share-info.scss";
-import { getDictById } from "core/api";
+import { getDictById, getMaterialByID } from "core/api";
 const debounce = function debounce(func, wait) {
   let timerId = 0;
   return function (...args) {
@@ -21,7 +21,7 @@ const tempType = [
 const isTopArr = [
   { value: "0", label: "否" },
   { value: "1", label: "是" },
-]
+];
 
 export default {
   computed: {
@@ -43,7 +43,8 @@ export default {
     return {
       styleMap: [],
       materialMap: [],
-      streetTypeMap: []
+      streetTypeMap: [],
+      loading: false,
     };
   },
   methods: {
@@ -55,6 +56,20 @@ export default {
     autoSave(info) {
       this.updateWork(info);
     },
+    beforeUpload () {
+      this.loading = true
+    },
+    async handleChange(info){
+      const status = info.file.status
+
+      if (status === 'done' && info.file?.response?.code == '0') {
+        this.loading = false
+        this.$message.success(`模板图片上传成功.`)
+        this.autoSave({cover_image_url: info.file.response.data.urlPath})
+      } else if (status === 'error') {
+        this.$message.error(`模板图片上传失败.`)
+      }
+    }
   },
   mounted() {
     // 修改标题、描述信息后自动保存
@@ -137,7 +152,7 @@ export default {
               ></a-select>
             </a-form-item>
             <a-form-item label="是否置顶">
-            <a-select
+              <a-select
                 class="input"
                 options={isTopArr}
                 value={this.work.isTop}
@@ -161,6 +176,25 @@ export default {
                 style={{ "margin-bottom": "10px" }}
                 onChange={(e) => this.autoSave({ backgroundColor: e })}
               ></el-color-picker>
+            </a-form-item>
+            <a-form-item label="模板图片">
+              <a-upload
+                class="avatar-uploader"
+                show-upload-list={false}
+                beforeUpload = {this.beforeUpload}
+                list-type="picture-card"
+                name="file"
+                action="/api/logo/attachment/uploadMaterialAttachment"
+                onChange={this.handleChange}
+              >
+                {this.work.cover_image_url ? (
+                  <img class="cover_image_url" src={'/api/logo' + this.work.cover_image_url} />
+                ) : (
+                  <div>
+                    <a-icon type={this.loading ? "loading" : "plus"} />
+                  </div>
+                )}
+              </a-upload>
             </a-form-item>
           </a-form>
         </div>

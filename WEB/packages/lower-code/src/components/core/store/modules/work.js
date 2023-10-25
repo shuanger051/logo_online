@@ -53,8 +53,8 @@ export const actions = {
   async saveWork({ commit, dispatch, state }) {
     const { router, handlerSaveSucessJump } = Vue.prototype.$editorConfig;
     const {currentRoute} = router
-    const flag = await dispatch('createCover')
-    if (flag) return 
+    // const flag = await dispatch('createCover')
+    // if (flag) return 
     const data = {
       name: state.work.title,
       style: state.work.style,

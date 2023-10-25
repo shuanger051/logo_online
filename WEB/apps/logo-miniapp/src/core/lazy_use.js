@@ -15,6 +15,8 @@ import {
   Form,
   Field,
   Popup,
+  Tabbar, 
+  TabbarItem,
   Toast,
   Picker,
   Stepper,
@@ -27,6 +29,7 @@ import {
   Sidebar,
   SidebarItem,
   Checkbox,
+  Slider,
   CheckboxGroup,
   NoticeBar,
 } from "vant";
@@ -62,6 +65,9 @@ Vue.use(CheckboxGroup);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(NoticeBar)
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
+Vue.use(Slider);
 
 // 自定义组件
 Vue.component("submit-bar", SubmitBar);
