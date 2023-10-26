@@ -37,6 +37,9 @@ export default {
       padding: 0px;
       align-items: center;
     }
+    :deep(.van-cell) {
+      overflow:visible;
+    }
     :deep(.van-field__label) {
       width: auto;
     }

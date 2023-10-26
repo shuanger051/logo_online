@@ -14,7 +14,7 @@ export default {
       justifyContent: "center",
     };
     const imgStyle = {
-       filter: 'opacity('+(this.opacity == null ? 100: this.opacity)+'%)'
+       opacity:'' + (this.opacity == null ? 100: this.opacity) + '%'
     }
     const {xRate, yRate} = this
     if (xRate && yRate) {
@@ -68,7 +68,11 @@ export default {
     opacity: MobilePropTypes.slider({
       defaultValue: 100,
       label: '透明度',
-      showLable: true
+      showLable: true,
+      itemStyle: {
+        width:'200px',
+        height: '50px'
+      },
     })
   },
   props: {

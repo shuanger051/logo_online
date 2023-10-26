@@ -4,16 +4,17 @@
       <van-tabbar-item icon="home-o" @click="openTextDialog"
         >加字</van-tabbar-item
       >
-
-      <van-tabbar-item icon="search">
-        <van-uploader
+      <van-uploader
           :after-read="afterRead"
           :max-size="1024 * 1024 * 2"
           @oversize="onOversize"
         >
+      <van-tabbar-item icon="search">
+    
           加图
-        </van-uploader>
+       
       </van-tabbar-item>
+    </van-uploader>
       <van-tabbar-item icon="friends-o" @click="previewImage">模板</van-tabbar-item>
     </van-tabbar>
     <van-dialog
@@ -125,5 +126,15 @@ export default {
   border: none;
   outline: none;
   background: #eaeaea;
+}
+.toolbar .van-uploader {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    color: #646566;
+    font-size: 0.32rem;
+    line-height: 1;
+    cursor: pointer;
 }
 </style>

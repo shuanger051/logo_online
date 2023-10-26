@@ -130,10 +130,6 @@ export default {
     editor: {
       type: 'van-slider',
       label,
-      itemStyle: {
-        width:'300px',
-        height: '50px'
-      },
       props,
       ...other
     }
