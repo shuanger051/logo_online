@@ -55,7 +55,7 @@
             <if test="material !=null and material !=''">AND material = #{material}</if>
             <if test="streetType !=null and streetType !=''">AND street_type = #{streetType}</if>
         </trim>
-        ORDER BY is_top DESC,sort_no ASC
+        ORDER BY is_top,create_time DESC,sort_no ASC
     </select>
 
     <!-- 分页查询模板信息列表API -->

@@ -69,6 +69,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/crypto/getPublicKey","anon");
         filterChainDefinitionMap.put("/crypto/encrypt","anon");
 
+        filterChainDefinitionMap.put("/test/**","anon");
+
         //放开图片验证码
         filterChainDefinitionMap.put("/sys/img-code/kaptcha","anon");
 
