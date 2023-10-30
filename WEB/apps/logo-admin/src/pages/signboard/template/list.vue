@@ -48,19 +48,9 @@ import { ref } from "vue";
 import { mapState } from "vuex";
 import { Modal,message } from "ant-design-vue";
 
-import { signboardService } from "@/services";
+import { signboardService,systemService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
-const styleMap = [
-  { value: "1", label: "古典风" },
-  { value: "2", label: "现代风" },
-  { value: "3", label: "商务风" },
-  { value: "4", label: "极简风" },
-  { value: "5", label: "欧式风" },
-  { value: "6", label: "美式风" },
-  { value: "7", label: "原木风" },
-  { value: "8", label: "工业风" },
-  { value: "9", label: "田园风" },
-];
+
 
 export default {
   components: { FormSerach },
@@ -82,7 +72,7 @@ export default {
             if (text.length) {
               const styleLists = text.split(",");
               const nameLists = styleLists.map((key) => {
-                return styleMap.find((s) => key == s.value).label;
+                return this.styleMap.find((s) => key == s.value).label;
               });
               return <span>{nameLists.join(",")}</span>;
             } else {
@@ -118,7 +108,7 @@ export default {
           label: "模版风格",
           component: "select",
           props: {
-            options: styleMap,
+            options: this.styleMap,
           },
         },
         {
@@ -148,6 +138,7 @@ export default {
 
     const formStyle = ref([]);
     const formData = ref({});
+    const styleMap = ref([]);
     // 删除事件
     const onDel = createDelEvent(async ({ record, index }) => {
       const data = await signboardService.deleteTemplateByID(
@@ -170,6 +161,14 @@ export default {
         }
       });
     }
+    systemService
+        .getItemsByDictKeyInDB({ dictKey: 'style' })
+        .then((res) => (styleMap.value = res.data.map((item) => {
+          return {
+            value: item.itemKey,
+            label: item.itemValue
+          }
+        })))
     const changeStyle = (v) => {
       formData.style = v.join(",");
     };
