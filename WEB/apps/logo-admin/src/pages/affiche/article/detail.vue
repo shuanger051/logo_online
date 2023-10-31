@@ -108,6 +108,10 @@ export default {
       type: Object,
       default: () => ({ contentExt: {}, contentAttachment: [] }),
     },
+    // 刷新
+    refresh: {
+      type: Function,
+    },
   },
   computed: {
     rules() {
@@ -147,6 +151,7 @@ export default {
         .saveContent(data)
         .then(() => {
           message.success("新增成功");
+          props?.refresh()
         })
         .catch((err) => {
           message.error(`新增失败：${_.get(err, "msg", "未知错误")}`);

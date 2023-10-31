@@ -32,10 +32,16 @@
     </van-cell>
     <van-cell title="经办人" :value="detail.handledByName"></van-cell>
     <van-cell title="备注" :value="detail.remark"></van-cell>
+    <!-- 被驳回状态下展示驳回原因 -->
+    <van-cell v-if="detail.isFilings == '3'"
+      ><span class="reject-reason"
+        >驳回原因：{{ detail.checkInfo }}</span
+      ></van-cell
+    >
     <van-cell title="">
       <!-- 已备案 -->
       <van-button
-        v-if="detail.isFilings == '2' || detail.isFilings == '1'"
+        v-if="detail.isFilings == '2'"
         disabled
         plain
         icon="lock"
@@ -43,25 +49,20 @@
         >已备案</van-button
       >
       <!-- 备案中 -->
-      <!-- <van-button
+      <van-button
         v-else-if="detail.isFilings == '1'"
         disabled
         plain
         size="small"
         icon="underway"
         >备案中</van-button
-      > -->
+      >
       <!-- 未备案 -->
       <template v-else>
         <van-button plain size="small" :to="`/shop/detail?shopId=${detail.id}`"
           >信息变更</van-button
         >
-        <van-button
-          plain
-          size="small"
-          :to="this.go()"
-          >店招设计</van-button
-        >
+        <van-button plain size="small" :to="this.go()">店招设计</van-button>
       </template>
     </van-cell>
   </div>
@@ -81,7 +82,7 @@ export default {
   data() {
     return {
       shopLogo: {},
-      showIntelligenceDesign: window.miniAppConfig.showIntelligenceDesign != 0
+      showIntelligenceDesign: window.miniAppConfig.showIntelligenceDesign != 0,
     };
   },
   computed: {
@@ -110,8 +111,10 @@ export default {
   },
   methods: {
     go() {
-      const {id} = this.detail
-      return window.miniAppConfig.showIntelligenceDesign == 0 ? `/signboard/editSelect?shopId=${id}` : `/signboard/selfEdit?shopId=${id}`
+      const { id } = this.detail;
+      return window.miniAppConfig.showIntelligenceDesign == 0
+        ? `/signboard/editSelect?shopId=${id}`
+        : `/signboard/selfEdit?shopId=${id}`;
     },
     // 获取店招
     getShopLogo(shopsId) {
@@ -143,6 +146,9 @@ export default {
       &:not(:last-child) {
         margin-right: 8px;
       }
+    }
+    .reject-reason {
+      color: @red;
     }
   }
 }

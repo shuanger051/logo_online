@@ -19,19 +19,20 @@
           >备案详情</a-button
         >
         <!-- btn:审核 -->
-        <!-- <a-button
+        <a-button
           v-if="record.isFilings == '1'"
           type="link"
           size="small"
-          @click="onAudit(record)"
+          @click="onAudit({ record })"
           >审核</a-button
-        > -->
+        >
       </template>
     </a-table>
   </div>
 </template>
 <script>
 import Detail from "./detail";
+import Audit from "./audit";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
 import { shopService } from "@/services";
@@ -113,7 +114,7 @@ export default {
           key: "isFilings",
           width: "80px",
           customRender: (val) => {
-            const dtm = { 0: "未备案", 1: "待审核", 2: "已备案" };
+            const dtm = { 0: "未备案", 1: "待审核", 2: "已备案", 3: "已驳回" };
             return dtm[val];
           },
         },
@@ -159,6 +160,7 @@ export default {
       page,
       onSerach,
       onChange,
+      onRefresh,
       createModalEvent,
     } = useTable(shopService.getShopsInfoListByPage);
 
@@ -171,6 +173,21 @@ export default {
       title: "备案详情",
       width: "740px",
     });
+    // 审核事件
+    const onAudit = createModalEvent(Audit, {
+      props: {
+        refresh: onRefresh,
+      },
+      title: "商铺备案审核",
+      okText: "通过",
+      closable: true,
+      cancelText: "驳回",
+      cancelButtonProps: {
+        props: {
+          type: "danger",
+        },
+      },
+    });
 
     return {
       formData,
@@ -179,6 +196,7 @@ export default {
       onAdd,
       onEdit,
       onView,
+      onAudit,
       onSerach,
       onChange,
     };
@@ -206,8 +224,6 @@ export default {
           message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
         );
     },
-    // 审核
-    onAudit(data) {},
   },
 };
 </script>

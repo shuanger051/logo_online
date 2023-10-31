@@ -27,3 +27,5 @@ export const saveShopsInfo = axiosPost("/logo/shops-info/saveShopsInfo");
 export const updateShopsInfoById = axiosPost("/logo/shops-info/updateShopsInfoById");
 /** 删除店铺信息 */
 export const deleteShopsInfoById = axiosPost("/logo/shops-info/deleteShopsInfoById");
+/** 审核状态变更 */
+export const updateShopsFilingsStatusAPI = axiosPost("/logo/shops-info/shops-info/updateShopsFilingsStatus")

@@ -158,21 +158,31 @@ export default {
       page,
       onSerach,
       onChange,
+      onRefresh,
       createModalEvent,
     } = useTable(afficheService.getContentListByPage);
 
     // 新增事件
     const onAdd = createModalEvent(Detail, {
+      props: {
+        refresh: onSerach,
+      },
       title: "新增文章",
       width: "800px",
     });
     // 编辑事件
     const onEdit = createModalEvent(Detail, {
+      props: {
+        refresh: onRefresh,
+      },
       title: "编辑文章",
       width: "800px",
     });
     // 审核
     const onAudit = createModalEvent(Audit, {
+      props: {
+        refresh: onRefresh,
+      },
       title: "审核意见",
       okText: "通过",
       cancelText: "退回",

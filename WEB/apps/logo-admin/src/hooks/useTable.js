@@ -58,6 +58,11 @@ export default function useTable(request) {
       });
   }
 
+  // 刷新
+  function onRefresh() {
+    return queryData();
+  }
+
   // 查询
   function onSerach(data) {
     return queryData({
@@ -123,6 +128,7 @@ export default function useTable(request) {
     page,
     loading,
     // method
+    onRefresh,
     onSerach,
     onChange,
     createModalEvent,

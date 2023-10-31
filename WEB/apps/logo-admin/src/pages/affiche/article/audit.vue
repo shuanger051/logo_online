@@ -20,6 +20,10 @@ export default {
       type: Object,
       required: true,
     },
+    // 刷新
+    refresh: {
+      type: Function,
+    },
   },
   computed: {
     rules() {
@@ -49,6 +53,7 @@ export default {
               })
               .then(() => {
                 message.success("操作成功");
+                props?.refresh();
               })
               .catch((err) => {
                 message.error(`操作失败：${_.get(err, "msg", "未知错误")}`);
