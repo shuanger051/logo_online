@@ -10,6 +10,7 @@
       :data-source="list"
       :pagination="page"
       :columns="columns"
+      :scroll="{ x: 1500 }"
       @change="onChange"
     >
       <!-- 操作列 -->
@@ -60,6 +61,7 @@ export default {
           dataIndex: "shopName",
           key: "shopName",
           width: "240px",
+          fixed: "left",
         },
         {
           title: "行业类型",
@@ -67,6 +69,7 @@ export default {
           key: "industryType",
           width: "100px",
           customRender: (val) => this.DictIndustryType[val],
+          fixed: "left",
         },
         {
           title: "商铺属性",
@@ -119,6 +122,11 @@ export default {
           },
         },
         {
+          title: "审核意见",
+          dataIndex: "checkInfo",
+          key: "checkInfo",
+        },
+        {
           title: "备注",
           dataIndex: "remark",
           key: "remark",
@@ -128,6 +136,7 @@ export default {
           key: "operation",
           scopedSlots: { customRender: "operation" },
           width: "140px",
+          fixed: "right",
         },
       ];
     },
