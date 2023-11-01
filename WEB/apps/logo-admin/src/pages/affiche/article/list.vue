@@ -13,6 +13,7 @@
       :data-source="list"
       :pagination="page"
       :columns="columns"
+      :scroll="{ x: 1800 }"
       @change="onChange"
     >
       <!-- 操作列 -->
@@ -71,39 +72,47 @@ export default {
           title: "标题",
           dataIndex: "contentExt.title",
           key: "contentExt.title",
+          width: "260px",
+          fixed: "left",
         },
         {
           title: "副标题",
           dataIndex: "contentExt.shortTitle",
           key: "contentExt.shortTitle",
+          width: "260px",
         },
         {
           title: "所属栏目",
           dataIndex: "channelId",
           key: "channelId",
           customRender: (val) => this.ColumnObject[val],
+          width: "120px",
         },
         {
           title: "是否推荐",
           dataIndex: "isRecommend",
           key: "isRecommend",
           customRender: (val) => (val == "1" ? "是" : "否"),
+          width: "80px",
         },
         {
           title: "状态",
           dataIndex: "status",
           key: "status",
           customRender: (val) => this.DictStatus[val],
+          width: "100px",
         },
         {
           title: "日访问数",
           dataIndex: "viewsDay",
           key: "viewsDay",
+          width: "100px",
         },
         {
           title: "作者",
           dataIndex: "contentExt.author",
           key: "contentExt.author",
+          width: "140px",
         },
         {
           title: "摘要",
@@ -114,11 +123,14 @@ export default {
           title: "来源",
           dataIndex: "contentExt.origin",
           key: "contentExt.origin",
+          width: "160px",
         },
         {
           title: "操作",
           key: "operation",
           scopedSlots: { customRender: "operation" },
+          width: "160px",
+          fixed: "right",
         },
       ];
     },

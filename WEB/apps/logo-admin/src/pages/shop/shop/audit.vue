@@ -1,6 +1,6 @@
 <template>
   <a-form-model ref="formRef" :model="formData" :rules="rules">
-    <a-form-model-item label="审核意见" prop="checkInfo">
+    <a-form-model-item prop="checkInfo">
       <a-textarea
         v-model="formData.checkInfo"
         :auto-size="{ minRows: 4, maxRows: 6 }"

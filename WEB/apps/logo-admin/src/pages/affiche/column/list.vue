@@ -42,27 +42,34 @@ export default {
     columns() {
       return [
         {
+          title: "栏目ID",
+          dataIndex: "id",
+          key: "id",
+          width: "80px",
+        },
+        {
           title: "栏目名称",
           dataIndex: "name",
           key: "name",
+          width: "240px",
         },
         {
           title: "栏目说明",
           dataIndex: "description",
           key: "description",
         },
-        {
-          title: "模块ID",
-          dataIndex: "modelId",
-          key: "modelId",
-          width: "80px",
-        },
-        {
-          title: "父级ID",
-          dataIndex: "parentId",
-          key: "parentId",
-          width: "80px",
-        },
+        // {
+        //   title: "模块ID",
+        //   dataIndex: "modelId",
+        //   key: "modelId",
+        //   width: "80px",
+        // },
+        // {
+        //   title: "父级ID",
+        //   dataIndex: "parentId",
+        //   key: "parentId",
+        //   width: "80px",
+        // },
         {
           title: "排序编号",
           dataIndex: "orderNo",
@@ -74,6 +81,10 @@ export default {
           dataIndex: "isDisplay",
           key: "isDisplay",
           width: "80px",
+          customRender: (val) => {
+            const dtm = { 0: "否", 1: "是" };
+            return dtm[val];
+          },
         },
         {
           title: "访问级别",
@@ -86,6 +97,9 @@ export default {
           dataIndex: "allowUpdown",
           key: "allowUpdown",
           width: "80px",
+          customRender: (val) => {
+            return val ? "是" : "否";
+          },
         },
         {
           title: "栏目路径",
@@ -96,6 +110,7 @@ export default {
           title: "操作",
           key: "operation",
           scopedSlots: { customRender: "operation" },
+          width: "120px",
         },
       ];
     },

@@ -10,7 +10,15 @@
     <a-row>
       <a-col :span="12">
         <a-form-model-item label="所属栏目" prop="channelId">
-          <a-input placeholder="请输入" v-model="formData.channelId" />
+          <a-select placeholder="请选择" v-model="formData.channelId">
+            <a-select-option
+              v-for="item in channelArr"
+              :value="item.id"
+              :key="item.id"
+            >
+              {{ item.name }}
+            </a-select-option>
+          </a-select>
         </a-form-model-item>
       </a-col>
       <a-col :span="12">
@@ -51,14 +59,6 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="12">
-        <a-form-model-item label="摘要" prop="contentExt.description">
-          <a-input
-            placeholder="请输入"
-            v-model="formData.contentExt.description"
-          />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="12">
         <a-form-model-item label="来源" prop="contentExt.origin">
           <a-input placeholder="请输入" v-model="formData.contentExt.origin" />
         </a-form-model-item>
@@ -68,6 +68,15 @@
           <a-input
             placeholder="请输入"
             v-model="formData.contentExt.originUrl"
+          />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="24">
+        <a-form-model-item label="摘要" prop="contentExt.description">
+          <a-textarea
+            placeholder="请输入"
+            v-model="formData.contentExt.description"
+            :auto-size="{ minRows: 4, maxRows: 6 }"
           />
         </a-form-model-item>
       </a-col>
@@ -114,6 +123,7 @@ export default {
     },
   },
   computed: {
+    // 校验规则
     rules() {
       return {
         channelId: [{ required: true, message: "请输入" }],
@@ -127,6 +137,7 @@ export default {
         originUrl: [{ required: true, message: "请输入" }],
       };
     },
+    // 所属栏目
   },
   setup(props) {
     // 获取表单默认值
@@ -136,7 +147,7 @@ export default {
     // 附件处理
     detail.contentAttachment = list.map(setAttachmentAttr);
     const formData = reactive(detail);
-
+    const channelArr = ref([]);
     // 设置附件属性
     function setAttachmentAttr(item, uid) {
       if (!item.filename) item.filename = item.fileName;
@@ -145,13 +156,18 @@ export default {
       return item;
     }
 
+    // 所属栏目
+    afficheService.getChannelList().then((res) => {
+      channelArr.value = res.data || [];
+    });
+
     // 新增
     function saveContent(data) {
       return afficheService
         .saveContent(data)
         .then(() => {
           message.success("新增成功");
-          props?.refresh()
+          props?.refresh();
         })
         .catch((err) => {
           message.error(`新增失败：${_.get(err, "msg", "未知错误")}`);
@@ -203,6 +219,7 @@ export default {
     return {
       formData,
       formRef,
+      channelArr,
       // method
       onOk,
       onEditorChange,

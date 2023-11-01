@@ -187,7 +187,7 @@ export default {
       props: {
         refresh: onRefresh,
       },
-      title: "商铺备案审核",
+      title: "审核意见",
       okText: "通过",
       closable: true,
       cancelText: "驳回",
@@ -197,7 +197,6 @@ export default {
         },
       },
     });
-
     return {
       formData,
       list,
