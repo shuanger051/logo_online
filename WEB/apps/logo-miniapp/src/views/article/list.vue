@@ -1,45 +1,75 @@
 <template>
   <div class="page-wrap">
-    <van-list :loading="loading">
-      <van-cell
-        v-for="item in list"
-        :to="`/article/${item.channelId}/detail?pid=${item.id}`"
-        :key="item.id"
-        :title="item.title"
-        :label="item.description"
-      >
-        <van-image :src="item.imgUrl" />
-      </van-cell>
+    <van-list v-model="loading" :finished="finished" @load="queryArticleList">
+      <!-- 加载更多 -->
+      <template slot="finished">
+        <span v-if="list.length">-没有更多了-</span>
+      </template>
+      <!-- 文章列表不为空 -->
+      <template v-if="list.length">
+        <van-cell
+          v-for="item in list"
+          :to="`/article/${item.channelId}/detail?pid=${item.id}`"
+          :key="item.id"
+          :title="item.contentExt.title"
+        >
+          <template slot="label">
+            <div class="description">{{ item.contentExt.description }}</div>
+            <div class="attrs-bar">
+              <span class="attr-item time">{{
+                item.contentExt.releaseDate | date("YYYY-MM-DD hh:mm")
+              }}</span>
+              <span class="attr-item visitor"
+                >阅读<i>{{ item.viewsDay }}</i></span
+              >
+            </div>
+          </template>
+        </van-cell>
+      </template>
+      <!-- 文章列表为空 -->
+      <van-empty v-else description="暂未发布相关信息文章"> </van-empty>
     </van-list>
   </div>
 </template>
 <script>
-// import { articleService } from "@/apis";
+import { articleService } from "@/apis";
 export default {
   data() {
     return {
       loading: false,
-      list: [
-        {
-          id: "482",
-          channelId: "1",
-          title: "测试",
-          description: "测试摘要",
-          imgUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
-        },
-        {
-          id: "483",
-          title: "测试测试测试测试测试",
-          channelId: "1",
-          description: "测试摘要测试摘要测试摘要测试摘要测试摘要测试摘要测",
-          imgUrl: "https://img01.yzcdn.cn/vant/cat.jpeg",
-        },
-      ],
+      finished: false,
+      list: [],
+      // 查询条件
+      params: {},
+      page: {
+        size: 30,
+        total: 0,
+        current: 0,
+      },
     };
+  },
+  created() {
+    // 保存查询条件
+    this.params = _.pick(this.$route.params, ["channelId"]);
   },
   methods: {
     queryArticleList() {
-      // articleService.
+      const { channelId } = this.params;
+      const { size, current } = this.page;
+      let pageNum = current + 1;
+      articleService
+        .getContentByChannelIdAPI({ channelId })
+        .then((res) => {
+          const { list = [], total = 0 } = _.get(res, "data", {});
+          this.finished = list.length < size;
+          this.page.current = pageNum;
+          this.page.total = total;
+          this.list = list;
+        })
+        .finally(() => (this.loading = false))
+        .catch((err) => {
+          this.finished = true;
+        });
     },
   },
 };
@@ -47,12 +77,37 @@ export default {
 <style lang="less" scoped>
 .page-wrap {
   padding: 12px 0;
+  min-height: 100%;
+  box-sizing: border-box;
   background-color: @gray-2;
-  // min-height: 100vh;
   :deep(.van-list) {
     .van-cell {
       &__value {
         line-height: 0;
+      }
+      .description {
+        margin-bottom: 4px;
+        line-height: 1.6em;
+        max-height: 3.2em;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+      }
+      .attrs-bar {
+        .attr-item {
+          &:not(:last-child) {
+            margin-right: 6px;
+          }
+        }
+        .visitor {
+          & > i {
+            font-style: normal;
+            display: inline-block;
+            padding: 0 2px;
+          }
+        }
       }
     }
     .van-image {

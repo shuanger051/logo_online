@@ -30,6 +30,12 @@
           text="备案流程"
           to="/article/1/detail?pid=482"
         />
+        <van-grid-item
+          icon-prefix="iconfont icon"
+          icon="zhengfuxinxigongkaizhinan"
+          text="备案信息公告"
+          to="/article/4/list"
+        />
       </van-grid>
     </van-panel>
   </div>
