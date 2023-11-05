@@ -32,7 +32,7 @@
         />
         <van-grid-item
           icon-prefix="iconfont icon"
-          icon="zhengfuxinxigongkaizhinan"
+          icon="fadingzhudonggongkaineirong"
           text="备案信息公告"
           to="/article/4/list"
         />
