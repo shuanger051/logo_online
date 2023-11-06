@@ -68,4 +68,6 @@ public interface ContentService {
          */
         PageInfo<ContentDTO> getContentByChannelId(ContentDTO contentDTO);
 
+        PageInfo<ContentDTO> getContentByChannelIdAPI(ContentDTO contentDTO);
+
 }

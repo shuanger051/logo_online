@@ -61,4 +61,6 @@ public interface ContentMapper {
          */
         List<ContentDTO> getContentByChannelId(ContentDTO contentDTO);
 
+        List<ContentDTO> getContentByChannelIdAPI(@Param("channelId") Long channelId);
+
 }

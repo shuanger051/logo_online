@@ -95,6 +95,11 @@
         </trim>
     </select>
 
+    <!-- 根据ChannelId查询文章集合 H5页面-->
+    <select id="getContentByChannelIdAPI" resultMap="BaseResultMapAPI" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/> FROM t_content where channel_id = #{channelId} and status = '2' ORDER BY create_time desc
+    </select>
+
 
     <!-- 根据ID删除 -->
     <delete id="deleteContentById" parameterType="java.lang.Long">

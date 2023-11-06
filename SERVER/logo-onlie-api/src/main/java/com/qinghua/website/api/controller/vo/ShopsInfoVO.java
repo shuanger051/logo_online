@@ -51,6 +51,11 @@ public class ShopsInfoVO {
     private String isFilings;
 
     /**
+     * 审核信息
+     */
+    private String checkInfo;
+
+    /**
      * 备注
      */
     private String remark;

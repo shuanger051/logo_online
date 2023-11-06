@@ -674,6 +674,36 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * 分页查询文章列表API
+     * @param bean
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "根据栏目ID分頁查询文章列表 API")
+    @RequestMapping("/getContentByChannelIdAPI")
+    public ResponseResult<Object> getContentByChannelIdAPI(@Validated ContentQueryIO bean){
+        ContentDTO contentDTO = BeanToolsUtil.copyOrReturnNull(bean,ContentDTO.class);
+        PageInfo<ContentDTO> pageList = contentService.getContentByChannelIdAPI(contentDTO);
+        List<ContentVO> contentVOList = new ArrayList<>();
+        if(null != pageList && 0 != pageList.getList().size()){
+            for(int i = 0 ;i<pageList.getList().size();i++){
+                if(null != pageList.getList().get(i).getContentExt()){
+                    contentVOList.add(BeanToolsUtil.copyOrReturnNull(pageList.getList().get(i),ContentVO.class));
+                }
+            }
+            if(null != contentVOList && 0 != contentVOList.size()){
+                PageListVO<ContentVO> result = new PageListVO<>();
+                result.setList(contentVOList);
+                result.setTotal(pageList.getTotal());
+                return ResponseResult.success(result);
+            }else{
+                return ResponseResult.success("该栏目下没有已发布且已到发布时间的文章!");
+            }
+        }else {
+            return ResponseResult.success("该栏目下没有已发布且已到发布时间的文章!");
+        }
+    }
+
+    /**
      * APP 分頁查询素材信息API
      * @param materialQueryIO
      * @return

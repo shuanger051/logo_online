@@ -153,7 +153,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     /**
-     * 根据ChannelID查询文章结合
+     * 根据ChannelID查询文章列表
      * @param bean
      * @return
      */
@@ -162,6 +162,17 @@ public class ContentServiceImpl implements ContentService {
         PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
         List<ContentDTO> contentList = contentMapper.getContentByChannelId(bean);
         return PageInfo.of(contentList);
+    }
+
+    @Override
+    public PageInfo<ContentDTO> getContentByChannelIdAPI(ContentDTO bean){
+        PageHelper.startPage(bean.getPageNum(), bean.getPageSize());
+        List<ContentDTO> contentList = contentMapper.getContentByChannelIdAPI(bean.getChannelId());
+        if(null != contentList && 0 != contentList.size()){
+            return PageInfo.of(contentList);
+        }else{
+            throw new BizException("没有符合条件的已发布文章或文章未到预定发布时间",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
     }
 
 }

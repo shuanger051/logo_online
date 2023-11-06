@@ -204,9 +204,7 @@ public class TestController {
     public String completeFeedback(){
         return "{\n" +
                 "    \"success\": true,\n" +
-                "    \"msg\": \"操作成功\",\n" +
-                "    \"code\": 200,\n" +
-                "    \"body\": {}";
+                "    \"code\": 200}";
     }
 
     @PostMapping("/detail")
@@ -389,5 +387,20 @@ public class TestController {
                 "}\n" +
                 "}";
     }
+
+    @PostMapping("/upload")
+    public String upload(){
+        return "{\n" +
+                "    'success': true,\n" +
+                "    'msg': '操作成功',\n" +
+                "    'code': 200,\n" +
+                "    'body': {\n" +
+                "        'name': 'test1.png',\n" +
+                "        'key': 'wxctgrid://oss/ad9d444967c44bcda370c8e85916e1d1.png',\n" +
+                "        'url': 'https://2.22.128.38:27025/wxctgrid/oss/ad9d444967c44bcda370c8e85916e1d1.png'\n" +
+                "    }\n" +
+                "}";
+    }
+
 
 }

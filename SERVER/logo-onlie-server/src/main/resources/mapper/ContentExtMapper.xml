@@ -12,6 +12,7 @@
         <result column="description" property="description" jdbcType="VARCHAR"/>
         <result column="origin" property="origin" jdbcType="VARCHAR"/>
         <result column="origin_url" property="originUrl" jdbcType="VARCHAR"/>
+        <result column="release_date" property="releaseDate" jdbcType="TIMESTAMP"/>
         <result column="title_img" property="titleImg" jdbcType="VARCHAR"/>
         <result column="content_img" property="contentImg" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
