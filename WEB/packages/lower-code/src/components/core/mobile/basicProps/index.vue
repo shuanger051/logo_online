@@ -22,7 +22,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .props-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -33,15 +33,19 @@ export default {
       margin-bottom: 10px;
       margin-left: 10px;
     }
-    :deep(.van-field) {
+    .van-field {
       padding: 0px;
       align-items: center;
     }
-    :deep(.van-cell) {
+    .van-cell {
       overflow:visible;
     }
-    :deep(.van-field__label) {
+    .van-field__label {
       width: auto;
     }
   }
+
+ .el-color-picker__panel {
+  z-index: 10000!important;
+ }
 </style>
