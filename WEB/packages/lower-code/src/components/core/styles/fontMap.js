@@ -34,6 +34,226 @@
         value: 'meibeiheiheiti'
       },
       {
+        label: '斑马字体',
+        value: 'banmaziti'
+      },
+      {
+        label: '扁桃体',
+        value: 'biantaoti'
+      },
+      {
+        label: '标题圆体',
+        value: 'biaotiyuanti'
+      },
+      {
+        label: '潮黑体',
+        value: 'chaoheiti'
+      },
+      {
+        label: '得意黑',
+        value: 'deyihei'
+      },
+      {
+        label: '得意黑体',
+        value: 'deyiheiti'
+      },
+      {
+        label: '繁体方篆',
+        value: 'fantifangzhuan'
+      },
+      {
+        label: '繁新语体',
+        value: 'fanxinyuti'
+      },
+      {
+        label: '飞云体',
+        value: 'feiyunti'
+      },
+      {
+        label: '粉條甜',
+        value: 'fentiaotian'
+      },
+      {
+        label: '福满堂体',
+        value: 'fumantangti'
+      },
+      {
+        label: '哥特体（粗）',
+        value: 'ge特ticu'
+      },
+      {
+        label: '哥特体',
+        value: 'ge特ti'
+      },
+      {
+        label: '根友毛笔简体',
+        value: 'genyoumaobijianti'
+      },
+      {
+        label: '滚石简体',
+        value: 'gunshijianti'
+      },
+      {
+        label: '国妙黑',
+        value: 'guomiaohei'
+      },
+      {
+        label: '和风体',
+        value: 'hefengti'
+      },
+      {
+        label: '黑草体',
+        value: 'heicaoti'
+      },
+      {
+        label: '嘿嘿体',
+        value: 'heiheiti'
+      },
+      {
+        label: '金刚体',
+        value: 'jingangti'
+      },
+      {
+        label: '金砖黑体简体',
+        value: 'jinzhuanheitijianti'
+      },
+      {
+        label: '锦书体',
+        value: 'jinshuti'
+      },
+      {
+        label: '进步体',
+        value: 'jinbuti'
+      },
+      {
+        label: '快看世界体',
+        value: 'kuaikanshijieti'
+      },
+      {
+        label: '宽黑体',
+        value: 'kuanheiti'
+      },
+      {
+        label: '澜黑体',
+        value: 'lanheiti'
+      },
+      {
+        label: '力量体简体（粗）',
+        value: 'liliangtijianticu'
+      },
+      {
+        label: '龙手书体',
+        value: 'longshoushuti'
+      },
+      {
+        label: '龙珠体',
+        value: 'longzhuti'
+      },
+      {
+        label: '落雁体（细）',
+        value: 'layantixi'
+      },
+      {
+        label: '麦克笔',
+        value: 'maikebi'
+      },
+      {
+        label: '蒙黑体',
+        value: 'mengheiti'
+      },
+      {
+        label: '南安体',
+        value: 'nananti'
+      },
+      {
+        label: '泼墨体',
+        value: 'pomoti'
+      },
+      {
+        label: '锐毛笔简体',
+        value: 'ruimaobijianti'
+      },
+      {
+        label: '尚巍朴拙',
+        value: 'shangweipuzhuo'
+      },
+      {
+        label: '少年体',
+        value: 'shaonianti'
+      },
+      {
+        label: '绅士黑体',
+        value: 'shenshiheiti'
+      },
+      {
+        label: '书魂体简体',
+        value: 'shuhuntijianti'
+      },
+      {
+        label: '数黑体（粗）',
+        value: 'shuheiticu'
+      },
+      {
+        label: '玩酷体',
+        value: 'wankuti'
+      },
+      {
+        label: '伟君黑体',
+        value: 'weijunheiti'
+      },
+      {
+        label: '魏碑简体',
+        value: 'weibeijianti'
+      },
+      {
+        label: '无界黑',
+        value: 'wujiehei'
+      },
+      {
+        label: '细线体',
+        value: 'xixianti'
+      },
+      {
+        label: '夏蝉丸',
+        value: 'xiachanwan'
+      },
+      {
+        label: '笑歌隶书简体',
+        value: 'xiaogelishujianti'
+      },
+      {
+        label: '醒狮体',
+        value: 'xingshiti'
+      },
+      {
+        label: '仪程行书简体',
+        value: 'yichenghangshujianti'
+      },
+      {
+        label: '渔阳黑体',
+        value: 'yuyangheiti'
+      },
+      {
+        label: '玉波手写简体',
+        value: 'yuboshouxiejianti'
+      },
+      {
+        label: '正雅体',
+        value: 'zhengyati'
+      },
+      {
+        label: '志莽行书',
+        value: 'zhimanghangshu'
+      },
+      {
+        label: '智黑简体',
+        value: 'zhiheijianti'
+      },
+      {
+        label: '拙书简体',
+        value: 'zhuoshujianti'
+      },
+      {
         label: '站酷仓耳渔阳体-W05',
         value: 'zhankucangeryuyangti-w05'
       },

@@ -11,7 +11,7 @@
     "build:editor": "cross-env PAGE=EDITOR vue-cli-service build",
     "build:engine": "cross-env PAGE=ENGINE vue-cli-service build --target lib --name engine ./src/engine-entry.js",
     "build:core_editor": "cross-env PAGE=CORE_EDITOR vue-cli-service build --target lib --name core-editor ./src/components/core/index.js",
-    "font": "node ./src/components/core/styles/font.js"
+    "font": "node ./src/components/core/styles/font1.js"
   },
   "dependencies": {
     "@luban-h5/lbc-button": "^0.0.3",
