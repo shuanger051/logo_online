@@ -98,16 +98,16 @@
             <properties>
                 <profile>dev</profile>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+
         </profile>
         <profile>
             <id>test</id>
             <properties>
                 <profile>test</profile>
             </properties>
-
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>prod</id>

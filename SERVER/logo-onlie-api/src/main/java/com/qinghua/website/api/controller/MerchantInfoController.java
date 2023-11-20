@@ -39,9 +39,17 @@ public class MerchantInfoController {
     @RequestMapping(value = "/getMerchantInfoListByPage",method = RequestMethod.GET)
     @RequiresPermissions("/merchantInfo/getMerchantInfoListByPage")
     public ResponseResult<Object> getMerchantInfoListByPage(@Validated MerchantQueryIO merchantQueryIO){
-        MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
-        PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
 
+        MerchantInfoDTO merchantInfoDTO =  BeanToolsUtil.copyOrReturnNull(merchantQueryIO, MerchantInfoDTO.class);
+
+        if(null != merchantInfoDTO.getPhone()){
+            merchantInfoDTO.setPhone(Sm4Utils.encrypt(merchantInfoDTO.getPhone()));
+        }
+        if(null != merchantInfoDTO.getIdCard()){
+            merchantInfoDTO.setIdCard(Sm4Utils.encrypt(merchantInfoDTO.getIdCard()));
+        }
+
+        PageInfo<MerchantInfoDTO> pageList = merchantInfoService.getMerchantInfoListByPage(merchantInfoDTO);
         //解密DTO中的mobile加密串
         pageList.getList().forEach(item -> {
             if(null != item.getPhone()){
