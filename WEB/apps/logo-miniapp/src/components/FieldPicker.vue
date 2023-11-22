@@ -42,7 +42,7 @@ export default {
   ),
   filters: {
     formatter(val, dict) {
-      return dict[val];
+      return dict[val] || val;
     },
   },
   setup(props, ctx) {
@@ -68,8 +68,9 @@ export default {
     }
 
     function onConfirm(data) {
-      if (_.isObject(data)) data = data.value;
       console.log(data);
+      if (_.isArray(data)) data = data.join("");
+      else if (_.isObject(data)) data = data.value;
       emit("input", data);
       show.value = false;
     }

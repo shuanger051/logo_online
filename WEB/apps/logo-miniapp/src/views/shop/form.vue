@@ -247,6 +247,7 @@ import { mapState } from "vuex";
 import { shopService } from "@/apis";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictOptions } from "@/store/helpers";
+import { runPromiseInSequence } from "@/utils/util";
 import * as validator from "@/utils/validator";
 
 const PREFIX_IMG_JPG = "data:image/jpeg;base64,";
@@ -324,19 +325,124 @@ export default {
     // 所属地区
     area() {
       return [
-        { text: "上城区", value: "上城区" },
-        { text: "拱墅区", value: "拱墅区" },
-        { text: "西湖区", value: "西湖区" },
-        { text: "滨江区", value: "滨江区" },
-        { text: "萧山区", value: "萧山区" },
-        { text: "余杭区", value: "余杭区" },
-        { text: "临平区", value: "临平区" },
-        { text: "钱塘区", value: "钱塘区" },
-        { text: "富阳区", value: "富阳区" },
-        { text: "临安区", value: "临安区" },
-        { text: "建德市", value: "建德市" },
-        { text: "桐庐县", value: "桐庐县" },
-        { text: "淳安县", value: "淳安县" },
+        {
+          text: "上城区",
+          value: "上城区",
+          children: [
+            { text: "高银街" },
+            { text: "民心路" },
+            { text: "太平门直街" },
+          ],
+        },
+        {
+          text: "拱墅区",
+          value: "拱墅区",
+          children: [
+            { text: "龙游路" },
+            { text: "武林路" },
+            { text: "横长寿路" },
+          ],
+        },
+        {
+          text: "西湖区",
+          value: "西湖区",
+          children: [
+            { text: "西溪路" },
+            { text: "文三路" },
+            { text: "马塍路" },
+            { text: "阔石板" },
+          ],
+        },
+        {
+          text: "滨江区",
+          value: "滨江区",
+          children: [
+            { text: "滨盛路" },
+            { text: "江汉路" },
+            { text: "江南大道" },
+          ],
+        },
+        {
+          text: "萧山区",
+          value: "萧山区",
+          children: [
+            { text: "河上老街" },
+            { text: "湘湖金融小镇慢生活街" },
+            { text: "金城路" },
+          ],
+        },
+        {
+          text: "余杭区",
+          value: "余杭区",
+          children: [
+            { text: "仓兴街" },
+            { text: "联创街" },
+            { text: "海鸥路" },
+          ],
+        },
+        {
+          text: "临平区",
+          value: "临平区",
+          children: [
+            { text: "东大街" },
+            { text: "北大街" },
+            { text: "西大街" },
+          ],
+        },
+        {
+          text: "钱塘区",
+          value: "钱塘区",
+          children: [
+            { text: "金沙湖休闲特色街区" },
+            { text: "金沙大道" },
+            { text: "福雷德支路" },
+          ],
+        },
+        {
+          text: "富阳区",
+          value: "富阳区",
+          children: [
+            { text: "文教路" },
+            { text: "文居街" },
+            { text: "花坞南路" },
+          ],
+        },
+        {
+          text: "临安区",
+          value: "临安区",
+          children: [
+            { text: "衣锦街" },
+            { text: "苕溪南街文化商业街" },
+            { text: "万马路" },
+          ],
+        },
+        {
+          text: "建德市",
+          value: "建德市",
+          children: [
+            { text: "双江街" },
+            { text: "美好广场" },
+            { text: "新安东路" },
+          ],
+        },
+        {
+          text: "桐庐县",
+          value: "桐庐县",
+          children: [
+            { text: "梅林路" },
+            { text: "迎春路" },
+            { text: "瑶琳路" },
+          ],
+        },
+        {
+          text: "淳安县",
+          value: "淳安县",
+          children: [
+            { text: "骑龙巷" },
+            { text: "环湖北路" },
+            { text: "珍珠七路" },
+          ],
+        },
       ];
     },
   },
@@ -375,6 +481,7 @@ export default {
       // 组装提交数据报文
       const payload = Object.assign({}, formData, {
         list, // 档案材料
+        isFilings: "1", // 变更为审核中
         merchantId: merchantInfo.id, // 商户id
       });
 
@@ -411,12 +518,22 @@ export default {
     // 更新
     doUpdate(payload) {
       const load = this.$toast.loading("请稍等...");
-      shopService
-        .updateShopsInfoAPI(payload)
+      runPromiseInSequence([
+        // 更新商铺信息
+        () => shopService.updateShopsInfoAPI(payload),
+        // 更新审核状态
+        () =>
+          shopService.updateShopsFilingsStatusAPI({
+            id: payload.id,
+            isFilings: "1",
+            checkInfo: "",
+          }),
+      ])()
         // 关闭加载中
         .finally(load.clear)
         // 保存成功
         .then((res) => {
+          // 变更审核状态
           this.$toast.success({
             message: "保存成功",
             onClose: () => {

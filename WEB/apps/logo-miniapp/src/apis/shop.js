@@ -55,3 +55,8 @@ export const getLogoInfoByShopsIdAPI = axiosGet(
  * == 获取证件照原图 ==
  */
 export const getShopsIdCardByIdAPI = axiosGet("logo/app/getShopsIdCardByIdAPI");
+
+/**
+ * == 变更审核状态 ==
+ */
+export const updateShopsFilingsStatusAPI = axiosPost("logo/app/updateShopsFilingsStatusAPI")

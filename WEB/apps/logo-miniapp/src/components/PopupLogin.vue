@@ -43,8 +43,8 @@ export default {
     return {
       show: false,
       formData: {
-        customerName: process.env.NODE_ENV !== "production" ? "18604298309": '',
-        password: process.env.NODE_ENV !== "production"? "Abc123456": ''
+        customerName: "",
+        password: "",
       },
     };
   },
@@ -57,6 +57,18 @@ export default {
     },
   },
   created() {
+    const { token } = this.$route.query;
+    // 传了则自动登录
+    if (token) {
+      try {
+        let dtm = JSON.parse(decodeURIComponent(token));
+        this.formData.customerName = dtm.phone;
+        this.formData.password = dtm.password;
+        this.onSubmit();
+      } catch (e) {
+        console.warn("自动登录失败");
+      }
+    }
     eventBus.$on("login", () => (this.show = true));
   },
   methods: {
