@@ -57,35 +57,32 @@ export default {
     },
   },
   created() {
-    const { token, accesstoken } = this.$route.query;
+    const { accesstoken } = this.$route.query;
     // 浙里办授权登录
     if (accesstoken) {
-      accountService
-        .getZLBTokenAPI({
-          accessToken: accesstoken,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    }
-    // 传了则自动登录
-    if (token) {
-      try {
-        let dtm = JSON.parse(decodeURIComponent(token));
-        this.formData.customerName = dtm.phone;
-        this.formData.password = dtm.password;
-        this.onSubmit();
-      } catch (e) {
-        console.warn("自动登录失败");
-      }
+      this.zlbAuthLogin(accesstoken);
     }
     eventBus.$on("login", () => (this.show = true));
   },
   methods: {
+    // 浙里办统一登录
+    zlbAuthLogin(accessToken) {
+      return accountService
+        .getZLBTokenAPI({
+          accessToken,
+        })
+        .then((res) => {
+          const { token, customerInfo } = res.data;
+          store.commit("user/setToken", token);
+          store.commit("user/setUserInfo", customerInfo);
+        })
+        .catch((err) => {
+          this.$toast.fail("登录失败，请稍后再试");
+        });
+    },
     // event：登录
     onSubmit() {
       const { customerName, password } = this.formData;
-
       runPromiseInSequence([
         // 获取秘钥
         this.getPublicKey,
@@ -115,6 +112,9 @@ export default {
           const { token, customerInfo } = res.data;
           store.commit("user/setToken", token);
           store.commit("user/setUserInfo", customerInfo);
+        })
+        .catch((err) => {
+          this.$toast.fail("登录失败，请稍后再试");
         });
     },
     // 获取公钥

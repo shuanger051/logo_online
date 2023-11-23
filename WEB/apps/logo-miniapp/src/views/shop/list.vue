@@ -32,7 +32,7 @@ export default {
   computed: {
     ...mapState({
       // 用户信息
-      userInfo: (state) => state.user.profiles,
+      userInfo: (state) => _.get(state, "user.profiles", {}),
     }),
   },
   created() {
