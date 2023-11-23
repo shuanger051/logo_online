@@ -1,5 +1,18 @@
 
 /**
+ *  获取地址栏值
+ * @param {string} name
+ */
+export const getQueryString = (name) => {
+  const reg = new RegExp('(^|&|\\?)' + name + '=([^&]*)(&|$)', 'i')
+  const r = window.location.href.match(reg)
+  if (r != null) {
+    return decodeURI(r[2])
+  }
+  return null
+}
+
+/**
  * 顺序执行promise
  * @param {*} funcs
  * @returns

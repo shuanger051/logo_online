@@ -34,10 +34,11 @@
   </van-popup>
 </template>
 <script>
+import qs from "qs";
 import store from "@/store";
 import eventBus from "@/core/eventBus";
 import { commonService, accountService } from "@/apis";
-import { runPromiseInSequence } from "@/utils/util";
+import { runPromiseInSequence, getQueryString } from "@/utils/util";
 export default {
   data() {
     return {
@@ -57,12 +58,28 @@ export default {
     },
   },
   created() {
-    const { accesstoken } = this.$route.query;
+    // 从vue-router中获取查询参数
+    let { accesstoken } = this.$route.query;
+    // 从location.sreach中获取查询参数
+    if (!accesstoken) {
+      const query = qs.parse(location.search.slice(1));
+      accesstoken = query.accesstoken;
+    }
     // 浙里办授权登录
     if (accesstoken) {
       this.zlbAuthLogin(accesstoken);
     }
-    eventBus.$on("login", () => (this.show = true));
+    // 未登录提示
+    eventBus.$on("login", () => {
+      this.$dialog
+        .alert({
+          title: "提示",
+          message: "未登录，请登入后再试！",
+        })
+        .then(() => {
+          this.$router.replace({ path: "/" });
+        });
+    });
   },
   methods: {
     // 浙里办统一登录
