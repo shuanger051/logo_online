@@ -4,6 +4,7 @@ const themePath = path.resolve(__dirname, "./src/styles/theme/var.less");
 const webpackMixin = require("@shop-sign/editor/webpackMixIn");
 
 module.exports = {
+  publicPath: process.env.VUE_APP_PUBLIC_PATH,
   css: {
     loaderOptions: {
       less: {
@@ -43,12 +44,11 @@ module.exports = {
     );
     webpackMixin(config);
   },
-  chainWebpack: config =>{
-    config.plugin('html')
-      .tap(args => {
-        args[0].title = "菜单式店招设计与承诺备案";
-        return args;
-      })
+  chainWebpack: (config) => {
+    config.plugin("html").tap((args) => {
+      args[0].title = "菜单式店招设计与承诺备案";
+      return args;
+    });
   },
   pwa: {
     name: "菜单式店招设计与承诺备案",
