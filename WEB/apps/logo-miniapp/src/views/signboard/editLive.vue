@@ -66,14 +66,14 @@ export default {
     appGetLogoInfoByShopsId({
       shopsId: this.$route.query.shopId,
     }).then((data) => {
-      this.currentShopSign = resolveImgUrl(data.data.urlPath);
+      this.currentShopSign = resolveImgUrl(data.data.urlPath, true);
     });
     appGetShopsInfoByIdAPI({
       shopsId: this.$route.query.shopId,
     }).then(({ data }) => {
       const list = data.list.find((item) => item.attachmentType == "1");
       if (list) {
-        this.currentLivePic = resolveImgUrl(list.urlPath);
+        this.currentLivePic = resolveImgUrl(list.urlPath, true);
       }
     });
   },

@@ -66,7 +66,7 @@ export default {
         try {
           const { domItem } = item;
           const data = JSON.parse(domItem);
-          ret.url = resolveImgUrl(data.cover_image_url);
+          ret.url = resolveImgUrl(data.cover_image_url, true);
         } catch (e) {
           console.log(e);
           ret.url = null;

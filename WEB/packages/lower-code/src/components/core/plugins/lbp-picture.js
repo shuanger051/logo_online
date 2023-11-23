@@ -110,7 +110,7 @@ export default {
   }),
   methods: {
     getUrl(url) {
-      return resolveImgUrl(url);
+      return resolveImgUrl(url, true);
     },
   },
 };

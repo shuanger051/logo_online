@@ -102,7 +102,7 @@ export default {
           data.list.forEach((el) => {
             if (el.attachmentType == "1" || el.attachmentType == "4") {
               items.push({
-                url: resolveImgUrl(el.compressUrlPath || el.urlPath),
+                url: resolveImgUrl(el.compressUrlPath || el.urlPath, true),
                 id: el.attachmentType,
               });
             }
@@ -115,7 +115,7 @@ export default {
         })
         .then(({ data }) => {
           this.imageList.push({
-            url: resolveImgUrl(data.compressUrlPath || data.urlPath),
+            url: resolveImgUrl(data.compressUrlPath || data.urlPath, true),
             id: "2",
           });
           this.imageList.sort((a, b) => (a.id > b.id ? 1 : -1));

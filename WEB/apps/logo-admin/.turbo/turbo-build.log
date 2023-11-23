@@ -5,17 +5,17 @@
 
 -  Building for production...
 Extracted theme color css content length: 160492
- DONE  Compiled successfully in 25148ms1:45:25 PM
+ DONE  Compiled successfully in 44522ms2:13:27 PM
 
   File                                      Size             Gzipped
 
-  dist/static/js/chunk-vendors.55af763d.    2858.79 KiB      842.85 KiB
+  dist/static/js/chunk-vendors.c97380aa.    2858.79 KiB      842.85 KiB
   js
   dist/static/js/chunk-2b951d90.7a8f2381    1395.09 KiB      423.93 KiB
   .js
   dist/static/js/chunk-5dec9718.f0f9136f    256.17 KiB       59.39 KiB
   .js
-  dist/static/js/app.9a2f4279.js            101.75 KiB       29.02 KiB
+  dist/static/js/app.7a3bec4f.js            101.75 KiB       29.02 KiB
   dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
   dist/static/js/chunk-1cd760d4.b51d3ec4    13.61 KiB        4.72 KiB
   .js

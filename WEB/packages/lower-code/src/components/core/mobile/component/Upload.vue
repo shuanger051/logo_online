@@ -15,7 +15,7 @@
     <van-dialog v-model="show" title="标题" show-cancel-button @confirm = "configHandler">
       <div class="image-container">
         <van-image 
-          :src="resolveImgUrl(item.url)" 
+          :src="resolveImgUrl(item.url, true)" 
           fit="contain" 
           width="100"
           height="100" 
@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { resolveImgUrl } from "core/support/imgUrl";
+import { resolveImgUrl} from "core/support/imgUrl";
 import { appGetMaterial, appUploadMaterialAttachment } from "core/api/";
 import { Toast } from "vant";
 

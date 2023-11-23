@@ -98,7 +98,7 @@ export default {
     shopImg() {
       const { list = [] } = this.detail;
       const item = list.find((item) => item.attachmentType == "4");
-      if (item) return resolveImgUrl(item.compressUrlPath || item.urlPath);
+      if (item) return resolveImgUrl(item.compressUrlPath || item.urlPath, true);
       return null;
     },
   },
@@ -123,7 +123,7 @@ export default {
         // 更新店招图
         .then((res) => {
           const data = _.get(res, "data", {});
-          data.logoUrl = resolveImgUrl(data.compressUrlPath || data.urlPath);
+          data.logoUrl = resolveImgUrl(data.compressUrlPath || data.urlPath, true);
           this.shopLogo = data;
         });
     },

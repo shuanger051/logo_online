@@ -595,7 +595,7 @@ export default {
             // 存在key则保存
             if (key) {
               item.isImage = true;
-              item.url = resolveImgUrl(item.urlPath);
+              item.url = resolveImgUrl(item.urlPath, true);
               if (!dtm[key]) dtm[key] = [item];
               else dtm[key].push(item);
             }

@@ -111,7 +111,7 @@ export default {
       this.text = "";
     },
     previewImage() {
-      ImagePreview([resolveImgUrl(this.work.cover_image_url)])
+      ImagePreview([resolveImgUrl(this.work.cover_image_url, true)])
     }
   },
 };

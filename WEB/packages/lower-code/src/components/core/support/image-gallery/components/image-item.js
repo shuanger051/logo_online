@@ -31,7 +31,7 @@ export default {
       >
         <div
           style={{
-            backgroundImage: `url(${this.resolveUrl(this.item.url)})`,
+            backgroundImage: `url(${this.resolveUrl(this.item.url, true)})`,
             backgroundSize: 'contain',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

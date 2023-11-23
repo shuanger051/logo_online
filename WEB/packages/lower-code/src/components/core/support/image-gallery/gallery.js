@@ -65,7 +65,7 @@ export default {
 
       const activatorWithImg = (
         <div onClick={this.showGallery}>
-          <div class="default-activator cursor-pointer "><img src={resolveImgUrl(this.value)} width="50%" style={{ margin: 'auto' }} /></div>
+          <div class="default-activator cursor-pointer "><img src={resolveImgUrl(this.value, true)} width="50%" style={{ margin: 'auto' }} /></div>
           <div class="flex-space-between" style="margin-top: 8px;">
             <a-button size="small">更换</a-button>
             {/* <a-button size="small" onClick={e => {
