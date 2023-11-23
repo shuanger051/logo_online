@@ -57,7 +57,17 @@ export default {
     },
   },
   created() {
-    const { token } = this.$route.query;
+    const { token, accesstoken } = this.$route.query;
+    // 浙里办授权登录
+    if (accesstoken) {
+      accountService
+        .getZLBTokenAPI({
+          accessToken: accesstoken,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    }
     // 传了则自动登录
     if (token) {
       try {

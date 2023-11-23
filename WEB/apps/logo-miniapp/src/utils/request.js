@@ -6,14 +6,18 @@ import evnetBus from "../core/eventBus";
 // 默认配置
 axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = window.__baseUrl
+axios.defaults.baseURL = window.__baseUrl;
 // axios.defaults.baseURL = process.env.VUE_APP_API_PREFIX;
 
 // 请求拦截
 axios.interceptors.request.use(function onFulfilled(config) {
   // 添加token
   const { user } = store.state;
-  config.headers["token"] = user.token;
+  if (user.token) {
+    const query = `token=${user.token}`;
+    config.url += /\?/.test(config.url) ? "&" : "?" + query;
+    config.headers["token"] = user.token;
+  }
   return config;
 });
 

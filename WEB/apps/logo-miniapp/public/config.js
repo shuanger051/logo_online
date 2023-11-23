@@ -1,4 +1,4 @@
-window.__baseUrl = 'http://47.96.150.44:9001'
+window.__baseUrl =  '/api' //'http://47.96.150.44:8090'
 window.miniAppConfig = {
   showIntelligenceDesign: 0, // 是否显示智能设计， 0为不显示， 1为显示
   // 字段说明配置
