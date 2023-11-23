@@ -1,10 +1,8 @@
 package com.qinghua.website.api.controller;
 
 import cn.hutool.core.lang.UUID;
-import com.google.common.base.Preconditions;
 import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.vo.FileVO;
-import com.qinghua.website.api.controller.vo.ShopsAttachmentVO;
 import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
@@ -22,12 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

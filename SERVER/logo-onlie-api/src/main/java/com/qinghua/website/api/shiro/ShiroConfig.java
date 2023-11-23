@@ -75,7 +75,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/img-code/kaptcha","anon");
 
         //放开所有图片访问权限
-        filterChainDefinitionMap.put("/savePath/**","anon");
+        //filterChainDefinitionMap.put("/savePath/**","anon");
 
         //放开/app下面所有接口，给token拦截校验
         filterChainDefinitionMap.put("/app/**","anon");

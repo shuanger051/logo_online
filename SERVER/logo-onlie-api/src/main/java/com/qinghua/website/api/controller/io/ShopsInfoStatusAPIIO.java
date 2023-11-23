@@ -24,7 +24,6 @@ public class ShopsInfoStatusAPIIO {
     /**
      * 审核意见
      */
-    @NotNull(message = "审核意见不能为空")
     private String checkInfo;
 
     @Override

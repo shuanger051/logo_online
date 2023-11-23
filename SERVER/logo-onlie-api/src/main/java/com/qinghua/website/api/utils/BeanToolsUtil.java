@@ -1,6 +1,7 @@
 package com.qinghua.website.api.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.hazelcast.util.MD5Util;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -135,6 +136,5 @@ public class BeanToolsUtil {
         String oldOb = JSON.toJSONString(list);
         return JSON.parseArray(oldOb, clazz);
     }
-
 
 }

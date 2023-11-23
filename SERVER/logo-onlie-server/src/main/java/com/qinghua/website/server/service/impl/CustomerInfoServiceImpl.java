@@ -47,7 +47,6 @@ public class CustomerInfoServiceImpl implements CustomerInfoService {
         return customerInfoMapper.getCustomerInfoById(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveCustomerInfo(CustomerInfoDTO bean) {
         //校验customerName是否重复

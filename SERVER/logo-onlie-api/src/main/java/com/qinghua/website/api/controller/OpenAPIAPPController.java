@@ -1,6 +1,8 @@
 package com.qinghua.website.api.controller;
 
 import cn.hutool.core.lang.UUID;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
 import com.hazelcast.util.Preconditions;
@@ -9,6 +11,7 @@ import com.qinghua.website.api.common.TokenTools;
 import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.*;
 import com.qinghua.website.api.utils.BeanToolsUtil;
+import com.qinghua.website.api.utils.HttpClientUtils;
 import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
@@ -21,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import sun.misc.BASE64Decoder;
 
@@ -76,6 +78,9 @@ public class OpenAPIAPPController {
     @Autowired
     private ContentAttachmentService attachmentService;
 
+    @Value("${zlb.config.getUser}")
+    private String ZLB_GET_USER_URL;
+
     /**
      * APP注册客户信息
      * @param customerSaveIO
@@ -98,6 +103,122 @@ public class OpenAPIAPPController {
 
         customerInfoService.saveCustomerInfo(save);
         return ResponseResult.success();
+    }
+
+    /**
+     * 浙里办用户登录
+     * @param accessToken
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "login",logDesc = "浙里办用户登录APP获取TOKEN")
+    @RequestMapping(value = "/getZLBTokenAPI",method = RequestMethod.GET)
+    public ResponseResult<Object> zlbLogin(@RequestParam("accessToken") String accessToken, HttpServletRequest request){
+        if(null == ZLB_GET_USER_URL){
+            return ResponseResult.error("未正确配置浙里办获取用户信息地址!");
+        }
+        log.info("accessToken:"+accessToken);
+        if(null == accessToken){
+            return ResponseResult.error("未正确传入AccessToken参数!");
+        }
+
+        String resData = HttpClientUtils.doGet(ZLB_GET_USER_URL+"?accesstoken=" + accessToken);
+        log.info("resData:"+resData);
+        if(null != resData){
+
+            JSONObject obj = JSON.parseObject(resData);
+            String code = obj.get("code").toString();
+            if(null != code && "0".equals(code)){
+
+                String data = obj.get("data").toString();
+                if(null != data){
+                    JSONObject dataObj = JSONObject.parseObject(data);
+
+                    //客户名称
+                    String customerName = dataObj.get("userName").toString();
+                    //手机号
+                    String mobile = dataObj.get("telephone").toString();
+                    //身份证号
+                    String idCard = dataObj.get("idCard").toString();
+                    //昵称
+                    String nickName = dataObj.get("userNo").toString();
+
+                    String gender = "0";
+                    if(null != dataObj.get("sex")){
+                        String genderZLB = dataObj.get("sex").toString();
+                        if (null != genderZLB) {
+                            if ("1".equals(genderZLB)) {
+                                gender = "2";
+                            } else if ("2".equals(genderZLB)) {
+                                gender = "1";
+                            }
+                        }
+                    }
+
+                    String password = idCard;
+
+                    log.info("浙里办调试信息：customerName：" + customerName + ",手机号：" + mobile + ", 身份证号：" + idCard+ ",昵称：" + nickName + ", 性别：" + gender);
+
+                    //先根据手机号查询是否已注册。
+                    CustomerInfoDTO resCustInfo = customerInfoService.getCustomerByCustomerName(customerName);
+                    if(null == resCustInfo){
+                        //执行注册操作。
+                        CustomerInfoDTO customer = new CustomerInfoDTO();
+                        if(null != password){
+                            customer.setPassword(MD5Util.toMD5String(password).toLowerCase());
+                        }
+                        if(null != mobile){
+                            customer.setMobile(Sm4Utils.encrypt(mobile));
+                        }
+                        if (null != idCard){
+                            customer.setIdCard(Sm4Utils.encrypt(idCard));
+                        }
+                        customer.setCustomerName(customerName);
+                        customer.setNickName(nickName);
+                        customer.setGender(gender);
+
+                        customerInfoService.saveCustomerInfo(customer);
+                    }
+
+                    String pwd = StringUtils.lowerCase(MD5Util.toMD5String(password));
+                    //执行登录操作
+                    //先到数据库校验数据合法性，若不合法则不生成token，方便前端页面处理
+                    CustomerInfoDTO checkDTO = customerInfoService.checkCustomerByPWDAndAccount(customerName,pwd);
+                    if(null != checkDTO) {
+                        //根据账号密码生成TOKEN
+                        String token = TokenTools.genToken(customerName, pwd);
+                        log.info("ZLB 用户APP登录成功,返回token:{}", token);
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("token", token);
+
+                        //添加用户信息返回
+                        CustomerInfoVO vo = BeanToolsUtil.copyOrReturnNull(checkDTO, CustomerInfoVO.class);
+                        if (null != vo && null != vo.getMobile()) {
+                            vo.setMobile(Sm4Utils.decrypt(vo.getMobile()));
+                        }
+                        if (null != vo && null != vo.getIdCard()) {
+                            vo.setIdCard(Sm4Utils.decrypt(vo.getIdCard()));
+                        }
+                        map.put("customerInfo", vo);
+
+                        return ResponseResult.success(map);
+                    }else{
+                        log.error("数据库中未查询到当前浙里办用户对应的数据信息。用户名称为：" + customerName + ",密码为：" + pwd);
+                        return ResponseResult.error("当前用户未创建绑定关系，请检查!");
+                    }
+                }else{
+                    log.error("浙里办获取用户数据信息返回为空!");
+                    return ResponseResult.error("浙里办获取用户数据信息返回为空!");
+                }
+            }else{
+                log.error("根据浙里办获取用户信息失败!登录失败!");
+                return ResponseResult.error("根据浙里办获取用户信息失败!登录失败!");
+            }
+        }else{
+            log.error("根据浙里办获取用户信息失败!登录失败!");
+            return ResponseResult.error("根据浙里办获取用户信息失败!登录失败!");
+        }
+
     }
 
     /**
