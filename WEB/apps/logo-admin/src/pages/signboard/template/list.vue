@@ -190,7 +190,6 @@ export default {
       let src = "";
       let json;
       let isDev = process.env.NODE_ENV === "development";
-      let prefix = process.env.VUE_APP_API_BASE_URL;
       try {
         json = JSON.parse(record.domItem);
         src = '/api/logo' + json.cover_image_url

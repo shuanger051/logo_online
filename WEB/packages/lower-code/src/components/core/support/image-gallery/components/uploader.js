@@ -55,7 +55,7 @@ export default {
     return (
       <a-upload
         name="file"
-        action="/api/logo/attachment/uploadMaterialAttachment"
+        action={`${window.__baseUrl}/api/logo/attachment/uploadMaterialAttachment`}
         beforeUpload={this.handleBeforeUpload}
         onChange={this.handleChange}>
         <slot>

@@ -6,5 +6,5 @@ export const resolveImgUrl = (url) => {
     return url
   }
   // return isDev ? '/api/logo'+url : prefix + '/logo/'+url
-  return '/api/logo'+url
+  return `${window.__baseUrl}/api/logo`+url
 }

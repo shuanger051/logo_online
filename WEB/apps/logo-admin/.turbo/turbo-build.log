@@ -1,0 +1,102 @@
+
+> @shop-sign/logo-admin@0.7.4 build /Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin
+> vue-cli-service build
+
+
+-  Building for production...
+Extracted theme color css content length: 160492
+ DONE  Compiled successfully in 35304ms11:26:31 AM
+
+  File                                      Size             Gzipped
+
+  dist/static/js/chunk-vendors.55af763d.    2858.79 KiB      842.85 KiB
+  js
+  dist/static/js/chunk-2b951d90.7a8f2381    1395.09 KiB      423.93 KiB
+  .js
+  dist/static/js/chunk-5dec9718.f0f9136f    256.17 KiB       59.39 KiB
+  .js
+  dist/static/js/app.9a2f4279.js            101.75 KiB       29.02 KiB
+  dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
+  dist/static/js/chunk-1cd760d4.b51d3ec4    13.61 KiB        4.72 KiB
+  .js
+  dist/static/js/chunk-1e7037f2.02bcbe2f    11.23 KiB        3.44 KiB
+  .js
+  dist/static/js/chunk-27ee3723.c3ab2fdf    10.48 KiB        3.65 KiB
+  .js
+  dist/static/js/chunk-39680c8c.3c524c85    10.38 KiB        3.12 KiB
+  .js
+  dist/static/js/chunk-7074d9bb.f476e2fe    9.87 KiB         3.31 KiB
+  .js
+  dist/static/js/chunk-4219d7fa.1707748f    9.42 KiB         3.46 KiB
+  .js
+  dist/static/js/chunk-509fc892.02686361    8.49 KiB         3.38 KiB
+  .js
+  dist/static/js/chunk-94dba838.c113e122    8.00 KiB         3.25 KiB
+  .js
+  dist/static/js/chunk-ac7a8d1e.e6b9e378    6.24 KiB         2.60 KiB
+  .js
+  dist/static/js/chunk-f2f5af76.1eebe084    6.15 KiB         2.30 KiB
+  .js
+  dist/static/js/chunk-310c1b1c.a7841f6e    6.02 KiB         2.53 KiB
+  .js
+  dist/static/js/chunk-6776385a.015ff3cb    5.14 KiB         2.26 KiB
+  .js
+  dist/static/js/chunk-6b1624e3.1d8d66e0    1.84 KiB         0.97 KiB
+  .js
+  dist/static/js/chunk-24c6a408.943a90b2    1.84 KiB         0.96 KiB
+  .js
+  dist/static/js/chunk-7f8f2094.0174765c    1.84 KiB         0.97 KiB
+  .js
+  dist/static/js/chunk-7739bf0a.3d8aa5b5    0.91 KiB         0.56 KiB
+  .js
+  dist/static/js/chunk-2d217cb7.ef78ebbe    0.39 KiB         0.30 KiB
+  .js
+  dist/static/js/chunk-2d0f0f76.678638ec    0.16 KiB         0.15 KiB
+  .js
+  dist/config.js                            0.04 KiB         0.06 KiB
+  dist/static/css/chunk-2b951d90.b7e0276    665.88 KiB       87.56 KiB
+  b.css
+  dist/static/css/app.66432b5f.css          560.95 KiB       63.88 KiB
+  dist/css/theme-colors-448c38fd.css        156.73 KiB       17.00 KiB
+  dist/static/css/chunk-vendors.736cdba8    67.77 KiB        4.79 KiB
+  .css
+  dist/static/css/chunk-5dec9718.9ebbf82    41.11 KiB        5.48 KiB
+  3.css
+  dist/static/css/chunk-f2f5af76.ae79ec4    8.92 KiB         1.58 KiB
+  b.css
+  dist/static/css/chunk-1cd760d4.fc1b731    5.32 KiB         1.05 KiB
+  4.css
+  dist/static/css/chunk-39680c8c.f73410c    4.64 KiB         0.87 KiB
+  2.css
+  dist/static/css/chunk-24c6a408.b44a5c5    2.89 KiB         0.91 KiB
+  f.css
+  dist/static/css/chunk-6b1624e3.b44a5c5    2.89 KiB         0.91 KiB
+  f.css
+  dist/static/css/chunk-7f8f2094.b44a5c5    2.89 KiB         0.91 KiB
+  f.css
+  dist/static/css/chunk-1e7037f2.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-27ee3723.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-310c1b1c.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-4219d7fa.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-509fc892.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-6776385a.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-7074d9bb.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-94dba838.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-ac7a8d1e.361bf17    2.66 KiB         0.83 KiB
+  0.css
+  dist/static/css/chunk-7739bf0a.476426a    2.43 KiB         0.78 KiB
+  c.css
+
+  Images and other types of assets omitted.
+
+ DONE  Build complete. The dist directory is ready to be deployed.
+ INFO  Check out deployment instructions at https://cli.vuejs.org/guide/deployment.html
+      

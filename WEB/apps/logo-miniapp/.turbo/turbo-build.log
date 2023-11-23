@@ -1,0 +1,74 @@
+
+> @shop-sign/logo-miniapp@0.1.0 build /Users/yangyu/智能在线/logo_online/WEB/apps/logo-miniapp
+> vue-cli-service build
+
+
+-  Building for production...
+ WARNING  Compiled with 2 warnings11:26:21 AM
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  js/chunk-3f315b98.e42cab2d.js (1.18 MiB)
+  js/chunk-vendors.8448a2c8.js (1.31 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  app (1.55 MiB)
+      css/chunk-vendors.2fd58c81.css
+      js/chunk-vendors.8448a2c8.js
+      css/app.131b1eaa.css
+      js/app.1dcf1fd2.js
+
+
+  File                                      Size             Gzipped
+
+  dist/js/chunk-vendors.8448a2c8.js         1345.32 KiB      429.46 KiB
+  dist/js/chunk-3f315b98.e42cab2d.js        1207.97 KiB      356.70 KiB
+  dist/js/app.1dcf1fd2.js                   37.70 KiB        13.00 KiB
+  dist/js/chunk-4bc25cc8.dfe884af.js        15.82 KiB        5.77 KiB
+  dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
+  dist/js/chunk-78bf44f9.1a875888.js        13.99 KiB        3.95 KiB
+  dist/js/chunk-42735aba.e7d26045.js        13.17 KiB        4.11 KiB
+  dist/js/chunk-06d2c8de.b464e774.js        9.54 KiB         3.80 KiB
+  dist/precache-manifest.8e886e661f49be0    7.59 KiB         2.11 KiB
+  9e277a7d8821881d3.js
+  dist/js/chunk-f8e6c064.a218d21b.js        4.28 KiB         1.87 KiB
+  dist/js/chunk-60f06a53.1dcd50d9.js        3.44 KiB         1.76 KiB
+  dist/js/chunk-93870784.e28f5e66.js        3.22 KiB         1.31 KiB
+  dist/js/chunk-5a552c3d.b9b3ce2f.js        3.05 KiB         1.38 KiB
+  dist/js/chunk-20dab07e.7a1c184a.js        2.23 KiB         0.89 KiB
+  dist/js/chunk-2d0c152d.d2aeefa9.js        2.22 KiB         1.03 KiB
+  dist/js/about.c34bf70d.js                 2.00 KiB         0.80 KiB
+  dist/js/chunk-5648816e.a59c9ade.js        1.83 KiB         1.01 KiB
+  dist/js/chunk-273fac1a.604dd2b3.js        1.57 KiB         0.96 KiB
+  dist/js/chunk-c6a63d9c.2f9cbeae.js        1.53 KiB         0.87 KiB
+  dist/js/chunk-2d0b199a.c98fa50a.js        1.16 KiB         0.79 KiB
+  dist/config.js                            1.07 KiB         0.57 KiB
+  dist/js/chunk-5407ec7a.fb62275b.js        1.06 KiB         0.61 KiB
+  dist/service-worker.js                    0.96 KiB         0.55 KiB
+  dist/css/chunk-vendors.2fd58c81.css       178.07 KiB       49.74 KiB
+  dist/css/app.131b1eaa.css                 26.49 KiB        4.14 KiB
+  dist/css/chunk-06d2c8de.a65da89f.css      1.19 KiB         0.49 KiB
+  dist/css/chunk-5a552c3d.fbcbd184.css      1.05 KiB         0.42 KiB
+  dist/css/chunk-f8e6c064.755ca8de.css      1.04 KiB         0.37 KiB
+  dist/css/chunk-4bc25cc8.3f54f050.css      1.00 KiB         0.47 KiB
+  dist/css/chunk-273fac1a.f867b267.css      0.80 KiB         0.29 KiB
+  dist/css/chunk-5648816e.6f461028.css      0.69 KiB         0.33 KiB
+  dist/css/chunk-42735aba.652330c6.css      0.62 KiB         0.33 KiB
+  dist/css/chunk-c6a63d9c.3df005a7.css      0.62 KiB         0.24 KiB
+  dist/css/chunk-78bf44f9.3c880137.css      0.38 KiB         0.19 KiB
+  dist/css/chunk-5407ec7a.f1fb4b99.css      0.37 KiB         0.23 KiB
+  dist/css/chunk-20dab07e.dcf0d9eb.css      0.12 KiB         0.11 KiB
+  dist/css/chunk-60f06a53.55850d2d.css      0.08 KiB         0.10 KiB
+  dist/css/chunk-93870784.863c4f3b.css      0.08 KiB         0.09 KiB
+
+  Images and other types of assets omitted.
+
+ DONE  Build complete. The dist directory is ready to be deployed.
+ INFO  Check out deployment instructions at https://cli.vuejs.org/guide/deployment.html
+      

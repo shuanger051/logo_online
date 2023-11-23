@@ -184,11 +184,11 @@ export default {
                 beforeUpload = {this.beforeUpload}
                 list-type="picture-card"
                 name="file"
-                action="/api/logo/attachment/uploadMaterialAttachment"
+                action={`${window.__baseUrl}/api/logo/attachment/uploadMaterialAttachment`}
                 onChange={this.handleChange}
               >
                 {this.work.cover_image_url ? (
-                  <img class="cover_image_url" src={'/api/logo' + this.work.cover_image_url} />
+                  <img class="cover_image_url" src={`${window.__baseUrl}/api/logo` + this.work.cover_image_url} />
                 ) : (
                   <div>
                     <a-icon type={this.loading ? "loading" : "plus"} />
