@@ -2,7 +2,7 @@
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    # 说明: 如果你没有指定useSSL=true ,启动项目会报红警告, 环境的问题，需要灵活处理
+    #MYSQL5的useSSL为false
     url: jdbc:mysql://172.18.34.203:63308/dzdp_29?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: dzdp_29
     password: TXCG_20210928

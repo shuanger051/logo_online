@@ -211,8 +211,8 @@ public class OpenAPIAPPController {
                     return ResponseResult.error("浙里办获取用户数据信息返回为空!");
                 }
             }else{
-                log.error("根据浙里办获取用户信息失败!登录失败!");
-                return ResponseResult.error("根据浙里办获取用户信息失败!登录失败!");
+                log.error("浙里办用户接口返回状态异常!登录失败!");
+                return ResponseResult.error("浙里办用户接口返回状态异常!登录失败!");
             }
         }else{
             log.error("根据浙里办获取用户信息失败!登录失败!");
