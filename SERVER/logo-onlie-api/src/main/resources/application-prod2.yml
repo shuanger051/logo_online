@@ -49,4 +49,4 @@ mybatis:
 #ZLB CONFIG
 zlb:
   config:
-    getUser: http://127.0.0.1:9999/userauth-api/sysUser/getDetailByUserId
+    getUser: https://gzt.cgw.hangzhou.gov.cn/txcg/userauth-api/sysUser/getDetailByUserId

@@ -50,17 +50,20 @@
             <!-- 日志归档 -->
             <fileNamePattern>${log.base}/console/console-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
+                <!-- 单个文件达到最大50MB时开始切分 -->
+                <maxFileSize>50MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!--日志文件保留天数-->
-            <maxHistory>15</maxHistory>
+            <maxHistory>60</maxHistory>
+            <!-- 当日志容量超过20GB，即使没有到保存期限的60天也会开启日志清理 -->
+            <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
     <!--打印SQL-->
-    <logger name="java.sql.Connection" level="DEBUG" />
-    <logger name="java.sql.Statement" level="DEBUG" />
-    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="java.sql.Connection" level="INFO" />
+    <logger name="java.sql.Statement" level="INFO" />
+    <logger name="java.sql.PreparedStatement" level="INFO" />
 
     <!-- 系统启动日志 -->
     <root level="${log.root_level}">
