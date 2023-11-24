@@ -117,7 +117,7 @@ export default {
     // 图形验证码
     imgCode() {
       return (
-        process.env.VUE_APP_API_PREFIX +
+        window.__baseUrl +
         "/logo/sys/img-code/kaptcha?uid=" +
         this.uid
       );

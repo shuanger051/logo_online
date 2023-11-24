@@ -9,7 +9,7 @@ axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfHeaderName = xsrfHeaderName;
 axios.defaults.xsrfCookieName = xsrfHeaderName;
-axios.defaults.baseURL = window.__baseUrl + "/api";
+axios.defaults.baseURL = window.__baseUrl;
 
 // 认证类型
 const AUTH_TYPE = {

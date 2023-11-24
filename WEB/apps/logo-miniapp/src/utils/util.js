@@ -1,15 +1,20 @@
 
-/**
- *  获取地址栏值
- * @param {string} name
- */
-export const getQueryString = (name) => {
-  const reg = new RegExp('(^|&|\\?)' + name + '=([^&]*)(&|$)', 'i')
-  const r = window.location.href.match(reg)
-  if (r != null) {
-    return decodeURI(r[2])
+
+
+// 获取当前环境
+export const getEnvByUa = () => {
+  let tempEnv = sessionStorage.getItem('curUaEnv')
+  if (!tempEnv) {
+    const sUserAgent = window.navigator.userAgent.toLowerCase()
+    const bIsDtDreamApp = sUserAgent.includes('dtdreamweb')
+    const bIsAlipayMini = sUserAgent.includes('miniprogram') && sUserAgent.includes('alipay')
+    const bIsWechatMini = sUserAgent.includes('miniprogram') && (sUserAgent.includes('wechat') || sUserAgent.includes('wx'))
+    const oldWechat = sUserAgent.includes('micromessenger') // 微信兼容
+    tempEnv = (bIsDtDreamApp && 'bIsDtDreamApp') || (bIsAlipayMini  && 'bIsAlipayMini') || ((bIsWechatMini || oldWechat) && WECHAT_ENV) || 'h5'
+    // tempEnv = bIsDtDreamApp ? 'bIsDtDreamApp' : bIsAlipayMini ? 'bIsAlipayMini' : 'h5'
+    sessionStorage.setItem('curUaEnv', tempEnv)
   }
-  return null
+  return tempEnv
 }
 
 /**

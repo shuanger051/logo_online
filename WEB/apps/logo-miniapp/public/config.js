@@ -1,4 +1,4 @@
-window.__baseUrl = 'https://gzt.cgw.hangzhou.gov.cn/txcg/cdsdz/'
+window.__baseUrl = 'http://47.96.150.44:8090/' //'https://gzt.cgw.hangzhou.gov.cn/txcg/cdsdz/'
 window.miniAppConfig = {
   showIntelligenceDesign: 0, // 是否显示智能设计， 0为不显示， 1为显示
   // 字段说明配置

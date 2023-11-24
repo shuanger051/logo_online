@@ -38,7 +38,7 @@ import qs from "qs";
 import store from "@/store";
 import eventBus from "@/core/eventBus";
 import { commonService, accountService } from "@/apis";
-import { runPromiseInSequence, getQueryString } from "@/utils/util";
+import { runPromiseInSequence } from "@/utils/util";
 export default {
   data() {
     return {

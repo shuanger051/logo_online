@@ -19,8 +19,9 @@ export default {
       // 遍历查询
       keys.forEach((key) => {
         const cKey = ["dict", key].join("__");
+        const cVal = state.dictionary[key];
         // 字典项已存在
-        if (state.dictionary[key]) return;
+        if (_.isArray(cVal) && cVal.length) return;
         // 不存在则请求
         commonService
           .getItemsByDictKeyInDB({ dictKey: key })
@@ -28,6 +29,9 @@ export default {
           .then((res) => {
             const list = _.get(res, "data", []);
             commit("setDictCache", { key: cKey, val: list });
+          })
+          .catch((err) => {
+            console.warn("字典项获取失败!");
           });
       });
     },

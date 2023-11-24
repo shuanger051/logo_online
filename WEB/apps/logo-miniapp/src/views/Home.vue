@@ -1,7 +1,7 @@
 <template>
-  <div class="page-wrap">
+  <div class="page-wrap" :class="[isOldVersion && 'old-version']">
     <van-panel title="店招承诺备案">
-      <van-grid>
+      <van-grid :column-num="columnNum">
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaishenqing"
@@ -17,7 +17,7 @@
       </van-grid>
     </van-panel>
     <van-panel title="备案信息">
-      <van-grid>
+      <van-grid :column-num="columnNum">
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhishiku"
@@ -42,9 +42,20 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 // @ is an alias to /src
 export default {
   name: "Home",
+  computed: {
+    ...mapState({
+      isOldVersion: (state) => state.app.isOldVersion,
+    }),
+    // 宫格数
+    columnNum() {
+      if (this.isOldVersion) return 2;
+      return 4;
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -83,6 +94,36 @@ export default {
       border-radius: 100%;
       background-color: @blue;
       color: @white;
+    }
+  }
+  // 适老版适配样式
+  &.old-version {
+    :deep(.van-panel) {
+      &__header {
+        .van-cell__title {
+          & > span {
+            font-size: 18px;
+          }
+          &::before {
+            content: "";
+            display: inline-block;
+            height: 12px;
+            width: 4px;
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+    :deep(.van-grid) {
+      &-item__icon {
+        font-size: 28px;
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
+      }
+      &-item__text {
+        font-size: 18px;
+      }
     }
   }
 }

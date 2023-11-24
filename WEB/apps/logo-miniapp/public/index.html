@@ -20,6 +20,15 @@
       >
     </noscript>
     <div id="app"></div>
+    <script>
+      this.globalThis || (this.globalThis = this);
+      const ua = window.navigator.userAgent.toLowerCase();
+      if (ua.includes("dtdreamweb") || ua.includes("miniprogram")) {
+        const url =
+          "\<script src='//assets.zjzwfw.gov.cn/assets/ZWJSBridge/1.1.0/zwjsbridge.js'>\<\/script\>";
+        document.write(url);
+      }
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>

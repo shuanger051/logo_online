@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import app from './modules/app';
 import user from "./modules/user";
-import cache from './modules/cache'
+import cache from "./modules/cache";
 
 Vue.use(Vuex);
 
@@ -11,8 +12,13 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
+    app,
     user,
-    cache
+    cache,
   },
-  plugins: [createPersistedState()],
+  plugins: [
+    createPersistedState({
+      storage: sessionStorage,
+    }),
+  ],
 });
