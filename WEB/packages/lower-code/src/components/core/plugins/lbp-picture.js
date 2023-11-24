@@ -2,10 +2,20 @@ import PropTypes from "@luban-h5/plugin-common-props";
 import { resolveImgUrl } from "core/support/imgUrl";
 import MobilePropTypes from 'core/mobile/basicProps/mobile-plugin-props'
 import placeholderImg from "./lbp-picture-placeholder.png"; // issue #34
+import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
+
+
 export default {
   name: "lbp-picture",
+
+  created() {
+    convertImageToBase64(this.getUrl(this.imgSrc || placeholderImg), (src) => {
+      this.src = src
+    })
+  },
   render() {
-    const url = this.getUrl(this.imgSrc || placeholderImg);
+    const url = this.src;
+    const origin = location.origin;
     const style = {
       width: "100%",
       height: "100%",
@@ -31,23 +41,23 @@ export default {
        }
       return (
         <div style={style}>
-            <img src={url} height={wh.h + 'px'} width={wh.w + 'px'} style={imgStyle} />
+            <img src={url} height={wh.h + 'px'} width={wh.w + 'px'} style={imgStyle} crossOrigin={origin}/>
         </div>
       );
     }
     if (this.fillType == "none") {
-      return <img src={url} alt="" width="100%" height="100%" style={imgStyle} />;
+      return <img src={url} alt="" width="100%" height="100%" style={imgStyle} crossOrigin={origin}/>;
     } else if (this.fillType == "horizontally") {
       return (
         <div style={style}>
-          <img src={url} height="100%" style={imgStyle} />
+          <img src={url} height="100%" style={imgStyle} crossOrigin={origin} />
         </div>
       );
     } else {
       style.flexDirection = "column";
       return(
         <div style={style}>
-          <img src={url} width="100%" style={imgStyle} />
+          <img src={url} width="100%" style={imgStyle} crossOrigin={origin}/>
         </div>
       );
     }
@@ -107,6 +117,7 @@ export default {
   },
   data: () => ({
     placeholderImg,
+    src: ''
   }),
   methods: {
     getUrl(url) {

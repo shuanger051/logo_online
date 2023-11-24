@@ -39,6 +39,8 @@ import {
   appGetShopsInfoByIdAPI,
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
+import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
+
 import shape from "core/support/shape";
 import { Toast } from "vant";
 import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
@@ -66,14 +68,18 @@ export default {
     appGetLogoInfoByShopsId({
       shopsId: this.$route.query.shopId,
     }).then((data) => {
-      this.currentShopSign = resolveImgUrl(data.data.urlPath, true);
+      convertImageToBase64(resolveImgUrl(data.data.urlPath, true), (src) => {
+        this.currentShopSign = src
+      })
     });
     appGetShopsInfoByIdAPI({
       shopsId: this.$route.query.shopId,
     }).then(({ data }) => {
       const list = data.list.find((item) => item.attachmentType == "1");
       if (list) {
-        this.currentLivePic = resolveImgUrl(list.urlPath, true);
+        convertImageToBase64(resolveImgUrl(list.urlPath, true), (src) => {
+        this.currentLivePic = src
+      })
       }
     });
   },
