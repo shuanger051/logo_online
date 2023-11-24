@@ -49,7 +49,6 @@ public class MerchantInfoServiceImpl implements MerchantInfoService {
         return merchantInfoMapper.getMerchantInfoById(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void saveMerchantInfo(MerchantInfoDTO bean) {
         //根据身份证号校验是否重复
