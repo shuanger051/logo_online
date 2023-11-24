@@ -1,4 +1,4 @@
-window.__baseUrl = 'http://47.96.150.44:8090/' //'https://gzt.cgw.hangzhou.gov.cn/txcg/cdsdz/'
+window.__baseUrl = "https://gzt.cgw.hangzhou.gov.cn/txcg/cdsdz/"; //'http://47.96.150.44:8090/'
 window.miniAppConfig = {
   showIntelligenceDesign: 0, // 是否显示智能设计， 0为不显示， 1为显示
   // 字段说明配置
@@ -38,10 +38,12 @@ window.miniAppConfig = {
     // 身份证反面照
     handledByPhotoOpposite: "",
     // 商铺正面照
-    attachmentType1: "请上传商铺的正面照片，用于后期效果图展现备案，照片需要包含整个门面，角度为正对商铺门面",
+    attachmentType1:
+      "请上传商铺的正面照片，用于后期效果图展现备案，照片需要包含整个门面，角度为正对商铺门面",
     // 营业执照
     attachmentType2: "请上传商铺的营业执照，上面文字需要清晰可见",
     // 租赁合同
-    attachmentType3: "租赁的商铺，请提供租赁合同，上面有地址信息和出租人及承租人签名和信息。自有商铺请上传房产证",
+    attachmentType3:
+      "租赁的商铺，请提供租赁合同，上面有地址信息和出租人及承租人签名和信息。自有商铺请上传房产证",
   },
 };

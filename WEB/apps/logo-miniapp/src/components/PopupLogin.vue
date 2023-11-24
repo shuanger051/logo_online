@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       show: false,
+      loginType: "1", // 1-本地，2-浙里办授权登录
       formData: {
         customerName: "",
         password: "",
@@ -67,18 +68,24 @@ export default {
     }
     // 浙里办授权登录
     if (accesstoken) {
+      this.loginType = "2";
       this.zlbAuthLogin(accesstoken);
     }
     // 未登录提示
     eventBus.$on("login", () => {
-      this.$dialog
-        .alert({
-          title: "提示",
-          message: "未登录，请登入后再试！",
-        })
-        .then(() => {
-          this.$router.replace({ path: "/" });
-        });
+      // 本地登录
+      if (this.loginType == "1") this.show = true;
+      // 第三方登录
+      else {
+        this.$dialog
+          .alert({
+            title: "提示",
+            message: "未登录，请登入后再试！",
+          })
+          .then(() => {
+            this.$router.replace({ path: "/" });
+          });
+      }
     });
   },
   methods: {
