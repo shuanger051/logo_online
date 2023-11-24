@@ -178,6 +178,21 @@ public class OpenAPIAPPController {
                         customer.setGender(gender);
 
                         customerInfoService.saveCustomerInfo(customer);
+
+                        //执行注册商户
+                        MerchantInfoDTO merchant = new MerchantInfoDTO();
+                        if (null != idCard) {
+                            merchant.setIdCard(Sm4Utils.encrypt(idCard));
+                        }
+                        if(null != mobile){
+                            merchant.setPhone(Sm4Utils.encrypt(mobile));
+                        }
+                        merchant.setGender(gender);
+                        merchant.setMerchantName(customerName);
+                        merchant.setMerchantStatus("2");
+
+                        merchantInfoService.saveMerchantInfo(merchant);
+
                     }
 
                     String pwd = StringUtils.lowerCase(MD5Util.toMD5String(password));
