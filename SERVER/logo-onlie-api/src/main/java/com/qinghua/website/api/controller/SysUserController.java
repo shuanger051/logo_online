@@ -205,6 +205,9 @@ public class SysUserController {
         log.info("[消息：]用户{}正在执行退出操作!",user.getUserName());
         request.getSession().removeAttribute(SessionUser.SEESION_USER);
         request.getSession().invalidate();
+
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return ResponseResult.success("LogOut Success!");
     }
 

@@ -75,10 +75,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/img-code/kaptcha","anon");
 
         //放开所有图片访问权限
-        //filterChainDefinitionMap.put("/savePath/**","anon");
+        filterChainDefinitionMap.put("/savePath/**","anon");
 
         //放开/app下面所有接口，给token拦截校验
-        filterChainDefinitionMap.put("/app/**","anon");
+        //filterChainDefinitionMap.put("/app/**","anon");
 
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截 剩余的都需要认证
         filterChainDefinitionMap.put("/**", "authc");
@@ -229,13 +229,15 @@ public class ShiroConfig {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisHost);
         redisManager.setPort(redisPort);
-        redisManager.setPassword(redisPassword);
+        if(null != redisPassword){
+            redisManager.setPassword(redisPassword);
+        }
         redisManager.setTimeout(1800000); // 过期时间设置为30分钟
         return redisManager;
     }
 
     /**
-     * 支持shiro注解权限控制
+     * 支持shiro注解权限控制ShiroConfiguration
      *
      * @return
      */

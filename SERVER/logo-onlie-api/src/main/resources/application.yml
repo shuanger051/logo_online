@@ -9,7 +9,7 @@ spring:
       max-request-size: 100MB #总文件上传大小
 
 server:
-  port: 8090
+  port: 8091
   servlet:
     context-path: /logo
   tomcat:
@@ -24,7 +24,7 @@ management:
       exposure:
         include: "*"
   server:
-    port: 8090
+    port: 8091
     servlet:
       context-path: /
     ssl:

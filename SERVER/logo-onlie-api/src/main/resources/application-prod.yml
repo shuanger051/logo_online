@@ -19,9 +19,9 @@ spring:
       connection-timeout: 30000
   redis:
     database: 0
-    host: 10.253.16.59
+    host: 127.0.0.1
     port: 6379
-    password: Admin_cci123
+    password: 123456
     timeout: 360000
 
 #LOGBACK CONFIG
@@ -49,4 +49,4 @@ mybatis:
 #ZLB CONFIG
 zlb:
   config:
-    getUser: http://127.0.0.1:9999/userauth-api/sysUser/getDetailByUserId
+    getUser: https://gzt.cgw.hangzhou.gov.cn/txcg/userauth-api/sysUser/getDetailByUserId
