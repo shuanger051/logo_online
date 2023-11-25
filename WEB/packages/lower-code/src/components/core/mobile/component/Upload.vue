@@ -87,6 +87,9 @@ export default {
       const res = await appGetMaterial({
         pageNum: this.page.current,
       });
+      if (!res) {
+        return 
+      }
       const data = res.data;
       this.page.total = data.total;
       const list = data.list.map((item) => {

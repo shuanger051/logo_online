@@ -15,7 +15,7 @@ axios.interceptors.request.use(function onFulfilled(config) {
   const { user } = store.state;
   if (user.token) {
     const query = `token=${user.token}`;
-    config.url += /\?/.test(config.url) ? "&" : "?" + query;
+    config.url += (/\?/.test(config.url) ? "&" : "?") + query;
     // config.headers["token"] = user.token;
   }
   return config;

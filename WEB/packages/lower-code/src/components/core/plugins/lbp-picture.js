@@ -7,11 +7,17 @@ import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
 
 export default {
   name: "lbp-picture",
-
-  created() {
-    convertImageToBase64(this.getUrl(this.imgSrc || placeholderImg), (src) => {
-      this.src = src
-    })
+  watch: {
+    imgSrc: {
+      handler(v) {
+        if (v) {
+          convertImageToBase64(this.getUrl(this.imgSrc), (src) => {
+            this.src = src
+          })
+        }
+      },
+      immediate: true
+    }
   },
   render() {
     const url = this.src;
