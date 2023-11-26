@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: logo
+  profiles:
+    active: @profile@
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个文件上传大小
+      max-request-size: 100MB #总文件上传大小
+
+server:
+  port: 8090
+  servlet:
+    context-path: /logo
+  tomcat:
+    max-http-post-size: -1
+    max-http-header-size: -1
+    max-http-form-post-size: -1
+
+#HEALTH CHECK CONFIG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 8090
+    servlet:
+      context-path: /
+    ssl:
+      enabled: false
+  endpoint:
+    health:
+      show-details: always
+
+#PAGEHELPER CONFIG
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: false
+  params: count=countSql
+  auto-runtime-dialect: true
+
+#MYBATIS CONFIG
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+

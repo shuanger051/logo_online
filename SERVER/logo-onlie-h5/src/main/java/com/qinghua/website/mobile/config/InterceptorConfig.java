@@ -1,6 +1,6 @@
-package com.qinghua.website.api.config;
+package com.qinghua.website.mobile.config;
 
-import com.qinghua.website.api.interceptor.JwtInterceptor;
+import com.qinghua.website.mobile.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,7 +21,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
                         "/app/getZLBTokenAPI",
                         "/app/logout",
                         "/app/registerCustomerAPI",
-                        "/app/downloadContentAttachment"
+                        "/app/downloadContentAttachment",
+                        "/app/crypto/**"
                 );
     }
 

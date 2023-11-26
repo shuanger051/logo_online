@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>logo</artifactId>
@@ -8,8 +8,8 @@
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>logo-api</artifactId>
-    <name>logo-onlie-api</name>
+    <artifactId>logo-onlie-h5</artifactId>
+    <name>logo-onlie-h5</name>
     <packaging>jar</packaging>
     <dependencies>
         <!-- 业务service -->
@@ -22,10 +22,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -55,17 +51,11 @@
             <artifactId>easypoi-spring-boot-starter</artifactId>
             <version>${poi.version}</version>
         </dependency>
-        <!-- shiro -->
+        <!-- 集成JWT -->
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-        <!-- shiro-redis -->
-        <dependency>
-            <groupId>org.crazycake</groupId>
-            <artifactId>shiro-redis</artifactId>
-            <version>${shiro-redis.version}</version>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt.version}</version>
         </dependency>
         <!-- 集成图片压缩 -->
         <dependency>
@@ -80,7 +70,6 @@
             <version>${webp.version}</version>
         </dependency>
     </dependencies>
-
     <!-- 指定环境变量 -->
     <profiles>
         <profile>
@@ -88,7 +77,6 @@
             <properties>
                 <profile>dev</profile>
             </properties>
-
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -118,7 +106,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.7.6</version>
                 <configuration>
-                    <mainClass>com.qinghua.website.api.LogoApplication</mainClass>
+                    <mainClass>com.qinghua.website.mobile.MobileApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -162,4 +150,5 @@
             </resource>
         </resources>
     </build>
+
 </project>

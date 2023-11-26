@@ -1,5 +1,6 @@
 package com.qinghua.website.api.utils;
 
+import com.hazelcast.util.MD5Util;
 import com.qinghua.website.api.common.SessionUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -55,6 +56,11 @@ public class UserUtil {
      */
     public static void removeUser() {
         local.remove();
+    }
+
+    public static void main(String[] args){
+        String res = "88888888";
+        System.out.println(MD5Util.toMD5String(res));
     }
 
 }

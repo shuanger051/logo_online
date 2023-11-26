@@ -1,18 +1,17 @@
-package com.qinghua.website.api.controller;
+package com.qinghua.website.mobile.controller;
 
-import cn.hutool.core.lang.UUID;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import com.hazelcast.util.MD5Util;
-import com.hazelcast.util.Preconditions;
-import com.qinghua.website.api.annotation.LogAnnotation;
-import com.qinghua.website.api.common.TokenTools;
-import com.qinghua.website.api.controller.io.*;
-import com.qinghua.website.api.controller.vo.*;
-import com.qinghua.website.api.utils.BeanToolsUtil;
-import com.qinghua.website.api.utils.HttpClientUtils;
-import com.qinghua.website.api.utils.ImgUtils;
+import com.qinghua.website.mobile.annotation.LogAnnotation;
+import com.qinghua.website.mobile.common.TokenTools;
+import com.qinghua.website.mobile.controller.io.*;
+import com.qinghua.website.mobile.controller.vo.*;
+import com.qinghua.website.mobile.utils.BeanToolsUtil;
+import com.qinghua.website.mobile.utils.HttpClientUtils;
+import com.qinghua.website.mobile.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -24,14 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import sun.misc.BASE64Decoder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,7 +87,7 @@ public class OpenAPIAPPController {
     @LogAnnotation(logType = "register",logDesc = "APP注册客户信息")
     @RequestMapping("/registerCustomerAPI")
     public ResponseResult<Object> registerCustomerAPI(@Validated @RequestBody CustomerSaveIO customerSaveIO){
-        CustomerInfoDTO save = BeanToolsUtil.copyOrReturnNull(customerSaveIO,CustomerInfoDTO.class);
+        CustomerInfoDTO save = BeanToolsUtil.copyOrReturnNull(customerSaveIO, CustomerInfoDTO.class);
 
         if(null != save && null != save.getPassword()){
             save.setPassword(MD5Util.toMD5String(save.getPassword()));
@@ -451,7 +449,7 @@ public class OpenAPIAPPController {
         shopsInfoDTO.setLogoWidth(Double.parseDouble(shopsInfoSaveIO.getLogoWidth()+""));
         shopsInfoDTO.setLogoHeight(Double.parseDouble(shopsInfoSaveIO.getLogoHeight()+""));
 
-        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(),ShopsAttachmentDTO.class);
+        List<ShopsAttachmentDTO> list = BeanToolsUtil.copyList(shopsInfoSaveIO.getList(), ShopsAttachmentDTO.class);
         shopsInfoService.saveShopsInfo(shopsInfoDTO,list);
         return ResponseResult.success();
     }
@@ -525,7 +523,7 @@ public class OpenAPIAPPController {
     public ResponseResult<Object> getShopsIdCardByIdAPI(@RequestParam("id") Long id){
         Preconditions.checkNotNull(id,"参数：id,不能为空");
         ShopsInfoDTO res = shopsInfoService.getShopsIdCardByIdAPI(id);
-        ShopsInfoIdCardPhotoVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoIdCardPhotoVO.class);
+        ShopsInfoIdCardPhotoVO vo = BeanToolsUtil.copyOrReturnNull(res, ShopsInfoIdCardPhotoVO.class);
         return ResponseResult.success(vo);
     }
 

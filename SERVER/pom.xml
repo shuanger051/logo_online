@@ -19,6 +19,7 @@
   <modules>
     <module>logo-onlie-server</module>
     <module>logo-onlie-api</module>
+    <module>logo-onlie-h5</module>
   </modules>
 
   <properties>

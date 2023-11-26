@@ -1,4 +1,4 @@
-package com.qinghua.website.api.interceptor;
+package com.qinghua.website.mobile.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;

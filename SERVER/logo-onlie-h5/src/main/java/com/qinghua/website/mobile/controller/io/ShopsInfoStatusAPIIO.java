@@ -1,6 +1,6 @@
-package com.qinghua.website.api.controller.io;
+package com.qinghua.website.mobile.controller.io;
 
-import com.qinghua.website.api.validation.DictValidator;
+import com.qinghua.website.mobile.validation.DictValidator;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

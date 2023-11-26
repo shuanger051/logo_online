@@ -3,6 +3,7 @@ package com.qinghua.website.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hazelcast.util.MD5Util;
+import com.hazelcast.util.Preconditions;
 import com.qinghua.website.server.config.SysConfig;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.dao.SysUserMapper;
@@ -10,6 +11,7 @@ import com.qinghua.website.server.domain.SysUserDTO;
 import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.SysUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;

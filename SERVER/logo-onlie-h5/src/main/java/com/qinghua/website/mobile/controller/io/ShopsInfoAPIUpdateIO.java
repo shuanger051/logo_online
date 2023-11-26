@@ -1,8 +1,8 @@
-package com.qinghua.website.api.controller.io;
+package com.qinghua.website.mobile.controller.io;
 
-import com.qinghua.website.api.validation.DictValidator;
-import com.qinghua.website.api.validation.IdCardValidator;
-import com.qinghua.website.api.validation.NumValidator;
+import com.qinghua.website.mobile.validation.DictValidator;
+import com.qinghua.website.mobile.validation.IdCardValidator;
+import com.qinghua.website.mobile.validation.NumValidator;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -12,7 +12,9 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
-public class ShopsInfoAPISaveIO {
+public class ShopsInfoAPIUpdateIO {
+
+    private Long id;
 
     @NotNull(message = "商户ID不能为空")
     private Long merchantId;
@@ -128,8 +130,9 @@ public class ShopsInfoAPISaveIO {
 
     @Override
     public String toString() {
-        return "ShopsInfoAPISaveIO{" +
-                "merchantId=" + merchantId +
+        return "ShopsInfoAPIUpdateIO{" +
+                "id=" + id +
+                ", merchantId=" + merchantId +
                 ", address='" + address + '\'' +
                 ", bizYears='" + bizYears + '\'' +
                 ", industryType='" + industryType + '\'' +
