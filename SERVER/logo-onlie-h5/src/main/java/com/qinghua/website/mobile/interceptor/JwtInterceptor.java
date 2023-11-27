@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.CustomerInfoDTO;
 import com.qinghua.website.server.exception.BizException;
@@ -29,7 +30,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = request.getParameter("token");
 
         if(null == token && request.getRequestURI().contains("savePath")){
-            return false;
+            throw new BizException("无token信息,请先登录获取Token!",SysConstant.SYSTEM_ERROR_401.getMsg());
         }
 
         // 执行认证

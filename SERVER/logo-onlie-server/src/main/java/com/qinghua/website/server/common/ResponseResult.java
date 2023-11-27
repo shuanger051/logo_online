@@ -21,12 +21,12 @@ public class ResponseResult<T> implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    private ResponseResult(String code, String msg) {
+    public ResponseResult(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    private ResponseResult(String code, String msg, T data) {
+    public ResponseResult(String code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
