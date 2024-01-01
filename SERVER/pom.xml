@@ -63,6 +63,7 @@
     <webp.version>0.1.6</webp.version>
 
     <jwt.version>3.4.0</jwt.version>
+    <oss.version>3.15.1</oss.version>
   </properties>
 
 </project>

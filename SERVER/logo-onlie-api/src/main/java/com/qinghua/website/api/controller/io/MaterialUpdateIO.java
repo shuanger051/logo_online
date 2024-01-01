@@ -27,6 +27,8 @@ public class MaterialUpdateIO {
      */
     private String fileType;
 
+    private String urlPath;
+
     @Override
     public String toString() {
         return "MaterialUpdateIO{" +

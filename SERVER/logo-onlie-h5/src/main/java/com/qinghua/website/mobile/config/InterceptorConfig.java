@@ -14,15 +14,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor())
                 //拦截所有请求，通过判断token是否合法来决定是否需要登录
                 .addPathPatterns("/app/**")
-                .addPathPatterns("/savePath/**")
                 //放开不需要拦截的请求
                 .excludePathPatterns(
-                        "/app/getTokenAPI",
-                        "/app/getZLBTokenAPI",
-                        "/app/logout",
-                        "/app/registerCustomerAPI",
-                        "/app/downloadContentAttachment",
-                        "/app/crypto/**"
+                        "/app/**"
                 );
     }
 

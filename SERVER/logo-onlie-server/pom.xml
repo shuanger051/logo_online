@@ -172,6 +172,13 @@
       <version>${gm4.version}</version>
     </dependency>
 
+    <!-- ali oss -->
+    <dependency>
+      <groupId>com.aliyun.oss</groupId>
+      <artifactId>aliyun-sdk-oss</artifactId>
+      <version>${oss.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>

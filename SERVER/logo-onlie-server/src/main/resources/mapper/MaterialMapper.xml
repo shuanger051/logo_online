@@ -4,11 +4,12 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.qinghua.website.server.domain.MaterialDTO">
-      <id column="id" property="id" jdbcType="BIGINT"/>
-      <result column="name" property="name" jdbcType="VARCHAR"/>
-      <result column="file_path" property="filePath" jdbcType="VARCHAR"/>
-      <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
-      <result column="file_type" property="fileType" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="file_path" property="filePath" jdbcType="VARCHAR"/>
+        <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
+        <result column="file_type" property="fileType" jdbcType="VARCHAR"/>
+        <result column="url_path" property="urlPath" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -20,6 +21,7 @@
         file_path,
         file_name,
         file_type,
+        url_path,
         create_time,
         update_time
     </sql>
@@ -51,6 +53,7 @@
             <if test="filePath !=null and filePath !=''">file_path = #{filePath},</if>
             <if test="fileName !=null and fileName !=''">file_name = #{fileName},</if>
             <if test="fileType !=null and fileType !=''">file_type = #{fileType},</if>
+            <if test="urlPath !=null and urlPath !=''">url_path = #{urlPath},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -64,6 +67,7 @@
             <if test="filePath !=null and filePath !=''">file_path,</if>
             <if test="fileName !=null and fileName !=''">file_name,</if>
             <if test="fileType !=null and fileType !=''">file_type,</if>
+            <if test="urlPath !=null and urlPath !=''">url_path,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -71,6 +75,7 @@
             <if test="filePath !=null and filePath !=''">#{filePath},</if>
             <if test="fileName !=null and fileName !=''">#{fileName},</if>
             <if test="fileType !=null and fileType !=''">#{fileType},</if>
+            <if test="urlPath !=null and urlPath !=''">#{urlPath},</if>
             NOW()
         </trim>
     </insert>

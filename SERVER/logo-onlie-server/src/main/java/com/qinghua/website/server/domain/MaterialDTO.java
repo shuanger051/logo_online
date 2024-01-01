@@ -32,6 +32,11 @@ public class MaterialDTO extends BaseDTO {
      */
 	private String fileType;
 
+	/**
+	 * OSS地址
+	 */
+	private String urlPath;
+
 	@Override
 	public String toString() {
 	return "Material{" +

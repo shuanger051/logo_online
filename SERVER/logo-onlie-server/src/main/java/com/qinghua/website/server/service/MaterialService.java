@@ -45,4 +45,7 @@ public interface MaterialService {
          */
         void deleteMaterialById(Long id);
 
+        void deleteMaterialByIdOSS(Long id);
+
+
 }

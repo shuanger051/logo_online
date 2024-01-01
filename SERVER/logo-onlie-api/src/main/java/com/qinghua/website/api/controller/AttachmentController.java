@@ -2,6 +2,7 @@ package com.qinghua.website.api.controller;
 
 import cn.hutool.core.lang.UUID;
 import com.qinghua.website.api.annotation.LogAnnotation;
+import com.qinghua.website.api.controller.vo.FileOSSVO;
 import com.qinghua.website.api.controller.vo.FileVO;
 import com.qinghua.website.api.utils.ImgUtils;
 import com.qinghua.website.server.common.ResponseResult;
@@ -12,6 +13,7 @@ import com.qinghua.website.server.service.ContentAttachmentService;
 import com.qinghua.website.server.service.LogoInfoService;
 import com.qinghua.website.server.service.MaterialService;
 import com.qinghua.website.server.service.ShopsInfoService;
+import com.qinghua.website.server.utils.OSSHttpToolsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -224,6 +226,57 @@ public class AttachmentController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+ "material/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 上传素材附件(OSS)
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "上传素材附件(OSS)")
+    @RequestMapping(value = "/uploadMaterialAttachmentOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadMaterialAttachmentOSS")
+    public ResponseResult<Object> uploadMaterialAttachmentOSS(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String newFileName = fileId + "." + fileType;
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String fileDir = "upload/material/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            //更新素材
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setName(fileName);
+            materialDTO.setFileName(newFileName);
+            materialDTO.setFilePath(objectName);
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG") || fileType.equals("PNG")){
+                materialDTO.setFileType("1");
+            }else{
+                materialDTO.setFileType("2");
+            }
+            materialDTO.setUrlPath(resUrl);
+
+            materialService.saveMaterial(materialDTO);
+
+            FileOSSVO fileVO = new FileOSSVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);

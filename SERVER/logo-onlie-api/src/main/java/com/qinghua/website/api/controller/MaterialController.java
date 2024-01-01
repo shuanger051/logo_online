@@ -45,6 +45,25 @@ public class MaterialController {
         return ResponseResult.success(resp);
     }
 
+    /**
+     * 分页查询素材信息(OSS)
+     * @param materialQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "分页查询素材信息(OSS)")
+    @RequestMapping("/getMaterialListByPageOSS")
+    @RequiresPermissions("/material/getMaterialListByPageOSS")
+    public ResponseResult<Object> getMaterialListByPageOSS(@Validated MaterialQueryIO materialQueryIO){
+        MaterialDTO queryDTO = BeanToolsUtil.copyOrReturnNull(materialQueryIO,MaterialDTO.class);
+        PageInfo<MaterialDTO> pageList =  materialService.getMaterialListByPage(queryDTO);
+        List<MaterialVO> materialVOList =  BeanToolsUtil.copyAsList(pageList.getList(),MaterialVO.class);
+
+        PageListVO<MaterialVO> resp = new PageListVO<>();
+        resp.setList(materialVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
+    }
+
 
     /**
      * 根据ID查询素材数据
@@ -60,6 +79,20 @@ public class MaterialController {
         if(null != materialVO){
             materialVO.setUrlPath("/savePath/material/" + materialVO.getFilePath() + "/" + materialVO.getFileName());
         }
+        return ResponseResult.success(null == materialVO ? "无数据" : materialVO);
+    }
+
+    /**
+     * 根据ID查询素材数据(OSS)
+     * @param id
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "根据ID查询素材数据(OSS)")
+    @RequestMapping(value = "/getMaterialByIDOSS", method = RequestMethod.GET)
+    @RequiresPermissions("/material/getMaterialByIDOSS")
+    public ResponseResult<Object> getMaterialByIDOSS(@RequestParam("id") Long id){
+        MaterialDTO material = materialService.getMaterialById(id);
+        MaterialVO materialVO = BeanToolsUtil.copyOrReturnNull(material,MaterialVO.class);
         return ResponseResult.success(null == materialVO ? "无数据" : materialVO);
     }
 
@@ -101,6 +134,19 @@ public class MaterialController {
     @RequiresPermissions("/template/deleteMaterialByID")
     public ResponseResult<Object> deleteMaterialByID(@Valid @RequestBody IdIO idIO){
         materialService.deleteMaterialById(idIO.getId());
+        return ResponseResult.success();
+    }
+
+    /**
+     * 根据ID删除素材信息(oss)
+     * @param idIO
+     * @return
+     */
+    @LogAnnotation(logType = "delete",logDesc = "根据ID删除素材信息(oss)")
+    @RequestMapping(value = "/deleteMaterialByIDOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/template/deleteMaterialByIDOSS")
+    public ResponseResult<Object> deleteMaterialByIDOSS(@Valid @RequestBody IdIO idIO){
+        materialService.deleteMaterialByIdOSS(idIO.getId());
         return ResponseResult.success();
     }
 

@@ -25,6 +25,8 @@ public class MaterialSaveIO {
      */
     private String fileType;
 
+    private String urlPath;
+
     @Override
     public String toString() {
         return "MaterialSaveIO{" +

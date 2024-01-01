@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.qinghua.website.server.common.ResponseResult;
+
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.CustomerInfoDTO;
 import com.qinghua.website.server.exception.BizException;

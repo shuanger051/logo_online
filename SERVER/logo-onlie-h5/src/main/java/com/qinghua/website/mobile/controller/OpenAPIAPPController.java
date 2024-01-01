@@ -12,6 +12,7 @@ import com.qinghua.website.mobile.controller.vo.*;
 import com.qinghua.website.mobile.utils.BeanToolsUtil;
 import com.qinghua.website.mobile.utils.HttpClientUtils;
 import com.qinghua.website.mobile.utils.ImgUtils;
+import com.qinghua.website.server.utils.OSSHttpToolsUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -25,6 +26,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +38,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -48,6 +53,15 @@ public class OpenAPIAPPController {
 
     @Value("${uploadPath.urlPath}")
     private String urlPath;   //图标映射路径
+
+    @Value("${spring.datasource.url}")
+    private String url;
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
 
     @Autowired
     private CustomerInfoService customerInfoService;
@@ -677,6 +691,64 @@ public class OpenAPIAPPController {
         }
     }
 
+
+    /**
+     * APP上传店招信息(oss)
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP上传店招信息API(oss)")
+    @RequestMapping(value = "/saveLogoInfoAPIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> saveLogoInfoAPIOSS(@RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String newFileName = fileId + "." + fileType;
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+
+            String fileDir = "upload/logo/" + frontPath;
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            FileOSSVO fileVO = new FileOSSVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(fileDir+"/"+newFileName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
+            return ResponseResult.success(fileVO);
+
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+    /**
+     * APP 根据ObjectName获取OSS_URL路径 API
+     * @param objectName
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 根据ObjectName获取OSS_URL路径 API")
+    @RequestMapping(value = "/getFileUrlByObjName", method = RequestMethod.GET)
+    public ResponseResult<Object> getFileUrlByObjName(@RequestParam("objectName") String objectName){
+        Preconditions.checkNotNull(objectName,"objectName 不能为空!");
+        String url = OSSHttpToolsUtils.getUrl(objectName);
+        OSSResVO resVO = new OSSResVO();
+        resVO.setFilePath(objectName);
+        resVO.setFileUrl(url);
+        return ResponseResult.success(resVO);
+    }
+
     /**
      * APP 上传店招Base64文件信息API
      * @param base64
@@ -740,6 +812,50 @@ public class OpenAPIAPPController {
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
             fileVO.setCompressUrlPath(urlPath+ "logo/" + compressRelativeFileName);
             return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+    /**
+     * APP 上传店招Base64文件信息API(oss)
+     * @param base64
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传店招Base64文件信息API(oss)")
+    @RequestMapping(value = "/saveLogoInfoBase64APIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> saveLogoInfoBase64APIOSS(@RequestPart("base64") String base64 , HttpServletRequest request) {
+
+        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String newFileName = fileId + "." + fileType;
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String fileDir = "upload/logo/" + frontPath;
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            FileOSSVO fileVO = new FileOSSVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(fileDir+"/"+newFileName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
+            return ResponseResult.success(fileVO);
+
         } catch (Exception exception) {
             if(exception instanceof BizException){
                 throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
@@ -1270,6 +1386,53 @@ public class OpenAPIAPPController {
         } else {
             throw new IllegalArgumentException("该文件无数据");
         }
+    }
+
+    /**
+     * 更新数据库OSS信息
+     * @return
+     */
+    @LogAnnotation(logType = "update",logDesc = "APP 更新OSS数据信息 API")
+    @RequestMapping(value = "/updateOSSDataInit", method = RequestMethod.GET)
+    public ResponseResult<Object> updateOSSDataInit(){
+
+        try {
+            Connection conn = DriverManager.getConnection(url, username, password);
+            Statement stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM t_material ");
+
+            while (rs.next()) {
+                String newFilePath = "";
+                String ossUrl = "";
+                int id = rs.getInt("id");
+                String filePath = rs.getString("file_path");
+                String fileName = rs.getString("file_name");
+
+                //判断filePath是否是oss 的ObjectName
+                if(null != filePath && filePath.indexOf("upload") < 0){
+                    newFilePath = "upload/material/" + filePath + "/" + fileName;
+                    //根据objectName 获取url
+                    ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    // 在这里编写需要更新的字段及相应的值
+                    String updateSql = "UPDATE t_material SET file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + id;
+                    log.info("当前SQL语句为：" + updateSql);
+                    stmt.executeUpdate(updateSql);
+                }
+
+            }
+            log.info("数据已成功更新！");
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            log.error("同步OSS数据失败!",e.getMessage());
+            throw new BizException("同步更新OSS数据失败!",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
+
+        return ResponseResult.success(true);
     }
 
 }
