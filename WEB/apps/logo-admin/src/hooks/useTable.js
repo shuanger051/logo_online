@@ -3,6 +3,38 @@ import { Modal, message } from "ant-design-vue";
 import modalConfirm from "ant-design-vue/es/modal/confirm";
 import store from "@/store";
 
+// event：弹窗事件
+export function createModalEvent(
+  compt,
+  { props: defProps, ...modalConf } = {}
+) {
+  return (props) => {
+    let el = null; // 子元素引用
+    return modalConfirm(
+      Object.assign(
+        modalConf,
+        // 默认参数（不可修改）
+        {
+          type: "form",
+          maskClosable: false,
+          icon: () => null,
+        },
+        // 事件
+        {
+          onOk: () => el?.onOk && el.onOk(),
+          onCancel: () => el?.onCancel && el.onCancel(),
+          content: (h) =>
+            h(compt, {
+              $store: store,
+              props: Object.assign({}, defProps, props),
+              ref: (e) => (el = e),
+            }),
+        }
+      )
+    );
+  };
+}
+
 /**
  * 表格列表
  * @param {*} request
@@ -91,35 +123,6 @@ export default function useTable(request) {
             .then(() => message.success("删除成功"))
             .catch(() => message.error("删除失败")),
       });
-  }
-
-  // event：弹窗事件
-  function createModalEvent(compt, { props: defProps, ...modalConf } = {}) {
-    return (props) => {
-      let el = null; // 子元素引用
-      return modalConfirm(
-        Object.assign(
-          modalConf,
-          // 默认参数（不可修改）
-          {
-            type: "form",
-            maskClosable: false,
-            icon: () => null,
-          },
-          // 事件
-          {
-            onOk: () => el?.onOk && el.onOk(),
-            onCancel: () => el?.onCancel && el.onCancel(),
-            content: (h) =>
-              h(compt, {
-                $store: store,
-                props: Object.assign({}, defProps, props),
-                ref: (e) => (el = e),
-              }),
-          }
-        )
-      );
-    };
   }
 
   return {

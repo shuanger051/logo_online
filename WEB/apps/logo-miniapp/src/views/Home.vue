@@ -18,12 +18,12 @@
     </van-panel>
     <van-panel title="备案信息">
       <van-grid :column-num="columnNum">
-        <van-grid-item
+        <!-- <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhishiku"
           text="法律法规"
           to="/article/3/detail?pid=486"
-        />
+        /> -->
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaizhinan"

@@ -1,13 +1,12 @@
 const state = {
   // 是否适老版
-  isOldVersion: true,
+  isOldVersion: false,
 };
-
 
 const mutations = {
   // 设置适老版
-  setIsOldVersion(state, val){
-    state.isOldVersion = val
+  setIsOldVersion(state, val) {
+    state.isOldVersion = val;
   },
 };
 

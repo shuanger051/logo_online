@@ -5,6 +5,7 @@ const webpackMixin = require("@shop-sign/editor/webpackMixIn");
 
 module.exports = {
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
+  productionSourceMap: false,
   css: {
     loaderOptions: {
       less: {

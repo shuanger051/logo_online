@@ -5,6 +5,10 @@
       <span class="name">{{ user.userName }}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
+      <a-menu-item @click="onChangePwd({ user })">
+        <a-icon style="margin-right: 8px" type="form" />
+        <span>修改密码</span>
+      </a-menu-item>
       <a-menu-item @click="logout">
         <a-icon style="margin-right: 8px" type="poweroff" />
         <span>退出登录</span>
@@ -16,11 +20,21 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { appService } from "@/services";
+import { createModalEvent } from "@/hooks/useTable";
+import PassWordChange from "./PassWordChange.vue";
 
 export default {
   name: "HeaderAvatar",
   computed: {
     ...mapGetters("account", ["user"]),
+  },
+  setup() {
+    const onChangePwd = createModalEvent(PassWordChange, {
+      title: "密码修改",
+    });
+    return {
+      onChangePwd,
+    };
   },
   methods: {
     ...mapMutations("account", ["setUser", "setPermissions", "setRoles"]),

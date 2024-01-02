@@ -34,6 +34,9 @@
         <a-button type="link" size="small" @click="onEdit({ record })"
           >修改</a-button
         >
+        <a-button type="link" size="small" @click="onSetRole({ record })"
+          >设置角色</a-button
+        >
         <a-popconfirm
           title="是否确认重置该账号密码？"
           @confirm="onResetPwd(record)"
@@ -47,6 +50,7 @@
 <script>
 import Add from "./add.vue";
 import Edit from "./edit.vue";
+import UserRole from "./userRole.vue";
 import FormSerach from "@/components/form/FormSerach.vue";
 import useTable from "@/hooks/useTable";
 import { mapState } from "vuex";
@@ -144,6 +148,8 @@ export default {
     const onAdd = createModalEvent(Add, { title: "新增用户" });
     // 编辑事件
     const onEdit = createModalEvent(Edit, { title: "编辑用户" });
+    // 设置角色
+    const onSetRole = createModalEvent(UserRole, { title: "设置角色" });
 
     return {
       formData,
@@ -153,6 +159,7 @@ export default {
       onAdd,
       onEdit,
       onSerach,
+      onSetRole,
       onChange,
     };
   },

@@ -1,1 +1,1 @@
-window.__baseUrl = '/logo-api'
+window.__baseUrl = '/api'
