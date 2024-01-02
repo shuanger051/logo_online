@@ -1394,42 +1394,58 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "update",logDesc = "APP 更新OSS数据信息 API")
     @RequestMapping(value = "/updateOSSDataInit", method = RequestMethod.GET)
-    public ResponseResult<Object> updateOSSDataInit(){
+    public ResponseResult<Object> updateOSSDataInit() throws Exception{
+
+        Connection conn = null;
+        ResultSet rs = null;
+        Statement stmt = null;
 
         try {
-            Connection conn = DriverManager.getConnection(url, username, password);
-            Statement stmt = conn.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT * FROM t_material ");
+            conn = DriverManager.getConnection(url, username, password);
+            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rs = stmt.executeQuery("SELECT * FROM t_material ");
+            List<MaterialDTO> resList = new ArrayList<>();
 
             while (rs.next()) {
                 String newFilePath = "";
                 String ossUrl = "";
-                int id = rs.getInt("id");
+                long id = rs.getInt("id");
                 String filePath = rs.getString("file_path");
                 String fileName = rs.getString("file_name");
 
+                MaterialDTO material = new MaterialDTO();
+                material.setId(id);
+                material.setFilePath(filePath);
+                material.setFileName(fileName);
+                resList.add(material);
+
+            }
+
+            log.info("共查询到"+resList.size()+"条素材数据!");
+
+            for(int i = 0;i < resList.size();i++){
+                MaterialDTO dto = resList.get(i);
                 //判断filePath是否是oss 的ObjectName
-                if(null != filePath && filePath.indexOf("upload") < 0){
-                    newFilePath = "upload/material/" + filePath + "/" + fileName;
+                if(null != dto.getFilePath() && dto.getFilePath().indexOf("upload") < 0){
+                    String newFilePath = "upload/material/" + dto.getFilePath() + "/" + dto.getFileName();
                     //根据objectName 获取url
-                    ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
                     // 在这里编写需要更新的字段及相应的值
-                    String updateSql = "UPDATE t_material SET file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + id;
+                    String updateSql = "UPDATE t_material SET file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
                     log.info("当前SQL语句为：" + updateSql);
                     stmt.executeUpdate(updateSql);
                 }
-
             }
+
             log.info("数据已成功更新！");
 
+        } catch (Exception e) {
+            log.info("同步OSS数据失败!",e.getMessage());
+            throw new BizException("同步更新OSS数据失败!",SysConstant.SYSTEM_ERROR_500.getCode());
+        }finally {
             rs.close();
             stmt.close();
             conn.close();
-
-        } catch (SQLException e) {
-            log.error("同步OSS数据失败!",e.getMessage());
-            throw new BizException("同步更新OSS数据失败!",SysConstant.SYSTEM_ERROR_500.getCode());
         }
 
         return ResponseResult.success(true);
