@@ -46,6 +46,7 @@ export default {
     },
     handleSelectImage (item) {
       this.handleClose()
+      console.log(item, 9999)
       this.$emit('change', item.url)
     },
     renderContent () {

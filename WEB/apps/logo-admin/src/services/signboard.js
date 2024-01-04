@@ -29,7 +29,7 @@ export const updateTemplateStatusById = axiosPost("/logo/template/updateTemplate
 /** 分页查询素材信息 */
 export const getMaterialListByPage = axiosGet("/logo/material/getMaterialListByPage");
 /** 上传素材附件 */
-export const uploadMaterialAttachment = axiosPost("/logo/attachment/uploadMaterialAttachment");
+export const uploadMaterialAttachment = axiosPost("/logo/attachment/uploadMaterialAttachmentOSS");
 /** 根据ID查询素材数据 */
 export const getMaterialByID = axiosGet("/logo/material/getMaterialByID");
 /** 新增素材信息 */

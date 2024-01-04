@@ -4,7 +4,7 @@
 import axios from 'axios'
 import ImageItem from 'core/support/image-gallery/components/image-item.js'
 import Uploader from 'core/support/image-gallery/components/uploader.js'
-import {getMaterialListByPage} from 'core/api'
+import {getMaterialListByPageOSS} from 'core/api'
 import {resolveImgUrl} from 'core/support/imgUrl'
 
 export default {
@@ -32,7 +32,7 @@ export default {
       return file
     },
     searchFiles () {
-      getMaterialListByPage({
+      getMaterialListByPageOSS({
         fileType:1
       })
         .then(res => {

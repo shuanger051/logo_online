@@ -1,19 +1,17 @@
 import PropTypes from "@luban-h5/plugin-common-props";
-import { resolveImgUrl } from "core/support/imgUrl";
+import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import MobilePropTypes from 'core/mobile/basicProps/mobile-plugin-props'
 import placeholderImg from "./lbp-picture-placeholder.png"; // issue #34
-import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
 
 
 export default {
   name: "lbp-picture",
   watch: {
     imgSrc: {
-      handler(v) {
+      async handler(v) {
         if (v) {
-          convertImageToBase64(this.getUrl(this.imgSrc), (src) => {
-            this.src = src
-          })
+          const src= await resolveImgUrlBase64(this.imgSrc)
+          this.src = src
         }
       },
       immediate: true
@@ -122,12 +120,9 @@ export default {
     },
   },
   data: () => ({
-    placeholderImg,
-    src: ''
+    src: placeholderImg
   }),
   methods: {
-    getUrl(url) {
-      return resolveImgUrl(url, true);
-    },
+    
   },
 };

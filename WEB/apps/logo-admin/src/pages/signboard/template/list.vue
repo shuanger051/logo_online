@@ -19,7 +19,7 @@
         {{ text == "1" ? "已发布" : "未发布" }}
       </template>
       <template slot="shortImage" slot-scope="text, record">
-        <img
+        <async-image
           v-if="!!getImageSrc(record)"
           width="100px"
           height="100px"
@@ -34,10 +34,14 @@
           >编辑</a-button
         >
         <a-button type="link" size="small" @click="onDel({ record, index })"
-          >删除</a-button>
-          <a-button type="link" size="small" @click="onPublish({ record, index })"
-          >{{record.releaseStatus == '1' ? '取消发布': '发布'}}</a-button>
-        
+          >删除</a-button
+        >
+        <a-button
+          type="link"
+          size="small"
+          @click="onPublish({ record, index })"
+          >{{ record.releaseStatus == "1" ? "取消发布" : "发布" }}</a-button
+        >
       </template>
     </a-table>
   </div>
@@ -46,11 +50,10 @@
 import useTable from "@/hooks/useTable";
 import { ref } from "vue";
 import { mapState } from "vuex";
-import { Modal,message } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
 
-import { signboardService,systemService } from "@/services";
+import { signboardService, systemService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
-
 
 export default {
   components: { FormSerach },
@@ -147,28 +150,33 @@ export default {
       list.value.splice(index, 1);
       return data;
     });
-    const onPublish = ({record}) => {
+    const onPublish = ({ record }) => {
       Modal.confirm({
-        content: "是否"+ record.releaseStatus == "1" ? '取消发布': "发布",
+        content: "是否" + record.releaseStatus == "1" ? "取消发布" : "发布",
         okText: "确定",
-        onOk: () => { 
-          signboardService.updateTemplateStatusById({
-            id: record.id,
-            releaseStatus: record.releaseStatus == "1" ? "2" : "1" 
-          })
-          .then(() => {message.success("更改成功"); onSerach()})
-          .catch(() => message.error("更改失败"))
-        }
+        onOk: () => {
+          signboardService
+            .updateTemplateStatusById({
+              id: record.id,
+              releaseStatus: record.releaseStatus == "1" ? "2" : "1",
+            })
+            .then(() => {
+              message.success("更改成功");
+              onSerach();
+            })
+            .catch(() => message.error("更改失败"));
+        },
       });
-    }
-    systemService
-        .getItemsByDictKeyInDB({ dictKey: 'style' })
-        .then((res) => (styleMap.value = res.data.map((item) => {
+    };
+    systemService.getItemsByDictKeyInDB({ dictKey: "style" }).then(
+      (res) =>
+        (styleMap.value = res.data.map((item) => {
           return {
             value: item.itemKey,
-            label: item.itemValue
-          }
-        })))
+            label: item.itemValue,
+          };
+        }))
+    );
     const changeStyle = (v) => {
       formData.style = v.join(",");
     };
@@ -182,7 +190,7 @@ export default {
       onChange,
       styleMap,
       formStyle,
-      onPublish
+      onPublish,
     };
   },
   methods: {
@@ -192,7 +200,7 @@ export default {
       let isDev = process.env.NODE_ENV === "development";
       try {
         json = JSON.parse(record.domItem);
-        src = '/api/logo' + json.cover_image_url
+        src = json.cover_image_url;
       } catch (e) {
         console.log(e);
       }

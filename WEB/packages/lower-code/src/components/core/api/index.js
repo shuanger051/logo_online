@@ -11,6 +11,10 @@ export const getMaterialListByPage = wrapRequest(
   "/logo/material/getMaterialListByPage",
   false
 );
+export const getMaterialListByPageOSS = wrapRequest(
+  "/logo/material/getMaterialListByPageOSS",
+  false
+);
 export const saveTemplate = wrapRequest("/logo/template/saveTemplate", true);
 export const updateTemplate = wrapRequest(
   "/logo/template/updateTemplate",
@@ -23,7 +27,7 @@ export const adminGetTemplateByID = wrapRequest(
   false
 );
 export const uploadMaterialAttachment = wrapRequest(
-  "logo/attachment/uploadMaterialAttachment",
+  "logo/attachment/uploadMaterialAttachmentOSS",
   true
 );
 export const getDictById = wrapRequest(
