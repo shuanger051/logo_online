@@ -1,5 +1,7 @@
 import axios from "axios";
 import store from "../store";
+import router from "@/router";
+import evnetBus from "@/core/eventBus";
 
 // 默认配置
 axios.defaults.timeout = 30000;
@@ -10,11 +12,11 @@ axios.defaults.baseURL = window.__baseUrl;
 // 请求拦截
 axios.interceptors.request.use(function onFulfilled(config) {
   // 添加token
-  // const { settings } = store.state;
-  // if (user.token) {
-  //   const query = `token=${settings.token}`;
-  //   config.url += (/\?/.test(config.url) ? "&" : "?") + query;
-  // }
+  const { user } = store.state;
+  if (user.token) {
+    const query = `token=${user.token}`;
+    config.url += (/\?/.test(config.url) ? "&" : "?") + query;
+  }
   return config;
 });
 
@@ -27,7 +29,11 @@ axios.interceptors.response.use(
     if (data.code === "0") return data;
     // 未登录或登录失效
     else if (data.code == "401") {
-      location.reload()
+      // location.reload()
+      router.push({ path: "/" });
+      store.commit("user/setToken");
+      store.commit("user/setUserInfo");
+      evnetBus.$emit("login");
     }
     // 其他为失败
     else return Promise.reject(data);

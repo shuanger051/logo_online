@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import { signboardService } from "@/apis";
+import { signboardService } from "@/services";
 import Element  from 'core/models/element'
 import preview from 'core/editor/canvas/preview'
 import store from "core/store/mobileIndex";

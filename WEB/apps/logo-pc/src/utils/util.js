@@ -1,38 +1,21 @@
-import enquireJs from "enquire.js";
 
-export function isDef(v) {
-  return v !== undefined && v !== null;
-}
 
-/**
- * Remove an item from an array.
- */
-export function remove(arr, item) {
-  if (arr.length) {
-    const index = arr.indexOf(item);
-    if (index > -1) {
-      return arr.splice(index, 1);
-    }
+
+// 获取当前环境
+export const getEnvByUa = () => {
+  let tempEnv = sessionStorage.getItem('curUaEnv')
+  if (!tempEnv) {
+    const sUserAgent = window.navigator.userAgent.toLowerCase()
+    const bIsDtDreamApp = sUserAgent.includes('dtdreamweb')
+    const bIsAlipayMini = sUserAgent.includes('miniprogram') && sUserAgent.includes('alipay')
+    const bIsWechatMini = sUserAgent.includes('miniprogram') && (sUserAgent.includes('wechat') || sUserAgent.includes('wx'))
+    const oldWechat = sUserAgent.includes('micromessenger') // 微信兼容
+    tempEnv = (bIsDtDreamApp && 'bIsDtDreamApp') || (bIsAlipayMini  && 'bIsAlipayMini') || ((bIsWechatMini || oldWechat) && WECHAT_ENV) || 'h5'
+    // tempEnv = bIsDtDreamApp ? 'bIsDtDreamApp' : bIsAlipayMini ? 'bIsAlipayMini' : 'h5'
+    sessionStorage.setItem('curUaEnv', tempEnv)
   }
+  return tempEnv
 }
-
-export function isRegExp(v) {
-  return _toString.call(v) === "[object RegExp]";
-}
-
-export function enquireScreen(call) {
-  const handler = {
-    match: function () {
-      call && call(true);
-    },
-    unmatch: function () {
-      call && call(false);
-    },
-  };
-  enquireJs.register("only screen and (max-width: 767.99px)", handler);
-}
-
-const _toString = Object.prototype.toString;
 
 /**
  * 顺序执行promise

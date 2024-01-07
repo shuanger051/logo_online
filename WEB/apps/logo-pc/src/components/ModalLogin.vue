@@ -1,15 +1,23 @@
 <template>
   <a-modal
-    class="popup-login"
     v-model="show"
     title="登录"
+    okText="登录"
+    cancelText="取消"
+    @ok="onSubmit"
   >
-    <a-form-model :model="formData" @submit="onSubmit">
+    <a-form-model
+      ref="loginForm"
+      :model="formData"
+      :label-col="{ span: 4 }"
+      :wrapper-col="{ span: 20 }"
+      :rules="rules"
+    >
       <a-form-model-item
         required
         name="customerName"
         label="手机号"
-        :rules="rules.customerName"
+        prop="customerName"
       >
         <a-input
           v-model="formData.customerName"
@@ -17,20 +25,12 @@
           maxlength="11"
         />
       </a-form-model-item>
-      <a-form-model-item
-        required
-        name="password"
-        label="密码"
-        :rules="rules.password"
-      >
+      <a-form-model-item required name="password" label="密码" prop="password">
         <a-input
           v-model="formData.password"
           placeholder="请输入"
           type="password"
         />
-      </a-form-model-item>
-      <a-form-model-item>
-        <van-button slot="input" block round type="primary">登录</van-button>
       </a-form-model-item>
     </a-form-model>
   </a-modal>
@@ -39,7 +39,7 @@
 import qs from "qs";
 import store from "@/store";
 import eventBus from "@/core/eventBus";
-import { commonService, accountService } from "@/apis";
+import { commonService, accountService } from "@/services";
 import { runPromiseInSequence } from "@/utils/util";
 export default {
   data() {
@@ -108,23 +108,27 @@ export default {
     },
     // event：登录
     onSubmit() {
-      const { customerName, password } = this.formData;
-      runPromiseInSequence([
-        // 获取秘钥
-        this.getPublicKey,
-        // 加密
-        this.encrypt,
-        // 登录
-        this.login,
-      ])({
-        customerName,
-        password,
-      })
-        // 失败提示
-        .catch((err) => {
-          console.log(err);
-          this.$toast.fail("登录失败：" + err.msg);
-        });
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          const { customerName, password } = this.formData;
+          runPromiseInSequence([
+            // 获取秘钥
+            this.getPublicKey,
+            // 加密
+            this.encrypt,
+            // 登录
+            this.login,
+          ])({
+            customerName,
+            password,
+          })
+            // 失败提示
+            .catch((err) => {
+              console.log(err);
+              this.$toast.fail("登录失败：" + err.msg);
+            });
+        }
+      });
     },
     // 登录
     login(ctx) {

@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import { signboardService } from "@/apis";
+import { signboardService } from "@/services";
 import { resolveImgUrl } from "core/support/imgUrl";
 import SuspendPage from "@/components/SuspendPage";
 
