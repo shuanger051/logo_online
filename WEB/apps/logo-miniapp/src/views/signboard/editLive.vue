@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import store from "core/store/mobileIndex";
+import store from "core/mobile/store/index";
 import {
   appGetLogoInfoByShopsId,
   appUploadContentAttachmentBase64,

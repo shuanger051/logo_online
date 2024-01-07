@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import store from "core/store/mobileIndex";
+import store from "core/mobile/store/index";
 import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
 import { appUploadMaterialAttachment } from "core/api/";

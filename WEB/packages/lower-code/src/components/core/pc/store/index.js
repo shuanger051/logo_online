@@ -1,8 +1,8 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import editor from './modules/editor'
-import {actions, state, mutations} from './modules/mobile.js'
+import editor from 'core/store/modules/editor'
+import {actions, state, mutations} from './pc.js'
 
 Vue.use(Vuex)
 

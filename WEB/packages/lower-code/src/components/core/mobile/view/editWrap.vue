@@ -19,7 +19,7 @@ import ToolBar from "./toolBar.vue";
 
 import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
-import store from "core/store/mobileIndex";
+import store from "core/mobile/store/index";
 import { downloadPoster} from "@editor/utils/canvas-helper.js";
 
 import { Notify } from "vant";
@@ -47,13 +47,7 @@ export default {
       pages: (state) => state.work.pages,
       work: (state) => state.work,
       currentShopSign: (state) => state.mobile.currentShopSign,
-    }),
-    ...mapState("loading", [
-      "saveWork_loading",
-      "previewWork_loading",
-      "setWorkAsTemplate_loading",
-      "uploadWorkCover_loading",
-    ]),
+    })
   },
   data() {
     return {
