@@ -13,11 +13,11 @@ const routes = [
   //   meta: { title: "类型选择" },
   //   component: () => import("@/views/signboard/attribute"),
   // },
-  {
-    path: "editSelect",
-    meta: { title: "编辑选择" },
-    component: () => import("@/views/signboard/editSelect"),
-  },
+  // {
+  //   path: "editSelect",
+  //   meta: { title: "编辑选择" },
+  //   component: () => import("@/views/signboard/editSelect"),
+  // },
 
   // {
   //   path: "selfEdit",
@@ -49,13 +49,13 @@ const routes = [
   //   meta: { title: "智能设计" },
   //   component: () => import("@/views/signboard/intelligenceDesign"),
   // },
-  // {
-  //   path: "/editSignboard/:id?",
-  //   name: "editSignboard",
-  //   meta: { title: "店招编辑" },
-  //   component: () =>
-  //     import("@/views/signboard/editSignboard.vue"),
-  // },
+  {
+    path: "/editSignboard/:id?",
+    name: "editSignboard",
+    meta: { title: "店招编辑" },
+    component: () =>
+      import("@/views/signboard/editSignboard.vue"),
+  },
 ];
 
 // 店招模块路由

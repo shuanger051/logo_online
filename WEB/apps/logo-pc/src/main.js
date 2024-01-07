@@ -7,6 +7,8 @@ import store from "./store";
 import appConfig from "core/appConfig";
 import * as axios from "@/utils/request";
 
+
+
 appConfig.install(({ initRequest, initMode, initRouter }) => {
   initMode("pc");
   initRouter(router);

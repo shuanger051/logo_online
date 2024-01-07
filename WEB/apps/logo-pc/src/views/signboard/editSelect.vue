@@ -1,12 +1,8 @@
 <template>
   <div class="edit-select">
-    <a-button type="primary">Primary Button</a-button>
+    <p>sdfsdf</p>
   </div>
 </template>
 <script>
 
-export default {
-  
-  
-}
 </script>

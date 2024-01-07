@@ -9,7 +9,7 @@ const store = new Vuex.Store({
   plugins: [
     createPersistedState({
       storage: sessionStorage,
-      paths: ['setting']
+      paths: ['user']
     }),
   ],
 })

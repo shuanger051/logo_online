@@ -8,7 +8,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   devServer: {
-    port: 8081,
+    port: 8082,
     proxy: {
       '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
         target: process.env.VUE_APP_API_BASE_URL,
@@ -19,12 +19,7 @@ module.exports = {
       }
     }
   },
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: [path.resolve(__dirname, "./src/theme/theme.less")],
-    }
-  },
+
   configureWebpack: config => {
     config.entry.app = ["./src/main.js"];
     config.performance = {

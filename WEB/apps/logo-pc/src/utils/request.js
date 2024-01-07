@@ -10,9 +10,9 @@ axios.defaults.baseURL = window.__baseUrl;
 // 请求拦截
 axios.interceptors.request.use(function onFulfilled(config) {
   // 添加token
-  const { settings } = store.state;
+  const { user } = store.state;
   if (user.token) {
-    const query = `token=${settings.token}`;
+    const query = `token=${user.token}`;
     config.url += (/\?/.test(config.url) ? "&" : "?") + query;
   }
   return config;
