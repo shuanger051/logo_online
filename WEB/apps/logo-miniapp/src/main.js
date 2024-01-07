@@ -33,14 +33,14 @@ const app = new Vue({
 // h5版
 if (getEnvByUa() == "h5") app.$mount("#app");
 // 浙里办
-else
+else {
   ZWJSBridge.onReady(() => {
     // 判断是否适配适老版
     ZWJSBridge.getUiStyle().then((result) => {
       const { uiStyle } = result;
-      console.log(uiStyle)
       const val = uiStyle == "elder";
       store.commit("app/setIsOldVersion", val);
     });
     app.$mount("#app");
   });
+}
