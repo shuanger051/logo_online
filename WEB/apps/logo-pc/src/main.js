@@ -4,12 +4,12 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css"; 
 import router from "./router";
 import store from "./store";
-import appConfig from "core/appConfig";
+import pcConfig from "core/pcConfig";
 import * as axios from "@/utils/request";
 
 
 
-appConfig.install(({ initRequest, initMode, initRouter }) => {
+pcConfig.install(({ initRequest, initMode, initRouter }) => {
   initMode("pc");
   initRouter(router);
   initRequest(axios);

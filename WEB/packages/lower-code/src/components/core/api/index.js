@@ -35,7 +35,7 @@ export const getDictById = wrapRequest(
   false
 );
 export const getTemplateByID = async (...arg) => {
-  if (window.$editorConfig.isApp()) {
+  if (window.$editorConfig.mode !='admin') {
     return appQueryTemplate(...arg);
   } else {
     return adminGetTemplateByID(...arg);

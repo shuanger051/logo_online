@@ -1,10 +1,13 @@
 <template>
   <div class="edit-wrap">
-    <div>
-      <tool-bar></tool-bar>
+    <div class="edit-wrap--left">
+      <props-panel></props-panel>
+     
     </div>
-    <edit-panel :elements="elements" :style="getEditStyle()"></edit-panel>
-    <props-panel></props-panel>
+    <div class="edit-wrap--main">
+      <tool-bar class="edit-wrap-main--top"></tool-bar>
+      <edit-panel :elements="elements" :style="getEditStyle()"></edit-panel>
+    </div>
   </div>
 </template>
 <script>

@@ -33,7 +33,7 @@ import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
 import { appUploadMaterialAttachment } from "core/api/";
 import { ImagePreview } from 'vant';
-import {resolveImgUrl} from 'core/support/imgUrl'
+import { resolveImgUrl} from "core/support/imgUrl";
 
 export default {
   data() {

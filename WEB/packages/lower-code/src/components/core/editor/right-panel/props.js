@@ -100,7 +100,6 @@ export default {
         on: {
         // https://vuejs.org/v2/guide/render-function.html#v-model
           [item.type === 'tinymce-editor' ? 'input' : 'change']: function (e) {
-            console.log(e, 8888)
             // fixme: update plugin props in vuex with dispatch
             editingElement.pluginProps[propKey] = e.target ? e.target.value : e
           }

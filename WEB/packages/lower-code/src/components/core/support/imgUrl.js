@@ -16,9 +16,9 @@ export const resolveImgUrl = (url, flag = false) => {
 };
 
 export const addQuery = (url) => {
-  let isApp = window.$editorConfig.isApp();
+  let isAddToken = window.$editorConfig.mode!=='admin';
   const token = sessionStorage.getItem("token");
-  if (isApp) {
+  if (isAddToken) {
     url += (url.includes("?") ? "&" : "?") + "token=" + token;
   }
   return url;
@@ -27,7 +27,7 @@ export const addQuery = (url) => {
 const getRealUrl = async (url) => {
   const lists = url.split('/')
   const name = lists[lists.length-1]
-  const api = window.$editorConfig.isApp() ? appGetMaterial: getMaterialListByPageOSS
+  const api = window.$editorConfig.mode !== 'admin' ? appGetMaterial: getMaterialListByPageOSS
   const data = await api({
     fileName: name,
     fileType: 1
@@ -40,9 +40,12 @@ const getRealUrl = async (url) => {
 export const resolveImgUrlBase64 = async (url, flag=true)=> {
   const reg = /img-save-dir.oss|\/static/;
   let rurl = url
-  if (!reg.test(url)) {
-    rurl = await getRealUrl(url)
-  }
+  // if (!reg.test(url)) {
+  //   rurl = await getRealUrl(url)
+  // }
+  rurl = resolveImgUrl(rurl, true)
+
+
   if (!flag) {
     return rurl
   } 

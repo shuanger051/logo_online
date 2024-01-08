@@ -89,6 +89,23 @@ export default {
       },
     })
   },
+  pcProps: {
+
+    xRate: PropTypes.number({ defaultValue: 0, label: "x轴", showLable: true}),
+    yRate: PropTypes.number({ defaultValue: 0, label: "y轴", showLable: true}),
+    opacity: PropTypes.slider({
+      defaultValue: 100,
+      label: '透明度',
+      showLable: true
+    }),
+    imgSrc: PropTypes.image({
+      type: 'pc-upload',
+      label: '图片',
+      showLable: true
+    }),
+  },
+
+
   props: {
     imgSrc: PropTypes.image(),
     xRate: PropTypes.number({ defaultValue: 0, visible: false}),
