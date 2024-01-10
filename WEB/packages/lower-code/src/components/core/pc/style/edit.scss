@@ -5,7 +5,7 @@
 
 .edit-wrap--left {
   width: 300px;
-  border: 1px solid rgb(238,238,238);
+  border: 1px solid rgb(230, 229, 229);
   background: #fff;
 }
 
@@ -19,6 +19,7 @@
   height: 45px;
   margin-bottom: 15px;
   background: #fff;
+  border: 1px solid rgb(230, 229, 229);
 }
 
 .edit-panel-wrap {
@@ -78,31 +79,12 @@
   left: 50%;
   margin-left: -5Px;
 }
-.icon-fa {
-  position: absolute;
-}
-.icon-fa-del {
-  left: 50%;
-  margin-left: -12Px;
-  top: -28Px;
-}
-
-.icon-fa-rotate {
-  bottom: -28Px;
-  left: 50%;
-  margin-left: -12Px;
-}
-
-.icon-fa-scale {
-  bottom: -20Px;
-  right: -22Px;
-}
-
-// .tox-platform-touch {
-//   height: 100px!important;
-// }
 
 .edit-panel-wrap {
   position: relative;
 }
+
+
+
+
 

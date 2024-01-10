@@ -20,32 +20,22 @@ const eventMap = {
   mouseup: "touchend",
 };
 const createEvent = (obj) => {
-  let app = window.$editorConfig.isApp();
   let { el, name, handle } = obj;
-  let event = app ? eventMap[name] : name;
+  let event = eventMap[name];
 
   el = el || document;
-  el.addEventListener(event, handle, app ? { passive: false } : true);
+  el.addEventListener(event, handle, { passive: false });
   return () => {
-    el.removeEventListener(event, handle, app ? { passive: false } : true);
+    el.removeEventListener(event, handle, { passive: false });
   };
 };
 
 const getEventParams = (e) => {
   try {
-    let app = window.$editorConfig.isApp();
-
-    if (app) {
-      return {
-        clientX: e.changedTouches[0].clientX,
-        clientY: e.changedTouches[0].clientY,
-      };
-    } else {
-      return {
-        clientX: e.clientX,
-        clientY: e.clientY,
-      };
-    }
+    return {
+      clientX: e.changedTouches[0].clientX,
+      clientY: e.changedTouches[0].clientY,
+    };
   } catch(e) {
     return {
       clientX: 0,
@@ -245,30 +235,10 @@ export default {
         this.handleMouseEndProp(e, this.element)
       }
     },
-    /**
-     * !#en: delete element with keyboard
-     * !#zh: 键盘快捷键删除元素
-     *
-     */
-    handleDeleteByKeyboard(event) {
-      const key = event.keyCode || event.charCode;
-      if (key === 8 || key === 46) {
-        this.deleteEl;
-      }
-    },
+ 
     deleteEl() {
       this.$emit("delete");
-    },
-    /**
-     * detect key pressed on keyboard
-     * 检测键盘按键 按下行为
-     *
-     * 支持如下行为：
-     * - Backspace/Delete 快速删除元素
-     */
-    handleKeyPressed(e) {
-      this.handleDeleteByKeyboard(e);
-    },
+    }
   },
   render(h) {
     const isApp = window.$editorConfig.isApp();
@@ -276,13 +246,12 @@ export default {
       <div onClick={this.handleWrapperClick}>
         <div
           tabIndex="0"
-          onKeydown={this.handleKeyPressed}
           onTouchstart={this.handleMousedown}
           onTouchend = {this.handleMouseEnd}
           class={{ "shape__wrapper-active": this.active, shape__wrapper: true }}
         >
           {this.active &&
-            (isApp ? appPoints : points).map((point) => {
+            appPoints.map((point) => {
               const pointStyle = this.getPointStyle(point);
               return (
                 <div
@@ -297,17 +266,7 @@ export default {
             })}
           {this.$slots.default}
         </div>
-        {this.active && !isApp && (
-          <div
-            onMousedown={this.handleRotationMousedown}
-            onTouchstart={this.handleRotationMousedown}
-            class="shape_rotation-wrap"
-          >
-            <div class="shape_rotation-line"></div>
-            <div class="shape_rotation-point"></div>
-          </div>
-        )}
-        {this.active && isApp ? (
+        {this.active && (
           <div>
             {this.delIcon !== false ? (
               <icon-fa
@@ -337,7 +296,7 @@ export default {
               width="16"
             />
           </div>
-        ) : null}
+        )}
       </div>
     );
   },

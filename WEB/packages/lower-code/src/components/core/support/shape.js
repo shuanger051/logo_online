@@ -1,5 +1,4 @@
 import animationMixin from "core/mixins/animation.js";
-import { relative } from "path";
 
 /**
  * #!zh: 上下左右 对应的 东南西北
@@ -20,32 +19,22 @@ const eventMap = {
   mouseup: "touchend",
 };
 const createEvent = (obj) => {
-  let app = window.$editorConfig.isApp();
   let { el, name, handle } = obj;
-  let event = app ? eventMap[name] : name;
+  let event = name;
 
   el = el || document;
-  el.addEventListener(event, handle, app ? { passive: false } : true);
+  el.addEventListener(event, handle, true);
   return () => {
-    el.removeEventListener(event, handle, app ? { passive: false } : true);
+    el.removeEventListener(event, handle, true);
   };
 };
 
 const getEventParams = (e) => {
   try {
-    let app = window.$editorConfig.isApp();
-
-    if (app) {
-      return {
-        clientX: e.changedTouches[0].clientX,
-        clientY: e.changedTouches[0].clientY,
-      };
-    } else {
-      return {
-        clientX: e.clientX,
-        clientY: e.clientY,
-      };
-    }
+    return {
+      clientX: e.clientX,
+      clientY: e.clientY,
+    };
   } catch(e) {
     return {
       clientX: 0,
@@ -77,7 +66,6 @@ export default {
   created() {
     this.lastCenterX = 0;
     this.lastCenterY = 0;
-    this.isApp = $editorConfig.isApp();
   },
   methods: {
     /**
@@ -242,7 +230,7 @@ export default {
     handleDeleteByKeyboard(event) {
       const key = event.keyCode || event.charCode;
       if (key === 8 || key === 46) {
-        this.deleteEl;
+        this.deleteEl();
       }
     },
     deleteEl() {
@@ -260,18 +248,16 @@ export default {
     },
   },
   render(h) {
-    const isApp = window.$editorConfig.isApp();
     return (
       <div onClick={this.handleWrapperClick}>
         <div
           tabIndex="0"
           onKeydown={this.handleKeyPressed}
           onMousedown={this.handleMousedown}
-          onTouchstart={this.handleMousedown}
           class={{ "shape__wrapper-active": this.active, shape__wrapper: true }}
         >
           {this.active &&
-            (isApp ? appPoints : points).map((point) => {
+            points.map((point) => {
               const pointStyle = this.getPointStyle(point);
               return (
                 <div
@@ -280,53 +266,21 @@ export default {
                   style={pointStyle}
                   class="shape__scale-point"
                   onMousedown={this.mousedownForMark.bind(this, point)}
-                  onTouchstart={this.mousedownForMark.bind(this, point)}
                 ></div>
               );
             })}
           {this.$slots.default}
         </div>
-        {this.active && !isApp && (
+        {this.active && (
           <div
             onMousedown={this.handleRotationMousedown}
-            onTouchstart={this.handleRotationMousedown}
             class="shape_rotation-wrap"
           >
             <div class="shape_rotation-line"></div>
             <div class="shape_rotation-point"></div>
           </div>
         )}
-        {this.active && isApp ? (
-          <div>
-            {this.delIcon !== false ? (
-              <icon-fa
-                nativeOnClick={this.deleteEl}
-                icon="typcn:delete-outline"
-                class="icon-fa icon-fa-del"
-                color="#fa7a36"
-                width="24"
-              />
-            ) : null}
-            <icon-fa
-              nativeOnMousedown={this.handleRotationMousedown}
-              nativeOnTouchstart={this.handleRotationMousedown}
-              icon="tabler:rotate"
-              class="icon-fa icon-fa-rotate"
-              color="#fa7a36"
-              width="24"
-            />
-            <icon-fa
-              icon="fluent-mdl2:scale-volume"
-              class="icon-fa icon-fa-scale"
-              rotate="1"
-              data-point="rb"
-              nativeOnMousedown={this.mousedownForMark.bind(this, "rb")}
-              nativeOnTouchstart={this.mousedownForMark.bind(this, "rb")}
-              color="#fa7a36"
-              width="16"
-            />
-          </div>
-        ) : null}
+
       </div>
     );
   },

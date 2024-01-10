@@ -4,7 +4,6 @@ import router from '@/router'
 import appStore from '@/store'
 export const actions = {
   async mCreateCover({ commit, state, dispatch,rootState }, {el, file}) {
-      // commit('setEditingElement', null)
       let shopsId = router.currentRoute.query.shopId;
       let merchantId =  appStore.state.user.merchant.id
       let fileData = file

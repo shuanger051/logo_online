@@ -6,6 +6,7 @@
       >
       <van-uploader
           :after-read="afterRead"
+          :showUploadList="false"
           :max-size="1024 * 1024 * 2"
           @oversize="onOversize"
         >

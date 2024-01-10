@@ -1,5 +1,5 @@
 import { mapState, mapActions } from "vuex";
-import Shape from "core/support/shape_pc";
+import Shape from "core/support/shape";
 let moveFlag = 0
 
 
@@ -34,7 +34,6 @@ export default {
       "elementManager",
       "updateWork",
     ]),
-
     handleElementMove(pos) {
       this.setElementPosition(pos);
     },

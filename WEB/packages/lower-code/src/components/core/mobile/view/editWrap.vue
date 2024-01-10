@@ -21,21 +21,11 @@ import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
 import store from "core/mobile/store/index";
 import { downloadPoster} from "@editor/utils/canvas-helper.js";
-
+import {sleep, later} from '@editor/utils/tool'
 import { Notify } from "vant";
 import { Toast } from "vant";
 
-const sleep = async (time) => {
-  return new Promise((r) => {
-    setTimeout(() => r(), time);
-  });
-};
 
-const later = (fn, time) => {
-  setTimeout(() => {
-    fn();
-  }, time);
-};
 export default {
   components: { PropsPanel, EditPanel, ToolBar },
   store,
