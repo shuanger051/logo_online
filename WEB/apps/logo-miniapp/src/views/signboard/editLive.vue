@@ -4,6 +4,12 @@
       <van-button type="primary" class="recover" @click="creatLivePic"
         >提交承诺备案</van-button
       >
+      <van-uploader
+        :after-read="afterRead"
+      >
+        <span>上传实景图</span>
+      </van-uploader>
+
       <span @click="download">下载</span>
     </div>
     <div class="edit-live">
@@ -20,35 +26,48 @@
           :delIcon="false"
           :style="getStyle()"
           class="shape_wrap"
-          v-if="currentShopSign"
+          v-if="signboardPic"
         >
           <div class="shape_content">
-            <img :src="currentShopSign" width="100%" />
+            <img :src="signboardPic" width="100%" />
           </div>
         </shape>
-        <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
+        <van-image width="100%" v-if="livePic" :src="livePic" />
       </div>
     </div>
   </div>
 </template>
 <script>
 import store from "core/mobile/store/index";
-import {
-  appGetLogoInfoByShopsId,
-  appUploadContentAttachmentBase64,
-  appGetShopsInfoByIdAPI,
-} from "core/api";
-import { resolveImgUrl } from "core/support/imgUrl";
-import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
-
+import { appUploadMaterialAttachment } from "core/api/";
+import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
+import { mapActions } from "vuex";
 import { Toast } from "vant";
-import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
+import { downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
 export default {
   store,
   components: {
     shape,
+  },
+  watch: {
+    "$store.state.editor.signboardPic": {
+      async handler(n) {
+        if (n) {
+          this.signboardPic = await resolveImgUrlBase64(n);
+        }
+      },
+      immediate: true,
+    },
+    "$store.state.editor.livePic": {
+      async handler(n) {
+        if (n) {
+          this.livePic = await resolveImgUrlBase64(n);
+        }
+      },
+      immediate: true,
+    },
   },
   data() {
     return {
@@ -60,35 +79,37 @@ export default {
         angle: 0,
       },
       active: true,
-      currentLivePic: null,
-      currentShopSign: null,
+      livePic: null,
+      signboardPic: null,
     };
   },
   created() {
-    appGetLogoInfoByShopsId({
-      shopsId: this.$route.query.shopId,
-    }).then((data) => {
-      convertImageToBase64(resolveImgUrl(data.data.urlPath, true), (src) => {
-        this.currentShopSign = src
-      })
-    });
-    appGetShopsInfoByIdAPI({
-      shopsId: this.$route.query.shopId,
-    }).then(({ data }) => {
-      const list = data.list.find((item) => item.attachmentType == "1");
-      if (list) {
-        convertImageToBase64(resolveImgUrl(list.urlPath, true), (src) => {
-        this.currentLivePic = src
-      })
-      }
-    });
   },
   methods: {
+    ...mapActions("editor", [
+      "setPic",
+      "mCreateCover",
+    ]),
     handleElementMove(pos) {
       this.style = {
         ...this.style,
         ...pos,
       };
+    },
+    async afterRead(file) {
+      const toast = Toast.loading({
+        message: "上传中",
+        forbidClick: true,
+        duration: 0,
+      });
+      const form = new FormData();
+      form.append("file", file.file);
+      const info = await appUploadMaterialAttachment(form);
+      this.setPic({
+        type: "livePic",
+        value: info.data.urlPath,
+      });
+      toast.clear();
     },
     async download() {
       const toast = Toast.loading({
@@ -110,23 +131,18 @@ export default {
         duration: 0,
       });
       try {
-        const file = await takeScreenshot({
-          selector: "#edit-live__wrap",
-          type: "dataUrl",
+        const info = await this.mCreateCover({ el: "#edit-live__wrap" });
+        this.setPic({
+          type: "composePic",
+          value: info.data.urlPath,
         });
-        const form = new FormData();
-        const { shopId } = this.$route.query;
-        form.append("base64", file);
-        form.append("shopsId", shopId);
-        form.append("attachmentType", 4);
-        await appUploadContentAttachmentBase64(form);
         Notify({ type: "success", message: "创建成功" });
         this.$router.push({
           path: "/signboard/editConfirm",
           query: { shopId },
         });
       } catch (e) {
-        console.log(e, 888);
+        console.log(e)
         Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();

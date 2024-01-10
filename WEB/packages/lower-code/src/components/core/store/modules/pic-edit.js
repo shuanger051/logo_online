@@ -17,8 +17,10 @@ export const actions = {
   },
   setPic({commit}, payload) {
     commit('setPic', payload)
+  },
+  changeTokenScreenShotStatus({commit}, payload = true) {
+    commit('changeTokenScreenShotStatus', payload)
   }
-
 }
 export const mutations = {
 
@@ -27,14 +29,17 @@ export const mutations = {
   },
   setPic(state, payload) {
     state[payload.type] = payload.value
+  },
+  changeTokenScreenShotStatus(state, payload) {
+    state.tokenScreenShotStatus = payload
   }
-
 }
 
 export const state = {
   mobile: {
     currentWorkData: null,
   },
+  tokenScreenShotStatus: false,
   // 店招图
   signboardPic: null,
   // 实景图

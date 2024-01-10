@@ -4,7 +4,9 @@
       <props-panel></props-panel>
      
     </div>
-    <div class="edit-wrap--main">
+    <div class="edit-wrap--main" :class="{
+      'active-screen-shot': tokenScreenShotStatus
+    }">
       <tool-bar class="edit-wrap-main--top"></tool-bar>
       <edit-panel :elements="elements" :style="getEditStyle()"></edit-panel>
     </div>
@@ -28,6 +30,7 @@ export default {
       editingElement: (state) => state.editingElement,
       elements: (state) => state.editingPage.elements,
       work: (state) => state.work,
+      tokenScreenShotStatus: (state) => state.tokenScreenShotStatus
     }),
   },
   methods: {

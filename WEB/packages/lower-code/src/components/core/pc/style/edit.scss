@@ -84,7 +84,14 @@
   position: relative;
 }
 
-
+.active-screen-shot {
+  .shape__scale-point, .shape_rotation-wrap {
+    display: none!important;
+  }
+  .shape__wrapper-active {
+    outline: 0!important
+  }
+}
 
 
 

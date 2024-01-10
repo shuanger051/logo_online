@@ -50,7 +50,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover", 'setEditingElement']),
+    ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover", 'setEditingElement','setPic']),
     async download() {
       const toast = Toast.loading({
         message: "生成中...",
@@ -75,7 +75,11 @@ export default {
         duration: 0,
       });
       try {
-        await this.mCreateCover({ el: "#content_edit" });
+        const info=await this.mCreateCover({ el: "#content_edit" });
+        this.setPic({
+          type: 'signboardPic',
+          value:info.data.urlPath
+        })
         Notify({ type: "success", message: "创建成功" });
         later(() => {
           this.$router.push({
@@ -86,7 +90,7 @@ export default {
           });
         }, 1000);
       } catch (e) {
-
+        console.log(e)
          Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();

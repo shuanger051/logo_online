@@ -16,9 +16,11 @@ export const resolveImgUrl = (url, flag = false) => {
 };
 
 export const addQuery = (url) => {
-  let isAddToken = window.$editorConfig.mode!=='admin';
+  const reg = /img-save-dir\.oss|\/static/;
+
+  let addQeury = window.$editorConfig.mode!=='admin' && !reg.test(url);
   const token = sessionStorage.getItem("token");
-  if (isAddToken) {
+  if (addQeury) {
     url += (url.includes("?") ? "&" : "?") + "token=" + token;
   }
   return url;
@@ -37,21 +39,20 @@ const getRealUrl = async (url) => {
   
 }
 
-export const resolveImgUrlBase64 = async (url, flag=true)=> {
-  const reg = /img-save-dir.oss|\/static/;
+export const resolveImgUrlBase64 = async (url, flag=true, callback=() => {})=> {
+  const reg = /img-save-dir\.oss|\/static/;
   let rurl = url
   // if (!reg.test(url)) {
   //   rurl = await getRealUrl(url)
   // }
   rurl = resolveImgUrl(rurl, true)
-
-
   if (!flag) {
     return rurl
   } 
   let ps = new Promise((r,rj) => {
     convertImageToBase64(rurl, (src)=>{
       r(src)
+      callback(src)
     })
   })
   return ps

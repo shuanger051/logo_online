@@ -19,11 +19,18 @@
           </div>
         </div>
         <div class="edit-live-bar__right flex">
-          <div class="flex" @click="creatLivePic"><a-icon type="idcard" /> <span>提交备案</span></div>
+          <div class="flex" @click="creatLivePic">
+            <a-icon type="idcard" /> <span>提交备案</span>
+          </div>
         </div>
       </div>
 
-      <div class="edit-live__main">
+      <div
+        class="edit-live__main"
+        :class="{
+          'active-screen-shot': tokenScreenShotStatus,
+        }"
+      >
         <div id="edit-live__container">
           <shape
             :handle-element-move-prop="handleElementMove"
@@ -40,11 +47,11 @@
             v-if="signboardPic"
           >
             <div class="shape_content">
-              <img :src="resolveImgUrl(signboardPic, true)" width="100%" />
+              <img :src="signboardPic" width="100%" />
             </div>
           </shape>
           <div class="live_pic" v-if="livePic">
-            <img :src="resolveImgUrl(livePic, true)" width="100%" />
+            <img :src="livePic" width="100%" />
           </div>
         </div>
       </div>
@@ -54,9 +61,11 @@
 <script>
 import store from "core/pc/store";
 import { appUploadMaterialAttachment } from "core/api/";
-import { mapState, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
-import { resolveImgUrl } from "core/support/imgUrl";
+import { resolveImgUrlBase64 } from "core/support/imgUrl";
+import { sleep } from "@editor/utils/tool";
+
 export default {
   store,
   data() {
@@ -69,24 +78,47 @@ export default {
         angle: 0,
       },
       active: true,
+      signboardPic: null,
+      livePic: null,
     };
   },
   computed: {
-    ...mapState("editor", ["signboardPic", "livePic", 'mCreateCover']),
+    ...mapState("editor", ["tokenScreenShotStatus"]),
+  },
+  watch: {
+    "$store.state.editor.signboardPic": {
+      async handler(n) {
+        if (n) {
+          this.signboardPic = await resolveImgUrlBase64(n);
+        }
+      },
+      immediate: true,
+    },
+    "$store.state.editor.livePic": {
+      async handler(n) {
+        if (n) {
+          this.livePic = await resolveImgUrlBase64(n);
+        }
+      },
+      immediate: true,
+    },
   },
   components: {
-    shape
+    shape,
   },
   methods: {
-    ...mapActions("editor", ["setPic"]),
-    resolveImgUrl,
+    ...mapActions("editor", [
+      "setPic",
+      "mCreateCover",
+      "changeTokenScreenShotStatus",
+    ]),
     async upload(evt) {
       const form = new FormData();
       form.append("file", evt.file);
       const info = await appUploadMaterialAttachment(form);
       this.setPic({
-        type: 'livePic',
-        value: info.data.urlPath
+        type: "livePic",
+        value: info.data.urlPath,
       });
     },
     handleElementMove(pos) {
@@ -111,24 +143,27 @@ export default {
       return style;
     },
     async creatLivePic() {
-      const toast = this.$message.loading('生成中...', 0);
+      const toast = this.$message.loading("生成中...", 0);
+      this.changeTokenScreenShotStatus(true);
+      await sleep(1000);
       try {
         const info = await this.mCreateCover({ el: "#edit-live__container" });
         this.setPic({
-          type: 'composePic',
-          value:info.data.urlPath
-        })
-        this.$message.success('创建成功', 1);
+          type: "composePic",
+          value: info.data.urlPath,
+        });
+        this.$message.success("创建成功", 1);
         // later(() => {
         //   this.$router.push({
         //     path: "/signboard/editConfirm",
         //   });
         // }, 2000);
-        console.log(info.data.urlPath, 888)
+        console.log(info.data.urlPath, 888);
       } catch (e) {
-        console.log(e)
-        this.$message.error('创建失败' )
+        console.log(e);
+        this.$message.error("创建失败");
       }
+      this.changeTokenScreenShotStatus(false);
       toast();
     },
     noop() {},

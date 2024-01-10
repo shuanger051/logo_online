@@ -47,7 +47,7 @@ import { resolveImgUrl } from "core/support/imgUrl";
 import { appUploadMaterialAttachment } from "core/api/";
 
 import { mapActions, mapState } from "vuex";
-import {later} from '@editor/utils/tool'
+import {later, sleep} from '@editor/utils/tool'
 
 export default {
   store,
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     resolveImgUrl,
-    ...mapActions("editor", ["elementManager", "setEditingElement", "mCreateCover", 'setPic']),
+    ...mapActions("editor", ["elementManager", "setEditingElement", "mCreateCover", 'setPic', 'changeTokenScreenShotStatus']),
 
     async upload(evt) {
       let toast = this.$message.loading("上传中...", 0);
@@ -91,6 +91,8 @@ export default {
     },
     async createShopSign() {
       const toast = this.$message.loading('生成中...', 0);
+      this.changeTokenScreenShotStatus(true)
+      await sleep(1000)
       try {
         const info = await this.mCreateCover({ el: "#content_edit" });
         this.setPic({
@@ -107,6 +109,7 @@ export default {
         console.log(e)
         this.$message.error('创建失败' )
       }
+      this.changeTokenScreenShotStatus(false)
       toast();
     },
     textAddOk() {
