@@ -15,6 +15,6 @@ export default {
 #edit-wrap--contaner {
   padding: 20px 0px;
   height: calc(100vh);
-  background: #f1f1f1;
+  background: #eee;
 }
 </style>

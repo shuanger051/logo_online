@@ -25,18 +25,18 @@ const routes = [
   //   meta: { title: "自主设计" },
   //   component: () => import("@/views/signboard/selfEdit"),
   // },
-  // {
-  //   path: "editLive",
-  //   name: 'editLive',
-  //   meta: { title: "实景编辑" },
-  //   component: () => import("@/views/signboard/editLive"),
-  // },
-  // {
-  //   path: "editConfirm",
-  //   name: 'editConfirm',
-  //   meta: { title: "备案确认" },
-  //   component: () => import("@/views/signboard/editConfirm"),
-  // },
+  {
+    path: "editLive",
+    name: 'editLive',
+    meta: { title: "实景编辑" },
+    component: () => import("@/views/signboard/editLive"),
+  },
+  {
+    path: "editConfirm",
+    name: 'editConfirm',
+    meta: { title: "备案确认" },
+    component: () => import("@/views/signboard/editConfirm"),
+  },
   // {
   //   path: "intelligenceTemplate",
   //   name: 'intelligenceTemplate',

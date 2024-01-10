@@ -1,137 +1,100 @@
 <template>
-  <div style="height: 100%">
-    <div class="edit-live-header">
-      <van-button type="primary" class="recover" @click="creatLivePic"
-        >提交承诺备案</van-button
-      >
-      <span @click="download">下载</span>
-    </div>
-    <div class="edit-live">
-      <div id="edit-live__wrap">
-        <shape
-          :handle-element-move-prop="handleElementMove"
-          :handle-mousedown-prop="noop"
-          :handle-point-move-prop="handleElementMove"
-          :handle-element-mouse-up-prop="noop"
-          :handle-rotation-prop="handleRotationProp"
-          :handle-point-mouse-up-prop="noop"
-          :default-position="style"
-          :active="active"
-          :delIcon="false"
-          :style="getStyle()"
-          class="shape_wrap"
-          v-if="currentShopSign"
-        >
-          <div class="shape_content">
-            <img :src="currentShopSign" width="100%" />
+  <div class="edit-live">
+    <div class="edit-live__wrap">
+      <div class="edit-live-bar flex">
+        <div class="edit-live-bar__left flex">
+          <div class="flex">
+            <a-upload
+              name="file"
+              :customRequest="upload"
+              :showUploadList="false"
+            >
+              <a-icon type="picture" />
+              <span>上传实景图</span>
+            </a-upload>
           </div>
-        </shape>
-        <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
+          <div class="flex">
+            <a-icon type="font-size" />
+            <span>下载</span>
+          </div>
+        </div>
+        <div class="edit-live-bar__right flex">
+          <div class="flex" @click="creatLivePic"><a-icon type="idcard" /> <span>提交备案</span></div>
+        </div>
+      </div>
+
+      <div class="edit-live__main">
+        <div id="edit-live__container">
+          <shape
+            :handle-element-move-prop="handleElementMove"
+            :handle-mousedown-prop="noop"
+            :handle-point-move-prop="handleElementMove"
+            :handle-element-mouse-up-prop="noop"
+            :handle-rotation-prop="handleRotationProp"
+            :handle-point-mouse-up-prop="noop"
+            :default-position="style"
+            :active="active"
+            :delIcon="false"
+            :style="getStyle()"
+            class="shape_wrap"
+            v-if="signboardPic"
+          >
+            <div class="shape_content">
+              <img :src="resolveImgUrl(signboardPic, true)" width="100%" />
+            </div>
+          </shape>
+          <div class="live_pic" v-if="livePic">
+            <img :src="resolveImgUrl(livePic, true)" width="100%" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import store from "core/store/mobileIndex";
-import {
-  appGetLogoInfoByShopsId,
-  appUploadContentAttachmentBase64,
-  appGetShopsInfoByIdAPI,
-} from "core/api";
-import { resolveImgUrl } from "core/support/imgUrl";
-import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
-
+import store from "core/pc/store";
+import { appUploadMaterialAttachment } from "core/api/";
+import { mapState, mapActions } from "vuex";
 import shape from "core/support/shape";
-import { Toast } from "vant";
-import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
-import { Notify } from "vant";
+import { resolveImgUrl } from "core/support/imgUrl";
 export default {
   store,
-  components: {
-    shape,
-  },
   data() {
     return {
       style: {
-        left: 20,
-        top: 20,
+        left: 250,
+        top: 150,
         width: 300,
         height: 300,
         angle: 0,
       },
       active: true,
-      currentLivePic: null,
-      currentShopSign: null,
     };
   },
-  created() {
-    appGetLogoInfoByShopsId({
-      shopsId: this.$route.query.shopId,
-    }).then((data) => {
-      convertImageToBase64(resolveImgUrl(data.data.urlPath, true), (src) => {
-        this.currentShopSign = src
-      })
-    });
-    appGetShopsInfoByIdAPI({
-      shopsId: this.$route.query.shopId,
-    }).then(({ data }) => {
-      const list = data.list.find((item) => item.attachmentType == "1");
-      if (list) {
-        convertImageToBase64(resolveImgUrl(list.urlPath, true), (src) => {
-        this.currentLivePic = src
-      })
-      }
-    });
+  computed: {
+    ...mapState("editor", ["signboardPic", "livePic", 'mCreateCover']),
+  },
+  components: {
+    shape
   },
   methods: {
+    ...mapActions("editor", ["setPic"]),
+    resolveImgUrl,
+    async upload(evt) {
+      const form = new FormData();
+      form.append("file", evt.file);
+      const info = await appUploadMaterialAttachment(form);
+      this.setPic({
+        type: 'livePic',
+        value: info.data.urlPath
+      });
+    },
     handleElementMove(pos) {
       this.style = {
         ...this.style,
         ...pos,
       };
     },
-    async download() {
-      const toast = Toast.loading({
-        message: "生成中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        await downloadPoster({ selector: "#edit-live__wrap" });
-      } catch (e) {
-        Notify({ type: "danger", message: "创建失败" });
-      }
-      toast.clear();
-    },
-    async creatLivePic() {
-      const toast = Toast.loading({
-        message: "生成中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        const file = await takeScreenshot({
-          selector: "#edit-live__wrap",
-          type: "dataUrl",
-        });
-        const form = new FormData();
-        const { shopId } = this.$route.query;
-        form.append("base64", file);
-        form.append("shopsId", shopId);
-        form.append("attachmentType", 4);
-        await appUploadContentAttachmentBase64(form);
-        Notify({ type: "success", message: "创建成功" });
-        this.$router.push({
-          path: "/signboard/editConfirm",
-          query: { shopId },
-        });
-      } catch (e) {
-        console.log(e, 888);
-        Notify({ type: "danger", message: "创建失败" });
-      }
-      toast.clear();
-    },
-
     handleRotationProp(angle) {
       this.style.angle = angle;
     },
@@ -147,33 +110,75 @@ export default {
       style.transform = `rotate(${this.style.angle}deg)`;
       return style;
     },
+    async creatLivePic() {
+      const toast = this.$message.loading('生成中...', 0);
+      try {
+        const info = await this.mCreateCover({ el: "#edit-live__container" });
+        this.setPic({
+          type: 'composePic',
+          value:info.data.urlPath
+        })
+        this.$message.success('创建成功', 1);
+        // later(() => {
+        //   this.$router.push({
+        //     path: "/signboard/editConfirm",
+        //   });
+        // }, 2000);
+        console.log(info.data.urlPath, 888)
+      } catch (e) {
+        console.log(e)
+        this.$message.error('创建失败' )
+      }
+      toast();
+    },
     noop() {},
+  },
+  created() {
+    if (!this.livePic) {
+      this.$notification.info({
+        message: "请先上传实景图!",
+      });
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
 .edit-live {
-  background-color: #9d9c9c;
+  padding: 20px 0px;
+  height: calc(100vh);
+  background: #eee;
+}
+.edit-live-bar {
+  justify-content: space-between;
+  height: 45px;
+  margin-bottom: 35px;
+  background: #fff;
+  border: 1px solid rgb(230, 229, 229);
+  span {
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  .ant-upload {
+    margin-left: 0px;
+  }
+}
+.edit-live-bar__left,
+.edit-live-bar__right {
+  div {
+    margin-left: 20px;
+    cursor: pointer;
+  }
+}
+.edit-live-bar__right {
+  padding-right: 20px;
+}
+.edit-live__wrap {
+  width: 800px;
+  margin: 0 auto;
+}
+.flex {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(100% - 45px);
-}
-#edit-live__wrap {
-  position: relative;
-}
-.edit-live__content {
-  position: absolute;
-  z-index: 100;
-  padding: 10px;
-  &.active {
-    border: 1px solid #fa7a36;
-  }
-  .icon-fa-scale {
-    position: absolute;
-    bottom: -25px;
-    right: -22px;
-  }
+  align-items: center;
 }
 .shape_wrap {
   z-index: 100;
@@ -185,17 +190,8 @@ export default {
   display: flex;
   align-items: center;
 }
-.edit-live-header {
-  height: 45px;
-  overflow: hidden;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  > span {
-    color: #fa7a36;
-    position: absolute;
-    right: 10px;
-  }
+#edit-live__container {
+  position: relative;
+  width: 100%;
 }
 </style>

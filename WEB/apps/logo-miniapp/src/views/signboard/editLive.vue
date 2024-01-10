@@ -41,7 +41,7 @@ import {
 import { resolveImgUrl } from "core/support/imgUrl";
 import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
 
-import shape from "core/support/shape";
+import shape from "core/support/shape_mobile";
 import { Toast } from "vant";
 import { takeScreenshot, downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
