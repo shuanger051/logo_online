@@ -1,10 +1,6 @@
 <template>
   <div class="edit-select">
-    <van-panel
-      title="请选择"
-      desc="点击需要处理的项目"
-    >
-    </van-panel>
+    <van-panel title="请选择" desc="点击需要处理的项目"> </van-panel>
     <div class="content">
       <div
         class="line-desing"
@@ -12,8 +8,12 @@
           $router.push(`/signboard/attribute?shopId=${$route.query.shopId}`)
         "
       >
-        <span>菜单式<br/>在线设计</span>
-        <icon-fa icon="fluent:design-ideas-20-regular" color="#e98c49" width="80%" />
+        <span>菜单式<br />在线设计</span>
+        <icon-fa
+          icon="fluent:design-ideas-20-regular"
+          color="#e98c49"
+          width="80%"
+        />
       </div>
       <van-uploader
         :after-read="afterRead"
@@ -30,6 +30,8 @@
 import store from "core/mobile/store/index";
 import { mapActions } from "vuex";
 import { Toast } from "vant";
+import { appUploadMaterialAttachment } from "core/api/";
+
 const sleep = async (time) => {
   return new Promise((r) => {
     setTimeout(() => r(), time);
@@ -42,7 +44,7 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions("editor", ["mCreateCover"]),
+    ...mapActions("editor", ["mCreateCover", "setPic"]),
 
     async afterRead(file) {
       const toast = Toast.loading({
@@ -50,7 +52,13 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      await this.mCreateCover({ file: file.file });
+      const form = new FormData();
+      form.append("file", file.file);
+      const info = await appUploadMaterialAttachment(form);
+      this.setPic({
+        type: "signboardPic",
+        value: info.data.urlPath,
+      });
       toast.clear();
       await sleep(300);
       this.$router.push({

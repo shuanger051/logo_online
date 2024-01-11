@@ -10,7 +10,7 @@
               :showUploadList="false"
             >
               <a-icon type="picture" />
-              <span>上传实景图</span>
+              <span style="color: #fa7a36">上传实景图</span>
             </a-upload>
           </div>
           <div class="flex">
@@ -169,7 +169,7 @@ export default {
     noop() {},
   },
   created() {
-    if (!this.livePic) {
+    if (!this.$store.state.editor.livePic) {
       this.$notification.info({
         message: "请先上传实景图!",
       });

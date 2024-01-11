@@ -2,12 +2,17 @@
   <div style="height: 100%">
     <div class="edit-live-header">
       <van-button type="primary" class="recover" @click="creatLivePic"
-        >提交承诺备案</van-button
+        >提交备案</van-button
       >
       <van-uploader
+        class='upload'
         :after-read="afterRead"
+        :max-size="1024 * 1024 * 2"
+        @oversize="onOversize"
       >
-        <span>上传实景图</span>
+      <!-- <span>上传实景图</span> -->
+      <van-button plain type="warning">上传实景图</van-button>
+
       </van-uploader>
 
       <span @click="download">下载</span>
@@ -138,8 +143,7 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         this.$router.push({
-          path: "/signboard/editConfirm",
-          query: { shopId },
+          path: "/signboard/editConfirm"
         });
       } catch (e) {
         console.log(e)
@@ -163,8 +167,16 @@ export default {
       style.transform = `rotate(${this.style.angle}deg)`;
       return style;
     },
+    onOversize(file) {
+      Toast("文件大小不能超过 2M");
+    },
     noop() {},
   },
+  created() {
+    if (!this.$store.state.editor.livePic) {
+      Notify({ type: 'danger', message: '请先上传实景图片',  duration: 3000});
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -173,10 +185,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100% - 45px);
+  min-height: calc(100% - 50px);
 }
 #edit-live__wrap {
   position: relative;
+  min-height: 200px;
 }
 .edit-live__content {
   position: absolute;
@@ -202,12 +215,17 @@ export default {
   align-items: center;
 }
 .edit-live-header {
-  height: 45px;
+  height: 50px;
   overflow: hidden;
   background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  .upload {
+    position: absolute;
+    left: 10px;
+    color: #fa7a36;
+  }
   > span {
     color: #fa7a36;
     position: absolute;

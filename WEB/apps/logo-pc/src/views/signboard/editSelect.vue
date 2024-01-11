@@ -5,9 +5,8 @@
     </div>
     <div
       class="edit-select__main flex"
-      @click="$router.push(`/signboard/attribute`)"
     >
-      <div class="edit-select__left">
+      <div class="edit-select__left"  @click="$router.push(`/signboard/attribute`)">
         <span class="exit-select__txt">菜单式<br />在线设计</span>
         <icon-fa
           icon="fluent:design-ideas-20-regular"
