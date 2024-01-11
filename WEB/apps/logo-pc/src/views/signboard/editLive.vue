@@ -64,7 +64,7 @@ import { appUploadMaterialAttachment } from "core/api/";
 import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
-import { sleep } from "@editor/utils/tool";
+import {sleep} from '@editor/utils/tool'
 
 export default {
   store,
@@ -83,7 +83,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("editor", ["tokenScreenShotStatus"]),
+    ...mapState('editor', ['tokenScreenShotStatus'])
   },
   watch: {
     "$store.state.editor.signboardPic": {
@@ -144,8 +144,8 @@ export default {
     },
     async creatLivePic() {
       const toast = this.$message.loading("生成中...", 0);
-      this.changeTokenScreenShotStatus(true);
-      await sleep(1000);
+      this.changeTokenScreenShotStatus(true)
+      await sleep(1000)
       try {
         const info = await this.mCreateCover({ el: "#edit-live__container" });
         this.setPic({
@@ -163,7 +163,7 @@ export default {
         console.log(e);
         this.$message.error("创建失败");
       }
-      this.changeTokenScreenShotStatus(false);
+      this.changeTokenScreenShotStatus(false)
       toast();
     },
     noop() {},

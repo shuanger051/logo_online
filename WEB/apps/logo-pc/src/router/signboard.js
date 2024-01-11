@@ -13,11 +13,11 @@ const routes = [
   //   meta: { title: "类型选择" },
   //   component: () => import("@/views/signboard/attribute"),
   // },
-  // {
-  //   path: "editSelect",
-  //   meta: { title: "编辑选择" },
-  //   component: () => import("@/views/signboard/editSelect"),
-  // },
+  {
+    path: "editSelect",
+    meta: { title: "编辑选择" },
+    component: () => import("@/views/signboard/editSelect"),
+  },
 
   // {
   //   path: "selfEdit",
@@ -50,7 +50,7 @@ const routes = [
   //   component: () => import("@/views/signboard/intelligenceDesign"),
   // },
   {
-    path: "/editSignboard/:id?",
+    path: "editSignboard/:id?",
     name: "editSignboard",
     meta: { title: "店招编辑" },
     component: () =>

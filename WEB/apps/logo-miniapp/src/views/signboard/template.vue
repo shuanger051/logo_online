@@ -76,7 +76,7 @@ export default {
     },
     go(id) {
       this.$router.push(
-        `/editSignboard/${id}?shopId=${this.$route.query.shopId}`
+        `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}`
       );
     },
     // 翻页

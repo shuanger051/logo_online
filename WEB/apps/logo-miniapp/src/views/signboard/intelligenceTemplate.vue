@@ -92,7 +92,7 @@ export default {
     go(id, item) {
       this.setCurrentWorkData(item.data)
       this.$router.push(
-        `/editSignboard/${id}?shopId=${this.$route.query.shopId}&hasWork=1`
+        `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}&hasWork=1`
       );
     },
     // 模版查询

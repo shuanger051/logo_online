@@ -54,7 +54,7 @@ const routes = [
     component: () => import("@/views/signboard/intelligenceDesign"),
   },
   {
-    path: "/editSignboard/:id?",
+    path: "editSignboard/:id?",
     name: "editSignboard",
     meta: { title: "店招编辑" },
     component: () =>
