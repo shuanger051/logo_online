@@ -1,4 +1,4 @@
-import PropTypes from "@luban-h5/plugin-common-props";
+import PropTypes from "./propTypes";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import MobilePropTypes from 'core/mobile/basicProps/mobile-plugin-props'
 import placeholderImg from "./lbp-picture-placeholder.png"; // issue #34

@@ -1,5 +1,5 @@
 // https://github.com/luban-h5-components/plugin-common-props
-import PropTypes from "@luban-h5/plugin-common-props";
+import PropTypes from "./propTypes";
 import MobilePropTypes from "core/mobile/basicProps/mobile-plugin-props";
 import font from "core/styles/fontMap";
 const writingModeMap = [

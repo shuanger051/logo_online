@@ -8,7 +8,7 @@
  * @Description: luban-h5 background image/color component/plugin
  * @Copyright 2018 - 2020 luban-h5. All Rights Reserved
  */
-import PropTypes from '@luban-h5/plugin-common-props'
+import PropTypes from './propTypes'
 import { renderWaterMark } from '@editor/utils/dom-helper'
 
 export default {
