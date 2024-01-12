@@ -10,7 +10,7 @@ export const resolveImgUrl = (url, flag = false) => {
   }
   const str = [window.__baseUrl, "logo", url].join("");
   if (flag) {
-    return addQuery(str);
+    // return addQuery(str);
   }
   return str;
 };
