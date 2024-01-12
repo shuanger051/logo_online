@@ -51,11 +51,11 @@ export default {
   },
   created() {
     // 保存查询条件
-    this.params = this.$route.params; //_.pick(this.$route.params, ["channelId"]);
+    this.params = _.pick(this.$route.params, ["channelId"]);
     this.queryArticleList();
   },
   methods: {
-    queryArticleList(current, size) {
+    queryArticleList(current = 0, size) {
       const { page } = this;
       const { channelId } = this.params;
       let pageNum = current + 1;

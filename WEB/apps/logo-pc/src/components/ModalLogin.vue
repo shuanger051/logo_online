@@ -22,7 +22,7 @@
         <a-input
           v-model="formData.customerName"
           placeholder="请输入"
-          maxlength="11"
+          max-length="11"
         />
       </a-form-model-item>
       <a-form-model-item required name="password" label="密码" prop="password">

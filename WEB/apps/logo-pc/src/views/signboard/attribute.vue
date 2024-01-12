@@ -1,15 +1,27 @@
 <template>
   <div class="page-wrap">
     <a-divider orientation="left">材质</a-divider>
-    <a-checkbox-group v-model="formData.material" name="material" :options="attrs.material">
+    <a-checkbox-group
+      v-model="formData.material"
+      name="material"
+      :options="attrs.material"
+    >
     </a-checkbox-group>
     <a-divider orientation="left">类型</a-divider>
-    <a-checkbox-group v-model="formData.styles" name="styles" :options="attrs.styles">
+    <a-checkbox-group
+      v-model="formData.styles"
+      name="styles"
+      :options="attrs.styles"
+    >
     </a-checkbox-group>
     <a-divider orientation="left">街道类型</a-divider>
-    <a-checkbox-group v-model="formData.streetType" name="streetType" :options="attrs.streetType">
+    <a-checkbox-group
+      v-model="formData.streetType"
+      name="streetType"
+      :options="attrs.streetType"
+    >
     </a-checkbox-group>
-    <div>
+    <div class="action-bar">
       <a-button type="primary" @click="onNext">下一步</a-button>
     </div>
   </div>
@@ -71,8 +83,17 @@ export default {
   padding: 12px 24px 60px;
   max-width: 1000px;
   margin: 0 auto;
-  :deep(.a-checkbox) {
-    margin-bottom: 8px;
+  :deep(.ant-checkbox-group) {
+    margin-bottom: 12px;
+  }
+  :deep(.ant-divider) {
+    &-inner-text {
+      font-size: 14px;
+      color: #444;
+    }
+  }
+  .action-bar {
+    margin-top: 24px;
   }
 }
 </style>
