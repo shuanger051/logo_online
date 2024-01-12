@@ -19,7 +19,7 @@ const routes = [
 export default {
   path: "/article",
   name: "article",
-  redirect: "/article/list",
+  redirect: "/article/4/list",
   component: BlankLayout,
   children: routes,
 };

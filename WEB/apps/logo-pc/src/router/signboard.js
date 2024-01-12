@@ -2,17 +2,17 @@ import { BlankLayout } from "@/layouts";
 
 const routes = [
   // 店招模版选择页
-  // {
-  //   path: "template",
-  //   meta: { title: "模版选择" },
-  //   component: () => import("@/views/signboard/template"),
-  // },
-  // // 店招属性选择
-  // {
-  //   path: "attribute",
-  //   meta: { title: "类型选择" },
-  //   component: () => import("@/views/signboard/attribute"),
-  // },
+  {
+    path: "template",
+    meta: { title: "模版选择" },
+    component: () => import("@/views/signboard/template"),
+  },
+  // 店招属性选择
+  {
+    path: "attribute",
+    meta: { title: "类型选择" },
+    component: () => import("@/views/signboard/attribute"),
+  },
   {
     path: "editSelect",
     meta: { title: "编辑选择" },

@@ -1,30 +1,31 @@
 <template>
   <div class="page-wrap">
     <a-list
+      item-layout="vertical"
       :loading="loading"
-      :dataSource="list"
+      :data-source="list"
+      :pagination="page"
       :locale="{
         emptyText: '暂未发布相关信息文章',
       }"
     >
       <!-- 文章列表不为空 -->
-      <a-list-item
-        v-for="item in list"
-        :to="`/article/${item.channelId}/detail?pid=${item.id}`"
-        :key="item.id"
-        :title="item.contentExt.title"
-      >
-        <template slot="label">
-          <div class="description">{{ item.contentExt.description }}</div>
-          <div class="attrs-bar">
-            <span class="attr-item time">{{
-              item.contentExt.releaseDate | date("YYYY-MM-DD hh:mm")
-            }}</span>
-            <span class="attr-item visitor"
-              >阅读<i>{{ item.viewsDay }}</i></span
-            >
-          </div>
+      <a-list-item slot="renderItem" slot-scope="item" :key="item.id">
+        <template slot="actions">
+          <span class="attr-item time">{{
+            item.contentExt.releaseDate | date("YYYY-MM-DD hh:mm")
+          }}</span>
+          <span class="attr-item visitor"
+            >阅读<i>{{ item.viewsDay }}</i></span
+          >
         </template>
+        <a-list-item-meta :description="item.contentExt.description">
+          <router-link
+            slot="title"
+            :to="`/article/${item.channelId}/detail?pid=${item.id}`"
+            >{{ item.contentExt.title }}</router-link
+          >
+        </a-list-item-meta>
       </a-list-item>
     </a-list>
   </div>
@@ -41,27 +42,33 @@ export default {
       // 查询条件
       params: {},
       page: {
-        size: 30,
+        pageSize: 30,
         total: 0,
         current: 0,
+        onChange: (page) => this.queryArticleList(page),
       },
     };
   },
   created() {
     // 保存查询条件
     this.params = this.$route.params; //_.pick(this.$route.params, ["channelId"]);
-    this.queryArticleList()
+    this.queryArticleList();
   },
   methods: {
-    queryArticleList() {
+    queryArticleList(current, size) {
+      const { page } = this;
       const { channelId } = this.params;
-      const { size, current } = this.page;
       let pageNum = current + 1;
+      if (current) pageNum = current;
+      if (size) page.pageSize = size;
       articleService
-        .getContentByChannelIdAPI({ channelId })
+        .getContentByChannelIdAPI({
+          channelId,
+          pageNum,
+          pageSize: page.pageSize,
+        })
         .then((res) => {
-          const { list = [], total = 0 } = res.data; //_.get(res, "data", {});
-          this.finished = list.length < size;
+          const { list = [], total = 0 } = _.get(res, "data", {});
           this.page.current = pageNum;
           this.page.total = total;
           this.list = list;
@@ -78,7 +85,10 @@ export default {
 .page-wrap {
   padding: 12px 0;
   min-height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
   box-sizing: border-box;
+  background-color: #fff;
   // background-color: @text-color;
   :deep(.van-list) {
     .van-cell {

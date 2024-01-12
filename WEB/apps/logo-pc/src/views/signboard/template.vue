@@ -1,44 +1,33 @@
 <template>
   <div class="page-wrap">
     <!-- 店招模版选择 -->
-    <van-list
+    <a-list
       v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="queryTemplate"
+      :grid="{ gutter: 16, column: 3 }"
+      :pagination="page"
+      :data-source="list"
+      :locale="{
+        emptyText: '暂无相关店招模版',
+      }"
     >
-      <div
-        v-for="item in list"
-        :key="item.id"
-        @click="go(item.id)"
-        class="logo-item"
-      >
-        <van-image
+      <a-list-item slot="renderItem" slot-scope="item">
+        <img
           v-if="item.url"
+          @click="go(item.id)"
           width="100%"
           height="100px"
           fit="contain"
           :src="item.url"
         />
-        <van-empty v-else description="" />
-      </div>
-    </van-list>
-    <!-- 翻页 -->
-    <suspend-page
-      :total="page.total"
-      :size="page.size"
-      :current="page.current"
-      @change="onPageChange"
-    />
+      </a-list-item>
+    </a-list>
   </div>
 </template>
 <script>
 import { signboardService } from "@/services";
 import { resolveImgUrl } from "core/support/imgUrl";
-import SuspendPage from "@/components/SuspendPage";
 
 export default {
-  components: { SuspendPage },
   data() {
     return {
       list: [],
@@ -47,15 +36,17 @@ export default {
       // 查询条件
       params: {},
       page: {
-        size: 30,
+        pageSize: "30",
         total: 0,
         current: 0,
+        onChange: (page) => this.queryTemplate(page),
       },
     };
   },
   created() {
     // 保存查询条件
     this.params = _.pick(this.$route.query, ["styles", "material"]);
+    this.queryTemplate();
   },
   methods: {
     resolveList(lists) {
@@ -79,30 +70,26 @@ export default {
         `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}`
       );
     },
-    // 翻页
-    onPageChange(page) {
-      this.queryTemplate(page);
-    },
     // 模版查询
-    queryTemplate(page) {
+    queryTemplate(current, size) {
+      const { page } = this;
       const { styles, material } = this.params;
-      const { size, current } = this.page;
-      let pageNum = current + 1;
+      let pageNum = page.current + 1;
       // 是否存在页码参数
-      if (page?.current) pageNum = page.current;
+      if (current) pageNum = current;
+      // 更新page size
+      if (size) page.pageSize = size;
       this.loading = true;
       signboardService
         .queryTemplateListPageAPI({
           pageNum,
-          pageSize: size,
+          pageSize: page.pageSize,
           style: styles,
           material,
         })
         .then((res) => {
           const { list, total } = res.data;
           // 返回顶部
-          const elPage = document.getElementById("page-container");
-          elPage.scrollTo(0, 0);
           this.page.current = pageNum;
           this.page.total = total;
           this.list = this.resolveList(list);
@@ -115,6 +102,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .page-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
   .logo-item {
     margin-bottom: 10px;
   }

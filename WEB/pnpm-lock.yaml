@@ -283,6 +283,9 @@ importers:
       core-js:
         specifier: ^3.6.5
         version: 3.6.5
+      dayjs:
+        specifier: ^1.11.9
+        version: 1.11.9
       js-cookie:
         specifier: ^2.2.1
         version: 2.2.1

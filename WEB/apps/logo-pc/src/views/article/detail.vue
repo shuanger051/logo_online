@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrap">
-    <van-empty v-if="!detail.id" description="文章详情找不到了"></van-empty>
+    <a-empty v-if="!detail.id" description="文章详情找不到了"></a-empty>
     <template v-else>
       <h2 class="title">{{ article.title }}</h2>
       <div class="attribute">
@@ -10,7 +10,7 @@
       <!-- 文章内容 -->
       <div class="content" v-html="article.content"></div>
       <!-- 分割线 -->
-      <van-divider />
+      <a-divider />
       <!-- 附件列表 -->
       <!-- <dl class="attachment" v-if="attachment.length">
         <dt>附件下载</dt>
@@ -81,6 +81,8 @@ export default {
 <style lang="less" scoped>
 .page-wrap {
   padding: 0 12px 12px;
+  max-width: 1000px;
+  margin: 0 auto;
   .title {
     line-height: 1.6em;
   }
