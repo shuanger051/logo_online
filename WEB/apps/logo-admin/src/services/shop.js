@@ -14,7 +14,7 @@ export const deleteMerchantInfoById = axiosPost("/logo/merchantInfo/deleteMercha
 
 
 /** 分页查询店铺信息列表 */
-export const getShopsInfoListByPage = axiosGet("/logo/shops-info/getShopsInfoListByPage");
+export const getShopsInfoListByPage = axiosGet("/logo/shops-info/getShopsInfoListByPageOSS");
 /** 根据店铺ID查询店铺信息 */
 export const getShopsInfoById = axiosGet("/logo/shops-info/getShopsInfoById");
 /** 上传商铺附件 */

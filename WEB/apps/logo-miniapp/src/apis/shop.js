@@ -36,7 +36,7 @@ export const updateShopsInfoAPI = axiosPost("logo/app/updateShopsInfoAPI");
  * == 上传商铺附件 ==
  */
 export const uploadShopsAttachmentAPI = axiosPost(
-  "logo/app/uploadShopsAttachmentAPI",
+  "logo/app/uploadMaterialAttachmentAPIOSS",
   {
     headers: {
       "content-Type": "multipart/form-data",

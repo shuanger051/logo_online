@@ -1,7 +1,7 @@
 import { axiosPost,axiosGet } from "../utils/request";
 
 /** 分页查询店招信息 */
-export const getLogoListByPage = axiosGet("/logo/logo/getLogoListByPage");
+export const getLogoListByPage = axiosGet("/logo/logo/getLogoListByPageOSS");
 /** 根据ID查询店招数据 */
 export const getLogoInfoByID = axiosGet("/logo/logo/getLogoInfoByID");
 /** 新增店招信息 */

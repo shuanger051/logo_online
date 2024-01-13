@@ -18,10 +18,18 @@
     >
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
-        <a-button type="link" size="small" @click="onEdit({ record })"
+        <a-button
+          v-if="record.status == '0'"
+          type="link"
+          size="small"
+          @click="onEdit({ record })"
           >修改</a-button
         >
-        <a-button type="link" size="small" @click="onAudit({ record })"
+        <a-button
+          v-if="record.status == '1'"
+          type="link"
+          size="small"
+          @click="onAudit({ record })"
           >审核</a-button
         >
         <!-- btn:删除 -->
@@ -36,7 +44,7 @@
 import Detail from "./detail";
 import Audit from "./audit";
 import useTable, { queryDictCache } from "@/hooks/useTable";
-import { mapDictObject } from "@/store/helpers";
+import { mapDictObject, mapDictSelect } from "@/store/helpers";
 import { mapState } from "vuex";
 import { afficheService } from "@/services";
 import FormSerach from "@/components/form/FormSerach.vue";
@@ -47,6 +55,8 @@ export default {
     ...mapState({
       // 文章状态
       DictStatus: mapDictObject("status"),
+      // 文章状态
+      StatusArr: mapDictSelect("status"),
       // 栏目列表
       ColumnArr: (state) => {
         const list = _.get(state, ["cache", "channel"], []);
@@ -146,7 +156,14 @@ export default {
           },
         },
         { name: "title", label: "文章标题" },
-        { name: "status", label: "状态" },
+        {
+          name: "status",
+          label: "状态",
+          component: "select",
+          props: {
+            options: this.StatusArr,
+          },
+        },
         {
           name: "isRecommend",
           label: "是否推荐",

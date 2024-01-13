@@ -15,7 +15,7 @@
     >
       <!-- 店招预览图 -->
       <template slot="logoImg" slot-scope="val, record">
-        <img :src="`/api/logo/${record.logoFilePath}/${val}`" />
+        <img class="logo-img" :src="record.urlPath" />
       </template>
       <!-- 操作列 -->
       <template slot="operation" slot-scope="text, record">
@@ -60,8 +60,8 @@ export default {
         },
         {
           title: "店招预览",
-          dataIndex: "logoFileName",
-          key: "logoFileName",
+          dataIndex: "urlPath",
+          key: "urlPath",
           scopedSlots: { customRender: "logoImg" },
         },
         {
@@ -120,4 +120,10 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.page-wrap {
+  .logo-img {
+    max-width: 200px;
+  }
+}
+</style>

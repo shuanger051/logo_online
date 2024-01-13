@@ -70,7 +70,7 @@
       <a-divider orientation="left">备案材料</a-divider>
       <a-col :span="6" v-for="item in detail.list" :key="item.id">
         <a-card hoverable>
-          <img slot="cover" :src="resolveImgUrl(item.urlPath)" />
+          <img slot="cover" :src="item.urlPath" />
           <a-card-meta :title="item.attachmentType | fileType" />
         </a-card>
       </a-col>
@@ -79,7 +79,6 @@
 </template>
 <script>
 import store from "@/store";
-import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictObject } from "@/store/helpers";
 export default {
   props: {
@@ -126,9 +125,6 @@ export default {
           return "店招效果图";
       }
     },
-  },
-  methods: {
-    resolveImgUrl,
   },
 };
 </script>

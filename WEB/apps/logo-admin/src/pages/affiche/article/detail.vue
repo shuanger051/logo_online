@@ -153,6 +153,7 @@ export default {
       if (!item.filename) item.filename = item.fileName;
       item.uid = item.id || uid;
       item.name = item.filename;
+      item.url = item.urlPath;
       return item;
     }
 
@@ -229,11 +230,29 @@ export default {
   methods: {
     // 删除附件
     doDel(file) {
-      console.log(file);
-      let { contentAttachment: list } = this.formData;
-      this.formData.contentAttachment = list.filter(
-        (item) => item.uid != file.uid
-      );
+      afficheService
+        .deleteAttachmentByName({
+          attachmentName: file.attachmentName,
+        })
+        .then((res) => {
+          // 删除成功后本地删除
+          let { contentAttachment: list } = this.formData;
+          this.formData.contentAttachment = list.filter(
+            (item) => item.uid != file.uid
+          );
+          this.$message.success({
+            content: "删除成功",
+            duration: 2,
+            key: "fileDelete",
+          });
+        })
+        .catch(() => {
+          this.$message.error({
+            content: "删除失败",
+            duration: 2,
+            key: "fileDelete",
+          });
+        });
     },
     // 上传
     doUpload(evt) {
