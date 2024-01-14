@@ -25,7 +25,7 @@ export const getContentById = axiosGet("/logo/content/getContentById");
 export const saveContent = axiosPost("/logo/content/saveContent");
 /** 上传文章附件 */
 export const uploadContentAttachment = axiosPost(
-  "/logo/attachment/uploadContentAttachment",
+  "/logo/attachment/uploadContentAttachmentOSS",
   {
     headers: {
       "content-Type": "multipart/form-data",

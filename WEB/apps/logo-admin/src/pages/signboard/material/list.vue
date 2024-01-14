@@ -50,15 +50,18 @@ export default {
           title: "文件类型",
           dataIndex: "fileType",
           key: "fileType",
+          width: "120px",
         },
         {
           title: "文件路径",
           dataIndex: "urlPath",
           key: "urlPath",
+          ellipsis: true,
         },
         {
           title: "操作",
           key: "operation",
+          width: "120px",
           scopedSlots: { customRender: "operation" },
         },
       ];

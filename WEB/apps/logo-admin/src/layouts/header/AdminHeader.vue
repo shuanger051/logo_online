@@ -11,6 +11,7 @@
         <i-menu class="head-menu" :theme="headerTheme" mode="horizontal" :options="menuData" @select="onSelect"/>
       </div>
       <div :class="['admin-header-right', headerTheme]">
+          <!-- 头像 -->
           <header-avatar class="header-item"/>
           <a-dropdown class="lang header-item">
             <div>

@@ -8,7 +8,7 @@ export default {
   },
   getters: {
     user: (state) => {
-      if (!state.user) {
+      if (!state.user?.id) {
         try {
           const user = localStorage.getItem(process.env.VUE_APP_USER_KEY);
           state.user = JSON.parse(user);

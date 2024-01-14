@@ -12,19 +12,20 @@
       <!-- 分割线 -->
       <van-divider />
       <!-- 附件列表 -->
-      <dl class="attachment" v-if="attachment.length">
+      <!-- <dl class="attachment" v-if="attachment.length">
         <dt>附件下载</dt>
         <dd v-for="item in attachment" :key="item.id">
           <a :href="item.downloadUrl">
             {{ item.filename }}
           </a>
         </dd>
-      </dl>
+      </dl> -->
     </template>
   </div>
 </template>
 <script>
 import { articleService } from "@/apis";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -32,6 +33,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      token: (state) => state.user.token,
+    }),
     // 文章内容
     article() {
       return this.detail.contentExt || {};
@@ -39,13 +43,13 @@ export default {
     // 附件
     attachment() {
       const { list = [] } = this.detail;
-      const downloadUrl = [
-        process.env.VUE_APP_API_PREFIX,
-        "logo/app/downloadContentAttachment",
-      ].join("/");
+      const downloadUrl =
+        window.__baseUrl +
+        "logo/app/downloadContentAttachment" +
+        `?token=${this.token}`;
       return list.map((item) => {
         // 拼装下载地址
-        item.downloadUrl = `${downloadUrl}?attachmentName=${item.attachmentName}`;
+        item.downloadUrl = `${downloadUrl}&attachmentName=${item.attachmentName}&`;
         return item;
       });
     },
