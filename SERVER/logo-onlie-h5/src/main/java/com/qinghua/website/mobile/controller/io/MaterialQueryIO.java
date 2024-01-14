@@ -12,6 +12,11 @@ public class MaterialQueryIO extends BaseIO{
     private String name;
 
     /**
+     * 文件名称
+     */
+    private String fileName;
+
+    /**
      * 文件类型：1-图片，2-文字
      */
     @DictValidator(value = "fileType",message = "文件类型参数格式非法")

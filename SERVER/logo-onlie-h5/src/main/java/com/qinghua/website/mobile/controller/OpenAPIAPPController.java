@@ -691,16 +691,78 @@ public class OpenAPIAPPController {
         }
     }
 
-
     /**
-     * APP上传店招信息(oss)
+     * APP上传店招信息(oss)有商铺
      * @param multipartFile
      * @param request
      * @return
      */
-    @LogAnnotation(logType = "upload",logDesc = "APP上传店招信息API(oss)")
+    @LogAnnotation(logType = "upload",logDesc = "APP上传店招信息API(oss)有商铺")
     @RequestMapping(value = "/saveLogoInfoAPIOSS", method = RequestMethod.POST)
-    public ResponseResult<Object> saveLogoInfoAPIOSS(@RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseResult<Object> saveLogoInfoAPIOSS(@RequestPart("file") MultipartFile multipartFile,  Long shopsId, Long merchantId ,HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String newFileName = fileId + "." + fileType;
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+
+            String fileDir = "upload/logo/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(objectName);
+                logoInfoDTO.setUrlPath(resUrl);
+
+                //根据shopsId判断数据是新增还是更新
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                if(null != res){
+                    logoInfoDTO.setId(res.getId());
+                    logoInfoService.updateLogoInfoById(logoInfoDTO);
+                }else{
+                    logoInfoService.saveLogoInfo(logoInfoDTO);
+                }
+            }
+
+
+            FileOSSVO fileVO = new FileOSSVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
+            return ResponseResult.success(fileVO);
+
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+
+    /**
+     * APP上传店招信息(oss)无商铺
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP上传店招信息API(oss)无商铺")
+    @RequestMapping(value = "/saveLogoInfoAPIOSSQLYG", method = RequestMethod.POST)
+    public ResponseResult<Object> saveLogoInfoAPIOSSQLYG(@RequestPart("file") MultipartFile multipartFile, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -829,7 +891,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传店招Base64文件信息API(oss)")
     @RequestMapping(value = "/saveLogoInfoBase64APIOSS", method = RequestMethod.POST)
-    public ResponseResult<Object> saveLogoInfoBase64APIOSS(@RequestPart("base64") String base64 , HttpServletRequest request) {
+    public ResponseResult<Object> saveLogoInfoBase64APIOSS(@RequestPart("base64") String base64 , Long shopsId, Long merchantId , HttpServletRequest request) {
 
         Preconditions.checkNotNull(base64,"Base64String 不能为空");
 
@@ -846,8 +908,28 @@ public class OpenAPIAPPController {
             String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
 
             String fileDir = "upload/logo/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
             //上传到OSS
             String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(objectName);
+                logoInfoDTO.setUrlPath(resUrl);
+
+                //根据shopsId判断数据是新增还是更新
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                if(null != res){
+                    logoInfoDTO.setId(res.getId());
+                    logoInfoService.updateLogoInfoById(logoInfoDTO);
+                }else{
+                    logoInfoService.saveLogoInfo(logoInfoDTO);
+                }
+            }
 
             FileOSSVO fileVO = new FileOSSVO();
             fileVO.setFileName(fileName);
@@ -889,7 +971,24 @@ public class OpenAPIAPPController {
     }
 
     /**
-     * APP 根据商铺ID获取店getLogoInfoByShopsIdAPI招信息API
+     * APP 分页查询查询店招图片列表API(oss)
+     * @param logoQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 分页查询查询店招图片列表API(OSS)")
+    @RequestMapping(value = "/getLogoInfoListPageByNameAPIOSS")
+    public ResponseResult<Object> getLogoInfoListPageByNameAPIOSS(@Validated LogoQueryIO logoQueryIO){
+        LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
+        PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
+        List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
+        PageListVO<LogoInfoVO> resp = new PageListVO<>();
+        resp.setList(logoInfoVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
+    }
+
+    /**
+     * APP 根据商铺ID获取店招信息API
      * @param shopsId
      * @return
      */
@@ -907,6 +1006,23 @@ public class OpenAPIAPPController {
             return ResponseResult.success(logoInfoVO);
         }else{
            return ResponseResult.success("未查询到数据");
+        }
+    }
+
+    /**
+     * APP 根据商铺ID获取店招信息API(OSS)
+     * @param shopsId
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据商铺ID获取店招信息API(OSS)")
+    @RequestMapping(value = "/getLogoInfoByShopsIdAPIOSS",method = RequestMethod.GET)
+    public ResponseResult<Object> getLogoInfoByShopsIdAPIOSS(@RequestParam("shopsId") Long shopsId){
+        LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+        if(null != res){
+            LogoInfoVO logoInfoVO = BeanToolsUtil.copyOrReturnNull(res,LogoInfoVO.class);
+            return ResponseResult.success(logoInfoVO);
+        }else{
+            return ResponseResult.success("未查询到数据");
         }
     }
 
@@ -972,6 +1088,23 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 分頁查询OSS素材信息API
+     * @param materialQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 分頁查询OSS素材信息API")
+    @RequestMapping("/getMaterialListByPageAPIOSS")
+    public ResponseResult<Object> getMaterialListByPageAPIOSS(@Validated MaterialQueryIO materialQueryIO){
+        MaterialDTO queryDTO = BeanToolsUtil.copyOrReturnNull(materialQueryIO,MaterialDTO.class);
+        PageInfo<MaterialDTO> pageList =  materialService.getMaterialListByPage(queryDTO);
+        List<MaterialVO> materialVOList =  BeanToolsUtil.copyAsList(pageList.getList(),MaterialVO.class);
+        PageListVO<MaterialVO> resp = new PageListVO<>();
+        resp.setList(materialVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
+    }
+
+    /**
      * 上传素材附件 API
      * @param multipartFile
      * @param request
@@ -979,7 +1112,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传素材附件API")
     @RequestMapping("/uploadMaterialAttachmentAPI")
-    public ResponseResult<Object> uploadMaterialAttachment(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+    public ResponseResult<Object> uploadMaterialAttachmentAPI(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
 
         checkFile(multipartFile);
 
@@ -1017,6 +1150,58 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+ "material/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 上传素材附件 API(OSS)
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传素材附件API(OSS)")
+    @RequestMapping("/uploadMaterialAttachmentAPIOSS")
+    public ResponseResult<Object> uploadMaterialAttachmentAPIOSS(@RequestPart("file")  MultipartFile multipartFile, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/material/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            //更新素材
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setName(fileName);
+            materialDTO.setFileName(newFileName);
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG") || fileType.equals("PNG")){
+                materialDTO.setFileType("1");
+            }else{
+                materialDTO.setFileType("2");
+            }
+            materialDTO.setFilePath(objectName);
+            materialDTO.setUrlPath(resUrl);
+
+            materialService.saveMaterial(materialDTO);
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
@@ -1080,6 +1265,67 @@ public class OpenAPIAPPController {
             fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             fileVO.setCompressUrlPath(urlPath+ "shops/" + compressRelativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+    /**
+     * APP 上传商铺附件(OSS)
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺附件API(OSS)")
+    @RequestMapping(value = "/uploadShopsAttachmentAPIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadShopsAttachmentAPIOSS(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,String attachmentType, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/shops/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(objectName);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
+                shopsAttachmentDTO.setUrlPath(resUrl);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+
+                shopsInfoService.saveShopsAttachments(list);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
+            fileVO.setUrlPath(resUrl);
+
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if(exception instanceof BizException){
@@ -1280,6 +1526,72 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 上传商铺Base64文件API(OSS)
+     * @param base64
+     * @param shopsId
+     * @param attachmentType
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API(OSS)")
+    @RequestMapping(value = "/uploadShopsContentAttachmentBase64APIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadShopsContentAttachmentBase64APIOSS(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
+        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/shops/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(objectName);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+
+                shopsInfoService.saveShopsAttachments(list);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
+            fileVO.setUrlPath(resUrl);
+
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+
+    }
+
+
+    /**
      * Base64 转 MultipartFile
      * @param base64
      * @return
@@ -1436,6 +1748,116 @@ public class OpenAPIAPPController {
                     stmt.executeUpdate(updateSql);
                 }
             }
+
+            log.info("素材表数据更新完成!");
+
+            log.info("开始更新商铺表附件数据……");
+            rs = stmt.executeQuery("SELECT * FROM t_shops_attachment ");
+            List<ShopsAttachmentDTO> resList2 = new ArrayList<>();
+
+            while (rs.next()) {
+                String newFilePath = "";
+                String ossUrl = "";
+                long id = rs.getInt("id");
+                String filePath = rs.getString("attachment_path");
+                String fileName = rs.getString("attachment_name");
+
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setId(id);
+                shopsAttachmentDTO.setAttachmentPath(filePath);
+                shopsAttachmentDTO.setAttachmentName(fileName);
+                resList2.add(shopsAttachmentDTO);
+
+            }
+
+            log.info("共查询到"+resList2.size()+"条商铺数据!");
+
+            for(int i = 0;i < resList2.size();i++){
+                ShopsAttachmentDTO dto = resList2.get(i);
+                //判断filePath是否是oss 的ObjectName
+                if(null != dto.getAttachmentPath() && dto.getAttachmentPath().indexOf("upload") < 0){
+                    String newFilePath = "upload/shops/" + dto.getAttachmentPath() + "/" + dto.getAttachmentName();
+                    //根据objectName 获取url
+                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    // 在这里编写需要更新的字段及相应的值
+                    String updateSql = "UPDATE t_shops_attachment SET attachment_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
+                    log.info("当前SQL语句为：" + updateSql);
+                    stmt.executeUpdate(updateSql);
+                }
+            }
+            log.info("商铺表数据更新完成!");
+
+            log.info("开始更新店招表附件数据……");
+            rs = stmt.executeQuery("SELECT * FROM t_logo_info ");
+            List<LogoInfoDTO> resList3 = new ArrayList<>();
+
+            while (rs.next()) {
+                String newFilePath = "";
+                String ossUrl = "";
+                long id = rs.getInt("id");
+                String filePath = rs.getString("logo_file_path");
+                String fileName = rs.getString("logo_file_name");
+
+                LogoInfoDTO logo = new LogoInfoDTO();
+                logo.setId(id);
+                logo.setLogoFilePath(filePath);
+                logo.setLogoFileName(fileName);
+                resList3.add(logo);
+
+            }
+
+            log.info("共查询到"+resList3.size()+"条店招数据!");
+
+            for(int i = 0;i < resList3.size();i++){
+                LogoInfoDTO dto = resList3.get(i);
+                //判断filePath是否是oss 的ObjectName
+                if(null != dto.getLogoFilePath() && dto.getLogoFilePath().indexOf("upload") < 0){
+                    String newFilePath = "upload/logo/" + dto.getLogoFilePath() + "/" + dto.getLogoFileName();
+                    //根据objectName 获取url
+                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    // 在这里编写需要更新的字段及相应的值
+                    String updateSql = "UPDATE t_logo_info SET logo_file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
+                    log.info("当前SQL语句为：" + updateSql);
+                    stmt.executeUpdate(updateSql);
+                }
+            }
+            log.info("店招表数据更新完成!");
+
+            log.info("开始更新文章表附件数据……");
+            rs = stmt.executeQuery("SELECT * FROM t_content_attachment ");
+            List<ContentAttachmentDTO> resList4 = new ArrayList<>();
+
+            while (rs.next()) {
+                String newFilePath = "";
+                String ossUrl = "";
+                long id = rs.getInt("id");
+                String filePath = rs.getString("attachment_path");
+                String fileName = rs.getString("attachment_name");
+
+                ContentAttachmentDTO contentAttachmentDTO = new ContentAttachmentDTO();
+                contentAttachmentDTO.setId(id);
+                contentAttachmentDTO.setAttachmentPath(filePath);
+                contentAttachmentDTO.setAttachmentName(fileName);
+                resList4.add(contentAttachmentDTO);
+
+            }
+
+            log.info("共查询到"+resList4.size()+"条文章附件数据!");
+
+            for(int i = 0;i < resList4.size();i++){
+                ContentAttachmentDTO dto = resList4.get(i);
+                //判断filePath是否是oss 的ObjectName
+                if(null != dto.getAttachmentPath() && dto.getAttachmentPath().indexOf("upload") < 0){
+                    String newFilePath = "upload/content/" + dto.getAttachmentPath() + "/" + dto.getAttachmentName();
+                    //根据objectName 获取url
+                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    // 在这里编写需要更新的字段及相应的值
+                    String updateSql = "UPDATE t_content_attachment SET attachment_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
+                    log.info("当前SQL语句为：" + updateSql);
+                    stmt.executeUpdate(updateSql);
+                }
+            }
+            log.info("文章附件表数据更新完成!");
 
             log.info("数据已成功更新！");
 

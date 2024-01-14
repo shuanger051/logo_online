@@ -11,6 +11,8 @@ public class MaterialQueryIO extends BaseIO{
      */
     private String name;
 
+    private String fileName;
+
     /**
      * 文件类型：1-图片，2-文字
      */

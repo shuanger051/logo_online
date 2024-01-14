@@ -36,6 +36,7 @@
         SELECT <include refid="Base_Column_List"/> FROM t_material
         <trim prefix="where" prefixOverrides="AND || OR">
             <if test="name !=null and name !=''">AND name like concat('%', #{name}, '%')</if>
+            <if test="fileName !=null and fileName !=''">AND file_name =#{fileName}</if>
         </trim>
         order by create_time DESC
     </select>

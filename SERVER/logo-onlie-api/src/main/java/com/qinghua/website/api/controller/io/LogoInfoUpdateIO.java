@@ -39,6 +39,8 @@ public class LogoInfoUpdateIO {
     @NotNull(message = "文件名不能为空")
     private String logoFileName;
 
+    private String urlPath;
+
     @Override
     public String toString() {
         return "LogoInfoUpdateIO{" +

@@ -29,10 +29,6 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)   {
         String token = request.getParameter("token");
 
-        if(null == token && request.getRequestURI().contains("savePath")){
-            throw new BizException("无token信息,请先登录获取Token!",SysConstant.SYSTEM_ERROR_401.getMsg());
-        }
-
         // 执行认证
         if (StrUtil.isBlank(token)) {
             throw new BizException("无token信息,请先登录获取Token!",SysConstant.SYSTEM_ERROR_401.getCode());

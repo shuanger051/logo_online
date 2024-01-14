@@ -16,7 +16,13 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/app/**")
                 //放开不需要拦截的请求
                 .excludePathPatterns(
-                        "/app/**"
+                        "/app/getTokenAPI",
+                        "/app/getZLBTokenAPI",
+                        "/app/logout",
+                        "/app/registerCustomerAPI",
+                        "/app/downloadContentAttachment",
+                        "/app/crypto/**",
+                        "/app/updateOSSDataInit"
                 );
     }
 
