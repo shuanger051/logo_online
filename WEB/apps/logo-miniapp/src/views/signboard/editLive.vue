@@ -24,6 +24,7 @@
         >
           <div class="shape_content">
             <img :src="currentShopSign" width="100%" />
+
           </div>
         </shape>
         <van-image width="100%" v-if="currentLivePic" :src="currentLivePic" />
@@ -34,8 +35,8 @@
 <script>
 import store from "core/store/mobileIndex";
 import {
-  appGetLogoInfoByShopsId,
-  appUploadContentAttachmentBase64,
+  appGetLogoInfoByShopsIdOSS,
+  appUploadContentAttachmentBase64OSS,
   appGetShopsInfoByIdAPI,
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
@@ -65,7 +66,7 @@ export default {
     };
   },
   created() {
-    appGetLogoInfoByShopsId({
+    appGetLogoInfoByShopsIdOSS({
       shopsId: this.$route.query.shopId,
     }).then((data) => {
       convertImageToBase64(resolveImgUrl(data.data.urlPath, true), (src) => {
@@ -119,7 +120,7 @@ export default {
         form.append("base64", file);
         form.append("shopsId", shopId);
         form.append("attachmentType", 4);
-        await appUploadContentAttachmentBase64(form);
+        await appUploadContentAttachmentBase64OSS(form);
         Notify({ type: "success", message: "创建成功" });
         this.$router.push({
           path: "/signboard/editConfirm",

@@ -1,9 +1,11 @@
 // import appStore from '@/store'
-import {appGetMaterial, getMaterialListByPageOSS} from 'core/api'
-import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
+import {
+  appGetMaterialListByPageApiOSS,
+  getMaterialListByPageOSS,
+} from "core/api";
+import { convertImageToBase64 } from "@editor/utils/canvas-helper.js";
 
 export const resolveImgUrl = (url, flag = false) => {
-
   const reg = /^(http|\/\/:|\/static)/;
   if (reg.test(url)) {
     return url;
@@ -25,31 +27,39 @@ export const addQuery = (url) => {
 };
 
 const getRealUrl = async (url) => {
-  const lists = url.split('/')
-  const name = lists[lists.length-1]
-  const api = window.$editorConfig.isApp() ? appGetMaterial: getMaterialListByPageOSS
-  const data = await api({
-    fileName: name,
-    fileType: 1
-  })
-  const item = data.data.list[0]
-  return item?item.urlPath : ''
-  
-}
+  const lists = url.split("/");
+  const name = lists[lists.length - 1];
 
-export const resolveImgUrlBase64 = async (url, flag=true)=> {
+  let data;
+  if (window.$editorConfig.mode !== "admin") {
+    data = await appGetMaterialListByPageApiOSS({
+      fileName: name,
+    });
+  } else {
+    data = await getMaterialListByPageOSS({
+      fileName: name,
+      fileType: 1,
+    });
+  }
+
+  const item = data.data.list[0];
+  console.log(item ? item.urlPath : "",99999)
+  return item ? item.urlPath : "";
+};
+
+export const resolveImgUrlBase64 = async (url, flag = true) => {
   const reg = /img-save-dir.oss|\/static/;
-  let rurl = url
+  let rurl = url;
   if (!reg.test(url)) {
-    rurl = await getRealUrl(url)
+    rurl = await getRealUrl(url);
   }
   if (!flag) {
-    return rurl
-  } 
-  let ps = new Promise((r,rj) => {
-    convertImageToBase64(rurl, (src)=>{
-      r(src)
-    })
-  })
-  return ps
-}
+    return rurl;
+  }
+  let ps = new Promise((r, rj) => {
+    convertImageToBase64(rurl, (src) => {
+      r(src);
+    });
+  });
+  return ps;
+};

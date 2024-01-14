@@ -13,11 +13,11 @@
         @click="go(item.id)"
         class="logo-item"
       >
-        <van-image
+        <async-image
           v-if="item.url"
           width="100%"
           height="100px"
-          fit="contain"
+          :style="{ objectFit: 'contain' }"
           :src="item.url"
         />
         <van-empty v-else description="" />

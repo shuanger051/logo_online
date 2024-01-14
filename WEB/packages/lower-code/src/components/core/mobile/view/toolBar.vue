@@ -31,7 +31,7 @@
 import store from "core/store/mobileIndex";
 import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { ImagePreview } from 'vant';
 import {resolveImgUrl} from 'core/support/imgUrl'
 
@@ -90,7 +90,7 @@ export default {
       try {
         const form = new FormData();
         form.append("file", file.file);
-        const info = await appUploadMaterialAttachment(form);
+        const info = await appUploadMaterialAttachmentOSS(form);
         this.addElement({
           name: "lbp-picture",
           shortcutProps: {
