@@ -12,11 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -24,8 +21,6 @@ public class OSSHttpToolsUtils {
 
     public static final String OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
     public static final String BUCKET_NAME = "img-save-dir";
-    public static final String OSS_ACCESS_KEY_ID = "LTAI5tQ2nydShTmWfGqmP384";
-    public static final String OSS_ACCESS_KEY_SECRET = "h6qPG28Jy05cAqGKGUiUUAB0xQp9kI";
 
     public static void main(String[] args) throws Exception {
 
