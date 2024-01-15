@@ -36,6 +36,8 @@ public class ShopsAttachmentIO {
     @DictValidator(value = "attachmentType",message = "附件类型参数错误")
     private String attachmentType;
 
+    private String urlPath;
+
     @Override
     public String toString() {
         return "ShopsAttachmentIO{" +

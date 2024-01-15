@@ -1287,6 +1287,7 @@ public class OpenAPIAPPController {
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(objectName);
             fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(materialDTO.getFileType());
             fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
