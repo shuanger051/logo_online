@@ -102,7 +102,7 @@ export default {
           });
         }, 1000);
       } catch (e) {
-
+        console.log(e)
          Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();

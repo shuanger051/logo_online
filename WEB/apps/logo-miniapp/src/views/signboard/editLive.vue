@@ -38,6 +38,7 @@ import {
   appGetLogoInfoByShopsIdOSS,
   appUploadContentAttachmentBase64OSS,
   appGetShopsInfoByIdAPI,
+  appGetShopsInfoByIdAPIOSS
 } from "core/api";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
@@ -73,7 +74,7 @@ export default {
         this.currentShopSign = src
       })
     });
-    appGetShopsInfoByIdAPI({
+    appGetShopsInfoByIdAPIOSS({
       shopsId: this.$route.query.shopId,
     }).then(({ data }) => {
       const list = data.list.find((item) => item.attachmentType == "1");

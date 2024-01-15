@@ -58,6 +58,10 @@ export const appSaveLogoInfoBase64API = wrapRequest(
   "/logo/app/saveLogoInfoBase64API",
   true
 );
+export const appSaveLogoInfoBase64APIOSS = wrapRequest(
+  "/logo/app/saveLogoInfoBase64APIOSS",
+  true
+);
 export const appUploadContentAttachmentBase64OSS = wrapRequest(
   "/logo/app/uploadShopsContentAttachmentBase64APIOSS",
   true
@@ -98,6 +102,10 @@ export const appUpdateShopsFilingsStatusAPI = wrapRequest(
 );
 export const appGetShopsInfoByIdAPI = wrapRequest(
   "/logo/app/getShopsInfoByIdAPI",
+  false
+);
+export const appGetShopsInfoByIdAPIOSS = wrapRequest(
+  "/logo/app/getShopsInfoByIdAPIOSS",
   false
 );
 
