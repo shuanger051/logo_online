@@ -77,7 +77,6 @@
             <properties>
                 <profile>dev</profile>
             </properties>
-
         </profile>
         <profile>
             <id>test</id>

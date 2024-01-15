@@ -21,6 +21,8 @@ public class OSSHttpToolsUtils {
 
     public static final String OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
     public static final String BUCKET_NAME = "img-save-dir";
+    public static final String OSS_ACCESS_KEY_ID = "LTAI5tQ2nydShTmWfGqmP384";
+    public static final String OSS_ACCESS_KEY_SECRET = "h6qPG28Jy05cAqGKGUiUUAB0xQp9kI";
 
     public static void main(String[] args) throws Exception {
 

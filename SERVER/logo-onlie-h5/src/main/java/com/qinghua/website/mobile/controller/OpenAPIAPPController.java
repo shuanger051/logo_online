@@ -396,6 +396,61 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * 根据用户名称查询用户信息(OSS)
+     * @param customerName
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "根据用户名称查询用户信息(OSS)")
+    @RequestMapping("/getCustomerInfoByUserNameAPIOSS")
+    public ResponseResult<Object> getCustomerInfoByUserNameAPIOSS(@RequestParam("customerName")String customerName){
+
+        Preconditions.checkNotNull(customerName,"参数：customerName 不能为空");
+        CustomerInfoDTO customer = customerInfoService.getCustomerByCustomerName(customerName);
+
+        if(null != customer){
+
+            CustomerInfoVO customerInfoVO = BeanToolsUtil.copyOrReturnNull(customer,CustomerInfoVO.class);
+
+            //根据customer信息查询商户个人信息，通过身份证号关联
+            MerchantInfoDTO merchant = merchantInfoService.getMerchantInfoByIdCard(customer.getIdCard());
+
+            MerchantInfoVO merchantInfoVO = BeanToolsUtil.copyOrReturnNull(merchant,MerchantInfoVO.class);
+            if(null != merchantInfoVO && null != merchantInfoVO.getPhone()){
+                merchantInfoVO.setPhone(Sm4Utils.decrypt(merchantInfoVO.getPhone()));
+            }
+            if(null != merchantInfoVO && null != merchantInfoVO.getIdCard()){
+                merchantInfoVO.setIdCard(Sm4Utils.decrypt(merchantInfoVO.getIdCard()));
+            }
+
+            //根据商户信息查询到店铺信息，通过所属关系关联
+            List<ShopsInfoDTO> shopsList = shopsInfoService.getShopsInfoByMerchantId(merchant == null ? 0L :merchant.getId());
+            List<ShopsInfoVO> shopsInfoVOList = BeanToolsUtil.copyList(shopsList,ShopsInfoVO.class);
+
+            if(null != shopsInfoVOList && 0 != shopsInfoVOList.size()){
+                shopsInfoVOList.forEach(item -> {
+                    //国密数据解密
+                    if(null != item && null != item.getHandledByPhone()){
+                        item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+                    }
+                    if(null != item && null != item.getHandledByIdCard()){
+                        item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+                    }
+                });
+            }
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("customerInfo",customerInfoVO);
+            map.put("merchant",merchantInfoVO);
+            map.put("shopsList",shopsInfoVOList);
+
+            return ResponseResult.success(map);
+
+        }else{
+            throw new BizException("没有该客户信息数据", SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+    }
+
+    /**
      * 登记商户信息
      * @param merchantInfoSaveIO
      * @return
@@ -580,6 +635,38 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 根据商铺Id获取商铺详情信API(OSS)
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "APP 根据商铺Id获取商铺详情信API(OSS)")
+    @RequestMapping(value = "/getShopsInfoByIdAPIOSS",method = RequestMethod.GET)
+    public ResponseResult<Object> getShopsInfoByIdAPIOSS(@RequestParam("shopsId")Long shopsId){
+        Preconditions.checkNotNull(shopsId,"参数：shopsId,不能为空");
+        ShopsInfoDTO res = shopsInfoService.getShopsInfoByIdAPI(shopsId);
+
+        if(null != res){
+            ShopsInfoAPIVO vo = BeanToolsUtil.copyOrReturnNull(res,ShopsInfoAPIVO.class);
+            if(null != vo && null != vo.getHandledByPhone()){
+                vo.setHandledByPhone(Sm4Utils.decrypt(vo.getHandledByPhone()));
+            }
+            if(null != vo && null != vo.getHandledByIdCard()){
+                vo.setHandledByIdCard(Sm4Utils.decrypt(vo.getHandledByIdCard()));
+            }
+
+            List<ShopsAttachmentVO> voList = new ArrayList<>();
+            if(null != res.getList() && res.getList().size() > 0){
+                voList = BeanToolsUtil.copyList(res.getList(),ShopsAttachmentVO.class);
+                vo.setList(voList);
+            }
+
+            return ResponseResult.success(vo);
+        }else{
+            throw new BizException("未查询到相关店铺信息!",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
+    }
+
+    /**
      * 分页查询模板信息列表API
      * @return
      */
@@ -752,7 +839,6 @@ public class OpenAPIAPPController {
             }
         }
     }
-
 
     /**
      * APP上传店招信息(oss)无商铺
