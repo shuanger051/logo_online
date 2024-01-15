@@ -4,13 +4,13 @@ import { axiosGet, axiosPost } from "../utils/request";
  * == 获取商铺信息 ==
  */
 export const getCustomerInfoByUserNameAPI = axiosGet(
-  "logo/app/getCustomerInfoByUserNameAPI"
+  "logo/app/getCustomerInfoByUserNameAPIOSS"
 );
 
 /**
  * == 获取商铺详情 ==
  */
-export const getShopsInfoByIdAPI = axiosGet("logo/app/getShopsInfoByIdAPI");
+export const getShopsInfoByIdAPI = axiosGet("logo/app/getShopsInfoByIdAPIOSS");
 
 /**
  * == 登记商户信息 ==
@@ -36,7 +36,7 @@ export const updateShopsInfoAPI = axiosPost("logo/app/updateShopsInfoAPI");
  * == 上传商铺附件 ==
  */
 export const uploadShopsAttachmentAPI = axiosPost(
-  "logo/app/uploadMaterialAttachmentAPIOSS",
+  "logo/app/uploadShopsAttachmentAPIOSS",
   {
     headers: {
       "content-Type": "multipart/form-data",
@@ -48,7 +48,7 @@ export const uploadShopsAttachmentAPI = axiosPost(
  * == 获取店招图 ==
  */
 export const getLogoInfoByShopsIdAPI = axiosGet(
-  "logo/app/getLogoInfoByShopsIdAPI"
+  "logo/app/getLogoInfoByShopsIdAPIOSS"
 );
 
 /**
