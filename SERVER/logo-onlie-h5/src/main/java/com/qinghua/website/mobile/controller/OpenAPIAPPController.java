@@ -1296,6 +1296,63 @@ public class OpenAPIAPPController {
     }
 
     /**
+     * APP 上传素材附件Base64 API(OSS)
+     * @param base64
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 上传素材附件Base64 API(OSS)")
+    @RequestMapping("/uploadMaterialAttachmentBase64APIOSS")
+    public ResponseResult<Object> uploadMaterialAttachmentBase64APIOSS(@RequestPart("base64")  String base64, HttpServletRequest request) {
+
+        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/material/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            //更新素材
+            MaterialDTO materialDTO = new MaterialDTO();
+            materialDTO.setName(fileName);
+            materialDTO.setFileName(newFileName);
+            if(fileType.equals("JPEG") || fileType.equals("JPG") || fileType.equals("SVG") || fileType.equals("PNG")){
+                materialDTO.setFileType("1");
+            }else{
+                materialDTO.setFileType("2");
+            }
+            materialDTO.setFilePath(objectName);
+            materialDTO.setUrlPath(resUrl);
+
+            materialService.saveMaterial(materialDTO);
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(materialDTO.getFileType());
+            fileVO.setUrlPath(resUrl);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
      * APP 上传商铺附件
      * @param multipartFile
      * @param request
