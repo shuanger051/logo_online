@@ -56,14 +56,13 @@
 <script>
 import store from "@/store";
 import {
-  appGetLogoInfoByShopsId,
+  appGetLogoInfoByShopsIdOSS,
   appUpdateShopsFilingsStatusAPI,
-  appGetShopsInfoByIdAPI,
+  appGetShopsInfoByIdAPIOSS,
 } from "core/api";
 import { ImagePreview } from "vant";
 import { mapDictObject } from "@/store/helpers";
 import { mapState } from "vuex";
-import { resolveImgUrl } from "core/support/imgUrl";
 import { Notify } from "vant";
 import agreementPopup from "./agreementPopup.vue";
 
@@ -100,7 +99,7 @@ export default {
   methods: {
     // 查询商铺信息
     queryShopList() {
-      appGetShopsInfoByIdAPI({
+      appGetShopsInfoByIdAPIOSS({
         shopsId: this.$route.query.shopId,
       })
         .then(({ data }) => {
@@ -109,22 +108,24 @@ export default {
           data.list.forEach((el) => {
             if (el.attachmentType == "1" || el.attachmentType == "4") {
               items.push({
-                url: resolveImgUrl(el.compressUrlPath || el.urlPath, true),
+                url: el.urlPath,
                 id: el.attachmentType,
               });
             }
           });
           this.imageList.push(...items);
           this.shopData = data;
-          return appGetLogoInfoByShopsId({
+          return appGetLogoInfoByShopsIdOSS({
             shopsId: this.$route.query.shopId,
           });
         })
         .then(({ data }) => {
+          console.log(data)
           this.imageList.push({
-            url: resolveImgUrl(data.compressUrlPath || data.urlPath, true),
+            url: data.urlPath,
             id: "2",
           });
+          console.log(this.imageList)
           this.imageList.sort((a, b) => (a.id > b.id ? 1 : -1));
         });
     },

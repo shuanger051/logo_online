@@ -524,7 +524,7 @@ export default {
         () =>
           shopService.updateShopsFilingsStatusAPI({
             id: payload.id,
-            isFilings: "1",
+            isFilings: "0",
             checkInfo: "",
           }),
       ])()
