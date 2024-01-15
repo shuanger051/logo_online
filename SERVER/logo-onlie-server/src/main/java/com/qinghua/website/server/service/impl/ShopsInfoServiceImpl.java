@@ -116,9 +116,10 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
                 res.setShopsId(bean.getId());
                 paramList.add(res);
             }
+            attachmentMapper.saveShopsAttachmentByList(paramList);
         }
 
-        attachmentMapper.saveShopsAttachmentByList(paramList);
+
     }
 
     @Override
