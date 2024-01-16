@@ -24,9 +24,26 @@ export function mapDictArray(key) {
 }
 
 /**
- * == create select options ==
+ * == 字典项 select ==
  * @param {*} key 
  * @returns 
+ */
+export function mapDictSelect(key) {
+  return (state) => {
+    const list = _.get(state, ["cache", "dictionary", `dict__${key}`], []);
+    // select 使用
+    return list.map((item) => {
+      item.label = item.itemValue;
+      item.value = item.itemKey;
+      return item;
+    });
+  };
+}
+
+/**
+ * == create select options ==
+ * @param {*} key
+ * @returns
  */
 export function mapDictOptions(key) {
   return (state) =>

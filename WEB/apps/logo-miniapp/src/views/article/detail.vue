@@ -12,14 +12,14 @@
       <!-- 分割线 -->
       <van-divider />
       <!-- 附件列表 -->
-      <!-- <dl class="attachment" v-if="attachment.length">
+      <dl class="attachment" v-if="attachment.length">
         <dt>附件下载</dt>
         <dd v-for="item in attachment" :key="item.id">
-          <a :href="item.downloadUrl">
+          <a :href="item.urlPath">
             {{ item.filename }}
           </a>
         </dd>
-      </dl> -->
+      </dl>
     </template>
   </div>
 </template>
@@ -43,15 +43,16 @@ export default {
     // 附件
     attachment() {
       const { list = [] } = this.detail;
-      const downloadUrl =
-        window.__baseUrl +
-        "logo/app/downloadContentAttachment" +
-        `?token=${this.token}`;
-      return list.map((item) => {
-        // 拼装下载地址
-        item.downloadUrl = `${downloadUrl}&attachmentName=${item.attachmentName}&`;
-        return item;
-      });
+      return list;
+      // const downloadUrl =
+      //   window.__baseUrl +
+      //   "logo/app/downloadContentAttachment" +
+      //   `?token=${this.token}`;
+      // return list.map((item) => {
+      // 拼装下载地址
+      // item.downloadUrl = `${downloadUrl}&attachmentName=${item.attachmentName}&`;
+      //   return item;
+      // });
     },
     // 时间
     updateTime() {

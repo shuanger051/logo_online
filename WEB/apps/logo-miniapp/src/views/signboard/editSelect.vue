@@ -30,7 +30,7 @@
 import store from "core/mobile/store/index";
 import { mapActions } from "vuex";
 import { Toast } from "vant";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentOSS } from "core/api/";
 
 const sleep = async (time) => {
   return new Promise((r) => {
@@ -54,7 +54,7 @@ export default {
       });
       const form = new FormData();
       form.append("file", file.file);
-      const info = await appUploadMaterialAttachment(form);
+      const info = await appUploadMaterialAttachmentOSS(form);
       this.setPic({
         type: "signboardPic",
         value: info.data.urlPath,

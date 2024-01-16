@@ -38,6 +38,8 @@ public class LogoInfoDTO extends BaseDTO {
 
 	private String compressFlag;
 
+	private String urlPath;
+
 
 	@Override
 	public String toString() {

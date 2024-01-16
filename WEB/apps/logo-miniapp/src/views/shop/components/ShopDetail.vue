@@ -98,7 +98,7 @@ export default {
     shopImg() {
       const { list = [] } = this.detail;
       const item = list.find((item) => item.attachmentType == "4");
-      if (item) return resolveImgUrl(item.compressUrlPath || item.urlPath, true);
+      if (item) return item.urlPath;
       return null;
     },
   },

@@ -11,12 +11,12 @@
       }"
     >
       <a-list-item slot="renderItem" slot-scope="item">
-        <img
+        <async-image
           v-if="item.url"
-          @click="go(item.id)"
+          @click.native="go(item.id)"
           width="100%"
           height="100px"
-          fit="contain"
+          :style="{ objectFit: 'contain' }"
           :src="item.url"
         />
       </a-list-item>

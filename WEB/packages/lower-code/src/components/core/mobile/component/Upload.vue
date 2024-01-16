@@ -34,7 +34,7 @@
 </template>
 <script>
 import { resolveImgUrl} from "core/support/imgUrl";
-import { appGetMaterial, appUploadMaterialAttachment } from "core/api/";
+import { appGetMaterialListByPageApiOSS, appUploadMaterialAttachmentOSS } from "core/api/";
 import { Toast } from "vant";
 
 export default {
@@ -75,7 +75,7 @@ export default {
       });
       const form = new FormData()
       form.append('file', file.file)
-      const info = await appUploadMaterialAttachment(form);
+      const info = await appUploadMaterialAttachmentOSS(form);
       const url = info.data.urlPath
       this.$emit('input', url)
       toast.clear();
@@ -84,7 +84,7 @@ export default {
       Toast("文件大小不能超过 2M");
     },
     async getList() {
-      const res = await appGetMaterial({
+      const res = await appGetMaterialListByPageApiOSS({
         pageNum: this.page.current,
       });
       if (!res) {

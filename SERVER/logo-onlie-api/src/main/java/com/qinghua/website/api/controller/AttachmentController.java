@@ -94,7 +94,6 @@ public class AttachmentController {
             if(null != contentId){
                 ContentAttachmentDTO attachmentDTO = new ContentAttachmentDTO();
                 attachmentDTO.setContentId(contentId);
-                attachmentDTO.setContentId(1L);
                 attachmentDTO.setFilename(fileName);
                 attachmentDTO.setAttachmentName(newFileName);
                 attachmentDTO.setAttachmentPath(frontPath);
@@ -106,6 +105,58 @@ public class AttachmentController {
             fileVO.setAttachmentPath(frontPath);
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath + "content/" + relativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if (exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_400.getCode());
+            }else{
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+    }
+
+    @LogAnnotation(logType = "upload",logDesc = "上传OSS文章附件")
+    @RequestMapping(value = "/uploadContentAttachmentOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadContentAttachmentOSS")
+    public ResponseResult<Object> uploadContentAttachmentOSS(@RequestPart("file") MultipartFile multipartFile, Long contentId, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+
+            if(null != fileType && !fileType.toLowerCase().equals("pdf") && !fileType.toLowerCase().equals("docx") && !fileType.toLowerCase().equals("txt")){
+                throw new BizException("文章附件仅支持.PDF/.DOCX/.TXT这些格式文件",SysConstant.SYSTEM_ERROR_400.getCode());
+            }
+
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/content/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            if(null != contentId){
+                ContentAttachmentDTO attachmentDTO = new ContentAttachmentDTO();
+                attachmentDTO.setContentId(contentId);
+                attachmentDTO.setFilename(fileName);
+                attachmentDTO.setAttachmentName(newFileName);
+                attachmentDTO.setAttachmentPath(objectName);
+                attachmentService.saveContentAttachment(attachmentDTO);
+            }
+
+            FileOSSVO fileVO = new FileOSSVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             if (exception instanceof BizException){
@@ -173,6 +224,62 @@ public class AttachmentController {
             fileVO.setAttachmentType(attachmentType);
             fileVO.setUrlPath(urlPath+ "shops/" + relativeFileName);
             fileVO.setCompressUrlPath(urlPath+ "shops/" + compressRelativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 上传OSS商铺附件
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "上传OSS商铺附件")
+    @RequestMapping(value = "/uploadShopsAttachmentOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadShopsAttachmentOSS")
+    public ResponseResult<Object> uploadShopsAttachmentOSS(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,String attachmentType, HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+            String newCompressFileName = fileId + "_COMPRESS." + fileType;
+
+            String fileDir = "upload/shops/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+            if(null != shopsId){
+                //更新数据库关系
+                ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
+                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setFileName(fileName);
+                shopsAttachmentDTO.setAttachmentName(newFileName);
+                shopsAttachmentDTO.setAttachmentPath(objectName);
+                shopsAttachmentDTO.setAttachmentType(attachmentType);
+                shopsAttachmentDTO.setUrlPath(resUrl);
+
+                List<ShopsAttachmentDTO> list = new ArrayList<>();
+                list.add(shopsAttachmentDTO);
+                shopsInfoService.saveShopsAttachments(list);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(attachmentType);
+            fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
@@ -334,6 +441,55 @@ public class AttachmentController {
             fileVO.setAttachmentName(newFileName);
             fileVO.setUrlPath(urlPath+"logo/"+relativeFileName);
             fileVO.setCompressUrlPath(urlPath+ "logo/" + compressRelativeFileName);
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+        }
+    }
+
+    /**
+     * 上传OSS店招附件(OSS)
+     * @param multipartFile
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "上传OSS店招附件")
+    @RequestMapping(value = "/uploadLogoAttachmentOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/attachment/uploadLogoAttachmentOSS")
+    public ResponseResult<Object> uploadLogoAttachmentOSS(@RequestPart("file")  MultipartFile multipartFile,Long shopsId,Long merchantId ,HttpServletRequest request) {
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/logo/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+            //上传到OSS
+            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+
+
+            if(null != shopsId && null != merchantId){
+                LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
+                logoInfoDTO.setShopsId(shopsId);
+                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setLogoName(fileName);
+                logoInfoDTO.setLogoFileName(newFileName);
+                logoInfoDTO.setLogoFilePath(objectName);
+                logoInfoService.saveLogoInfo(logoInfoDTO);
+            }
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setUrlPath(resUrl);
             return ResponseResult.success(fileVO);
         } catch (Exception exception) {
             throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);

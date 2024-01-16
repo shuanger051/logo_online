@@ -50,22 +50,34 @@ export const appQueryTemplate = wrapRequest(
   "logo/app/queryTemplateByIdAPI",
   false
 );
-export const appSaveLogoInfoAPI = wrapRequest(
-  "/logo/app/saveLogoInfoAPI",
+export const appSaveLogoInfoAPIOSS = wrapRequest(
+  "/logo/app/saveLogoInfoAPIOSS",
   true
 );
 export const appSaveLogoInfoBase64API = wrapRequest(
   "/logo/app/saveLogoInfoBase64API",
   true
 );
-export const appUploadContentAttachmentBase64 = wrapRequest(
-  "/logo/app/uploadShopsContentAttachmentBase64API",
+export const appSaveLogoInfoBase64APIOSS = wrapRequest(
+  "/logo/app/saveLogoInfoBase64APIOSS",
   true
+);
+export const appUploadContentAttachmentBase64OSS = wrapRequest(
+  "/logo/app/uploadShopsContentAttachmentBase64APIOSS",
+  true
+);
+export const appGetMaterialListByPageApiOSS = wrapRequest(
+  "/logo/app/getMaterialListByPageAPIOSS",
+  false
 );
 
 //APP 根据商铺ID获取店招信息API
 export const appGetLogoInfoByShopsId = wrapRequest(
   "/logo/app/getLogoInfoByShopsIdAPI",
+  false
+);
+export const appGetLogoInfoByShopsIdOSS = wrapRequest(
+  "/logo/app/getLogoInfoByShopsIdAPIOSS",
   false
 );
 export const appGetItemsByDictKeyInDB = wrapRequest(
@@ -92,8 +104,17 @@ export const appGetShopsInfoByIdAPI = wrapRequest(
   "/logo/app/getShopsInfoByIdAPI",
   false
 );
+export const appGetShopsInfoByIdAPIOSS = wrapRequest(
+  "/logo/app/getShopsInfoByIdAPIOSS",
+  false
+);
 
-export const appUploadMaterialAttachment = wrapRequest(
-  "/logo/app/uploadMaterialAttachmentAPI",
+export const appUploadMaterialAttachmentOSS = wrapRequest(
+  "/logo/app/uploadMaterialAttachmentAPIOSS",
+  true
+);
+
+export const appUploadMaterialAttachmentBase64APIOSS = wrapRequest(
+  "/logo/app/uploadMaterialAttachmentBase64APIOSS",
   true
 );

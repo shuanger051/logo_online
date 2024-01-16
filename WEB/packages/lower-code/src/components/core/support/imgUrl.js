@@ -1,18 +1,16 @@
 // import appStore from '@/store'
-import {appGetMaterial, getMaterialListByPageOSS} from 'core/api'
-import { convertImageToBase64} from "@editor/utils/canvas-helper.js";
+import {
+  appGetMaterialListByPageApiOSS,
+  getMaterialListByPageOSS,
+} from "core/api";
+import { convertImageToBase64 } from "@editor/utils/canvas-helper.js";
 
 export const resolveImgUrl = (url, flag = false) => {
-
   const reg = /^(http|\/\/:|\/static)/;
   if (reg.test(url)) {
     return url;
   }
-  const str = [window.__baseUrl, "logo", url].join("");
-  if (flag) {
-    return addQuery(str);
-  }
-  return str;
+  return url;
 };
 
 export const addQuery = (url) => {
@@ -29,7 +27,7 @@ export const addQuery = (url) => {
 const getRealUrl = async (url) => {
   const lists = url.split('/')
   const name = lists[lists.length-1]
-  const api = window.$editorConfig.mode !== 'admin' ? appGetMaterial: getMaterialListByPageOSS
+  const api = window.$editorConfig.mode !== 'admin' ? appGetMaterialListByPageApiOSS: getMaterialListByPageOSS
   const data = await api({
     fileName: name,
     fileType: 1
@@ -42,9 +40,9 @@ const getRealUrl = async (url) => {
 export const resolveImgUrlBase64 = async (url, flag=true, callback=() => {})=> {
   const reg = /img-save-dir\.oss|\/static/;
   let rurl = url
-  // if (!reg.test(url)) {
-  //   rurl = await getRealUrl(url)
-  // }
+  if (!reg.test(url)) {
+    rurl = await getRealUrl(url)
+  }
   rurl = resolveImgUrl(rurl, true)
   if (!flag) {
     return rurl

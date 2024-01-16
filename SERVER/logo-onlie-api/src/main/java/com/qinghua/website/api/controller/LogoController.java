@@ -43,6 +43,24 @@ public class LogoController {
     }
 
     /**
+     * 分页查询店招信息(OSS)
+     * @param logoQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "分页查询店招信息(OSS)")
+    @RequestMapping("/getLogoListByPageOSS")
+    @RequiresPermissions("/logo/getLogoListByPageOSS")
+    public ResponseResult<Object> getLogoListByPageOSS(@Validated LogoQueryIO logoQueryIO){
+        LogoInfoDTO queryDTO = BeanToolsUtil.copyOrReturnNull(logoQueryIO,LogoInfoDTO.class);
+        PageInfo<LogoInfoDTO> pageList =  logoInfoService.getLogoInfoListByPage(queryDTO);
+        List<LogoInfoVO> logoInfoVOList =  BeanToolsUtil.copyAsList(pageList.getList(),LogoInfoVO.class);
+        PageListVO<LogoInfoVO> resp = new PageListVO<>();
+        resp.setList(logoInfoVOList);
+        resp.setTotal(pageList.getTotal());
+        return ResponseResult.success(resp);
+    }
+
+    /**
      * 根据ID查询店招数据
      * @param id
      * @return

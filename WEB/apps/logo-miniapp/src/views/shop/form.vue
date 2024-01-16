@@ -245,7 +245,6 @@
 <script>
 import { mapState } from "vuex";
 import { shopService } from "@/apis";
-import { resolveImgUrl } from "core/support/imgUrl";
 import { mapDictOptions } from "@/store/helpers";
 import { runPromiseInSequence } from "@/utils/util";
 import * as validator from "@/utils/validator";
@@ -525,7 +524,7 @@ export default {
         () =>
           shopService.updateShopsFilingsStatusAPI({
             id: payload.id,
-            isFilings: "1",
+            isFilings: "0",
             checkInfo: "",
           }),
       ])()
@@ -595,7 +594,7 @@ export default {
             // 存在key则保存
             if (key) {
               item.isImage = true;
-              item.url = resolveImgUrl(item.urlPath, true);
+              item.url = item.urlPath;
               if (!dtm[key]) dtm[key] = [item];
               else dtm[key].push(item);
             }
@@ -625,6 +624,7 @@ export default {
           Object.assign(file, res.data, {
             status: "done",
             shopsId: this.formData.id,
+            attachmentType: type
           });
         })
         // 上传失败

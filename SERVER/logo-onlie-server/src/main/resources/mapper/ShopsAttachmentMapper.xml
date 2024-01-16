@@ -11,6 +11,7 @@
         <result column="file_name" property="fileName" jdbcType="VARCHAR"/>
         <result column="attachment_type" property="attachmentType" jdbcType="VARCHAR"/>
         <result column="compress_flag" property="compressFlag" jdbcType="VARCHAR"/>
+        <result column="url_path" property="urlPath" jdbcType="VARCHAR"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -24,6 +25,7 @@
         file_name,
         attachment_type,
         compress_flag,
+        url_path,
         create_time,
         update_time
     </sql>
@@ -71,6 +73,7 @@
             <if test="fileName !=null and fileName !=''">file_name = #{fileName},</if>
             <if test="attachmentType !=null and attachmentType !=''">attachment_type = #{attachmentType},</if>
             <if test="attachmentType !=null and attachmentType !=''">compress_flag = '1',</if>
+            <if test="urlPath !=null and urlPath !=''">url_path = #{urlPath},</if>
             update_time = NOW()
         </set>
         WHERE id = #{id}
@@ -85,7 +88,8 @@
             <if test="attachmentName !=null and attachmentName !=''">attachment_name,</if>
             <if test="fileName !=null and fileName !=''">file_name,</if>
             <if test="attachmentType !=null and attachmentType !=''">attachment_type,</if>
-            <if test="attachmentType !=null and attachmentType !=''">compress_flag,</if>
+            <if test="compressFlag !=null and compressFlag !=''">compress_flag,</if>
+            <if test="urlPath !=null and urlPath !=''">url_path,</if>
             create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -94,7 +98,8 @@
             <if test="attachmentName !=null and attachmentName !=''">#{attachmentName},</if>
             <if test="fileName !=null and fileName !=''">#{fileName},</if>
             <if test="attachmentType !=null and attachmentType !=''">#{attachmentType},</if>
-            <if test="attachmentType !=null and attachmentType !=''">'1',</if>
+            <if test="compressFlag !=null and compressFlag !=''">#{compressFlag},</if>
+            <if test="urlPath !=null and urlPath !=''">#{urlPath},</if>
             NOW()
         </trim>
     </insert>
@@ -112,6 +117,7 @@
             attachment_name,
             file_name,
             attachment_type,
+            url_path,
             compress_flag,
             create_time
         ) values
@@ -122,6 +128,7 @@
                 #{item.attachmentName},
                 #{item.fileName},
                 #{item.attachmentType},
+                #{item.urlPath},
                 '1',
                 NOW()
             )
@@ -135,6 +142,7 @@
         attachment_name,
         file_name,
         attachment_type,
+        url_path,
         compress_flag,
         create_time,
         update_time
@@ -146,6 +154,7 @@
             #{item.attachmentName},
             #{item.fileName},
             #{item.attachmentType},
+            #{item.urlPath},
             '1',
             NOW(),
             NOW()

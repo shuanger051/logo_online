@@ -53,11 +53,19 @@ public interface ShopsInfoService {
          */
         void deleteShopsInfoById(Long id);
 
+        void deleteShopsInfoByIdOSS(Long id);
+
         /**
          * 根据附件名称删除附件
          * @param attachmentName
          */
         void deleteAttachmentByName(String attachmentName);
+
+        /**
+         * 根据附件名称删除附件
+         * @param attachmentName
+         */
+        void deleteAttachmentByNameOSS(String attachmentName);
 
         /**
          * 根据商户ID查询店铺信息

@@ -25,6 +25,8 @@ public class ContentAttachmentSaveIO {
      */
     private String filename;
 
+    private String urlPath;
+
     @Override
     public String toString() {
         return "ContentAttachmentSaveIO{" +

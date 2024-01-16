@@ -104,6 +104,7 @@ public class ContentController {
                 contentAttachment.setAttachmentName(saveIO.getAttachmentName());
                 contentAttachment.setFilename(saveIO.getFilename());
                 contentAttachment.setPriority(saveIO.getPriority());
+                contentAttachment.setUrlPath(saveIO.getUrlPath());
                 list.add(contentAttachment);
             }
         }
@@ -150,6 +151,7 @@ public class ContentController {
                 contentAttachment.setFilename(saveIO.getFilename());
                 contentAttachment.setPriority(saveIO.getPriority());
                 contentAttachment.setContentId(bean.getId());
+                contentAttachment.setUrlPath(saveIO.getUrlPath());
                 list.add(contentAttachment);
             }
         }
@@ -173,14 +175,14 @@ public class ContentController {
 
     /**
      * 根据附件名称删除附件信息
-     * @param attachmentName
+     * @param deleteAttachmentIO
      * @return
      */
     @LogAnnotation(logType = "delete",logDesc = "根据附件名称删除附件信息")
     @RequestMapping(value="/deleteAttachmentByName", method=RequestMethod.POST)
     @RequiresPermissions("/content/deleteAttachmentByName")
-    public ResponseResult<Object> deleteAttachmentByName(@RequestParam("attachmentName")String attachmentName) {
-        attachmentService.deleteAttachmentByName(attachmentName);
+    public ResponseResult<Object> deleteAttachmentByName(@Validated @RequestBody DeleteAttachmentIO deleteAttachmentIO) {
+        attachmentService.deleteAttachmentByName(deleteAttachmentIO.getAttachmentName());
         return ResponseResult.success();
     }
 

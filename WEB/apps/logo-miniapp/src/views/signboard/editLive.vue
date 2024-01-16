@@ -44,7 +44,7 @@
 </template>
 <script>
 import store from "core/mobile/store/index";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentBase64APIOSS,appUploadMaterialAttachmentOSS } from "core/api/";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { mapActions } from "vuex";
@@ -109,7 +109,7 @@ export default {
       });
       const form = new FormData();
       form.append("file", file.file);
-      const info = await appUploadMaterialAttachment(form);
+      const info = await appUploadMaterialAttachmentOSS(form);
       this.setPic({
         type: "livePic",
         value: info.data.urlPath,

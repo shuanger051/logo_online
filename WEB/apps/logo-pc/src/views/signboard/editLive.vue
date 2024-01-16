@@ -60,7 +60,7 @@
 </template>
 <script>
 import store from "core/pc/store";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
@@ -115,7 +115,7 @@ export default {
     async upload(evt) {
       const form = new FormData();
       form.append("file", evt.file);
-      const info = await appUploadMaterialAttachment(form);
+      const info = await appUploadMaterialAttachmentOSS(form);
       this.setPic({
         type: "livePic",
         value: info.data.urlPath,
@@ -153,11 +153,11 @@ export default {
           value: info.data.urlPath,
         });
         this.$message.success("创建成功", 1);
-        // later(() => {
-        //   this.$router.push({
-        //     path: "/signboard/editConfirm",
-        //   });
-        // }, 2000);
+        later(() => {
+          this.$router.push({
+            path: "/signboard/editConfirm",
+          });
+        }, 2000);
         console.log(info.data.urlPath, 888);
       } catch (e) {
         console.log(e);

@@ -42,6 +42,8 @@ public class ContentAttachmentDTO {
 	private Date createTime;
 	private Date updateTime;
 
+	private String urlPath;
+
 	@Override
 	public String toString() {
 	return "ContentAttachment{" +

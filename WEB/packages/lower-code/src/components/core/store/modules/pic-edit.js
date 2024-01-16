@@ -1,16 +1,14 @@
 import { takeScreenshot} from "@editor/utils/canvas-helper.js";
-import {appUploadMaterialAttachment} from "core/api"
+import {appUploadMaterialAttachmentBase64APIOSS} from "core/api"
 
 export const actions = {
   async mCreateCover({ commit, state, dispatch,rootState }, {el, file}) {
 
-      let fileData = file
-      if (!fileData) {
-        fileData = await takeScreenshot({selector: el, type: 'file'});
-      } 
-      const form = new FormData()
-      form.append('file', fileData)
-      return await appUploadMaterialAttachment(form)
+      const base64 = await takeScreenshot({selector: el, type: 'dataUrl'});
+
+      return await appUploadMaterialAttachmentBase64APIOSS({
+        base64
+      })
   },
   setCurrentWorkData({commit}, payload) {
     commit('setCurrentWorkData', payload)

@@ -23,7 +23,7 @@
     </div>
     <div class="tool-bar__right flex">
       <div class="flex" @click="createShopSign"><a-icon type="camera" /> <span>生成效果图</span></div>
-      <div class="flex"><a-icon type="download" /> <span>下载</span></div>
+      <!-- <div class="flex"><a-icon type="download" /> <span>下载</span></div> -->
     </div>
     <a-modal title="加字" v-model="textDialog" @ok="textAddOk">
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
@@ -44,7 +44,7 @@
 <script>
 import store from "core/mobile/store/index";
 import { resolveImgUrl } from "core/support/imgUrl";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentOSS } from "core/api/";
 
 import { mapActions, mapState } from "vuex";
 import {later, sleep} from '@editor/utils/tool'
@@ -73,7 +73,7 @@ export default {
       try {
         const form = new FormData();
         form.append("file", evt.file);
-        const info = await appUploadMaterialAttachment(form);
+        const info = await appUploadMaterialAttachmentOSS(form);
         this.addElement({
           name: "lbp-picture",
           shortcutProps: {

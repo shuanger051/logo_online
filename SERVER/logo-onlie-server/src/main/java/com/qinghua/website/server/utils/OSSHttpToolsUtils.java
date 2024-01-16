@@ -4,8 +4,6 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
 import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
-import com.aliyun.oss.model.DeleteObjectsRequest;
-import com.aliyun.oss.model.DeleteObjectsResult;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.qinghua.website.server.constant.SysConstant;
@@ -13,13 +11,9 @@ import com.qinghua.website.server.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -27,6 +21,7 @@ public class OSSHttpToolsUtils {
 
     public static final String OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
     public static final String BUCKET_NAME = "img-save-dir";
+    
 
     public static void main(String[] args) throws Exception {
 
@@ -121,8 +116,7 @@ public class OSSHttpToolsUtils {
     public static OSS initClient(){
         OSS ossClient = null;
         try {
-            EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
-            ossClient = new OSSClientBuilder().build(OSSHttpToolsUtils.OSS_ENDPOINT, credentialsProvider);
+            ossClient = new OSSClientBuilder().build(OSSHttpToolsUtils.OSS_ENDPOINT, OSS_ACCESS_KEY_ID,OSS_ACCESS_KEY_SECRET);
         }catch (Exception e){
             log.error("无法从环境变量里获取OSS配置参数!"+e.getMessage());
             throw new BizException("初始化OSS客户端失败!",SysConstant.SYSTEM_ERROR_500.getCode());

@@ -35,7 +35,7 @@
 </template>
 <script>
 import { sleep } from "@editor/utils/tool";
-import { appUploadMaterialAttachment } from "core/api/";
+import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { mapActions } from "vuex";
 import store from "core/pc/store";
 
@@ -59,7 +59,7 @@ export default {
       try {
         const form = new FormData();
         form.append("file", file);
-        const info = await appUploadMaterialAttachment(form);
+        const info = await appUploadMaterialAttachmentOSS(form);
         this.setPic({
           type: "signboardPic",
           value: info.data.urlPath,

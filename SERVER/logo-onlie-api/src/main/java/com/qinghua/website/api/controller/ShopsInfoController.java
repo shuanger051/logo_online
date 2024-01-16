@@ -83,6 +83,41 @@ public class ShopsInfoController {
     }
 
     /**
+     * 分页查询店铺信息列表(OSS)
+     * @param shopsInfoQueryIO
+     * @return
+     */
+    @LogAnnotation(logType = "query",logDesc = "分页查询店铺信息列表(OSS)")
+    @RequestMapping(value = "/getShopsInfoListByPageOSS",method = RequestMethod.GET)
+    @RequiresPermissions("/shops-info/getShopsInfoListByPageOSS")
+    public ResponseResult<Object> getShopsInfoListByPageOSS(@Validated ShopsInfoQueryIO shopsInfoQueryIO){
+        ShopsInfoDTO shopsInfoDTO =  BeanToolsUtil.copyOrReturnNull(shopsInfoQueryIO, ShopsInfoDTO.class);
+
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByPhone() != null){
+            shopsInfoDTO.setHandledByPhone(Sm4Utils.encrypt(shopsInfoDTO.getHandledByPhone()));
+        }
+        if(null != shopsInfoDTO && shopsInfoDTO.getHandledByIdCard() != null) {
+            shopsInfoDTO.setHandledByIdCard(Sm4Utils.encrypt(shopsInfoDTO.getHandledByIdCard()));
+        }
+
+        PageInfo<ShopsInfoDTO> pageList = shopsInfoService.getShopsInfoListByPage(shopsInfoDTO);
+
+        List<ShopsInfoVO>  shopsInfoVOS = BeanToolsUtil.copyList(pageList.getList(),ShopsInfoVO.class);
+        for (ShopsInfoVO item : shopsInfoVOS) {
+            if(null != item && null != item.getHandledByPhone()){
+                item.setHandledByPhone(Sm4Utils.decrypt(item.getHandledByPhone()));
+            }
+            if(null != item && null != item.getHandledByIdCard()){
+                item.setHandledByIdCard(Sm4Utils.decrypt(item.getHandledByIdCard()));
+            }
+        }
+        PageListVO<ShopsInfoVO> result = new PageListVO<>();
+        result.setList(shopsInfoVOS);
+        result.setTotal(pageList.getTotal());
+        return ResponseResult.success(result);
+    }
+
+    /**
      * 根据店铺ID查询店铺信息
      * @param id
      * @return
@@ -189,6 +224,19 @@ public class ShopsInfoController {
     }
 
     /**
+     * 删除店铺信息(OSS)
+     * @param req
+     * @return
+     */
+    @LogAnnotation(logType = "delete",logDesc = "删除店铺信息(OSS)")
+    @RequestMapping(value="/deleteShopsInfoByIdOSS", method= RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsInfoByIdOSS")
+    public ResponseResult<Object> deleteShopsInfoByIdOSS(@Valid @RequestBody IdIO req) {
+        shopsInfoService.deleteShopsInfoByIdOSS(req.getId());
+        return ResponseResult.success();
+    }
+
+    /**
      * 根据附件名称删除商铺附件
      * @param attachmentName
      * @param request
@@ -200,6 +248,21 @@ public class ShopsInfoController {
     public ResponseResult<Object> deleteShopsAttachment(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {
         Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
         shopsInfoService.deleteAttachmentByName(attachmentName);
+        return ResponseResult.success();
+    }
+
+    /**
+     * 根据附件名称删除OSS商铺附件
+     * @param attachmentName
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "static/upload",logDesc = "根据附件名称删除OSS商铺附件")
+    @RequestMapping(value = "/deleteShopsAttachmentOSS", method = RequestMethod.POST)
+    @RequiresPermissions("/shops-info/deleteShopsAttachmentOSS")
+    public ResponseResult<Object> deleteShopsAttachmentOSS(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {
+        Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
+        shopsInfoService.deleteAttachmentByNameOSS(attachmentName);
         return ResponseResult.success();
     }
 
