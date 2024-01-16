@@ -64,7 +64,7 @@ import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
-import {sleep} from '@editor/utils/tool'
+import {sleep, later} from '@editor/utils/tool'
 
 export default {
   store,
