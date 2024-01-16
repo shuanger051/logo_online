@@ -1,11 +1,11 @@
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
-
+import blank from './blank.png';
 export default {
   name: 'AsyncImage',
   props: ['src', 'click'],
   data() {
     return {
-      realSrc: ''
+      realSrc: blank
     }
   },
   watch: {
