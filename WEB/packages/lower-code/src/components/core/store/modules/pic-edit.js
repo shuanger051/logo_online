@@ -43,5 +43,8 @@ export const state = {
   // 实景图
   livePic: null,
   // 店招实景合成图
-  composePic: null
+  composePic: null,
+  // 店招图base64,
+  
+  
 }

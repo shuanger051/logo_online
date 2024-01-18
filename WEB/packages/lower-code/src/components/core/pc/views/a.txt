@@ -1,14 +1,4 @@
-<template>
-  <div class="edit-wrap">
-    <button @click="test">sdf</button>
-  </div>
-</template>
-<script>
-import * as XLSX from 'xlsx'
-export default {
-  methods: {
-    test() {
-      const raw_data = [
+ [
   {
     "id": {
       "bioguide": "W000178",
@@ -2372,52 +2362,3 @@ export default {
     ]
   }
 ];
-
-      /* filter for the Presidents */
-      const prez = raw_data.filter((row) =>
-        row.terms.some((term) => term.type === "prez")
-      );
-
-      /* sort by first presidential term */
-      prez.forEach(
-        (row) =>
-          (row.start = row.terms.find((term) => term.type === "prez").start)
-      );
-      prez.sort((l, r) => l.start.localeCompare(r.start));
-
-      /* flatten objects */
-      const rows = prez.map((row) => ({
-        name: row.name.first + " " + row.name.last,
-        birthday: row.bio.birthday,
-      }));
-
-      /* generate worksheet and workbook */
-      const worksheet = XLSX.utils.json_to_sheet(rows);
-      const worksheet1 = XLSX.utils.json_to_sheet([{
-        t:1111
-      }]);
-
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Dates");
-      XLSX.utils.book_append_sheet(workbook, worksheet1, "time");
-
-      /* fix headers */
-      XLSX.utils.sheet_add_aoa(worksheet, [["Name", "Birthday"]], {
-        origin: "A1",
-      });
-      XLSX.utils.sheet_add_aoa(worksheet1, [["ttt"]], {
-        origin: "A1",
-      });
-      /* calculate column width */
-      const max_width = rows.reduce((w, r) => Math.max(w, r.name.length), 10);
-      worksheet["!cols"] = [{ wch: max_width }];
-
-      /* create an XLSX file and try to save to Presidents.xlsx */
-      var a = XLSX.writeFile(workbook, "Presidents.xlsx", { type: "base64" });
-      // var a = XLSX.write(workbook, {bookType:'xlsx', type: "base64" });
-
-      console.log(a)
-    },
-  },
-};
-</script>
