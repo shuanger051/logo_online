@@ -60,8 +60,9 @@ export default {
       });
       try {
         const info=await this.mCreateCover({ el: "#content_edit" });
-        download(info.data,urlPath, +new Date() + '.png')
+        download(info.data.urlPath, +new Date() + '.png')
       } catch (e) {
+        console.log(e,99)
         Notify({ type: "danger", message: "下载失败" });
       }
       toast.clear();
@@ -73,7 +74,7 @@ export default {
         duration: 0,
       });
       try {
-        downLoadXLSL(this.$store.work)
+        downLoadXLSL(this.$store.state.editor.work)
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }

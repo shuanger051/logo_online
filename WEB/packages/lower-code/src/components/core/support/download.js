@@ -111,7 +111,8 @@ export const createXLSL = (work) => {
 
 
 export const downLoadXLSL = async (work) => {
-  const base64 = createXLSL(work);
+  let base64 = createXLSL(work);
+  base64 = 'data:application/vnd.ms-excel;base64,' + base64
   const info = await appUploadMaterialAttachmentBase64APIOSS({
     base64
   })
@@ -119,7 +120,7 @@ export const downLoadXLSL = async (work) => {
 }
 
 export const download = async (url, name) => {
-  if (!ZWJSBridge) {
+  if (typeof ZWJSBridge == 'undefined') {
     var a = document.createElement('a')
     a.href = url
     a.download = name
