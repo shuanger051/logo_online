@@ -18,11 +18,17 @@ html, body {
   background-color: #fff ;
   display: flex;
   align-items: center;
-  justify-content: center;
+  .recover {
+    margin-left: 20px;
+  }
+  //justify-content: center;
   > span{
     color: #fa7a36;
       position: absolute;
       right: 10px;
+  }
+  .downLoadXLSL {
+    right: 100px;
   }
 }
 

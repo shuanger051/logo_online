@@ -1,6 +1,7 @@
-import { generateAsync } from 'jszip'
 import {picCache} from './imgUrl'
-import jszip from 'jszip'
+import * as XLSX from 'xlsx'
+import {appUploadMaterialAttachmentBase64APIOSS} from "core/api"
+
 
 const parseText = {
   valid(element) {
@@ -94,6 +95,39 @@ export const parse = (work, obj = {}) => {
 }
 
 
-export const async generateZip = (work, obj) => {
-  
+export const createXLSL = (work) => {
+  const json = parse(work);
+  const workbook = XLSX.utils.book_new();
+
+  Object.entries(json).forEach(([key, item]) => {
+    const worksheet = XLSX.utils.json_to_sheet(item.value);
+    XLSX.utils.book_append_sheet(workbook, worksheet, item.name);
+    XLSX.utils.sheet_add_aoa(worksheet, [item.label], {
+      origin: "A1",
+    }); 
+  })
+  return XLSX.write(workbook, {bookType:'xlsx', type: "base64" })
+}
+
+
+export const downLoadXLSL = async (work) => {
+  const base64 = createXLSL(work);
+  const info = await appUploadMaterialAttachmentBase64APIOSS({
+    base64
+  })
+  return download(info.data,urlPath, '店招.xlsx')
+}
+
+export const download = async (url, name) => {
+  if (!ZWJSBridge) {
+    var a = document.createElement('a')
+    a.href = url
+    a.download = name
+    a.click()
+    return true
+  } else {
+    return ZWJSBridge.saveImage({
+      url: url
+    })
+  }
 }
