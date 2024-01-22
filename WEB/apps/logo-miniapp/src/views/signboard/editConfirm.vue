@@ -1,52 +1,21 @@
 <template>
   <div class="page-wrap">
     <van-form @submit="onSubmit">
-      <van-cell
-        title="行业类型"
-        :value="shopData.industryType | dict(DictIndustryType)"
-      ></van-cell>
-      <van-cell
-        title="营业年限"
-        :value="shopData.bizYears | dict(DictBizYears)"
-      ></van-cell>
-      <van-cell
-        title="店铺属性"
-        :value="shopData.shopsType | dict(DictShopsType)"
-      ></van-cell>
-      <van-cell title="商铺地址">
-        {{ shopData.address }}{{ shopData.addressDetail }}
-      </van-cell>
-      <van-cell title="备注" :value="shopData.remark"></van-cell>
-      <van-cell title="图片">
-        <template #label>
-          <van-image
-            v-for="item in imageList"
-            :key="`imag-${item.id}`"
-            @click="showImage(item)"
-            width="100"
-            height="100"
-            fit="contain"
-            style="margin-right: 5px"
-            :src="item.url"
-          />
-        </template>
-      </van-cell>
+      <van-checkbox
+        v-model="form.checked"
+        name="checked"
+        shape="square"
+        required
+      >
+        我已仔细阅读
+        <span class="agreement" @click="onRead('tiaoli')"
+          >《杭州市户外广告设施和招牌指示牌管理条例》</span
+        >和
+        <span class="agreement" @click="onRead('guifang')"
+          >《户外招牌设置管理规范》</span
+        >，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
+      </van-checkbox>
       <submit-bar>
-        <van-checkbox
-          v-model="form.checked"
-          slot="tips"
-          name="checked"
-          fit="contain"
-          required
-        >
-          我已仔细阅读
-          <span class="agreement" @click="onRead('tiaoli')"
-            >《杭州市户外广告设施和招牌指示牌管理条例》</span
-          >和
-          <span class="agreement" @click="onRead('guifang')"
-            >《户外招牌设置管理规范》</span
-          >，并按“条例”和“规范”要求开展店招店牌菜单式服务设计。本人承诺所提交信息真实、无误，如有信息不实，本人愿承担所有责任
-        </van-checkbox>
         <van-button block type="info" native-type="submit">确认</van-button>
       </submit-bar>
       <agreement-popup ref="agree" />
@@ -120,12 +89,12 @@ export default {
           });
         })
         .then(({ data }) => {
-          console.log(data)
+          console.log(data);
           this.imageList.push({
             url: data.urlPath,
             id: "2",
           });
-          console.log(this.imageList)
+          console.log(this.imageList);
           this.imageList.sort((a, b) => (a.id > b.id ? 1 : -1));
         });
     },
@@ -152,7 +121,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 12px 0 60px;
+  padding: 12px 24px 60px;
   background-color: @gray-2;
   min-height: 100%;
   box-sizing: border-box;

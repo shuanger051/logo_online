@@ -1,25 +1,15 @@
 <template>
-  <van-popup
+  <a-modal
     class="popup-agreement"
     v-model="show"
-    :round="true"
-    get-container="body"
-    position="bottom"
-    style="height: 90%"
+    okText="我已阅读并同意"
+    @ok="onClose"
   >
-    <van-image v-for="(img, idx) in imgs" :src="img" :key="idx" />
-    <!-- 阅读并同意 -->
-    <submit-bar>
-      <van-button type="primary" block @click="onClose"
-        >我知道了</van-button
-      >
-    </submit-bar>
-  </van-popup>
+    <img v-for="(img, idx) in imgs" :src="img" :key="idx" />
+  </a-modal>
 </template>
 <script>
-import SubmitBar from "../../components/SubmitBar.vue";
 export default {
-  components: { SubmitBar },
   data() {
     return {
       show: false,

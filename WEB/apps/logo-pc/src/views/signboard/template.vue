@@ -36,7 +36,7 @@ export default {
       // 查询条件
       params: {},
       page: {
-        pageSize: "30",
+        pageSize: 30,
         total: 0,
         current: 0,
         onChange: (page) => this.queryTemplate(page),

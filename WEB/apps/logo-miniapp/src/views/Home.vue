@@ -5,15 +5,15 @@
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaishenqing"
-          text="商铺登记"
-          to="/shop/detail"
+          text="店招设计"
+          to="/signboard/editSelect"
         />
-        <van-grid-item
+        <!-- <van-grid-item
           icon-prefix="iconfont icon"
           icon="xinxigongkainianbao"
           text="我的商铺"
           to="/shop/list"
-        />
+        /> -->
       </van-grid>
     </van-panel>
     <van-panel title="备案信息">
