@@ -115,7 +115,7 @@ export const createXLSL = (work, config={type: 'base64'}) => {
 
 
 export const downLoadXLSL = async (work) => {
-  if (window.$editorConfig.mode == 'pc') {
+  if (typeof ZWJSBridge == 'undefined') {
     return createXLSL(work, {type: 'file'})
   } else {
     let base64 = createXLSL(work);
@@ -123,9 +123,10 @@ export const downLoadXLSL = async (work) => {
     const info = await appUploadMaterialAttachmentBase64APIOSS({
       base64
     })
-    return download(info.data,urlPath, '店招.xlsx')
+    return download(info.data.urlPath, '店招.xlsx')
   }
 }
+
 
 export const download = async (url, name) => {
   if (typeof ZWJSBridge == 'undefined') {
