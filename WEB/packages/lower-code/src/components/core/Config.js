@@ -40,6 +40,9 @@ const createConfig = (factory) => {
       get router() {
         return router
       },
+      get mode(){
+        return mode
+      },
       isApp() {
         return mode == 'app'
       },

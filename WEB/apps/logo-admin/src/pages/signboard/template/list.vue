@@ -21,8 +21,7 @@
       <template slot="shortImage" slot-scope="text, record">
         <async-image
           v-if="!!getImageSrc(record)"
-          width="100px"
-          height="100px"
+          height="60px"
           :style="{ objectFit: 'contain' }"
           :src="getImageSrc(record)"
         />
@@ -87,17 +86,20 @@ export default {
           title: "是否发布",
           dataIndex: "releaseStatus",
           key: "releaseStatus",
+          width: "100px",
           scopedSlots: { customRender: "releaseStatus" },
         },
         {
           title: "缩略图",
           key: "shortImage",
           align: "center",
+          width: "120px",
           scopedSlots: { customRender: "shortImage" },
         },
         {
           title: "操作",
           key: "operation",
+          width: "140px",
           scopedSlots: { customRender: "operation" },
         },
       ];
