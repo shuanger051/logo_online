@@ -13,16 +13,18 @@ export const actions = {
         fileData = await takeScreenshot({selector: el, type: 'dataUrl'});
         isbase64 = true
       } 
-      const form = new FormData()
-      form.append('shopsId', shopsId)
-      form.append('merchantId', merchantId)
-      console.log(typeof appSaveLogoInfoBase64APIOSS, 111)
       if (!isbase64) {
+        const form = new FormData()
+        form.append('shopsId', shopsId)
+        form.append('merchantId', merchantId)
         form.append('file', fileData)
         await appSaveLogoInfoAPIOSS(form)
       } else {
-        form.append('base64', fileData)
-        await appSaveLogoInfoBase64APIOSS(form)
+        await appSaveLogoInfoBase64APIOSS({
+          shopsId,
+          merchantId,
+          base64: fileData
+        })
       }
   
   },

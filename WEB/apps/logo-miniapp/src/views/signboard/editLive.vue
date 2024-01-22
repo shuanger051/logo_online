@@ -116,12 +116,12 @@ export default {
           selector: "#edit-live__wrap",
           type: "dataUrl",
         });
-        const form = new FormData();
         const { shopId } = this.$route.query;
-        form.append("base64", file);
-        form.append("shopsId", shopId);
-        form.append("attachmentType", 4);
-        await appUploadContentAttachmentBase64OSS(form);
+        await appUploadContentAttachmentBase64OSS({
+          base64: file,
+          shopsId: shopId,
+          attachmentType:4
+        });
         Notify({ type: "success", message: "创建成功" });
         this.$router.push({
           path: "/signboard/editConfirm",
