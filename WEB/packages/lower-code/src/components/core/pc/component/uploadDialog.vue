@@ -32,7 +32,7 @@
   </a-modal>
 </template>
 <script>
-import { appGetMaterial, appUploadMaterialAttachment } from "core/api/";
+import { appGetMaterialListByPageApiOSS, appUploadMaterialAttachmentOSS } from "core/api/";
 import { resolveImgUrl } from "core/support/imgUrl";
 
 export default {
@@ -48,11 +48,11 @@ export default {
     async upload(evt) {
       const form = new FormData();
       form.append("file", evt.file);
-      const info = await appUploadMaterialAttachment(form);
+      const info = await appUploadMaterialAttachmentOSS(form);
       this.selectItem(info.data.urlPath);
     },
     async getList() {
-      const res = await appGetMaterial({
+      const res = await appGetMaterialListByPageApiOSS({
         pageNum: this.pagination.current,
       });
       if (res) {

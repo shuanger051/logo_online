@@ -23,7 +23,9 @@
     </div>
     <div class="tool-bar__right flex">
       <div class="flex" @click="createShopSign"><a-icon type="camera" /> <span>生成效果图</span></div>
-      <!-- <div class="flex"><a-icon type="download" /> <span>下载</span></div> -->
+      <div class="flex" @click="picDownload"><a-icon type="download" /> <span>下载图片</span></div>
+      <div class="flex" @click="xlslDownload"><a-icon type="file-excel" /><span>下载文件</span></div>
+
     </div>
     <a-modal title="加字" v-model="textDialog" @ok="textAddOk">
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
@@ -45,6 +47,7 @@
 import store from "core/mobile/store/index";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
+import { download,  downLoadXLSL} from "core/support/download.js";
 
 import { mapActions, mapState } from "vuex";
 import {later, sleep} from '@editor/utils/tool'
@@ -110,6 +113,30 @@ export default {
         this.$message.error('创建失败' )
       }
       this.changeTokenScreenShotStatus(false)
+      toast();
+    },
+    async picDownload() {
+      const toast = this.$message.loading('下载中...', 0);
+      this.changeTokenScreenShotStatus(true)
+      await sleep(1000)
+      try {
+        const info = await this.mCreateCover({ el: "#content_edit" });
+        download(info.data.urlPath, +new Date() + '.png')
+        this.$message.success('下载成功', 2);
+      } catch (e) {
+        console.log(e)
+        this.$message.error('下载失败' )
+      }
+      this.changeTokenScreenShotStatus(false)
+      toast();
+    },
+    async xlslDownload() {
+      const toast = this.$message.loading('下载中...', 0)
+      try {
+        downLoadXLSL(this.$store.state.editor.work)
+      } catch (e) {
+        Notify({ type: "danger", message: "下载失败" });
+      }
       toast();
     },
     textAddOk() {

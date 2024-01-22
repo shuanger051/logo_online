@@ -23,7 +23,7 @@ const parseText = {
       fontColor: pluginProps.fontColor,
       fontFamily: pluginProps.fontFamily,
       fontSize: pluginProps.fontSize,
-      text: pluginProps.text.split(/<[^>]\/?>/).join(),
+      text: pluginProps.text.split(/<[^>]*\/?>|[\n\t]/).filter((t) =>!!t).join(' || '),
       width: commonStyle.width,
       height:commonStyle.height,
       top:commonStyle.top,
@@ -70,8 +70,8 @@ const parseWork = {
           label: ['作品宽','作品高'],
           value: [
             {
-              width: obj.width,
-              height: obj.height
+              width: work.width,
+              height: work.height
             }
           ]
       }
@@ -95,7 +95,7 @@ export const parse = (work, obj = {}) => {
 }
 
 
-export const createXLSL = (work) => {
+export const createXLSL = (work, config={type: 'base64'}) => {
   const json = parse(work);
   const workbook = XLSX.utils.book_new();
 
@@ -106,17 +106,25 @@ export const createXLSL = (work) => {
       origin: "A1",
     }); 
   })
-  return XLSX.write(workbook, {bookType:'xlsx', type: "base64" })
+  if (config.type == 'base64') {
+    return XLSX.write(workbook, {bookType:'xlsx', type: "base64" })
+  } else {
+    return XLSX.writeFile(workbook, '店招.xlsx')
+  }
 }
 
 
 export const downLoadXLSL = async (work) => {
-  let base64 = createXLSL(work);
-  base64 = 'data:application/vnd.ms-excel;base64,' + base64
-  const info = await appUploadMaterialAttachmentBase64APIOSS({
-    base64
-  })
-  return download(info.data,urlPath, '店招.xlsx')
+  if (window.$editorConfig.mode == 'pc') {
+    return createXLSL(work, {type: 'file'})
+  } else {
+    let base64 = createXLSL(work);
+    base64 = 'data:application/vnd.ms-excel;base64,' + base64
+    const info = await appUploadMaterialAttachmentBase64APIOSS({
+      base64
+    })
+    return download(info.data,urlPath, '店招.xlsx')
+  }
 }
 
 export const download = async (url, name) => {

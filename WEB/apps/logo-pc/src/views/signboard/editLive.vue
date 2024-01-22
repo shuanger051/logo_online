@@ -13,7 +13,7 @@
               <span style="color: #fa7a36">上传实景图</span>
             </a-upload>
           </div>
-          <div class="flex">
+          <div class="flex" @click="picDownload">
             <a-icon type="font-size" />
             <span>下载</span>
           </div>
@@ -65,6 +65,7 @@ import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import {sleep, later} from '@editor/utils/tool'
+import { download} from "core/support/download.js";
 
 export default {
   store,
@@ -141,6 +142,21 @@ export default {
       });
       style.transform = `rotate(${this.style.angle}deg)`;
       return style;
+    },
+    async picDownload() {
+      const toast = this.$message.loading('下载中...', 0);
+      this.changeTokenScreenShotStatus(true)
+      await sleep(1000)
+      try {
+        const info = await this.mCreateCover({ el: "#edit-live__container" });
+        download(info.data.urlPath, +new Date() + '.png')
+        this.$message.success('下载成功', 2);
+      } catch (e) {
+        console.log(e)
+        this.$message.error('下载失败' )
+      }
+      this.changeTokenScreenShotStatus(false)
+      toast();
     },
     async creatLivePic() {
       const toast = this.$message.loading("生成中...", 0);
