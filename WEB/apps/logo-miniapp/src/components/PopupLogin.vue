@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       show: false,
-      loginType: "1", // 1-本地，2-浙里办授权登录
+      loginType: "2", // 1-本地，2-浙里办授权登录
       formData: {
         customerName: "",
         password: "",
