@@ -10,7 +10,7 @@ export default {
         /(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i
       )
     ) {
-      window.location = "http://47.96.150.44:8081/";
+      window.location = window.__h5Url;
     } else {
       this.$router.push({ path: "/" });
     }
