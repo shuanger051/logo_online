@@ -39,20 +39,23 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 12px 0;
+  padding: 24px 0;
   min-height: 100%;
   max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
+  margin-top: 24px;
+  border-radius: 4px;
   background-color: #fff;
   .sudoku-menu {
     .ant-col {
       text-align: center;
       .iconfont {
-        font-size: 30px;
+        font-size: 42px;
         margin-bottom: 8px;
       }
       .name{
+        font-size: 15px;
         color: #333;
         line-height: 2.2em;
       }

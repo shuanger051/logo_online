@@ -104,6 +104,11 @@ export default {
 .page-wrap {
   max-width: 1000px;
   margin: 0 auto;
+  border-radius: 4px;
+  padding: 12px 24px;
+  margin-top: 24px;
+  border-radius: 4px;
+  background-color: #fff;
   .logo-item {
     margin-bottom: 10px;
   }

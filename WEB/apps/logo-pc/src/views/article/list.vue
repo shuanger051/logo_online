@@ -61,6 +61,7 @@ export default {
       let pageNum = current + 1;
       if (current) pageNum = current;
       if (size) page.pageSize = size;
+      this.loading = true; // 标记加载中
       articleService
         .getContentByChannelIdAPI({
           channelId,
@@ -73,7 +74,9 @@ export default {
           this.page.total = total;
           this.list = list;
         })
-        .finally(() => (this.loading = false))
+        .finally(() => {
+          this.loading = false
+        })
         .catch((err) => {
           this.finished = true;
         });
@@ -83,46 +86,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 12px 0;
+  padding: 12px 24px;
   min-height: 100%;
   max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
+  margin-top: 24px;
+  border-radius: 4px;
   background-color: #fff;
   // background-color: @text-color;
-  :deep(.van-list) {
-    .van-cell {
-      &__value {
-        line-height: 0;
-      }
-      .description {
-        margin-bottom: 4px;
-        line-height: 1.6em;
-        max-height: 3.2em;
-        text-overflow: ellipsis;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        display: -webkit-box;
-        overflow: hidden;
-      }
-      .attrs-bar {
-        .attr-item {
-          &:not(:last-child) {
-            margin-right: 6px;
-          }
-        }
-        .visitor {
-          & > i {
-            font-style: normal;
-            display: inline-block;
-            padding: 0 2px;
-          }
-        }
-      }
-    }
-    .van-image {
-      height: 64px;
-    }
-  }
 }
 </style>

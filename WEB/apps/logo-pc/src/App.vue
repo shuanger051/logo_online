@@ -11,3 +11,8 @@ export default {
   components: { ModalLogin },
 };
 </script>
+<style lang="less">
+body {
+  background-color: #f0f0f0!important;
+}
+</style>

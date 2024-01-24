@@ -83,12 +83,18 @@ export default {
   padding: 12px 24px 60px;
   max-width: 1000px;
   margin: 0 auto;
+  margin-top: 24px;
+  border-radius: 4px;
+  background-color: #fff;
   :deep(.ant-checkbox-group) {
     margin-bottom: 12px;
+    &-item > span {
+      font-size: 15px;
+    }
   }
   :deep(.ant-divider) {
     &-inner-text {
-      font-size: 14px;
+      font-size: 15px;
       color: #444;
     }
   }
