@@ -3,7 +3,7 @@
     <div class="edit-wrap-header">
       <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
       <span @click="picDownload">下载图片</span>
-      <span @click="xlslDownload" class="downLoadXLSL">下载文件</span>
+      <span @click="xlslDownload" class="downLoadXLSL">下载设计说明文件</span>
     </div>
     <div class="edit-wrap-content" @click="() => this.setEditingElement()">
       <div style="min-height: 320px">

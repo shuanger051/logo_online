@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import signboard from "./signboard";
-import article from './article';
+import article from "./article";
 import Home from "../views/home";
+import Entrepot from '../views/Entrepot'
 
 Vue.use(VueRouter);
 
@@ -16,7 +17,12 @@ const routes = [
   // 店招模块
   signboard,
   // 文章模块
-  article
+  article,
+  // 重定向
+  {
+    path: "/entrepot",
+    component: Entrepot,
+  },
   // 404
   // {
   //   path: "/*",

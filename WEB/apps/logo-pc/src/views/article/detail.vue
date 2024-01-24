@@ -4,8 +4,8 @@
     <template v-else>
       <h2 class="title">{{ article.title }}</h2>
       <div class="attribute">
-        <span>编辑：{{ article.author }}</span>
-        <span>{{ updateTime | date }}</span>
+        <span>编辑：{{ article.author || "--" }}</span>
+        <span>发布时间：{{ updateTime | date }}</span>
       </div>
       <!-- 文章内容 -->
       <div class="content" v-html="article.content"></div>
@@ -78,6 +78,13 @@ export default {
   },
 };
 </script>
+<style lang="less">
+.page-wrap {
+  .content img {
+    max-width: 100% !important;
+  }
+}
+</style>
 <style lang="less" scoped>
 .page-wrap {
   padding: 0 12px 12px;

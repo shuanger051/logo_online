@@ -6,7 +6,7 @@
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaishenqing"
           text="店招设计"
-          to="/signboard/editSelect"
+          to="/signboard/attribute"
         />
         <!-- <van-grid-item
           icon-prefix="iconfont icon"
@@ -24,16 +24,16 @@
           text="法律法规"
           to="/article/3/detail?pid=486"
         /> -->
-        <van-grid-item
+        <!-- <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaizhinan"
           text="备案流程"
           to="/article/1/detail?pid=482"
-        />
+        /> -->
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="fadingzhudonggongkaineirong"
-          text="备案信息公告"
+          text="信息公告"
           to="/article/4/list"
         />
       </van-grid>

@@ -47,8 +47,8 @@ export default {
       show: false,
       loginType: "1", // 1-本地，2-浙里办授权登录
       formData: {
-        customerName: "",
-        password: "",
+        customerName: "18888888888",
+        password: "Abc123456",
       },
     };
   },
@@ -75,19 +75,21 @@ export default {
     }
     // 未登录提示
     eventBus.$on("login", () => {
+      this.onSubmit()
+      return
       // 本地登录
-      if (this.loginType == "1") this.show = true;
-      // 第三方登录
-      else {
-        this.$dialog
-          .alert({
-            title: "提示",
-            message: "未登录，请登入后再试！",
-          })
-          .then(() => {
-            this.$router.replace({ path: "/" });
-          });
-      }
+      // if (this.loginType == "1") this.show = true;
+      // // 第三方登录
+      // else {
+      //   this.$dialog
+      //     .alert({
+      //       title: "提示",
+      //       message: "未登录，请登入后再试！",
+      //     })
+      //     .then(() => {
+      //       this.$router.replace({ path: "/" });
+      //     });
+      // }
     });
   },
   methods: {
@@ -108,8 +110,8 @@ export default {
     },
     // event：登录
     onSubmit() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
+      // this.$refs.loginForm.validate((valid) => {
+      //   if (valid) {
           const { customerName, password } = this.formData;
           runPromiseInSequence([
             // 获取秘钥
@@ -127,8 +129,8 @@ export default {
               console.log(err);
               this.$toast.fail("登录失败：" + err.msg);
             });
-        }
-      });
+      //   }
+      // });
     },
     // 登录
     login(ctx) {

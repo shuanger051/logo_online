@@ -24,7 +24,7 @@
     <div class="tool-bar__right flex">
       <div class="flex" @click="createShopSign"><a-icon type="camera" /> <span>生成效果图</span></div>
       <div class="flex" @click="picDownload"><a-icon type="download" /> <span>下载图片</span></div>
-      <div class="flex" @click="xlslDownload"><a-icon type="file-excel" /><span>下载文件</span></div>
+      <div class="flex" @click="xlslDownload"><a-icon type="file-excel" /><span>下载设计说明文件</span></div>
 
     </div>
     <a-modal title="加字" v-model="textDialog" @ok="textAddOk">

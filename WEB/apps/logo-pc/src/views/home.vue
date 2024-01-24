@@ -2,21 +2,21 @@
   <div class="page-wrap">
     <a-row class="sudoku-menu">
       <a-col class="gutter-row" :span="6">
-        <router-link to="/signboard/editSelect">
+        <router-link to="/signboard/attribute">
           <icon-font class="iconfont" type="icon-zhengfuxinxigongkaishenqing" />
           <div class="name">店招设计</div>
         </router-link>
       </a-col>
-      <a-col class="gutter-row" :span="6">
+      <!-- <a-col class="gutter-row" :span="6">
         <router-link to="/article/1/detail?pid=482">
           <icon-font class="iconfont" type="icon-zhengfuxinxigongkaizhinan" />
           <div class="name">备案流程</div>
         </router-link>
-      </a-col>
+      </a-col> -->
       <a-col class="gutter-row" :span="6">
         <router-link to="/article/4/list">
           <icon-font class="iconfont" type="icon-fadingzhudonggongkaineirong" />
-          <div class="name">备案信息公告</div>
+          <div class="name">信息公告</div>
         </router-link>
       </a-col>
     </a-row>
