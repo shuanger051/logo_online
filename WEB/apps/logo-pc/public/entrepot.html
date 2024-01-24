@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <title>跳转中...</title>
+  </head>
+  <body>
+    <div>跳转中，请稍等...</div>
+    <script>
+      // 是否在PC端
+      if (
+        window.navigator.userAgent.match(
+          /(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i
+        )
+      ) {
+        window.location = window.__h5Url;
+      } else {
+        window.location = window.__pcUrl;
+      }
+    </script>
+  </body>
+</html>
