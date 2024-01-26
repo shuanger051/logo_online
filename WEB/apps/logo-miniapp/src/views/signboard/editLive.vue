@@ -2,20 +2,19 @@
   <div style="height: 100%">
     <div class="edit-live-header">
       <van-button type="primary" class="recover" @click="creatLivePic"
-        >提交备案</van-button
+        >下载效果图</van-button
       >
       <van-uploader
-        class='upload'
+        class="upload"
         :after-read="afterRead"
         :max-size="1024 * 1024 * 2"
         @oversize="onOversize"
       >
-      <!-- <span>上传实景图</span> -->
-      <van-button plain type="warning">上传实景图</van-button>
-
+        <!-- <span>上传实景图</span> -->
+        <van-button plain type="warning">上传实景图</van-button>
       </van-uploader>
 
-      <span @click="download">下载</span>
+      <!-- <span @click="download">下载</span> -->
     </div>
     <div class="edit-live">
       <div id="edit-live__wrap">
@@ -44,7 +43,10 @@
 </template>
 <script>
 import store from "core/mobile/store/index";
-import { appUploadMaterialAttachmentBase64APIOSS,appUploadMaterialAttachmentOSS } from "core/api/";
+import {
+  appUploadMaterialAttachmentBase64APIOSS,
+  appUploadMaterialAttachmentOSS,
+} from "core/api/";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { mapActions } from "vuex";
@@ -88,13 +90,9 @@ export default {
       signboardPic: null,
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
-    ...mapActions("editor", [
-      "setPic",
-      "mCreateCover",
-    ]),
+    ...mapActions("editor", ["setPic", "mCreateCover"]),
     handleElementMove(pos) {
       this.style = {
         ...this.style,
@@ -130,6 +128,12 @@ export default {
       toast.clear();
     },
     async creatLivePic() {
+      // 未上传实景图弹窗提示
+      if (!this.livePic) {
+        Notify({ message: "请先上传实景图！" });
+        return;
+      }
+
       const toast = Toast.loading({
         message: "生成中...",
         forbidClick: true,
@@ -142,11 +146,13 @@ export default {
           value: info.data.urlPath,
         });
         Notify({ type: "success", message: "创建成功" });
-        this.$router.push({
-          path: "/signboard/editConfirm"
-        });
+        // 创建成功直接下载
+        this.download();
+        // this.$router.push({
+        //   path: "/signboard/editConfirm"
+        // });
       } catch (e) {
-        console.log(e)
+        console.log(e);
         Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();
@@ -174,9 +180,9 @@ export default {
   },
   created() {
     if (!this.$store.state.editor.livePic) {
-      Notify({ type: 'danger', message: '请先上传实景图片',  duration: 3000});
+      Notify({ type: "primary", message: "请上传实景图" });
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

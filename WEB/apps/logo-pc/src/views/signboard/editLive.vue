@@ -13,14 +13,14 @@
               <span style="color: #fa7a36">上传实景图</span>
             </a-upload>
           </div>
-          <div class="flex" @click="picDownload">
+          <!-- <div class="flex" @click="picDownload">
             <a-icon type="font-size" />
             <span>下载</span>
-          </div>
+          </div> -->
         </div>
         <div class="edit-live-bar__right flex">
           <div class="flex" @click="creatLivePic">
-            <a-icon type="idcard" /> <span>提交备案</span>
+            <a-icon type="idcard" /> <span>下载效果图</span>
           </div>
         </div>
       </div>
@@ -159,6 +159,11 @@ export default {
       toast();
     },
     async creatLivePic() {
+      // 未上传实景图
+      if(!this.livePic) {
+        this.$message.info("请先上传实景图");
+        return 
+      }
       const toast = this.$message.loading("生成中...", 0);
       this.changeTokenScreenShotStatus(true)
       await sleep(1000)
@@ -169,11 +174,13 @@ export default {
           value: info.data.urlPath,
         });
         this.$message.success("创建成功", 1);
-        later(() => {
-          this.$router.push({
-            path: "/signboard/editConfirm",
-          });
-        }, 2000);
+        // 创建成功下载
+        this.picDownload()
+        // later(() => {
+        //   this.$router.push({
+        //     path: "/signboard/editConfirm",
+        //   });
+        // }, 2000);
         console.log(info.data.urlPath, 888);
       } catch (e) {
         console.log(e);
