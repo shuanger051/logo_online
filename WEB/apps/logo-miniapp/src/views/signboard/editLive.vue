@@ -49,6 +49,8 @@ import {
 } from "core/api/";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
+import { download} from "core/support/download.js";
+
 import { mapActions } from "vuex";
 import { Toast } from "vant";
 import { downloadPoster } from "@editor/utils/canvas-helper.js";
@@ -147,7 +149,7 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
-        this.download();
+        download(info.data.urlPath, +new Date() + '.png')
         // this.$router.push({
         //   path: "/signboard/editConfirm"
         // });
