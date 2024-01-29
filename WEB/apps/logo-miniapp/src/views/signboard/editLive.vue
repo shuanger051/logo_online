@@ -15,6 +15,7 @@
       </van-uploader>
 
       <!-- <span @click="download">下载</span> -->
+      
     </div>
     <div class="edit-live">
       <div id="edit-live__wrap">
