@@ -31,15 +31,15 @@
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
     </a-modal>
     <a-modal v-model="tempDialog" @ok="tempDialog = false" :footer="null">
-      <div
-        :style="{
-          backgroundImage: `url(${resolveImgUrl(work.cover_image_url, true)})`,
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          height: '300px',
-        }"
-      ></div>
+      <div style="padding: 15px 0px;">
+        <async-image
+          width="100%"
+          height="100px"
+          :style="{ objectFit: 'contain' }"
+          :src="work.cover_image_url"
+        />
+      </div>
+
     </a-modal>
   </div>
 </template>
