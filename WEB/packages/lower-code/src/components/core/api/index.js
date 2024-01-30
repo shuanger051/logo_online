@@ -118,3 +118,8 @@ export const appUploadMaterialAttachmentBase64APIOSS = wrapRequest(
   "/logo/app/uploadMaterialAttachmentBase64APIOSS",
   true
 );
+
+export const appUploadExcelBase64APIOSS = wrapRequest(
+  "/logo/app/uploadExcelBase64APIOSS",
+  true
+);

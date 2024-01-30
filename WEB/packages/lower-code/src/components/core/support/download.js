@@ -1,6 +1,6 @@
 import {picCache} from './imgUrl'
 import * as XLSX from 'xlsx'
-import {appUploadMaterialAttachmentBase64APIOSS} from "core/api"
+import {appUploadExcelBase64APIOSS} from "core/api"
 
 
 const parseText = {
@@ -120,7 +120,7 @@ export const downLoadXLSL = async (work) => {
   } else {
     let base64 = createXLSL(work);
     base64 = 'data:application/vnd.ms-excel;base64,' + base64
-    const info = await appUploadMaterialAttachmentBase64APIOSS({
+    const info = await appUploadExcelBase64APIOSS({
       base64
     })
     return download(info.data.urlPath, '店招.xlsx')
