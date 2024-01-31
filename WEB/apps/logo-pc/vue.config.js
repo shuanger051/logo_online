@@ -53,8 +53,17 @@ module.exports = {
         })
     }
 
-  },
+    // 浏览器标题栏
+    config.plugin("html").tap((args) => {
+      args[0].title = "菜单式店招设计";
+      return args;
+    });
 
+  },
+  pwa: {
+    name: "菜单式店招设计",
+    // themeColor
+  },
   lintOnSave: false,
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   outputDir: 'dist',

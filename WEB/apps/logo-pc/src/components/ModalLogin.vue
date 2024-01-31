@@ -36,7 +36,6 @@
   </a-modal>
 </template>
 <script>
-import qs from "qs";
 import store from "@/store";
 import eventBus from "@/core/eventBus";
 import { commonService, accountService } from "@/services";
@@ -61,48 +60,34 @@ export default {
     },
   },
   created() {
-    // 从vue-router中获取查询参数
-    let { accesstoken } = this.$route.query;
-    // 从location.sreach中获取查询参数
-    if (!accesstoken) {
-      const query = qs.parse(location.search.slice(1));
-      accesstoken = query.accesstoken;
-    }
-    // 浙里办授权登录
-    if (accesstoken) {
-      this.loginType = "2";
-      this.zlbAuthLogin(accesstoken);
-    }
+    this.qlygAuthLogin();
     // 未登录提示
     eventBus.$on("login", () => {
-      this.onSubmit()
-      return
-      // 本地登录
-      // if (this.loginType == "1") this.show = true;
-      // // 第三方登录
-      // else {
-      //   this.$dialog
-      //     .alert({
-      //       title: "提示",
-      //       message: "未登录，请登入后再试！",
-      //     })
-      //     .then(() => {
-      //       this.$router.replace({ path: "/" });
-      //     });
-      // }
+      this.qlygAuthLogin();
     });
   },
   methods: {
-    // 浙里办统一登录
-    zlbAuthLogin(accessToken) {
+    // 权利阳光登录
+    qlygAuthLogin() {
+      const timestamp = +new Date();
+      runPromiseInSequence([
+        // 获取秘钥
+        this.getPublicKey,
+        // 加密
+        this.encrypt,
+        // 登录
+        this.getTokenTimestampAPI
+      ])({
+        password: timestamp,
+      });
+    },
+    // 权利阳光登录
+    getTokenTimestampAPI(ctx) {
       return accountService
-        .getZLBTokenAPI({
-          accessToken,
-        })
+        .getTokenTimestampAPI({ sign: ctx.password })
         .then((res) => {
-          const { token, customerInfo } = res.data;
+          const { token } = res.data;
           store.commit("user/setToken", token);
-          store.commit("user/setUserInfo", customerInfo);
         })
         .catch((err) => {
           this.$toast.fail("登录失败，请稍后再试");
@@ -112,23 +97,23 @@ export default {
     onSubmit() {
       // this.$refs.loginForm.validate((valid) => {
       //   if (valid) {
-          const { customerName, password } = this.formData;
-          runPromiseInSequence([
-            // 获取秘钥
-            this.getPublicKey,
-            // 加密
-            this.encrypt,
-            // 登录
-            this.login,
-          ])({
-            customerName,
-            password,
-          })
-            // 失败提示
-            .catch((err) => {
-              console.log(err);
-              this.$toast.fail("登录失败：" + err.msg);
-            });
+      const { customerName, password } = this.formData;
+      runPromiseInSequence([
+        // 获取秘钥
+        this.getPublicKey,
+        // 加密
+        this.encrypt,
+        // 登录
+        this.login,
+      ])({
+        customerName,
+        password,
+      })
+        // 失败提示
+        .catch((err) => {
+          console.log(err);
+          this.$toast.fail("登录失败：" + err.msg);
+        });
       //   }
       // });
     },

@@ -7,12 +7,6 @@
           <div class="name">店招设计</div>
         </router-link>
       </a-col>
-      <!-- <a-col class="gutter-row" :span="6">
-        <router-link to="/article/1/detail?pid=482">
-          <icon-font class="iconfont" type="icon-zhengfuxinxigongkaizhinan" />
-          <div class="name">备案流程</div>
-        </router-link>
-      </a-col> -->
       <a-col class="gutter-row" :span="6">
         <router-link to="/article/4/list">
           <icon-font class="iconfont" type="icon-fadingzhudonggongkaineirong" />
@@ -20,10 +14,19 @@
         </router-link>
       </a-col>
     </a-row>
+    <a-divider />
+    <!-- 温馨提示 -->
+    <a-alert message="温馨提示" type="info" show-icon>
+      <template slot="description">
+        首次使用店招在线设计的用户，请先进入信息公告，仔细阅读<router-link to=""
+          >《店招设计使用流程》</router-link
+        >和<router-link to="">《杭州市户外招牌设置负面清单》</router-link
+        >后再进行操作。
+      </template>
+    </a-alert>
   </div>
 </template>
 <script>
-// import { accountService } from "@/services";
 import { Icon } from "ant-design-vue";
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: require("@/styles/iconfont/iconfont.js"),
@@ -54,12 +57,15 @@ export default {
         font-size: 42px;
         margin-bottom: 8px;
       }
-      .name{
+      .name {
         font-size: 15px;
         color: #333;
         line-height: 2.2em;
       }
     }
+  }
+  :deep(.ant-alert) {
+    margin: 0 24px;
   }
 }
 </style>

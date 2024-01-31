@@ -1,12 +1,18 @@
 <template>
   <div class="page-wrap" :class="[isOldVersion && 'old-version']">
-    <van-panel title="店招承诺备案">
+    <van-panel title="店招设计">
       <van-grid :column-num="columnNum">
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaishenqing"
           text="店招设计"
           to="/signboard/attribute"
+        />
+        <van-grid-item
+          icon-prefix="iconfont icon"
+          icon="fadingzhudonggongkaineirong"
+          text="信息公告"
+          to="/article/4/list"
         />
         <!-- <van-grid-item
           icon-prefix="iconfont icon"
@@ -16,20 +22,20 @@
         /> -->
       </van-grid>
     </van-panel>
-    <van-panel title="备案信息">
+    <!-- <van-panel title="备案信息">
       <van-grid :column-num="columnNum">
-        <!-- <van-grid-item
+        <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhishiku"
           text="法律法规"
           to="/article/3/detail?pid=486"
-        /> -->
-        <!-- <van-grid-item
+        />
+        <van-grid-item
           icon-prefix="iconfont icon"
           icon="zhengfuxinxigongkaizhinan"
           text="备案流程"
           to="/article/1/detail?pid=482"
-        /> -->
+        />
         <van-grid-item
           icon-prefix="iconfont icon"
           icon="fadingzhudonggongkaineirong"
@@ -37,7 +43,14 @@
           to="/article/4/list"
         />
       </van-grid>
-    </van-panel>
+    </van-panel> -->
+    <!-- 首次使用提示 -->
+    <div class="tips-box">
+      首次使用店招在线设计的用户，请先进入信息公告，仔细阅读<router-link to=""
+        >《店招设计使用流程》</router-link
+      >和<router-link to="">《杭州市户外招牌设置负面清单》</router-link
+      >后再进行操作。
+    </div>
   </div>
 </template>
 
@@ -95,6 +108,12 @@ export default {
       background-color: @blue;
       color: @white;
     }
+  }
+  .tips-box {
+    padding: 12px 12px;
+    font-size: 14px;
+    line-height: 1.8em;
+    color: @gray-7;
   }
   // 适老版适配样式
   &.old-version {

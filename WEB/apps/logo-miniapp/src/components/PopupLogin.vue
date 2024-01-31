@@ -34,7 +34,6 @@
   </van-popup>
 </template>
 <script>
-import qs from "qs";
 import store from "@/store";
 import eventBus from "@/core/eventBus";
 import { commonService, accountService } from "@/apis";
@@ -60,21 +59,23 @@ export default {
   },
   created() {
     // 从vue-router中获取查询参数
-    let { accesstoken } = this.$route.query;
+    // let { accesstoken } = this.$route.query;
     // 从location.sreach中获取查询参数
-    if (!accesstoken) {
-      const query = qs.parse(location.search.slice(1));
-      accesstoken = query.accesstoken;
-    }
+    // if (!accesstoken) {
+    //   const query = qs.parse(location.search.slice(1));
+    //   accesstoken = query.accesstoken;
+    // }
     // 浙里办授权登录
-    if (accesstoken) {
-      this.loginType = "2";
-      this.zlbAuthLogin(accesstoken);
-    }
+    // if (accesstoken) {
+    //   this.loginType = "2";
+    //   this.zlbAuthLogin(accesstoken);
+    // }
+    this.qlygAuthLogin()
     // 未登录提示
     eventBus.$on("login", () => {
-      this.onSubmit()
-      return
+      // this.onSubmit();
+      this.qlygAuthLogin()
+      return;
       // // 本地登录
       // if (this.loginType == "1") this.show = true;
       // // 第三方登录
@@ -106,6 +107,20 @@ export default {
           this.$toast.fail("登录失败，请稍后再试");
         });
     },
+    // 权利阳光登录
+    qlygAuthLogin() {
+      const timestamp = +new Date();
+      runPromiseInSequence([
+        // 获取秘钥
+        this.getPublicKey,
+        // 加密
+        this.encrypt,
+        // 登录
+        this.getTokenTimestampAPI
+      ])({
+        password: timestamp,
+      });
+    },
     // event：登录
     onSubmit() {
       const { customerName, password } = this.formData;
@@ -124,6 +139,18 @@ export default {
         .catch((err) => {
           console.log(err);
           this.$toast.fail("登录失败：" + err.msg);
+        });
+    },
+    // 权利阳光登录
+    getTokenTimestampAPI(ctx) {
+      return accountService
+        .getTokenTimestampAPI({ sign: ctx.password })
+        .then((res) => {
+          const { token } = res.data;
+          store.commit("user/setToken", token);
+        })
+        .catch((err) => {
+          this.$toast.fail("登录失败，请稍后再试");
         });
     },
     // 登录

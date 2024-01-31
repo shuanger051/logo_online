@@ -6,6 +6,11 @@ import { axiosGet, axiosPost } from "../utils/request";
 export const getTokenAPI = axiosPost("logo/app/getTokenAPI");
 
 /**
+ * == 权利阳光登录 ==
+ */
+export const getTokenTimestampAPI = axiosPost("logo/app/getTokenTimestampAPI");
+
+/**
  * == 注册 ==
  */
 export const registerCustomerAPI = axiosPost("logo/app/registerCustomerAPI");

@@ -26,11 +26,14 @@
           >修改</a-button
         >
         <a-button
-          v-if="record.status == '1'"
+          v-if="record.status == '0'"
           type="link"
           size="small"
           @click="onAudit({ record })"
           >审核</a-button
+        >
+        <a-button v-if="record.status == '1'" type="link" size="small"
+          >审核中</a-button
         >
         <!-- btn:删除 -->
         <a-popconfirm title="是否确认删除该文章？" @confirm="onDel(record)">
