@@ -1,6 +1,13 @@
 <template>
   <div class="page-wrap">
-    <van-empty v-if="!detail.id" description="文章详情找不到了"></van-empty>
+    <!-- 文章加载中 -->
+    <van-loading v-if="loading" size="24px" vertical>文章加载中...</van-loading>
+    <!-- 文章找不到 -->
+    <van-empty
+      v-else-if="!detail.id"
+      description="文章详情找不到了"
+    ></van-empty>
+    <!-- 文章详情 -->
     <template v-else>
       <h2 class="title">{{ article.title }}</h2>
       <div class="attribute">
@@ -29,6 +36,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      loading: true,
       detail: {},
     };
   },
@@ -67,10 +75,12 @@ export default {
     // 获取文章详情
     getDetail() {
       const { pid } = this.$route.query;
+      this.loading = true;
       return articleService
         .getContentByIDAPI({
           id: pid,
         })
+        .finally(() => (this.loading = false))
         .then((res) => {
           console.log(res);
           this.detail = res.data;

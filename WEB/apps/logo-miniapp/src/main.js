@@ -30,10 +30,10 @@ const app = new Vue({
   render: (h) => h(App),
 });
 
-// h5版
-if (getEnvByUa() == "h5") app.$mount("#app");
-// 浙里办
-else {
+app.$mount("#app");
+
+// 浙里办需要适配适老版
+if (getEnvByUa() != "h5") {
   ZWJSBridge.onReady(() => {
     // 判断是否适配适老版
     ZWJSBridge.getUiStyle().then((result) => {
@@ -41,6 +41,5 @@ else {
       const val = uiStyle == "elder";
       store.commit("app/setIsOldVersion", val);
     });
-    app.$mount("#app");
   });
 }

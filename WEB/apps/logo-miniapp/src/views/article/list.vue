@@ -5,8 +5,10 @@
       <template slot="finished">
         <span v-if="list.length">-没有更多了-</span>
       </template>
+      <!-- 文章列表为空 -->
+      <van-empty v-if="list.length == 0 && !loading" description="暂未发布相关信息文章"> </van-empty>
       <!-- 文章列表不为空 -->
-      <template v-if="list.length">
+      <template v-else>
         <van-cell
           v-for="item in list"
           :to="`/article/${item.channelId}/detail?pid=${item.id}`"
@@ -26,8 +28,6 @@
           </template>
         </van-cell>
       </template>
-      <!-- 文章列表为空 -->
-      <van-empty v-else description="暂未发布相关信息文章"> </van-empty>
     </van-list>
   </div>
 </template>
