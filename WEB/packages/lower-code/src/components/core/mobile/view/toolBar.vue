@@ -34,7 +34,7 @@ import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { ImagePreview } from 'vant';
-import { resolveImgUrl} from "core/support/imgUrl";
+import { resolveImgUrlBase64} from "core/support/imgUrl";
 
 export default {
   data() {
@@ -112,7 +112,9 @@ export default {
       this.text = "";
     },
     previewImage() {
-      ImagePreview([resolveImgUrl(this.work.cover_image_url, true)])
+      resolveImgUrlBase64(this.work.cover_image_url, false, (url) => {
+        ImagePreview([url])
+      })
     }
   },
 };

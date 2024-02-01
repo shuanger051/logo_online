@@ -55,6 +55,7 @@ export const resolveImgUrlBase64 = async (url, flag=true, callback=() => {})=> {
   }
   rurl = resolveImgUrl(rurl, true)
   if (!flag) {
+    callback(rurl)
     return rurl
   } 
   let ps = new Promise((r,rj) => {
