@@ -123,12 +123,12 @@ export const downLoadXLSL = async (work) => {
     const info = await appUploadExcelBase64APIOSS({
       base64
     })
-    return download(info.data.urlPath, '店招.xlsx')
+    return download(info.data.urlPath, '店招.xlsx', '.xlsx')
   }
 }
 
 
-export const download = async (url, name) => {
+export const download = async (url, name, file=false) => {
   if (typeof ZWJSBridge == 'undefined') {
     var a = document.createElement('a')
     a.href = url
@@ -136,6 +136,12 @@ export const download = async (url, name) => {
     a.click()
     return true
   } else {
+    if (file) {
+      return ZWJSBridge.downloadFile({
+        url:url,
+        fileType: file
+      })
+    }
     return ZWJSBridge.saveImage({
       url: url
     })
