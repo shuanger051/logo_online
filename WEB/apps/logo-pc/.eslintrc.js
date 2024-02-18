@@ -5,6 +5,7 @@ module.exports = {
   },
   globals: {
     _: true,
+    formbridgeClient: true
   },
   extends: ["plugin:vue/essential"],
   parserOptions: {

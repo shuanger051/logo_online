@@ -1,21 +1,17 @@
 <template>
   <div class="base-layout">
-    <van-nav-bar
-      :safe-area-inset-top="true"
+    <a-page-header
+      :ghost="false"
       :title="$route.meta.title"
-      :fixed="true"
-      :z-index="2"
+      @back="onNativeBack"
     >
       <!-- 左侧图标 -->
-      <template slot="left">
-        <!-- button：后退 -->
-        <van-icon v-if="isCanBack" name="arrow-left" @click="onNativeBack" />
-        <!-- button：关闭 -->
-        <van-icon name="cross" @click="onClose" />
+      <template slot="extra">
+        <a-button v-if="isInIframe" @click="onClose">关闭</a-button>
       </template>
-    </van-nav-bar>
+    </a-page-header>
     <!-- main：页面主体 -->
-    <div id="page-container" class="page-container--nostep">
+    <div>
       <!-- 走缓存 -->
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
@@ -67,26 +63,20 @@ export default {
 
 <style lang="less" scoped>
 .base-layout {
-  position: absolute;
-  width: 100%;
+  position: relative;
   height: 100%;
-  & /deep/ .van-nav-bar__left {
-    .van-icon {
-      font-size: 16px;
-      &:not(:last-child) {
-        margin-right: 12px;
-      }
+  :deep(.ant-page-header) {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+    margin-bottom: -8px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 25px 0px;
+    &-heading {
+      max-width: 1000px;
+      margin: 0 auto;
     }
   }
-}
-.page-container--withstep {
-  margin-top: 80px;
-  height: calc(100% - 80px);
-}
-.page-container--nostep {
-  margin-top: 44px;
-  height: calc(100% - 44px);
-  position: relative;
-  overflow: auto;
 }
 </style>

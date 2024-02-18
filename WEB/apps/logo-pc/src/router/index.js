@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import signboard from "./signboard";
 import article from "./article";
 import Home from "../views/home";
-import Entrepot from '../views/Entrepot'
+import Entrepot from "../views/Entrepot";
 
 Vue.use(VueRouter);
 
@@ -12,6 +12,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
+    meta: { title: "菜单式店招设计" },
     component: Home,
   },
   // 店招模块

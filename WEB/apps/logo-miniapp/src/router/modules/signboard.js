@@ -1,4 +1,4 @@
-import { BasicLayout } from "@/layouts";
+import { BlankLayout } from "@/layouts";
 import store from "@/store";
 
 const routes = [
@@ -78,6 +78,6 @@ const routes = [
 export default {
   path: "/signboard",
   name: "signboard",
-  component: BasicLayout,
+  component: BlankLayout,
   children: routes,
 };

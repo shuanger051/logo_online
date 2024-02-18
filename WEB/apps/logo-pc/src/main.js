@@ -17,7 +17,16 @@ pcConfig.install(({ initRequest, initMode, initRouter }) => {
   initRequest(axios);
 });
 
+
 Vue.use(Antd);
+
+// 权利阳光适配
+const bridgeClient = new formbridgeClient();
+bridgeClient.onReady(() => {
+  // 不一致表明被ifram引用
+  const isInIframe = window.self !== window.top;
+  store.commit("app/setIsInIframe", isInIframe);
+});
 
 const app = new Vue({
   router,

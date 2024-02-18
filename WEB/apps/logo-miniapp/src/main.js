@@ -32,6 +32,14 @@ const app = new Vue({
 
 app.$mount("#app");
 
+// 权利阳光适配
+const bridgeClient = new formbridgeClient();
+bridgeClient.onReady(() => {
+  // 不一致表明被ifram引用
+  const isInIframe = window.self !== window.top;
+  store.commit("app/setIsInIframe", isInIframe);
+});
+
 // 浙里办需要适配适老版
 if (getEnvByUa() != "h5") {
   ZWJSBridge.onReady(() => {

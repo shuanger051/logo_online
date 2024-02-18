@@ -1,4 +1,4 @@
-import { BasicLayout } from "@/layouts";
+import { BlankLayout } from "@/layouts";
 
 const routes = [
   {
@@ -23,6 +23,6 @@ export default {
   path: "/shop",
   name: "shop",
   redirect: "/shop/list",
-  component: BasicLayout,
+  component: BlankLayout,
   children: routes,
 };

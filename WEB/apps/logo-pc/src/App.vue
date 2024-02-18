@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <router-view />
+    <basic-layout>
+      <router-view />
+    </basic-layout>
     <!-- 登录弹窗 -->
     <modal-login />
   </div>
 </template>
 <script>
+import { BasicLayout } from "@/layouts";
 import ModalLogin from "@/components/ModalLogin";
 export default {
-  components: { ModalLogin },
+  components: { ModalLogin, BasicLayout },
 };
 </script>
 <style lang="less">
 body {
-  background-color: #f0f0f0!important;
+  background-color: #f0f0f0 !important;
 }
 </style>

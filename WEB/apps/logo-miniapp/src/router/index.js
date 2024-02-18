@@ -11,6 +11,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
+    meta: { title: "菜单式店招设计", isCanBack: false },
     component: Home,
   },
   {
@@ -41,7 +42,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: "hash",
-  base: '/',
+  base: "/",
   routes,
 });
 
