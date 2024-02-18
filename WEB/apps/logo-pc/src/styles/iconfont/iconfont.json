@@ -146,13 +146,6 @@
       "unicode_decimal": 58998
     },
     {
-      "icon_id": "35459059",
-      "name": "ICON",
-      "font_class": "ICON",
-      "unicode": "e602",
-      "unicode_decimal": 58882
-    },
-    {
       "icon_id": "35462811",
       "name": "更多",
       "font_class": "gengduo",
@@ -228,13 +221,6 @@
       "font_class": "quanbudingdan",
       "unicode": "e60d",
       "unicode_decimal": 58893
-    },
-    {
-      "icon_id": "35462833",
-      "name": "选择",
-      "font_class": "xuanze",
-      "unicode": "e60e",
-      "unicode_decimal": 58894
     },
     {
       "icon_id": "35463315",

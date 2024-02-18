@@ -4,15 +4,15 @@
       <van-grid :column-num="columnNum">
         <van-grid-item
           icon-prefix="iconfont icon"
-          icon="zhengfuxinxigongkaishenqing"
-          text="店招设计"
-          to="/signboard/attribute"
+          icon="fadingzhudonggongkaineirong"
+          text="店招设置规范与公告"
+          to="/article/4/list"
         />
         <van-grid-item
           icon-prefix="iconfont icon"
-          icon="fadingzhudonggongkaineirong"
-          text="信息公告"
-          to="/article/4/list"
+          icon="zhengfuxinxigongkaishenqing"
+          text="菜单式店招设计"
+          to="/signboard/negative"
         />
         <!-- <van-grid-item
           icon-prefix="iconfont icon"
@@ -107,6 +107,9 @@ export default {
       border-radius: 100%;
       background-color: @blue;
       color: @white;
+    }
+    &-item__text{
+      text-align: center;
     }
   }
   .tips-box {

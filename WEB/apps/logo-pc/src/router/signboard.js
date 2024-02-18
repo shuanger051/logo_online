@@ -1,6 +1,19 @@
 import { BlankLayout } from "@/layouts";
+import store from "@/store";
 
-const routes = [
+const routes = [  
+  // 负面清单
+{
+  path: "negative",
+  meta: { title: "户外招牌设置负面清单" },
+  component: () => import("@/views/signboard/negativeList"),
+  beforeEnter: (from, to, next) => {
+    const isRead = _.get(store.state, "app.isReadNegative");
+    // 根据条件跳转
+    if (isRead) next({ path: "/signboard/attribute" });
+    else next();
+  },
+},
   // 店招模版选择页
   {
     path: "template",
