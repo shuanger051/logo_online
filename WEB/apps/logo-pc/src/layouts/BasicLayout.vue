@@ -2,6 +2,7 @@
   <div class="base-layout">
     <a-page-header
       :ghost="false"
+      :backIcon="isCanBack"
       :title="$route.meta.title"
       @back="onNativeBack"
     >
@@ -32,13 +33,17 @@ export default {
   },
   data() {
     return {
-      isCanBack: true,
+      isCanBack: false,
     };
   },
   watch: {
     $route: {
       handler(nRoute) {
-        this.isCanBack = _.get(nRoute, "meta.isCanBack", true);
+        this.isCanBack = _.get(
+          nRoute,
+          "meta.isCanBack",
+          <a-icon type="arrow-left" />
+        );
       },
       immediate: true,
       deep: true,

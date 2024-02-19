@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    meta: { title: "菜单式店招设计" },
+    meta: { title: "菜单式店招设计", isCanBack: false },
     component: Home,
   },
   // 店招模块
