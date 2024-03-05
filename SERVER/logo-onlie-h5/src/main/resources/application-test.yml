@@ -48,3 +48,8 @@ uploadPath:
 zlb:
   config:
     getUser: https://gzt.cgw.hangzhou.gov.cn/txcg/userauth-api/sysUser/getDetailByUserId
+
+#权利阳光系统配置：true 开启，false 关闭
+sys:
+  config:
+    qlyg_power: true

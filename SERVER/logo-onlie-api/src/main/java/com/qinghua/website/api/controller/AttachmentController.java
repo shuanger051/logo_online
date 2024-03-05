@@ -5,6 +5,7 @@ import com.qinghua.website.api.annotation.LogAnnotation;
 import com.qinghua.website.api.controller.vo.FileOSSVO;
 import com.qinghua.website.api.controller.vo.FileVO;
 import com.qinghua.website.api.utils.ImgUtils;
+import com.qinghua.website.api.utils.MgrOSSHttpToolsUtils;
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -13,7 +14,7 @@ import com.qinghua.website.server.service.ContentAttachmentService;
 import com.qinghua.website.server.service.LogoInfoService;
 import com.qinghua.website.server.service.MaterialService;
 import com.qinghua.website.server.service.ShopsInfoService;
-import com.qinghua.website.server.utils.OSSHttpToolsUtils;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +142,7 @@ public class AttachmentController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = MgrOSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
 
             if(null != contentId){
                 ContentAttachmentDTO attachmentDTO = new ContentAttachmentDTO();
@@ -257,7 +258,7 @@ public class AttachmentController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = MgrOSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
 
             if(null != shopsId){
                 //更新数据库关系
@@ -363,7 +364,7 @@ public class AttachmentController {
             String fileDir = "upload/material/" + frontPath;
             String objectName = fileDir + "/" + newFileName;
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = MgrOSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
 
             //更新素材
             MaterialDTO materialDTO = new MaterialDTO();
@@ -472,7 +473,7 @@ public class AttachmentController {
             String fileDir = "upload/logo/" + frontPath;
             String objectName = fileDir + "/" + newFileName;
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = MgrOSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
 
 
             if(null != shopsId && null != merchantId){

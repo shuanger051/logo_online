@@ -10,9 +10,10 @@ import com.qinghua.website.mobile.common.TokenTools;
 import com.qinghua.website.mobile.controller.io.*;
 import com.qinghua.website.mobile.controller.vo.*;
 import com.qinghua.website.mobile.utils.BeanToolsUtil;
+import com.qinghua.website.mobile.utils.H5OSSHttpToolsUtils;
 import com.qinghua.website.mobile.utils.HttpClientUtils;
 import com.qinghua.website.mobile.utils.ImgUtils;
-import com.qinghua.website.server.utils.OSSHttpToolsUtils;
+
 import com.qinghua.website.server.common.ResponseResult;
 import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.*;
@@ -288,6 +289,29 @@ public class OpenAPIAPPController {
             log.info("APP登录失败,返回null");
             return ResponseResult.error("账户密码错误!");
         }
+
+    }
+
+    /**
+     * 用户登录APP获取TOKEN
+     * @param loginIO
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "login",logDesc = "用户登录APP获取TOKEN")
+    @RequestMapping(value = "/getTokenTimestampAPI",method = RequestMethod.POST)
+    public ResponseResult<Object> getTokenTimestampAPI(@Validated  @RequestBody APPQLYGLoginIO loginIO, HttpServletRequest request){
+
+        //先将前端传进来的RSA密码进行解密
+        String timestamp = RSACryptoHelper.decrypt(loginIO.getSign());
+
+        //根据账号密码生成TOKEN
+        String token = TokenTools.genTokenTimestamp(timestamp);
+        log.info("APP登录成功,返回token:{}",token);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("token",token);
+
+        return ResponseResult.success(map);
 
     }
 
@@ -802,7 +826,8 @@ public class OpenAPIAPPController {
             String fileDir = "upload/logo/" + frontPath;
             String objectName = fileDir + "/" + newFileName;
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
             if(null != shopsId && null != merchantId){
                 LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
@@ -863,7 +888,8 @@ public class OpenAPIAPPController {
 
             String fileDir = "upload/logo/" + frontPath;
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
             FileOSSVO fileVO = new FileOSSVO();
             fileVO.setFileName(fileName);
@@ -890,7 +916,7 @@ public class OpenAPIAPPController {
     @RequestMapping(value = "/getFileUrlByObjName", method = RequestMethod.GET)
     public ResponseResult<Object> getFileUrlByObjName(@RequestParam("objectName") String objectName){
         Preconditions.checkNotNull(objectName,"objectName 不能为空!");
-        String url = OSSHttpToolsUtils.getUrl(objectName);
+        String url = H5OSSHttpToolsUtils.getUrl(objectName);
         OSSResVO resVO = new OSSResVO();
         resVO.setFilePath(objectName);
         resVO.setFileUrl(url);
@@ -971,17 +997,15 @@ public class OpenAPIAPPController {
 
     /**
      * APP 上传店招Base64文件信息API(oss)
-     * @param base64
+     * @param logoInfoBase64IO
      * @param request
      * @return
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传店招Base64文件信息API(oss)")
     @RequestMapping(value = "/saveLogoInfoBase64APIOSS", method = RequestMethod.POST)
-    public ResponseResult<Object> saveLogoInfoBase64APIOSS(@RequestPart("base64") String base64 , Long shopsId, Long merchantId , HttpServletRequest request) {
+    public ResponseResult<Object> saveLogoInfoBase64APIOSS(@RequestBody LogoInfoBase64IO logoInfoBase64IO , HttpServletRequest request) {
 
-        Preconditions.checkNotNull(base64,"Base64String 不能为空");
-
-        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+        CommonsMultipartFile multipartFile = base64toMultipartFile(logoInfoBase64IO.getBase64());
 
         checkFile(multipartFile);
 
@@ -996,19 +1020,20 @@ public class OpenAPIAPPController {
             String fileDir = "upload/logo/" + frontPath;
             String objectName = fileDir + "/" + newFileName;
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
-            if(null != shopsId && null != merchantId){
+            if(null != logoInfoBase64IO.getShopsId() && null != logoInfoBase64IO.getMerchantId()){
                 LogoInfoDTO logoInfoDTO = new LogoInfoDTO();
-                logoInfoDTO.setShopsId(shopsId);
-                logoInfoDTO.setMerchantId(merchantId);
+                logoInfoDTO.setShopsId(logoInfoBase64IO.getShopsId());
+                logoInfoDTO.setMerchantId(logoInfoBase64IO.getMerchantId());
                 logoInfoDTO.setLogoName(fileName);
                 logoInfoDTO.setLogoFileName(newFileName);
                 logoInfoDTO.setLogoFilePath(objectName);
                 logoInfoDTO.setUrlPath(resUrl);
 
                 //根据shopsId判断数据是新增还是更新
-                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(shopsId);
+                LogoInfoDTO res = logoInfoService.getLogoInfoByShopsIdAPI(logoInfoBase64IO.getShopsId());
                 if(null != res){
                     logoInfoDTO.setId(res.getId());
                     logoInfoService.updateLogoInfoById(logoInfoDTO);
@@ -1267,7 +1292,8 @@ public class OpenAPIAPPController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
             //更新素材
             MaterialDTO materialDTO = new MaterialDTO();
@@ -1302,8 +1328,8 @@ public class OpenAPIAPPController {
      * @return
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传素材附件Base64 API(OSS)")
-    @RequestMapping("/uploadMaterialAttachmentBase64APIOSS")
-    public ResponseResult<Object> uploadMaterialAttachmentBase64APIOSS(@RequestPart("base64")  String base64, HttpServletRequest request) {
+    @RequestMapping(value = "/uploadMaterialAttachmentBase64APIOSS",method = RequestMethod.POST)
+    public ResponseResult<Object> uploadMaterialAttachmentBase64APIOSS(@RequestBody String base64, HttpServletRequest request) {
 
         Preconditions.checkNotNull(base64,"Base64String 不能为空");
 
@@ -1324,7 +1350,8 @@ public class OpenAPIAPPController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
             //更新素材
             MaterialDTO materialDTO = new MaterialDTO();
@@ -1444,7 +1471,8 @@ public class OpenAPIAPPController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
 
             if(null != shopsId){
@@ -1607,7 +1635,7 @@ public class OpenAPIAPPController {
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API")
     @RequestMapping(value = "/uploadShopsContentAttachmentBase64API", method = RequestMethod.POST)
-    public ResponseResult<Object> uploadShopsContentAttachmentBase64API(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
+    public ResponseResult<Object> uploadShopsContentAttachmentBase64API(@RequestBody String base64, @RequestBody Long shopsId, @RequestBody String attachmentType, HttpServletRequest request) {
         Preconditions.checkNotNull(base64,"Base64String 不能为空");
 
         CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
@@ -1671,18 +1699,15 @@ public class OpenAPIAPPController {
 
     /**
      * APP 上传商铺Base64文件API(OSS)
-     * @param base64
-     * @param shopsId
-     * @param attachmentType
+     * @param shopsContentAttInfoIO
      * @param request
      * @return
      */
     @LogAnnotation(logType = "upload",logDesc = "APP 上传商铺Base64文件API(OSS)")
     @RequestMapping(value = "/uploadShopsContentAttachmentBase64APIOSS", method = RequestMethod.POST)
-    public ResponseResult<Object> uploadShopsContentAttachmentBase64APIOSS(@RequestPart("base64")  String base64, Long shopsId, String attachmentType, HttpServletRequest request) {
-        Preconditions.checkNotNull(base64,"Base64String 不能为空");
+    public ResponseResult<Object> uploadShopsContentAttachmentBase64APIOSS(@RequestBody ShopsContentAttInfoIO shopsContentAttInfoIO, HttpServletRequest request) {
 
-        CommonsMultipartFile multipartFile = base64toMultipartFile(base64);
+        CommonsMultipartFile multipartFile = base64toMultipartFile(shopsContentAttInfoIO.getBase64());
 
         checkFile(multipartFile);
 
@@ -1699,16 +1724,18 @@ public class OpenAPIAPPController {
             String objectName = fileDir + "/" + newFileName;
 
             //上传到OSS
-            String resUrl = OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile);
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
 
-            if(null != shopsId){
+            if(null != shopsContentAttInfoIO.getShopsId()){
                 //更新数据库关系
                 ShopsAttachmentDTO shopsAttachmentDTO = new ShopsAttachmentDTO();
-                shopsAttachmentDTO.setShopsId(shopsId);
+                shopsAttachmentDTO.setShopsId(shopsContentAttInfoIO.getShopsId());
                 shopsAttachmentDTO.setFileName(fileName);
                 shopsAttachmentDTO.setAttachmentName(newFileName);
                 shopsAttachmentDTO.setAttachmentPath(objectName);
-                shopsAttachmentDTO.setAttachmentType(attachmentType);
+                shopsAttachmentDTO.setAttachmentType(shopsContentAttInfoIO.getAttachmentType());
+                shopsAttachmentDTO.setUrlPath(resUrl);
 
                 List<ShopsAttachmentDTO> list = new ArrayList<>();
                 list.add(shopsAttachmentDTO);
@@ -1720,7 +1747,7 @@ public class OpenAPIAPPController {
             fileVO.setFileName(fileName);
             fileVO.setAttachmentPath(objectName);
             fileVO.setAttachmentName(newFileName);
-            fileVO.setAttachmentType(attachmentType);
+            fileVO.setAttachmentType(shopsContentAttInfoIO.getAttachmentType());
             fileVO.setUrlPath(resUrl);
 
             return ResponseResult.success(fileVO);
@@ -1734,6 +1761,101 @@ public class OpenAPIAPPController {
 
     }
 
+    /**
+     * APP Excel上传(OSS)
+     * @param shopsContentAttInfoIO
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP Excel上传(OSS)")
+    @RequestMapping(value = "/uploadExcelBase64APIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadExcelBase64APIOSS(@RequestBody ShopsContentAttInfoIO shopsContentAttInfoIO, HttpServletRequest request) {
+
+        CommonsMultipartFile multipartFile = base64toExcelFile(shopsContentAttInfoIO.getBase64());
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/excel/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(shopsContentAttInfoIO.getAttachmentType());
+            fileVO.setUrlPath(resUrl);
+
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+
+    }
+
+    /**
+     * APP 测试商铺OSS上传
+     * @param shopsContentAttInfoIO
+     * @param request
+     * @return
+     */
+    @LogAnnotation(logType = "upload",logDesc = "APP 测试商铺OSS上传(OSS)")
+    @RequestMapping(value = "/uploadTestBase64APIOSS", method = RequestMethod.POST)
+    public ResponseResult<Object> uploadTestBase64APIOSS(@RequestBody ShopsContentAttInfoIO shopsContentAttInfoIO, HttpServletRequest request) {
+
+        CommonsMultipartFile multipartFile = base64toMultipartFile(shopsContentAttInfoIO.getBase64());
+
+        checkFile(multipartFile);
+
+        try {
+
+            String fileId = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+            String fileName = multipartFile.getOriginalFilename();
+            String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+            String frontPath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+            String newFileName = fileId + "." + fileType;
+
+            String fileDir = "upload/shops/" + frontPath;
+            String objectName = fileDir + "/" + newFileName;
+
+            //上传到OSS
+            String resUrl = H5OSSHttpToolsUtils.uploadImg2Oss(fileDir,newFileName,multipartFile)
+                    .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+
+            FileVO fileVO = new FileVO();
+            fileVO.setFileName(fileName);
+            fileVO.setAttachmentPath(objectName);
+            fileVO.setAttachmentName(newFileName);
+            fileVO.setAttachmentType(shopsContentAttInfoIO.getAttachmentType());
+            fileVO.setUrlPath(resUrl);
+
+            return ResponseResult.success(fileVO);
+        } catch (Exception exception) {
+            if(exception instanceof BizException){
+                throw new BizException(exception.getMessage(),SysConstant.SYSTEM_ERROR_500.getCode());
+            }else {
+                throw new BizException(SysConstant.ERROR_FILE_UPLOAD_FILE_10004);
+            }
+        }
+
+    }
 
     /**
      * Base64 转 MultipartFile
@@ -1744,6 +1866,54 @@ public class OpenAPIAPPController {
     public static CommonsMultipartFile base64toMultipartFile(String base64) {
         final File file = base64ToFile(base64);
         DiskFileItem item = (DiskFileItem) new DiskFileItemFactory().createItem(file.getName(), "image/jpeg", false, file.getName());
+        InputStream input = null;
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
+        OutputStream os = null;
+        try {
+            os = item.getOutputStream();
+            if (input != null) {
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+            }
+        } catch (IOException e) {
+            throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        } finally {
+            if (null != os) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+            if (null != input) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转MultipartFile失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+
+        }
+        return new CommonsMultipartFile(item);
+    }
+
+    /**
+     * Base64 转 MultipartFile
+     * @param base64
+     * @return
+     * @throws IOException
+     */
+    public static CommonsMultipartFile base64toExcelFile(String base64) {
+        final File file = base64ToExcelFile(base64);
+        DiskFileItem item = (DiskFileItem) new DiskFileItemFactory().createItem(file.getName(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", false, file.getName());
         InputStream input = null;
         try {
             input = new FileInputStream(file);
@@ -1825,6 +1995,46 @@ public class OpenAPIAPPController {
 
 
     /**
+     * Base64 转 File
+     * @param base64
+     * @return
+     */
+    public static File base64ToExcelFile(String base64) {
+
+        if (base64 == null || "".equals(base64)) {
+            throw new BizException("Base64参数不能为空",SysConstant.SYSTEM_ERROR_400.getCode());
+        }
+
+        String[] str = base64.split(",");
+        //getRealImgeStr 方法 截取bese64字符串 逗号后半部分有用的字符串
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] buff = new byte[0];
+        try {
+            buff = decoder.decodeBuffer(str[1]);
+        } catch (IOException e) {
+            throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        }
+        File file = null;
+        FileOutputStream fout = null;
+        try {
+            file = File.createTempFile("tmp", ".xlsx");
+            fout = new FileOutputStream(file);
+            fout.write(buff);
+        } catch (IOException e) {
+            throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+        } finally {
+            if (fout != null) {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    throw new BizException("Base64转File失败",SysConstant.SYSTEM_ERROR_500.getCode());
+                }
+            }
+        }
+        return file;
+    }
+
+    /**
       * 校验文件是否合法
       * @param file
       * @return
@@ -1885,7 +2095,9 @@ public class OpenAPIAPPController {
                 if(null != dto.getFilePath() && dto.getFilePath().indexOf("upload") < 0){
                     String newFilePath = "upload/material/" + dto.getFilePath() + "/" + dto.getFileName();
                     //根据objectName 获取url
-                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    String ossUrl = H5OSSHttpToolsUtils.getUrl(newFilePath)
+                            .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+                    log.info("素材OSSURL< " + i + ">：" + ossUrl);
                     // 在这里编写需要更新的字段及相应的值
                     String updateSql = "UPDATE t_material SET file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
                     log.info("当前SQL语句为：" + updateSql);
@@ -1922,7 +2134,9 @@ public class OpenAPIAPPController {
                 if(null != dto.getAttachmentPath() && dto.getAttachmentPath().indexOf("upload") < 0){
                     String newFilePath = "upload/shops/" + dto.getAttachmentPath() + "/" + dto.getAttachmentName();
                     //根据objectName 获取url
-                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    String ossUrl = H5OSSHttpToolsUtils.getUrl(newFilePath)
+                            .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+                    log.info("商铺OSSURL< " + i + ">：" + ossUrl);
                     // 在这里编写需要更新的字段及相应的值
                     String updateSql = "UPDATE t_shops_attachment SET attachment_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
                     log.info("当前SQL语句为：" + updateSql);
@@ -1958,7 +2172,9 @@ public class OpenAPIAPPController {
                 if(null != dto.getLogoFilePath() && dto.getLogoFilePath().indexOf("upload") < 0){
                     String newFilePath = "upload/logo/" + dto.getLogoFilePath() + "/" + dto.getLogoFileName();
                     //根据objectName 获取url
-                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    String ossUrl = H5OSSHttpToolsUtils.getUrl(newFilePath)
+                            .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+                    log.info("店招OSSURL< " + i + ">：" + ossUrl);
                     // 在这里编写需要更新的字段及相应的值
                     String updateSql = "UPDATE t_logo_info SET logo_file_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
                     log.info("当前SQL语句为：" + updateSql);
@@ -1994,7 +2210,9 @@ public class OpenAPIAPPController {
                 if(null != dto.getAttachmentPath() && dto.getAttachmentPath().indexOf("upload") < 0){
                     String newFilePath = "upload/content/" + dto.getAttachmentPath() + "/" + dto.getAttachmentName();
                     //根据objectName 获取url
-                    String ossUrl = OSSHttpToolsUtils.getUrl(newFilePath);
+                    String ossUrl = H5OSSHttpToolsUtils.getUrl(newFilePath)
+                            .replace("http://10.253.16.56:10012/cdsdzaliossvpn1/img-save-dir/","https://img-save-dir.oss-cn-hangzhou.aliyuncs.com/");
+                    log.info("文章OSSURL< " + i + ">：" + ossUrl);
                     // 在这里编写需要更新的字段及相应的值
                     String updateSql = "UPDATE t_content_attachment SET attachment_path = '" + newFilePath + "',url_path = '" + ossUrl + "' WHERE id=" + dto.getId();
                     log.info("当前SQL语句为：" + updateSql);

@@ -9,9 +9,13 @@ import com.qinghua.website.api.controller.vo.ShopsInfoVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
 import com.qinghua.website.api.utils.ImgUtils;
+import com.qinghua.website.api.utils.MgrOSSHttpToolsUtils;
 import com.qinghua.website.server.common.ResponseResult;
+import com.qinghua.website.server.constant.SysConstant;
+import com.qinghua.website.server.dao.ShopsAttachmentMapper;
 import com.qinghua.website.server.domain.ShopsAttachmentDTO;
 import com.qinghua.website.server.domain.ShopsInfoDTO;
+import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.ShopsInfoService;
 import com.qinghua.website.server.utils.Sm4Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +36,9 @@ public class ShopsInfoController {
 
     @Autowired
     private ShopsInfoService shopsInfoService;
+
+    @Autowired
+    private ShopsAttachmentMapper shopsAttachmentMapper;
 
     @Value("${uploadPath.urlPath}")
     private String urlPath;   //图标映射路径
@@ -220,6 +227,15 @@ public class ShopsInfoController {
     @RequiresPermissions("/shops-info/deleteShopsInfoById")
     public ResponseResult<Object> deleteShopsInfoById(@Valid @RequestBody IdIO req) {
         shopsInfoService.deleteShopsInfoById(req.getId());
+        //删除关联附件信息，服务器数据清除
+        List<ShopsAttachmentDTO> resList = shopsAttachmentMapper.getShopsAttachmentByShopsId(req.getId());
+        if(null != resList && resList.size() > 0){
+            for(int i=0;i<resList.size();i++){
+                MgrOSSHttpToolsUtils.delOSSFile(resList.get(i).getAttachmentPath());
+            }
+        }
+        //删除数据库附件信息
+        shopsAttachmentMapper.deleteShopsAttachmentByShopsId(req.getId());
         return ResponseResult.success();
     }
 
@@ -262,7 +278,17 @@ public class ShopsInfoController {
     @RequiresPermissions("/shops-info/deleteShopsAttachmentOSS")
     public ResponseResult<Object> deleteShopsAttachmentOSS(@RequestParam("attachmentName") String attachmentName, HttpServletRequest request) {
         Preconditions.checkNotNull(attachmentName,"参数：attachmentName 不能为空");
-        shopsInfoService.deleteAttachmentByNameOSS(attachmentName);
+
+        //校验数据合法性
+        ShopsAttachmentDTO res = shopsAttachmentMapper.getShopsAttachmentByAttachmentName(attachmentName);
+        if(null != res){
+            MgrOSSHttpToolsUtils.delOSSFile(res.getAttachmentPath());
+            shopsInfoService.deleteAttachmentByNameOSS(attachmentName);
+        }else{
+            throw new BizException(SysConstant.ERROR_FILE_NOT_EXIST);
+        }
+
+
         return ResponseResult.success();
     }
 

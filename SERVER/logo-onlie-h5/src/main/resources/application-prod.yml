@@ -3,8 +3,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     #MYSQL5的useSSL为false
-    url: jdbc:mysql://172.18.34.203:63308/dzdp_29?useSSL=false&useUnicode=true&characterEncoding=UTF-8
-    username: dzdp_29
+    url: jdbc:mysql://172.18.34.203:63308/dzdp_30?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: dzdp_30
     password: TXCG_20210928
     driver-class-name: com.mysql.jdbc.Driver
     hikari:
@@ -50,3 +50,8 @@ mybatis:
 zlb:
   config:
     getUser: http://127.0.0.1:9999/userauth-api/sysUser/getDetailByUserId
+
+#权利阳光系统配置：true 开启，false 关闭
+sys:
+  config:
+    qlyg_power: true

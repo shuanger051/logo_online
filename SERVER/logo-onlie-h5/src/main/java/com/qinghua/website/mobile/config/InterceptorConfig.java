@@ -22,7 +22,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
                         "/app/registerCustomerAPI",
                         "/app/downloadContentAttachment",
                         "/app/crypto/**",
-                        "/app/updateOSSDataInit"
+                        "/app/updateOSSDataInit",
+                        "/app/uploadTestBase64APIOSS",
+                        "/app/getTokenTimestampAPI"
                 );
     }
 

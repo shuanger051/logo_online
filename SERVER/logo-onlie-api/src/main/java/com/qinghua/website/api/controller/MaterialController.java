@@ -6,8 +6,11 @@ import com.qinghua.website.api.controller.io.*;
 import com.qinghua.website.api.controller.vo.MaterialVO;
 import com.qinghua.website.api.controller.vo.PageListVO;
 import com.qinghua.website.api.utils.BeanToolsUtil;
+import com.qinghua.website.api.utils.MgrOSSHttpToolsUtils;
 import com.qinghua.website.server.common.ResponseResult;
+import com.qinghua.website.server.constant.SysConstant;
 import com.qinghua.website.server.domain.MaterialDTO;
+import com.qinghua.website.server.exception.BizException;
 import com.qinghua.website.server.service.MaterialService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +149,15 @@ public class MaterialController {
     @RequestMapping(value = "/deleteMaterialByIDOSS", method = RequestMethod.POST)
     @RequiresPermissions("/template/deleteMaterialByIDOSS")
     public ResponseResult<Object> deleteMaterialByIDOSS(@Valid @RequestBody IdIO idIO){
+        //根据ID查询出文件信息。
+        MaterialDTO checkDTO = materialService.getMaterialById(idIO.getId());
+
+        if(null == checkDTO){
+            throw new BizException("没有找到符合的数据信息!", SysConstant.SYSTEM_ERROR_400.getCode());
+        }
         materialService.deleteMaterialByIdOSS(idIO.getId());
+        //删除OSS附件信息
+        MgrOSSHttpToolsUtils.delOSSFile(checkDTO.getFilePath());
         return ResponseResult.success();
     }
 

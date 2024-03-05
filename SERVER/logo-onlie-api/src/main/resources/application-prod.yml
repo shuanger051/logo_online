@@ -3,8 +3,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     #MYSQL5的useSSL为false
-    url: jdbc:mysql://172.18.34.203:63308/dzdp_29?useSSL=false&useUnicode=true&characterEncoding=UTF-8
-    username: dzdp_29
+    url: jdbc:mysql://172.18.34.203:63308/dzdp_30?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: dzdp_30
     password: TXCG_20210928
     driver-class-name: com.mysql.jdbc.Driver
     hikari:

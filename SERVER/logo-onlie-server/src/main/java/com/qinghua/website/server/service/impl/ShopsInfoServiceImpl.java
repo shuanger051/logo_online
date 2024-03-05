@@ -10,7 +10,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.qinghua.website.server.utils.FileUtils;
-import com.qinghua.website.server.utils.OSSHttpToolsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -144,15 +143,6 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     public void deleteShopsInfoByIdOSS(Long id) {
         Preconditions.checkNotNull(id, "参数:ID不能为空");
         shopsInfoMapper.deleteShopsInfoById(id);
-        //删除关联附件信息，服务器数据清除
-        List<ShopsAttachmentDTO> resList = attachmentMapper.getShopsAttachmentByShopsId(id);
-        if(null != resList && resList.size() > 0){
-            for(int i=0;i<resList.size();i++){
-                OSSHttpToolsUtils.delOSSFile(resList.get(i).getAttachmentPath());
-            }
-        }
-        //删除数据库附件信息
-        attachmentMapper.deleteShopsAttachmentByShopsId(id);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -237,15 +227,8 @@ public class ShopsInfoServiceImpl implements ShopsInfoService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void deleteAttachmentByNameOSS(String attachmentName){
-        //校验数据合法性
-        ShopsAttachmentDTO res = attachmentMapper.getShopsAttachmentByAttachmentName(attachmentName);
-        if(null != res){
-            OSSHttpToolsUtils.delOSSFile(res.getAttachmentPath());
-            //执行数据库清除
-            attachmentMapper.deleteAttachmentByName(attachmentName);
-        }else{
-            throw new BizException(SysConstant.ERROR_FILE_NOT_EXIST);
-        }
+        //执行数据库清除
+        attachmentMapper.deleteAttachmentByName(attachmentName);
     }
 
     /**

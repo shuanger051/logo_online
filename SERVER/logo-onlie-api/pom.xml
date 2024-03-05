@@ -88,7 +88,9 @@
             <properties>
                 <profile>dev</profile>
             </properties>
-
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>test</id>
@@ -96,9 +98,6 @@
                 <profile>test</profile>
             </properties>
 
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <profile>
             <id>prod</id>

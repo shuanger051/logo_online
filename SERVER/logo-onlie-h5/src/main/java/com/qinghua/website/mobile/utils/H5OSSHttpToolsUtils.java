@@ -1,4 +1,4 @@
-package com.qinghua.website.server.utils;
+package com.qinghua.website.mobile.utils;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
@@ -11,19 +11,26 @@ import com.qinghua.website.server.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
-public class OSSHttpToolsUtils {
+public class H5OSSHttpToolsUtils {
 
-    public static final String OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
-    public static final String BUCKET_NAME = "img-save-dir";
-    
+    public static String BUCKET_NAME ="img-save-dir";
+    public static String KEY_ID = "LTAI5tQ2nydShTmWfGqmP384";
+    public static String KEY_SECRET = "h6qPG28Jy05cAqGKGUiUUAB0xQp9kI";
+    //public static String ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com";
+    public static String ENDPOINT = "http://10.253.16.56:10012/cdsdzaliossvpn1";
 
     public static void main(String[] args) throws Exception {
+
+        String bucketName = BUCKET_NAME;
+        System.out.println(bucketName);
 
         EnvironmentVariableCredentialsProvider credentialsProvider = CredentialsProviderFactory.newEnvironmentVariableCredentialsProvider();
         String objectName = "upload/material/2023/07/13/214312341.JPEG";
@@ -116,7 +123,7 @@ public class OSSHttpToolsUtils {
     public static OSS initClient(){
         OSS ossClient = null;
         try {
-            ossClient = new OSSClientBuilder().build(OSSHttpToolsUtils.OSS_ENDPOINT, OSS_ACCESS_KEY_ID,OSS_ACCESS_KEY_SECRET);
+            ossClient = new OSSClientBuilder().build(ENDPOINT, KEY_ID, KEY_SECRET);
         }catch (Exception e){
             log.error("无法从环境变量里获取OSS配置参数!"+e.getMessage());
             throw new BizException("初始化OSS客户端失败!",SysConstant.SYSTEM_ERROR_500.getCode());
