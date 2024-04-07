@@ -10,8 +10,9 @@ const routes = [
     beforeEnter: (from, to, next) => {
       const isRead = _.get(store.state, "app.isReadNegative");
       // 根据条件跳转
-      if (isRead) next({ path: "/signboard/attribute" });
+      if (isRead) next({ path: "/signboard/streetTypeSelect" });
       else next();
+      return
     },
   },
   // 店招模版选择页
@@ -30,6 +31,23 @@ const routes = [
     path: "editSelect",
     meta: { title: "编辑选择" },
     component: () => import("@/views/signboard/editSelect"),
+  },
+  // 街区类型
+  {
+    path: "streetTypeSelect",
+    meta: { title: "一街一景" },
+    component: () => import("@/views/signboard/streetTypeSelect"),
+  },
+  // 街区道路
+  {
+    path: "streetSelect",
+    meta: { title: "一街一景" },
+    component: () => import("@/views/signboard/streetSelect"),
+  },
+  {
+    path: "streetIntro",
+    meta: { title: "一街一景" },
+    component: () => import("@/views/signboard/streetIntro"),
   },
   {
     path: "design",

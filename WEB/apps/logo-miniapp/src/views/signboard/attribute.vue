@@ -20,7 +20,7 @@
         {{ item.label }}
       </van-checkbox>
     </van-checkbox-group>
-    <van-divider>街道类型</van-divider>
+    <!-- <van-divider>街道类型</van-divider>
     <van-checkbox-group v-model="formData.streetType" direction="horizontal">
       <van-checkbox
         v-for="item in attrs.streetType"
@@ -29,7 +29,7 @@
       >
         {{ item.label }}
       </van-checkbox>
-    </van-checkbox-group>
+    </van-checkbox-group> -->
     <submit-bar>
       <van-button block type="primary" @click="onNext">下一步</van-button>
     </submit-bar>

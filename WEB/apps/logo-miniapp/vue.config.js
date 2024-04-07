@@ -31,6 +31,9 @@ module.exports = {
         pathRewrite: {
           "^/api": "",
         },
+        // bypass: (req, res, proxyOptions) => {
+        //   console.log(req, res, proxyOptions);
+        // },
       },
     },
   },

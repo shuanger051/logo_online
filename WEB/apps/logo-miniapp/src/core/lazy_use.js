@@ -32,7 +32,12 @@ import {
   Slider,
   CheckboxGroup,
   NoticeBar,
-  Loading
+  Loading,
+  Notify,
+  Col,
+  Row,
+  Radio,
+  RadioGroup
 } from "vant";
 import SubmitBar from "@/components/SubmitBar";
 import FieldPicker from "@/components/FieldPicker";
@@ -70,6 +75,11 @@ Vue.use(Tabbar);
 Vue.use(TabbarItem);
 Vue.use(Slider);
 Vue.use(Loading);
+Vue.use(Notify);
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 
 // 自定义组件
 Vue.component("submit-bar", SubmitBar);

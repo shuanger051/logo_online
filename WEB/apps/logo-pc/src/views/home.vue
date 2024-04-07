@@ -28,11 +28,7 @@
     <!-- 温馨提示 -->
     <a-alert message="温馨提示" type="info" show-icon>
       <template slot="description">
-        首次使用店招在线设计的用户，请先进入信息公告，仔细阅读<a
-          href="javascript:void(0);"
-          >《店招设计使用流程》</a
-        >和<a href="javascript:void(0);">《杭州市户外招牌设置负面清单》</a
-        >后再进行操作。
+        本应用用于在线设计店招并制作效果图用于店招备案审批，请预先准备好店铺正面门头全景实拍照片
       </template>
     </a-alert>
   </div>
