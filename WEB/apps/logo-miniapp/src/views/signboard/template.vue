@@ -115,6 +115,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .page-wrap {
+  padding-top: 12px;
   .logo-item {
     margin-bottom: 10px;
   }

@@ -1,24 +1,5 @@
 <template>
   <div class="page-wrap">
-    <!-- 店招牌类型 -->
-    <van-panel title="店招牌类型">
-      <van-radio-group v-model="materialType">
-        <van-row>
-          <van-col :span="12">
-            <van-radio name="1">常规造型</van-radio>
-          </van-col>
-          <van-col :span="12">
-            <van-radio name="2">外挑式造型</van-radio>
-          </van-col>
-          <van-col :span="12">
-            <van-radio name="3">立体字造型</van-radio>
-          </van-col>
-          <van-col :span="12">
-            <van-radio name="4">其他造型</van-radio>
-          </van-col>
-        </van-row>
-      </van-radio-group>
-    </van-panel>
     <!-- 街区选择 -->
     <van-panel title="街区类型">
       <van-radio-group v-model="streetType">
@@ -56,19 +37,27 @@ export default {
   },
   methods: {
     onNext() {
-      const { materialType, streetType } = this;
-      if (!materialType)
-        this.$notify({ type: "warning", message: "请选择店招牌类型" });
-      else if (!streetType)
+      const { streetType } = this;
+      if (!streetType)
         this.$notify({ type: "warning", message: "请选择街区类型" });
-      else
+      // 特色街区-进入一街一景
+      else if (streetType == "2") {
         this.$router.push({
           path: "/signboard/streetSelect",
           query: {
-            materialType,
             streetType,
           },
         });
+      } 
+      // 非特色直接到类型选择
+      else {
+        this.$router.push({
+          path: "/signboard/attribute",
+          query: {
+            streetType,
+          },
+        });
+      }
     },
   },
 };

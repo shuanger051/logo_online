@@ -35,7 +35,7 @@ const routes = [
   // 街区类型
   {
     path: "streetTypeSelect",
-    meta: { title: "一街一景" },
+    meta: { title: "街区类型" },
     component: () => import("@/views/signboard/streetTypeSelect"),
   },
   // 街区道路
