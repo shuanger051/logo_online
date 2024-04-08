@@ -55,6 +55,7 @@ export default {
     },
   },
   created() {
+      this.clearWork();
       this.setEditingPage();
       this.initEdit();
   }

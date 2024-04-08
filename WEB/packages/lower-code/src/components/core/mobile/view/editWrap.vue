@@ -1,17 +1,29 @@
 <template>
   <div class="edit-wrap">
-    <div class="edit-wrap-header">
-      <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
+    <tool-bar :showPicConfirm="showPicConfirm" />
+    <!-- <div class="edit-wrap-header">
+     <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
       <span @click="picDownload">下载图片</span>
       <span @click="xlslDownload" class="downLoadXLSL">下载设计说明文件</span>
-    </div>
+    </div> -->
     <div class="edit-wrap-content" @click="() => this.setEditingElement()">
       <div style="min-height: 320px">
         <edit-panel :elements="elements" :style="editPanelStyle"></edit-panel>
       </div>
     </div>
-   <tool-bar />
-    <props-panel />
+    <van-dialog
+      v-model="picConfirmShow"
+      title="确认"
+      show-cancel-button
+      @confirm="changeConfig(true)"
+    >
+    <div style="padding: 10px;">
+      <p style="font-size: 0.4rem;">请确保上传的图片不侵犯他人知识产权，如有侵权，一切后果由上传人承担</p>
+      <div style="display: flex; align-items: center;"><van-switch v-model="picConfirm" @change="changeConfirm" size="24px" style="margin-right: 10px;"/><span style="font-size: 0.4rem;">下次不在提示</span></div>
+    </div>
+
+    </van-dialog>
+    <props-panel :breforRead="showPicConfirm" />
   </div>
 </template>
 <script>
@@ -21,11 +33,10 @@ import ToolBar from "./toolBar.vue";
 import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
 import store from "core/mobile/store/index";
-import { download,  downLoadXLSL} from "core/support/download.js";
-import {sleep, later} from '@editor/utils/tool'
+import { download, downLoadXLSL } from "core/support/download.js";
+import { sleep, later } from "@editor/utils/tool";
 import { Notify } from "vant";
 import { Toast } from "vant";
-
 
 export default {
   components: { PropsPanel, EditPanel, ToolBar },
@@ -38,11 +49,13 @@ export default {
       pages: (state) => state.work.pages,
       work: (state) => state.work,
       currentShopSign: (state) => state.mobile.currentShopSign,
-    })
+    }),
   },
   data() {
     return {
       showOverlay: false,
+      picConfirmShow: false,
+      picConfirm: sessionStorage.getItem("picConfirm") == 'true',
       editPanelStyle: {
         width: "0px",
         height: "0px",
@@ -51,7 +64,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions("editor", ["fetchWork", "setEditingPage", "mCreateCover", 'setEditingElement','setPic']),
+    ...mapActions("editor", [
+      "fetchWork",
+      "setEditingPage",
+      "mCreateCover",
+      "setEditingElement",
+      "setPic",
+      "clearWork",
+    ]),
     async picDownload() {
       const toast = Toast.loading({
         message: "生成中...",
@@ -59,13 +79,30 @@ export default {
         duration: 0,
       });
       try {
-        const info=await this.mCreateCover({ el: "#content_edit" });
-        download(info.data.urlPath, +new Date() + '.png')
+        const info = await this.mCreateCover({ el: "#content_edit" });
+        download(info.data.urlPath, +new Date() + ".png");
       } catch (e) {
-        console.log(e,99)
         Notify({ type: "danger", message: "下载失败" });
       }
       toast.clear();
+    },
+    changeConfirm(value) {
+      sessionStorage.setItem('picConfirm', value)
+    },
+    showPicConfirm() {
+      return new Promise((resolve, reject) => {
+        if (this.picConfirm) {
+          resolve();
+        } else {
+          this.picConfirmShow = true;
+          this.changeConfig = (flag) => {
+            this.picConfirmShow = false;
+            later(() => {
+              flag ? resolve() : reject()
+            }, 200)
+          };
+        }
+      });
     },
     async xlslDownload() {
       const toast = Toast.loading({
@@ -74,7 +111,7 @@ export default {
         duration: 0,
       });
       try {
-        downLoadXLSL(this.$store.state.editor.work)
+        downLoadXLSL(this.$store.state.editor.work);
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
@@ -91,11 +128,11 @@ export default {
         duration: 0,
       });
       try {
-        const info=await this.mCreateCover({ el: "#content_edit" });
+        const info = await this.mCreateCover({ el: "#content_edit" });
         this.setPic({
-          type: 'signboardPic',
-          value:info.data.urlPath
-        })
+          type: "signboardPic",
+          value: info.data.urlPath,
+        });
         Notify({ type: "success", message: "创建成功" });
         later(() => {
           this.$router.push({
@@ -106,8 +143,8 @@ export default {
           });
         }, 1000);
       } catch (e) {
-        console.log(e)
-         Notify({ type: "danger", message: "创建失败" });
+        console.log(e);
+        Notify({ type: "danger", message: "创建失败" });
       }
       toast.clear();
     },
@@ -118,13 +155,17 @@ export default {
           forbidClick: true,
           duration: 0,
         });
-        this.fetchWork({id: this.$route.params.id, hasWork: this.$route.query.hasWork});
+        this.fetchWork({
+          id: this.$route.params.id,
+          hasWork: this.$route.query.hasWork,
+        });
         await sleep(1000);
         toast.clear();
       }
     },
   },
   created() {
+    this.clearWork();
     this.$watch(
       () => [this.work.width, this.work.height],
       () => {

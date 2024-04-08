@@ -3,14 +3,17 @@
     <van-button color="#1989fa" plain @click="show = true" class="btn"
       >素材库</van-button
     >
+    <van-button color="#07c160" plain @click="readBefore" class="btn"
+        >本地上传</van-button
+      >
     <van-uploader
+        id="file_upload_1"
+        style="display: none;"
         :after-read="afterRead"
         :max-size="1024 * 1024 * 2"
         @oversize="onOversize"
     >
-      <van-button color="#07c160" plain @click="show = true" class="btn"
-        >本地上传</van-button
-      >
+
   </van-uploader>
     <van-dialog v-model="show" title="标题" show-cancel-button @confirm = "configHandler">
       <div class="image-container">
@@ -49,6 +52,7 @@ export default {
       select: null,
     };
   },
+  props: ['beforeRead'],
   watch: {
     "page.current": {
       handler() {
@@ -65,6 +69,14 @@ export default {
     configHandler() {
       if (this.select) {
         this.$emit('input', this.select.url)
+      }
+    },
+    readBefore() {
+      let click = () => document.getElementById('file_upload_1').click()
+      if (this.beforeRead) {
+        this.beforeRead().then(click)
+      } else {
+        click()
       }
     },
     async afterRead(file) {

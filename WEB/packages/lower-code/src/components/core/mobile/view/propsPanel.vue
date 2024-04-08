@@ -10,6 +10,7 @@
 
   export default {
     components: {basicProps},
+    props: ['breforRead'],
     computed: {
       ...mapState('editor', {
         editingElement: state => state.editingElement,
@@ -45,10 +46,13 @@
             if (config.visible !== false) {
               items.push({
                 type: config.editor.type,
-                props: config.editor.props,
+                props: Object.assign({}, config.editor.props || {}),
                 propsName: key,
                 config: config.editor
               })
+            }
+            if (config.editor.type == 'mobile-upload') {
+              items[items.length-1].props.beforeRead = this.breforRead
             }
           })
         }

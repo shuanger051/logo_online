@@ -1,23 +1,38 @@
 <template>
   <div class="toolbar">
-    <van-tabbar active-color="#7d7e80" inactive-color="#7d7e80">
-      <van-tabbar-item icon="home-o" @click="openTextDialog"
-        >加字</van-tabbar-item
+    <div class="edit-wrap-header">
+      <!-- <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
+      <span @click="picDownload">下载图片</span>
+      <span @click="xlslDownload" class="downLoadXLSL">下载设计说明文件</span> -->
+      <span @click="openTextDialog">
+        <van-icon name="home-o" />
+        <font>加字</font>
+      </span>
+      <span @click.capture="beforUploader">
+        <van-icon name="search" />
+        <font>加图</font>
+      </span>
+      <span @click="previewImage">
+        <van-icon name="friends-o" />
+        <font>模板</font>
+      </span>
+      <van-button
+        type="primary"
+        class="recover"
+        @click="createShopSign"
+        size="small"
+        >设计完成</van-button
       >
-      <van-uploader
-          :after-read="afterRead"
-          :showUploadList="false"
-          :max-size="1024 * 1024 * 2"
-          @oversize="onOversize"
-        >
-      <van-tabbar-item icon="search">
-    
-          加图
-       
-      </van-tabbar-item>
+    </div>
+    <van-uploader
+      id="fileUploader"
+      style="display: none"
+      :after-read="afterRead"
+      :showUploadList="false"
+      :max-size="1024 * 1024 * 2"
+      @oversize="onOversize"
+    >
     </van-uploader>
-      <van-tabbar-item icon="friends-o" @click="previewImage">模板</van-tabbar-item>
-    </van-tabbar>
     <van-dialog
       v-model="textDialog"
       show-cancel-button
@@ -31,10 +46,11 @@
 <script>
 import store from "core/mobile/store/index";
 import { mapActions, mapState } from "vuex";
-import { Toast } from "vant";
+import { Toast, Notify } from "vant";
+import { sleep, later } from "@editor/utils/tool";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
-import { ImagePreview } from 'vant';
-import { resolveImgUrlBase64} from "core/support/imgUrl";
+import { ImagePreview } from "vant";
+import { resolveImgUrlBase64 } from "core/support/imgUrl";
 
 export default {
   data() {
@@ -45,16 +61,26 @@ export default {
       text: "",
     };
   },
+  props: ["showPicConfirm"],
   store,
   computed: {
     ...mapState("editor", {
       elements: (state) => state.editingPage.elements,
-      work: (state) => state.work
+      work: (state) => state.work,
     }),
   },
   methods: {
-    ...mapActions("editor", ["elementManager", "setEditingElement"]),
-
+    ...mapActions("editor", [
+      "elementManager",
+      "setEditingElement",
+      "setPic",
+      "mCreateCover",
+    ]),
+    async beforUploader() {
+      this.showPicConfirm().then(() => {
+        document.getElementById("fileUploader").click();
+      });
+    },
     addText() {
       if (this.text) {
         this.addElement({
@@ -107,15 +133,42 @@ export default {
       }
       toast.clear();
     },
+    async createShopSign() {
+      const toast = Toast.loading({
+        message: "生成中...",
+        forbidClick: true,
+        duration: 0,
+      });
+      try {
+        const info = await this.mCreateCover({ el: "#content_edit" });
+        this.setPic({
+          type: "signboardPic",
+          value: info.data.urlPath,
+        });
+        Notify({ type: "success", message: "创建成功" });
+        later(() => {
+          this.$router.push({
+            name: "editLive",
+            query: {
+              shopId: this.$route.query.shopId,
+            },
+          });
+        }, 1000);
+      } catch (e) {
+        console.log(e);
+        Notify({ type: "danger", message: "创建失败" });
+      }
+      toast.clear();
+    },
     openTextDialog() {
       this.textDialog = true;
       this.text = "";
     },
     previewImage() {
       resolveImgUrlBase64(this.work.cover_image_url, false, (url) => {
-        ImagePreview([url])
-      })
-    }
+        ImagePreview([url]);
+      });
+    },
   },
 };
 </script>
@@ -130,14 +183,11 @@ export default {
   outline: none;
   background: #eaeaea;
 }
-.toolbar .van-uploader {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    color: #646566;
-    font-size: 0.32rem;
-    line-height: 1;
-    cursor: pointer;
+.recover {
+  position: absolute;
+  right: 15px;
+  .van-button__text {
+    color: #fff;
+  }
 }
 </style>

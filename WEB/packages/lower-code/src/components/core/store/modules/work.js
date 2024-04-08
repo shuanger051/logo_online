@@ -77,6 +77,9 @@ export const actions = {
       handlerSaveSucessJump();
     }
   },
+  clearWork({commit}) {
+    commit("clearWork") 
+  },
   fetchWork({ commit, dispatch, state, rootState }, obj) {
     let id
     let hasWork = false
@@ -147,6 +150,10 @@ export const mutations = {
   setWorkCover(state, { type, value }) {
     const [cover] = value;
     state.work.cover_image_url = cover.url;
+  },
+  clearWork(state) {
+    window.__work = null
+    state.work = new Work()
   },
   setWork(state, work) {
     window.__work = work;

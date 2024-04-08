@@ -21,11 +21,15 @@ html, body {
   .recover {
     margin-left: 20px;
   }
-  //justify-content: center;
-  > span{
-    color: #fa7a36;
-      position: absolute;
-      right: 10px;
+  span{
+    display: flex;
+    align-items: center;
+    color: #646566;
+    margin-left: 10px;
+    font-size: 0.4rem;
+    font{
+      margin-left: 5px;
+    }
   }
   .downLoadXLSL {
     right: 100px;

@@ -2,6 +2,7 @@ import Vue from "vue";
 import {
   Panel,
   Button,
+  Switch,
   Grid,
   GridItem,
   Icon,
@@ -80,6 +81,8 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Radio)
 Vue.use(RadioGroup)
+Vue.use(Switch)
+
 
 // 自定义组件
 Vue.component("submit-bar", SubmitBar);

@@ -137,7 +137,7 @@ export default {
     },
   },
   data: () => ({
-    src: placeholderImg
+    src: ''
   }),
   methods: {
     
