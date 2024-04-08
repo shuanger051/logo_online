@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap">
     <a-row class="sudoku-menu" :gutter="12">
-      <a-col class="gutter-row" :span="6">
+      <a-col class="gutter-row" :span="12">
         <router-link to="/article/4/list">
           <div class="menu-icon">
             <icon-font
@@ -12,7 +12,29 @@
           <div class="menu-name">店招设置规范与公告</div>
         </router-link>
       </a-col>
-      <a-col class="gutter-row" :span="6">
+      <a-col class="gutter-row" :span="12">
+        <router-link to="/signboard/negative">
+          <div class="menu-icon">
+            <icon-font
+              class="iconfont"
+              type="icon-zhengfuxinxigongkaishenqing"
+            />
+          </div>
+          <div class="menu-name">菜单式店招设计</div>
+        </router-link>
+      </a-col>
+      <a-col class="gutter-row" :span="12">
+        <router-link to="/signboard/negative">
+          <div class="menu-icon">
+            <icon-font
+              class="iconfont"
+              type="icon-zhengfuxinxigongkaishenqing"
+            />
+          </div>
+          <div class="menu-name">菜单式店招设计</div>
+        </router-link>
+      </a-col>
+      <a-col class="gutter-row" :span="12">
         <router-link to="/signboard/negative">
           <div class="menu-icon">
             <icon-font
@@ -39,7 +61,7 @@ const IconFont = Icon.createFromIconfontCN({
   scriptUrl: require("@/styles/iconfont/iconfont.js"),
   extraCommonProps: {
     style: {
-      color: "#fff",
+      color: "#1492ff",
     },
   },
 });
@@ -54,7 +76,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 24px 0;
+  padding: 52px 0;
   min-height: 100%;
   max-width: 1000px;
   margin: 0 auto;
@@ -65,6 +87,7 @@ export default {
   .sudoku-menu {
     .ant-col {
       text-align: center;
+      margin-bottom: 52px;
       .iconfont {
         font-size: 42px;
         margin-bottom: 8px;
@@ -76,8 +99,7 @@ export default {
         height: 44px;
         padding: 12px;
         border-radius: 100%;
-        color: #fff;
-        background-color: #1492ff;
+        color: #1492ff;
         margin-bottom: 12px;
       }
       .menu-name {

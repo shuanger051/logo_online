@@ -10,7 +10,7 @@ const routes = [
   beforeEnter: (from, to, next) => {
     const isRead = _.get(store.state, "app.isReadNegative");
     // 根据条件跳转
-    if (isRead) next({ path: "/signboard/attribute" });
+    if (isRead) next({ path: "/signboard/streetTypeSelect" });
     else next();
   },
 },
@@ -19,6 +19,24 @@ const routes = [
     path: "template",
     meta: { title: "模版选择" },
     component: () => import("@/views/signboard/template"),
+  },
+  // 街道类型选择
+  {
+    path: "streetTypeSelect",
+    meta: { title: "街区类型" },
+    component: () => import("@/views/signboard/streetTypeSelect"),
+  },
+  // 街道选择
+  {
+    path: "streetSelect",
+    meta: { title: "一街一景" },
+    component: () => import("@/views/signboard/streetSelect"),
+  },
+  // 街道介绍详情
+  {
+    path: "streetIntro",
+    meta: { title: "一街一景" },
+    component: () => import("@/views/signboard/streetIntro"),
   },
   // 店招属性选择
   {

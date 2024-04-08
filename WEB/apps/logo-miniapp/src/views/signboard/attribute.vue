@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap">
     <!-- 店招牌类型 -->
-    <van-panel title="材质">
+    <van-panel title="店招牌类型">
       <van-checkbox-group v-model="formData.material">
         <van-row>
           <van-col v-for="item in attrs.material" :key="item.value" :span="12">

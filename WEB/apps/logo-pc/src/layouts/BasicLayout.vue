@@ -77,10 +77,17 @@ export default {
     z-index: 2;
     margin-bottom: -8px;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 25px 0px;
+    background-color: #1492ff;
+    color: #fff;
     &-heading {
       max-width: 1000px;
       margin: 0 auto;
+    }
+    &-heading-title {
+      color: #fff;
+    }
+    &-back-button {
+      color: #fff;
     }
   }
 }
