@@ -76,7 +76,7 @@ export default {
       "setPic",
       "mCreateCover",
     ]),
-    async beforUploader() {
+    beforUploader() {
       this.showPicConfirm().then(() => {
         document.getElementById("fileUploader").click();
       });
