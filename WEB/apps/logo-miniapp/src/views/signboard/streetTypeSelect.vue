@@ -40,24 +40,13 @@ export default {
       const { streetType } = this;
       if (!streetType)
         this.$notify({ type: "warning", message: "请选择街区类型" });
-      // 特色街区-进入一街一景
-      else if (streetType == "2") {
+      else
         this.$router.push({
           path: "/signboard/streetSelect",
           query: {
             streetType,
           },
         });
-      } 
-      // 非特色直接到类型选择
-      else {
-        this.$router.push({
-          path: "/signboard/attribute",
-          query: {
-            streetType,
-          },
-        });
-      }
     },
   },
 };

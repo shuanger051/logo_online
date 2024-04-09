@@ -35,28 +35,17 @@ export default {
   methods: {
     onNext() {
       const { streetType } = this.formData;
-      if (!streetType)
-        this.$message.warn('请选择街区类型');
+      if (!streetType) this.$message.warn("请选择街区类型");
       // 特色街区-进入一街一景
-      else if (streetType == "2") {
+      else
         this.$router.push({
           path: "/signboard/streetSelect",
           query: {
             streetType,
           },
         });
-      } 
-      // 非特色直接到类型选择
-      else {
-        this.$router.push({
-          path: "/signboard/attribute",
-          query: {
-            streetType,
-          },
-        });
-      }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -1,24 +1,17 @@
 <template>
   <div class="page-wrap">
-    <a-divider orientation="left">材质</a-divider>
+    <a-divider orientation="left">店招牌类型</a-divider>
     <a-checkbox-group
       v-model="formData.material"
       name="material"
       :options="attrs.material"
     >
     </a-checkbox-group>
-    <a-divider orientation="left">类型</a-divider>
+    <a-divider orientation="left">风格</a-divider>
     <a-checkbox-group
       v-model="formData.styles"
       name="styles"
       :options="attrs.styles"
-    >
-    </a-checkbox-group>
-    <a-divider orientation="left">街道类型</a-divider>
-    <a-checkbox-group
-      v-model="formData.streetType"
-      name="streetType"
-      :options="attrs.streetType"
     >
     </a-checkbox-group>
     <div class="action-bar">
@@ -51,14 +44,6 @@ export default {
     });
     appGetItemsByDictKeyInDB({ dictKey: "material" }).then(({ data }) => {
       this.attrs.material = data.map((item) => {
-        return {
-          value: item.itemKey,
-          label: item.itemValue,
-        };
-      });
-    });
-    appGetItemsByDictKeyInDB({ dictKey: "streetType" }).then(({ data }) => {
-      this.attrs.streetType = data.map((item) => {
         return {
           value: item.itemKey,
           label: item.itemValue,
