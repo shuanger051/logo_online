@@ -3,46 +3,26 @@
     <a-row class="sudoku-menu" :gutter="12">
       <a-col class="gutter-row" :span="12">
         <router-link to="/article/4/list">
-          <div class="menu-icon">
-            <icon-font
-              class="iconfont"
-              type="icon-fadingzhudonggongkaineirong"
-            />
-          </div>
+          <div class="menu-icon icon-dzszgfygg"></div>
           <div class="menu-name">店招设置规范与公告</div>
         </router-link>
       </a-col>
       <a-col class="gutter-row" :span="12">
         <router-link to="/signboard/negative">
-          <div class="menu-icon">
-            <icon-font
-              class="iconfont"
-              type="icon-zhengfuxinxigongkaishenqing"
-            />
-          </div>
+          <div class="menu-icon icon-cdsdzsj"></div>
           <div class="menu-name">菜单式店招设计</div>
         </router-link>
       </a-col>
       <a-col class="gutter-row" :span="12">
         <router-link to="/signboard/negative">
-          <div class="menu-icon">
-            <icon-font
-              class="iconfont"
-              type="icon-zhengfuxinxigongkaishenqing"
-            />
-          </div>
-          <div class="menu-name">菜单式店招设计</div>
+          <div class="menu-icon icon-dzczck"></div>
+          <div class="menu-name">店招材质参考</div>
         </router-link>
       </a-col>
       <a-col class="gutter-row" :span="12">
         <router-link to="/signboard/negative">
-          <div class="menu-icon">
-            <icon-font
-              class="iconfont"
-              type="icon-zhengfuxinxigongkaishenqing"
-            />
-          </div>
-          <div class="menu-name">菜单式店招设计</div>
+          <div class="menu-icon icon-jpscck"></div>
+          <div class="menu-name">精品素材参考</div>
         </router-link>
       </a-col>
     </a-row>
@@ -98,9 +78,23 @@ export default {
         width: 44px;
         height: 44px;
         padding: 12px;
-        border-radius: 100%;
         color: #1492ff;
         margin-bottom: 12px;
+        background-size: 80% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        &.icon-dzszgfygg {
+          background-image: url("../assets/icon-dzszgfygg.png");
+        }
+        &.icon-cdsdzsj {
+          background-image: url("../assets/icon-cdsdzsj.png");
+        }
+        &.icon-dzczck {
+          background-image: url("../assets/icon-dzczck.png");
+        }
+        &.icon-jpscck {
+          background-image: url("../assets/icon-jpscck.png");
+        }
       }
       .menu-name {
         font-size: 16px;
