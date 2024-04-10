@@ -1,8 +1,8 @@
 <template>
   <div style="height: 100%">
     <div class="edit-live-header">
-      <van-button type="primary" class="recover" @click="creatLivePic"
-        >下载效果图</van-button
+      <van-button type="primary" class="recover" @click="confirmDialog = true"
+        >确认完成</van-button
       >
       <van-uploader
         class="upload"
@@ -15,7 +15,6 @@
       </van-uploader>
 
       <!-- <span @click="download">下载</span> -->
-      
     </div>
     <div class="edit-live">
       <div id="edit-live__wrap">
@@ -40,6 +39,18 @@
         <van-image width="100%" v-if="livePic" :src="livePic" />
       </div>
     </div>
+    <van-dialog
+      v-model="confirmDialog"
+      title="确认完成"
+      @confirm="downloadInfo()"
+    >
+      <div style="padding: 10px">
+        <p style="font-size: 0.4rem">
+          已为您准备好店招素材和效果图，请下载到本地，可在后续流程中使用。本效果图
+          及素材仅供参考
+        </p>
+      </div>
+    </van-dialog>
   </div>
 </template>
 <script>
@@ -50,9 +61,9 @@ import {
 } from "core/api/";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
-import { download} from "core/support/download.js";
+import { download, downLoadXLSL } from "core/support/download.js";
 
-import { mapActions } from "vuex";
+import { mapActions,mapState } from "vuex";
 import { Toast } from "vant";
 import { downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
@@ -88,12 +99,18 @@ export default {
         height: 300,
         angle: 0,
       },
+      confirmDialog: false,
       active: true,
       livePic: null,
       signboardPic: null,
     };
   },
   created() {},
+  computed: {
+    ...mapState("editor", {
+      signboardPicUrl: (state) => state.editor.signboardPic,
+    }),
+  },
   methods: {
     ...mapActions("editor", ["setPic", "mCreateCover"]),
     handleElementMove(pos) {
@@ -131,14 +148,9 @@ export default {
       toast.clear();
     },
     async creatLivePic() {
-      // 未上传实景图弹窗提示
-      if (!this.livePic) {
-        Notify({ message: "请先上传实景图！" });
-        return;
-      }
 
       const toast = Toast.loading({
-        message: "生成中...",
+        message: "生成实景合成图...",
         forbidClick: true,
         duration: 0,
       });
@@ -150,7 +162,7 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
-        download(info.data.urlPath, +new Date() + '.png')
+        download(info.data.urlPath, +new Date() + ".png");
         // this.$router.push({
         //   path: "/signboard/editConfirm"
         // });
@@ -160,7 +172,42 @@ export default {
       }
       toast.clear();
     },
-
+    async downloadInfo() {
+      // 未上传实景图弹窗提示
+      if (!this.livePic) {
+        Notify({ message: "请先上传实景图！",type: 'warning' });
+        return;
+      }
+      await this.picDownload()
+      await this.xlslDownload()
+      await this.creatLivePic()
+    },
+    async xlslDownload() {
+      const toast = Toast.loading({
+        message: "下载店招素材中...",
+        forbidClick: true,
+        duration: 0,
+      });
+      try {
+        downLoadXLSL(this.$store.state.editor.work);
+      } catch (e) {
+        Notify({ type: "danger", message: "下载失败" });
+      }
+      toast.clear();
+    },
+    async picDownload() {
+      const toast = Toast.loading({
+        message: "下载店招图片...",
+        forbidClick: true,
+        duration: 0,
+      });
+      try {
+        download(this.signboardPicUrl, +new Date() + ".png");
+      } catch (e) {
+        Notify({ type: "danger", message: "下载失败" });
+      }
+      toast.clear();
+    },
     handleRotationProp(angle) {
       this.style.angle = angle;
     },
@@ -183,7 +230,7 @@ export default {
   },
   created() {
     if (!this.$store.state.editor.livePic) {
-      Notify({ type: "primary", message: "请上传实景图" });
+      Notify({ type: "warning", message: "请上传实景图" });
     }
   },
 };
@@ -216,6 +263,13 @@ export default {
 .shape_wrap {
   z-index: 100;
   position: absolute;
+}
+.recover {
+  position: absolute;
+  right: 15px;
+  .van-button__text {
+    color: #fff;
+  }
 }
 .shape_content {
   width: 100%;

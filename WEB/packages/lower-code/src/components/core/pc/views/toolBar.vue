@@ -11,27 +11,33 @@
         <a-icon type="font-size" />
         <span>加字</span>
       </div>
-      <div class="flex">
-        <a-upload name="file" :customRequest="upload" :showUploadList="false">
-          <a-icon type="picture" />
-          <span>加图</span>
-        </a-upload>
+      <div class="flex" @click="beforUploader">
+        <a-icon type="picture" />
+        <span>加图</span>
       </div>
+      <a-upload
+        class="fileUploader"
+        name="file"
+        :customRequest="upload"
+        style="display: none"
+        howUploadList="false"
+      >
+      </a-upload>
       <div class="flex" @click="tempDialog = true">
         <a-icon type="idcard" /> <span>模板</span>
       </div>
     </div>
     <div class="tool-bar__right flex">
-      <div class="flex" @click="createShopSign"><a-icon type="camera" /> <span>生成效果图</span></div>
-      <div class="flex" @click="picDownload"><a-icon type="download" /> <span>下载图片</span></div>
-      <div class="flex" @click="xlslDownload"><a-icon type="file-excel" /><span>下载设计说明文件</span></div>
 
+      <div class="flex" @click="createShopSign">
+     <span>设计完成</span>
+      </div>
     </div>
     <a-modal title="加字" v-model="textDialog" @ok="textAddOk">
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
     </a-modal>
     <a-modal v-model="tempDialog" @ok="tempDialog = false" :footer="null">
-      <div style="padding: 15px 0px;">
+      <div style="padding: 15px 0px">
         <async-image
           width="100%"
           height="100px"
@@ -39,7 +45,6 @@
           :src="work.cover_image_url"
         />
       </div>
-
     </a-modal>
   </div>
 </template>
@@ -47,10 +52,9 @@
 import store from "core/mobile/store/index";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
-import { download,  downLoadXLSL} from "core/support/download.js";
 
 import { mapActions, mapState } from "vuex";
-import {later, sleep} from '@editor/utils/tool'
+import { later, sleep } from "@editor/utils/tool";
 
 export default {
   store,
@@ -67,10 +71,21 @@ export default {
       text: "",
     };
   },
+  props: ["showPicConfirm"],
   methods: {
     resolveImgUrl,
-    ...mapActions("editor", ["elementManager", "setEditingElement", "mCreateCover", 'setPic', 'changeTokenScreenShotStatus']),
-
+    ...mapActions("editor", [
+      "elementManager",
+      "setEditingElement",
+      "mCreateCover",
+      "setPic",
+      "changeTokenScreenShotStatus",
+    ]),
+    beforUploader() {
+      this.showPicConfirm().then(() => {
+        document.querySelector('.fileUploader input').click()
+      });
+    },
     async upload(evt) {
       let toast = this.$message.loading("上传中...", 0);
       try {
@@ -93,50 +108,26 @@ export default {
       toast();
     },
     async createShopSign() {
-      const toast = this.$message.loading('生成中...', 0);
-      this.changeTokenScreenShotStatus(true)
-      await sleep(1000)
+      const toast = this.$message.loading("生成中...", 0);
+      this.changeTokenScreenShotStatus(true);
+      await sleep(1000);
       try {
         const info = await this.mCreateCover({ el: "#content_edit" });
         this.setPic({
-          type: 'signboardPic',
-          value:info.data.urlPath
-        })
-        this.$message.success('创建成功', 2);
+          type: "signboardPic",
+          value: info.data.urlPath,
+        });
+        this.$message.success("创建成功", 2);
         later(() => {
           this.$router.push({
-            name: "editLive"
+            name: "editLive",
           });
         }, 3000);
       } catch (e) {
-        console.log(e)
-        this.$message.error('创建失败' )
+        console.log(e);
+        this.$message.error("创建失败");
       }
-      this.changeTokenScreenShotStatus(false)
-      toast();
-    },
-    async picDownload() {
-      const toast = this.$message.loading('下载中...', 0);
-      this.changeTokenScreenShotStatus(true)
-      await sleep(1000)
-      try {
-        const info = await this.mCreateCover({ el: "#content_edit" });
-        download(info.data.urlPath, +new Date() + '.png')
-        this.$message.success('下载成功', 2);
-      } catch (e) {
-        console.log(e)
-        this.$message.error('下载失败' )
-      }
-      this.changeTokenScreenShotStatus(false)
-      toast();
-    },
-    async xlslDownload() {
-      const toast = this.$message.loading('下载中...', 0)
-      try {
-        downLoadXLSL(this.$store.state.editor.work)
-      } catch (e) {
-        Notify({ type: "danger", message: "下载失败" });
-      }
+      this.changeTokenScreenShotStatus(false);
       toast();
     },
     textAddOk() {

@@ -1,11 +1,6 @@
 <template>
   <div class="edit-wrap">
     <tool-bar :showPicConfirm="showPicConfirm" />
-    <!-- <div class="edit-wrap-header">
-     <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
-      <span @click="picDownload">下载图片</span>
-      <span @click="xlslDownload" class="downLoadXLSL">下载设计说明文件</span>
-    </div> -->
     <div class="edit-wrap-content" @click="() => this.setEditingElement()">
       <div style="min-height: 320px">
         <edit-panel :elements="elements" :style="editPanelStyle"></edit-panel>
@@ -33,9 +28,7 @@ import ToolBar from "./toolBar.vue";
 import EditPanel from "./editPanel.js";
 import { mapState, mapActions } from "vuex";
 import store from "core/mobile/store/index";
-import { download, downLoadXLSL } from "core/support/download.js";
 import { sleep, later } from "@editor/utils/tool";
-import { Notify } from "vant";
 import { Toast } from "vant";
 
 export default {
@@ -72,20 +65,7 @@ export default {
       "setPic",
       "clearWork",
     ]),
-    async picDownload() {
-      const toast = Toast.loading({
-        message: "生成中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        const info = await this.mCreateCover({ el: "#content_edit" });
-        download(info.data.urlPath, +new Date() + ".png");
-      } catch (e) {
-        Notify({ type: "danger", message: "下载失败" });
-      }
-      toast.clear();
-    },
+
     changeConfirm(value) {
       sessionStorage.setItem('picConfirm', value)
     },
@@ -104,50 +84,11 @@ export default {
         }
       });
     },
-    async xlslDownload() {
-      const toast = Toast.loading({
-        message: "处理中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        downLoadXLSL(this.$store.state.editor.work);
-      } catch (e) {
-        Notify({ type: "danger", message: "下载失败" });
-      }
-      toast.clear();
-    },
     calcRate(workWidth) {
       let w = document.documentElement.clientWidth;
       return w / workWidth;
     },
-    async createShopSign() {
-      const toast = Toast.loading({
-        message: "生成中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        const info = await this.mCreateCover({ el: "#content_edit" });
-        this.setPic({
-          type: "signboardPic",
-          value: info.data.urlPath,
-        });
-        Notify({ type: "success", message: "创建成功" });
-        later(() => {
-          this.$router.push({
-            name: "editLive",
-            query: {
-              shopId: this.$route.query.shopId,
-            },
-          });
-        }, 1000);
-      } catch (e) {
-        console.log(e);
-        Notify({ type: "danger", message: "创建失败" });
-      }
-      toast.clear();
-    },
+
     async initEdit() {
       if (this.$route.params.id) {
         const toast = Toast.loading({

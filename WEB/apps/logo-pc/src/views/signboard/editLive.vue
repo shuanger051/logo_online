@@ -13,14 +13,10 @@
               <span style="color: #fa7a36">上传实景图</span>
             </a-upload>
           </div>
-          <!-- <div class="flex" @click="picDownload">
-            <a-icon type="font-size" />
-            <span>下载</span>
-          </div> -->
         </div>
         <div class="edit-live-bar__right flex">
-          <div class="flex" @click="creatLivePic">
-            <a-icon type="idcard" /> <span>下载效果图</span>
+          <div class="flex" @click="confirmDialog=true">
+            <a-icon type="idcard" /> <span>确认完成</span>
           </div>
         </div>
       </div>
@@ -55,6 +51,12 @@
           </div>
         </div>
       </div>
+      <a-modal v-model="confirmDialog" @ok="handlerOk" title="确认" cancelText="取消" okText="确定">
+        <p style="font-size: 14">
+          已为您准备好店招素材和效果图，请下载到本地，可在后续流程中使用。本效果图
+          及素材仅供参考
+        </p>
+      </a-modal>
     </div>
   </div>
 </template>
@@ -64,8 +66,8 @@ import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
-import {sleep, later} from '@editor/utils/tool'
-import { download} from "core/support/download.js";
+import { sleep } from "@editor/utils/tool";
+import { download, downLoadXLSL } from "core/support/download.js";
 
 export default {
   store,
@@ -81,10 +83,11 @@ export default {
       active: true,
       signboardPic: null,
       livePic: null,
+      confirmDialog: false
     };
   },
   computed: {
-    ...mapState('editor', ['tokenScreenShotStatus'])
+    ...mapState("editor", ["tokenScreenShotStatus"]),
   },
   watch: {
     "$store.state.editor.signboardPic": {
@@ -128,6 +131,10 @@ export default {
         ...pos,
       };
     },
+    handlerOk() {
+      confirmDialog=false;
+      this.downloadInfo()
+    },
     handleRotationProp(angle) {
       this.style.angle = angle;
     },
@@ -143,50 +150,52 @@ export default {
       style.transform = `rotate(${this.style.angle}deg)`;
       return style;
     },
-    async picDownload() {
-      const toast = this.$message.loading('下载中...', 0);
-      this.changeTokenScreenShotStatus(true)
-      await sleep(1000)
-      try {
-        const info = await this.mCreateCover({ el: "#edit-live__container" });
-        download(info.data.urlPath, +new Date() + '.png')
-        this.$message.success('下载成功', 2);
-      } catch (e) {
-        console.log(e)
-        this.$message.error('下载失败' )
+    async downloadInfo() {
+      // 未上传实景图弹窗提示
+      if (!this.$store.state.editor.livePic) {
+        this.$notification.info({
+          message: "请先上传实景图!",
+        });
       }
-      this.changeTokenScreenShotStatus(false)
+      await this.picDownload();
+      await this.xlslDownload();
+      await this.creatLivePic();
+    },
+    async xlslDownload() {
+      const toast = this.$message.loading("下载店招素材中...", 0);
+      try {
+        downLoadXLSL(this.$store.state.editor.work);
+      } catch (e) {
+        Notify({ type: "danger", message: "下载失败" });
+      }
+      toast();
+    },
+    async picDownload() {
+      const toast = this.$message.loading("下载店招图片...", 0);
+      try {
+        download(this.$store.state.editor.signboardPic, +new Date() + ".png");
+        this.$message.success("下载成功", 2);
+      } catch (e) {
+        this.$message.error("下载失败");
+      }
       toast();
     },
     async creatLivePic() {
-      // 未上传实景图
-      if(!this.livePic) {
-        this.$message.info("请先上传实景图");
-        return 
-      }
       const toast = this.$message.loading("生成中...", 0);
-      this.changeTokenScreenShotStatus(true)
-      await sleep(1000)
+      this.changeTokenScreenShotStatus(true);
+      await sleep(1000);
       try {
         const info = await this.mCreateCover({ el: "#edit-live__container" });
         this.setPic({
           type: "composePic",
           value: info.data.urlPath,
         });
-        this.$message.success("创建成功", 1);
-        // 创建成功下载
-        this.picDownload()
-        // later(() => {
-        //   this.$router.push({
-        //     path: "/signboard/editConfirm",
-        //   });
-        // }, 2000);
-        console.log(info.data.urlPath, 888);
+        download(info.data.urlPath, +new Date() + ".png");
       } catch (e) {
         console.log(e);
         this.$message.error("创建失败");
       }
-      this.changeTokenScreenShotStatus(false)
+      this.changeTokenScreenShotStatus(false);
       toast();
     },
     noop() {},

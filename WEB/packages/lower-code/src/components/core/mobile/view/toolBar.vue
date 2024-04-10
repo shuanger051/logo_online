@@ -1,9 +1,6 @@
 <template>
   <div class="toolbar">
     <div class="edit-wrap-header">
-      <!-- <van-button type="primary" class="recover" @click="createShopSign" size="small">生成效果图</van-button>
-      <span @click="picDownload">下载图片</span>
-      <span @click="xlslDownload" class="downLoadXLSL">下载设计说明文件</span> -->
       <span @click="openTextDialog">
         <van-icon name="home-o" />
         <font>加字</font>
