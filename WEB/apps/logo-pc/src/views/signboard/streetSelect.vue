@@ -11,10 +11,9 @@
       </a-list-item>
     </a-list>
     <div class="action-bar">
-      <a-space>
-        <a-button @click="onJump">跳过</a-button>
-        <a-button type="primary" @click="onNext">下一步</a-button>
-      </a-space>
+      <a-button v-if="$route.query.streetType !== '2'" @click="onJump"
+        >跳过</a-button
+      >
     </div>
   </div>
 </template>
