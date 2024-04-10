@@ -12,7 +12,6 @@
     >
       <a-list-item slot="renderItem" slot-scope="item">
         <async-image
-          v-if="item.url"
           @click.native="go(item.id)"
           width="100%"
           height="100px"
@@ -26,7 +25,9 @@
 <script>
 import { signboardService } from "@/services";
 import { resolveImgUrl } from "core/support/imgUrl";
-
+import _ from "lodash";
+// 所有模板数据
+let tplArr = [];
 export default {
   data() {
     return {
@@ -50,25 +51,40 @@ export default {
   },
   methods: {
     resolveList(lists) {
-      return lists.map((item) => {
-        const ret = {
-          id: item.id,
-        };
-        try {
-          const { domItem } = item;
-          const data = JSON.parse(domItem);
-          ret.url = resolveImgUrl(data.cover_image_url, true);
-        } catch (e) {
-          console.log(e);
-          ret.url = null;
-        }
-        return ret;
-      });
-    },
-    go(id) {
-      this.$router.push(
-        `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}`
+      return (
+        lists
+          .map((item) => {
+            const ret = {
+              id: item.id,
+            };
+            try {
+              const { domItem } = item;
+              const data = JSON.parse(domItem);
+              ret.url = resolveImgUrl(data.cover_image_url, true);
+            } catch (e) {
+              console.log(e);
+              ret.url = null;
+            }
+            return ret;
+          })
+          // 过滤url为空的数据
+          .filter((item) => item.url)
       );
+    },
+    go(tplId) {
+      this.$router.push(
+        `/signboard/editSignboard/${tplId}?shopId=${this.$route.query.shopId}`
+      );
+    },
+    // 根据条件过滤
+    doFilter(list, condition) {
+      return list.filter((item) => {
+        return Object.keys(condition).every((key) => {
+          const val = condition[key];
+          const arr = val.split(",");
+          return arr.some((v) => item[key].split(",").includes(v));
+        });
+      });
     },
     // 模版查询
     queryTemplate(current, size) {
@@ -80,22 +96,31 @@ export default {
       // 更新page size
       if (size) page.pageSize = size;
       this.loading = true;
-      signboardService
-        .queryTemplateListPageAPI({
-          pageNum,
-          pageSize: page.pageSize,
-          style: styles,
-          material,
-        })
-        .then((res) => {
-          const { list, total } = res.data;
-          // 返回顶部
-          this.page.current = pageNum;
-          this.page.total = total;
+      // 模拟翻页请求
+      new Promise((resolve) => {
+        if (tplArr.length) resolve();
+        else
+          signboardService
+            .queryTemplateListPageAPI({
+              pageNum: 1,
+              pageSize: 2000,
+            })
+            .then((res) => {
+              const list = _.get(res, "data.list", []);
+              // 对数据做过滤
+              tplArr = this.doFilter(list, { style: styles, material });
+              resolve();
+            });
+      })
+        .finally(() => (this.loading = false))
+        // 实现翻页
+        .then(() => {
+          const start = (pageNum - 1) * page.pageSize;
+          const list = tplArr.slice(start, start + page.pageSize);
           this.list = this.resolveList(list);
-          this.finished = list.length < size;
-        })
-        .finally(() => (this.loading = false));
+          this.page.current = pageNum;
+          this.page.total = tplArr.length;
+        });
     },
   },
 };

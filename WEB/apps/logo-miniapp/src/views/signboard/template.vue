@@ -36,7 +36,8 @@
 import { signboardService } from "@/apis";
 import { resolveImgUrl } from "core/support/imgUrl";
 import SuspendPage from "@/components/SuspendPage";
-
+// 所有模板数据
+let tplArr = [];
 export default {
   components: { SuspendPage },
   data() {
@@ -79,6 +80,16 @@ export default {
         `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}`
       );
     },
+    // 根据条件过滤
+    doFilter(list, condition) {
+      return list.filter((item) => {
+        return Object.keys(condition).every((key) => {
+          const val = condition[key];
+          const arr = val.split(",");
+          return arr.some((v) => item[key].split(",").includes(v));
+        });
+      });
+    },
     // 翻页
     onPageChange(page) {
       this.queryTemplate(page);
@@ -91,24 +102,53 @@ export default {
       // 是否存在页码参数
       if (page?.current) pageNum = page.current;
       this.loading = true;
-      signboardService
-        .queryTemplateListPageAPI({
-          pageNum,
-          pageSize: size,
-          style: styles,
-          material,
-        })
-        .then((res) => {
-          const { list, total } = res.data;
+      // 模拟翻页请求
+      new Promise((resolve) => {
+        if (tplArr.length) resolve();
+        else
+          signboardService
+            .queryTemplateListPageAPI({
+              pageNum: 1,
+              pageSize: 2000,
+            })
+            .then((res) => {
+              const list = _.get(res, "data.list", []);
+              // 对数据做过滤
+              tplArr = this.doFilter(list, { style: styles, material });
+              resolve();
+            });
+      })
+        .finally(() => (this.loading = false))
+        // 实现翻页
+        .then(() => {
           // 返回顶部
           const elPage = document.getElementById("page-container");
           elPage.scrollTo(0, 0);
-          this.page.current = pageNum;
-          this.page.total = total;
+          const start = (pageNum - 1) * size;
+          const list = tplArr.slice(start, start + size);
           this.list = this.resolveList(list);
+          this.page.current = pageNum;
+          this.page.total = tplArr.length;
           this.finished = list.length < size;
-        })
-        .finally(() => (this.loading = false));
+        });
+      // signboardService
+      //   .queryTemplateListPageAPI({
+      //     pageNum,
+      //     pageSize: size,
+      //     // style: styles,
+      //     // material,
+      //   })
+      //   .then((res) => {
+      //     const { list, total } = res.data;
+      //     // 返回顶部
+      //     const elPage = document.getElementById("page-container");
+      //     elPage.scrollTo(0, 0);
+      //     this.page.current = pageNum;
+      //     this.page.total = total;
+      //     this.list = this.resolveList(list);
+      //     this.finished = list.length < size;
+      //   })
+      //   .finally(() => (this.loading = false));
     },
   },
 };

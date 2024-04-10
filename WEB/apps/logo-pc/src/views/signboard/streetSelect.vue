@@ -1,12 +1,20 @@
 <template>
   <div class="page-wrap">
     <a-list :data-source="streetArr" :border="false">
-      <a-list-item slot="renderItem" slot-scope="item" :key="item.id" @click="onNext(item.id)" >
+      <a-list-item
+        slot="renderItem"
+        slot-scope="item"
+        :key="item.id"
+        @click="onNext(item.id)"
+      >
         {{ item.name }}
       </a-list-item>
     </a-list>
     <div class="action-bar">
-      <a-button type="primary" @click="onNext">下一步</a-button>
+      <a-space>
+        <a-button @click="onJump">跳过</a-button>
+        <a-button type="primary" @click="onNext">下一步</a-button>
+      </a-space>
     </div>
   </div>
 </template>
