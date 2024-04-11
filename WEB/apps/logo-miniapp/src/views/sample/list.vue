@@ -9,23 +9,18 @@
         direction="horizontal"
       >
         <van-grid-item
-          icon="jiequjingjigongxiandufenxi"
-          icon-prefix="iconfont icon"
-          text="一般街区"
-          to="/sample/detail?type="
-        />
-        <van-grid-item
-          icon="shangye"
-          icon-prefix="iconfont icon"
-          text="商业街区"
-          to="/sample/detail?type="
-        />
-        <van-grid-item
-          icon="tesefuwu"
-          icon-prefix="iconfont icon"
-          text="特色街区"
-          to="/sample/detail?type="
-        />
+          v-for="item in streetArr"
+          :key="item.key"
+          :text="item.name"
+          :to="`/sample/detail?type=street&name=${item.key}`"
+        >
+          <van-icon
+            slot="icon"
+            class-prefix="iconfont icon"
+            :name="item.icon"
+            :color="item.iconColor"
+          />
+        </van-grid-item>
       </van-grid>
     </van-panel>
     <van-panel title="效果类型">
@@ -36,27 +31,36 @@
         direction="horizontal"
       >
         <van-grid-item
-          icon="sucai"
-          icon-prefix="iconfont icon"
-          text="实景素材"
-          to="/sample/detail?type="
-        />
-        <van-grid-item
-          icon="sucai"
-          icon-prefix="iconfont icon"
-          text="效果素材"
-          to="/sample/detail?type="
-        />
-        <van-grid-item
-          icon="sucai"
-          icon-prefix="iconfont icon"
-          text="平面素材"
-          to="/sample/detail?type="
-        />
+          v-for="item in designArr"
+          :key="item.key"
+          :text="item.name"
+          :to="`/sample/detail?type=design&name=${item.key}`"
+        >
+          <van-icon
+            slot="icon"
+            class-prefix="iconfont icon"
+            :name="item.icon"
+            :color="item.iconColor"
+          />
+        </van-grid-item>
       </van-grid>
     </van-panel>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    const {
+      street: streetArr,
+      design: designArr,
+    } = window.pageContentJson.material;
+    return {
+      streetArr,
+      designArr,
+    };
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .page-wrap {
@@ -102,44 +106,13 @@
   }
 
   :deep(.van-grid) {
-    &.street-grid {
-      .van-grid-item__icon {
-        font-size: 19px;
-        &.icon-shangye {
-          color: #ae00ff;
-        }
-        &.icon-jiequjingjigongxiandufenxi {
-          color: #36ddfc;
-        }
-        &.icon-tesefuwu {
-          color: #fe9500;
-        }
-      }
-    }
     &-item {
       padding-left: 24px;
-      &:nth-child(4n + 1) {
-        .van-grid-item__icon {
-          color: #de8f30;
-        }
-      }
-      &:nth-child(4n + 2) {
-        .van-grid-item__icon {
-          color: #d1ccc5;
-        }
-      }
-      &:nth-child(4n + 3) {
-        .van-grid-item__icon {
-          color: #b09076;
-        }
-      }
-      &:nth-child(4n) {
-        .van-grid-item__icon {
-          color: #6d90ad;
-        }
-      }
       &__content {
         align-items: center;
+      }
+      &__icon-wrapper {
+        margin-right: 8px;
       }
     }
     &-item__text {

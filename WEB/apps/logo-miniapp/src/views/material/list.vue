@@ -8,33 +8,32 @@
         direction="horizontal"
       >
         <van-grid-item
-          icon="material"
-          icon-prefix="iconfont icon"
-          text="金属材质"
-          to="/material/detail?type="
-        />
-        <van-grid-item
-          icon="material"
-          icon-prefix="iconfont icon"
-          text="亚格力材质"
-          to="/material/detail?type="
-        />
-        <van-grid-item
-          icon="material"
-          icon-prefix="iconfont icon"
-          text="木质材质"
-          to="/material/detail?type="
-        />
-        <van-grid-item
-          icon="material"
-          icon-prefix="iconfont icon"
-          text="其他材质"
-          to="/material/detail?type="
-        />
+          v-for="item in list"
+          :key="item.key"
+          :text="item.name"
+          :to="`/material/detail?name=${item.key}`"
+        >
+          <van-icon
+            slot="icon"
+            class-prefix="iconfont icon"
+            :name="item.icon"
+            :color="item.iconColor"
+          />
+        </van-grid-item>
       </van-grid>
     </van-panel>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    const list = window.pageContentJson.texture;
+    return {
+      list,
+    };
+  },
+};
+</script>
 <style lang="less" scoped>
 .page-wrap {
   box-sizing: border-box;
@@ -80,28 +79,11 @@
   :deep(.van-grid) {
     &-item {
       padding-left: 24px;
-      &:nth-child(4n + 1) {
-        .van-grid-item__icon {
-          color: #de8f30;
-        }
-      }
-      &:nth-child(4n + 2) {
-        .van-grid-item__icon {
-          color: #d1ccc5;
-        }
-      }
-      &:nth-child(4n + 3) {
-        .van-grid-item__icon {
-          color: #b09076;
-        }
-      }
-      &:nth-child(4n) {
-        .van-grid-item__icon {
-          color: #6d90ad;
-        }
-      }
       &__content {
         align-items: center;
+      }
+      &__icon-wrapper {
+        margin-right: 8px;
       }
     }
     &-item__text {

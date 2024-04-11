@@ -85,6 +85,8 @@ export default {
       return list.filter((item) => {
         return Object.keys(condition).every((key) => {
           const val = condition[key];
+          // 为空则获取全部
+          if (!val) return true;
           const arr = val.split(",");
           return arr.some((v) => item[key].split(",").includes(v));
         });
