@@ -47,6 +47,7 @@ export default {
   created() {
     // 保存查询条件
     this.params = _.pick(this.$route.query, ["styles", "material"]);
+    tplArr=[]
     this.queryTemplate();
   },
   methods: {
@@ -78,6 +79,7 @@ export default {
     },
     // 根据条件过滤
     doFilter(list, condition) {
+      console.log(condition, 999)
       return list.filter((item) => {
         return Object.keys(condition).some((key) => {
           const val = condition[key]||'';

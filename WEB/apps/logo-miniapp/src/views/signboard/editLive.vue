@@ -106,11 +106,6 @@ export default {
     };
   },
   created() {},
-  computed: {
-    ...mapState("editor", {
-      signboardPicUrl: (state) => state.editor.signboardPic,
-    }),
-  },
   methods: {
     ...mapActions("editor", ["setPic", "mCreateCover"]),
     handleElementMove(pos) {
@@ -163,9 +158,6 @@ export default {
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
         download(info.data.urlPath, +new Date() + ".png");
-        // this.$router.push({
-        //   path: "/signboard/editConfirm"
-        // });
       } catch (e) {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
@@ -202,7 +194,7 @@ export default {
         duration: 0,
       });
       try {
-        download(this.signboardPicUrl, +new Date() + ".png");
+        download(this.$store.state.editor.signboardPic, +new Date() + ".png");
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }

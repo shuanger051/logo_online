@@ -12,6 +12,8 @@
   </div>
 </template>
 <script>
+import evnetBus from "../../core/eventBus";
+
 export default {
   data() {
     return {
@@ -20,6 +22,17 @@ export default {
   },
   created() {
     const { streetId, streetType } = this.$route.query;
+    let title
+    if (streetType == 1) {
+      title = '商业街道'
+    } else if (streetType == 2) {
+      title = '特色街道'
+    } else if (streetType == 3) {
+      title = '一般街道'
+    }
+    if (title) {
+      evnetBus.$emit('customTitle', title)
+    }
     const list = window.pageContentJson.streetView;
     const streetDtm = list.find((item) => streetType == item.id);
     // 存在街道

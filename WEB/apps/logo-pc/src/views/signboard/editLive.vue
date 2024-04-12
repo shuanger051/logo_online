@@ -132,7 +132,7 @@ export default {
       };
     },
     handlerOk() {
-      confirmDialog=false;
+      this.confirmDialog=false;
       this.downloadInfo()
     },
     handleRotationProp(angle) {

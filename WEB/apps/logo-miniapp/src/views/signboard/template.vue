@@ -57,6 +57,7 @@ export default {
   created() {
     // 保存查询条件
     this.params = _.pick(this.$route.query, ["styles", "material"]);
+    tplArr = []
   },
   methods: {
     resolveList(lists) {

@@ -2,7 +2,7 @@
   <div class="base-layout">
     <van-nav-bar
       :safe-area-inset-top="true"
-      :title="$route.meta.title"
+      :title="title"
       :fixed="true"
       :z-index="2"
     >
@@ -27,22 +27,30 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import evnetBus from "../core/eventBus";
+
 export default {
   name: "BasicLayout",
   computed: {
     ...mapState({
       isInIframe: (state) => state.app.isInIframe,
     }),
+    title() {
+      console.log(11)
+      return this.customTitle || this.$route.meta.title
+    }
   },
   data() {
     return {
       isCanBack: true,
+      customTitle: null
     };
   },
   watch: {
     $route: {
       handler(nRoute) {
         this.isCanBack = _.get(nRoute, "meta.isCanBack", true);
+        this.customTitle = null
       },
       immediate: true,
       deep: true,
@@ -62,6 +70,11 @@ export default {
       else this.$router.push({ path: "/home" });
     },
   },
+  created() {
+    evnetBus.$on('customTitle', (val) => {
+      this.customTitle = val
+    })
+  }
 };
 </script>
 
