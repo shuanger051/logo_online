@@ -83,8 +83,8 @@ export default {
     // 根据条件过滤
     doFilter(list, condition) {
       return list.filter((item) => {
-        return Object.keys(condition).every((key) => {
-          const val = condition[key];
+        return Object.keys(condition).some((key) => {
+          const val = condition[key] || '';
           const arr = val.split(",");
           return arr.some((v) => item[key].split(",").includes(v));
         });
