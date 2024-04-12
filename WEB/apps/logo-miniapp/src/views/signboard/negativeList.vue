@@ -35,7 +35,7 @@ export default {
         this.$store.commit("app/setIsReadNegative", true);
         // 跳转下一步
         this.$router.push({ path: "/signboard/streetTypeSelect" });
-      } else this.$notify({ type: "warning", message: "请先阅读并同意" });
+      } else this.$notify({ type: "danger", message: "请先阅读并同意" });
     },
   },
 };

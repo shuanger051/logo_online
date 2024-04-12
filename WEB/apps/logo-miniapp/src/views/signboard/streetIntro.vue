@@ -1,16 +1,11 @@
 <template>
   <div class="page-wrap">
-    <van-row>
-      <van-col :span="24">
-        <van-image src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-      </van-col>
-      <van-col :span="24">
-        <van-image src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-      </van-col>
-      <van-col :span="24">
-        <van-image src="https://img01.yzcdn.cn/vant/cat.jpeg" />
+    <van-row v-if="detail">
+      <van-col v-for="(val, idx) in detail.imgs" :key="idx" :span="24">
+        <van-image :src="val" />
       </van-col>
     </van-row>
+    <van-empty v-else image="search" description="未找到相关内容" />
     <submit-bar>
       <van-button block type="primary" @click="onNext">下一步</van-button>
     </submit-bar>
@@ -18,6 +13,20 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      detail: null,
+    };
+  },
+  created() {
+    const { streetId, streetType } = this.$route.query;
+    const list = window.pageContentJson.streetView;
+    const streetDtm = list.find((item) => streetType == item.id);
+    // 存在街道
+    if (streetDtm) {
+      this.detail = streetDtm.street.find((item) => item.id == streetId);
+    }
+  },
   methods: {
     onNext() {
       const { query } = this.$route;
@@ -31,6 +40,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 24px 12px 64px;
+  padding: 12px 12px 64px;
 }
 </style>

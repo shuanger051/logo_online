@@ -1,12 +1,12 @@
 <template>
   <div class="page-wrap">
     <a-divider orientation="left">街区类型</a-divider>
-    <a-checkbox-group
+    <a-radio-group
       v-model="formData.streetType"
       name="material"
       :options="streetTypeArr"
     >
-    </a-checkbox-group>
+    </a-radio-group>
     <div class="action-bar">
       <a-button type="primary" @click="onNext">下一步</a-button>
     </div>
