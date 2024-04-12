@@ -79,7 +79,21 @@ export default {
   padding: 12px 0;
   min-height: 100%;
   box-sizing: border-box;
-  background-color: @gray-2;
+  background-color: @white;  
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("../../assets/app-footer-bg.png");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 115% auto;
+    background-attachment: fixed;
+    filter: opacity(40%);
+  }
   :deep(.van-list) {
     .van-cell {
       &__value {
