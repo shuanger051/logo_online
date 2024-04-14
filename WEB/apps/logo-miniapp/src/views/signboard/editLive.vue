@@ -157,7 +157,7 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
-        download(info.data.urlPath, +new Date() + ".png");
+        download(info.data.urlPath, "实景效果图.png");
       } catch (e) {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
@@ -194,7 +194,7 @@ export default {
         duration: 0,
       });
       try {
-        download(this.$store.state.editor.signboardPic, +new Date() + ".png");
+        download(this.$store.state.editor.signboardPic, "店招图片.png");
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
