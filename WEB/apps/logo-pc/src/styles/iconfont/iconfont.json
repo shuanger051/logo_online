@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "637796",
+      "name": "特色服务",
+      "font_class": "tesefuwu",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "11366195",
+      "name": "商业",
+      "font_class": "shangye",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "12566542",
+      "name": "素材",
+      "font_class": "sucai",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "19617672",
+      "name": "材质",
+      "font_class": "material",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "30254700",
+      "name": "街区经济贡献度分析",
+      "font_class": "jiequjingjigongxiandufenxi",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
       "icon_id": "22843394",
       "name": "便民服务大厅",
       "font_class": "bianminfuwudating",
