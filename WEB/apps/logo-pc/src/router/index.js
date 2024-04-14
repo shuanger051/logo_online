@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import signboard from "./signboard";
+import materialRoute from './material'
+import sampleRoute from "./sample";
 import article from "./article";
 import Home from "../views/home";
 import Entrepot from "../views/Entrepot";
@@ -19,6 +21,9 @@ const routes = [
   signboard,
   // 文章模块
   article,
+  // 材质参考
+  materialRoute,
+  sampleRoute,
   // 重定向
   {
     path: "/entrepot",
