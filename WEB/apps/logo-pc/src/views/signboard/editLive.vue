@@ -176,6 +176,7 @@ export default {
         download(this.$store.state.editor.signboardPic,  "店招图片.png");
         this.$message.success("下载成功", 2);
       } catch (e) {
+        console.log(e,34);
         this.$message.error("下载失败");
       }
       toast();

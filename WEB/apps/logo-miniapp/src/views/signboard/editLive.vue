@@ -196,6 +196,7 @@ export default {
       try {
         download(this.$store.state.editor.signboardPic, "店招图片.png");
       } catch (e) {
+        console.log(e,34);
         Notify({ type: "danger", message: "下载失败" });
       }
       toast.clear();
