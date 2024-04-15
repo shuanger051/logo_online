@@ -17,5 +17,8 @@ export default {
 <style lang="less">
 body {
   background-color: #fff !important;
+  #app {
+    min-height: 100%;
+  }
 }
 </style>

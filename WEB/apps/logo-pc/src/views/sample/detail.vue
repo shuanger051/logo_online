@@ -2,7 +2,7 @@
   <div class="page-wrap">
     <a-row :gutter="12" v-if="detail">
       <!-- 图片 -->
-      <a-col :span="6" v-for="(val, idx) in detail.imgs" :key="idx">
+      <a-col :span="8" v-for="(val, idx) in detail.imgs" :key="idx">
         <img class="example-img" :src="val" fit="cover" />
       </a-col>
     </a-row>

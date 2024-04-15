@@ -75,7 +75,7 @@ export default {
           this.list = list;
         })
         .finally(() => {
-          this.loading = false
+          this.loading = false;
         })
         .catch((err) => {
           this.finished = true;
@@ -95,5 +95,19 @@ export default {
   border-radius: 4px;
   background-color: #fff;
   // background-color: @text-color;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("../../assets/app-footer-bg.png");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 115% auto;
+    background-attachment: fixed;
+    filter: opacity(40%);
+  }
 }
 </style>

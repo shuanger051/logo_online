@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap">
-    <a-row>
-      <a-col :span="12">
+    <a-row type="flex" justify="center">
+      <a-col :span="8">
         <a-list :dataSource="list" :bordered="false">
           <template #header>材质类型</template>
           <template #renderItem="item">
@@ -50,7 +50,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    // background-image: url("../../assets/app-footer-bg.png");
+    background-image: url("../../assets/app-footer-bg.png");
     background-repeat: no-repeat;
     background-position: bottom center;
     background-size: 115% auto;

@@ -12,7 +12,7 @@
       </template>
     </a-page-header>
     <!-- main：页面主体 -->
-    <div>
+    <div class="main">
       <!-- 走缓存 -->
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive" />
@@ -68,8 +68,8 @@ export default {
 
 <style lang="less" scoped>
 .base-layout {
-  position: relative;
-  height: 100%;
+  // position: relative;
+  min-height: 100%;
   :deep(.ant-page-header) {
     position: sticky;
     width: 100%;
@@ -77,7 +77,7 @@ export default {
     z-index: 2;
     margin-bottom: -8px;
     border-radius: 4px;
-    background-color: #1492ff;
+    background-color: #2f63f1;
     color: #fff;
     &-heading {
       max-width: 1000px;

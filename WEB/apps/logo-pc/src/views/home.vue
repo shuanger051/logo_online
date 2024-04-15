@@ -26,13 +26,13 @@
         </router-link>
       </a-col>
     </a-row>
-    <a-divider />
-    <!-- 温馨提示 -->
-    <a-alert message="温馨提示" type="info" show-icon>
-      <template slot="description">
-        本应用用于在线设计店招并制作效果图用于店招备案审批，请预先准备好店铺正面门头全景实拍照片
-      </template>
-    </a-alert>
+    <!-- 首次使用提示 -->
+    <dl class="tips-box">
+      <dt>温馨提示</dt>
+      <dd>
+        首次使用店招在线设计的用户，请先进入信息公告，仔细阅读《店招设计使用流程》和《杭州市户外招牌设置负面清单》后再进行操作。
+      </dd>
+    </dl>
   </div>
 </template>
 <script>
@@ -56,14 +56,43 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
+  // position: relative;
   padding: 52px 0;
   min-height: 100%;
   max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
-  margin-top: 24px;
   border-radius: 4px;
   background-color: #fff;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("../assets/app-footer-bg.png");
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 115% auto;
+    background-attachment: fixed;
+  }
+  .tips-box {
+    padding: 12px 24px;
+    font-size: 14px;
+    line-height: 1.4em;
+    position: absolute;
+    color: #fff;
+    bottom: 12px;
+    margin: 0;
+    dt {
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    dd {
+      margin-left: 0;
+    }
+  }
   .sudoku-menu {
     .ant-col {
       text-align: center;

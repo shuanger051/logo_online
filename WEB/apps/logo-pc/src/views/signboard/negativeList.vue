@@ -42,7 +42,7 @@ export default {
         this.$store.commit("app/setIsReadNegative", true);
         // 跳转下一步
         this.$router.push({ path: "/signboard/streetTypeSelect" });
-      } else this.$message.warning("《杭州市户外招牌设置负面清单》的全部内容");
+      } else this.$message.warning("请先阅读并同意《杭州市户外招牌设置负面清单》的全部内容");
     },
   },
 };
