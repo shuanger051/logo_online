@@ -63,7 +63,7 @@ import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { download, downLoadXLSL } from "core/support/download.js";
 
-import { mapActions,mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
 import { downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
@@ -143,7 +143,6 @@ export default {
       toast.clear();
     },
     async creatLivePic() {
-
       const toast = Toast.loading({
         message: "生成实景合成图...",
         forbidClick: true,
@@ -167,12 +166,13 @@ export default {
     async downloadInfo() {
       // 未上传实景图弹窗提示
       if (!this.livePic) {
-        Notify({ message: "请先上传实景图！",type: 'warning' });
+        Notify({ message: "请先上传实景图！", type: "warning" });
         return;
+      } else {
+        await this.picDownload();
+        await this.xlslDownload();
+        await this.creatLivePic();
       }
-      await this.picDownload()
-      await this.xlslDownload()
-      await this.creatLivePic()
     },
     async xlslDownload() {
       const toast = Toast.loading({
@@ -196,7 +196,7 @@ export default {
       try {
         download(this.$store.state.editor.signboardPic, "店招图片.png");
       } catch (e) {
-        console.log(e,34);
+        console.log(e, 34);
         Notify({ type: "danger", message: "下载失败" });
       }
       toast.clear();
