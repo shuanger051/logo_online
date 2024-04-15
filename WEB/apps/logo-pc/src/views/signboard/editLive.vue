@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="edit-live-bar__right flex">
-          <div class="flex" @click="confirmDialog=true">
+          <div class="flex" @click="confirmDialog = true">
             <a-icon type="idcard" /> <span>确认完成</span>
           </div>
         </div>
@@ -51,7 +51,13 @@
           </div>
         </div>
       </div>
-      <a-modal v-model="confirmDialog" @ok="handlerOk" title="确认" cancelText="取消" okText="确定">
+      <a-modal
+        v-model="confirmDialog"
+        @ok="handlerOk"
+        title="确认"
+        cancelText="取消"
+        okText="确定"
+      >
         <p style="font-size: 14">
           已为您准备好店招素材和效果图，请下载到本地，可在后续流程中使用。本效果图
           及素材仅供参考
@@ -83,7 +89,7 @@ export default {
       active: true,
       signboardPic: null,
       livePic: null,
-      confirmDialog: false
+      confirmDialog: false,
     };
   },
   computed: {
@@ -132,8 +138,8 @@ export default {
       };
     },
     handlerOk() {
-      this.confirmDialog=false;
-      this.downloadInfo()
+      this.confirmDialog = false;
+      this.downloadInfo();
     },
     handleRotationProp(angle) {
       this.style.angle = angle;
@@ -156,10 +162,11 @@ export default {
         this.$notification.info({
           message: "请先上传实景图!",
         });
+      } else {
+        await this.picDownload();
+        await this.creatLivePic();
+        // await this.xlslDownload();
       }
-      await this.picDownload();
-      await this.creatLivePic();
-      // await this.xlslDownload();
     },
     async xlslDownload() {
       const toast = this.$message.loading("下载店招素材中...", 0);
@@ -173,10 +180,10 @@ export default {
     async picDownload() {
       const toast = this.$message.loading("下载店招图片...", 0);
       try {
-        download(this.$store.state.editor.signboardPic,  "店招图片.png");
+        download(this.$store.state.editor.signboardPic, "店招图片.png");
         this.$message.success("下载成功", 2);
       } catch (e) {
-        console.log(e,34);
+        console.log(e, 34);
         this.$message.error("下载失败");
       }
       toast();
@@ -193,7 +200,7 @@ export default {
         });
         download(info.data.urlPath, "实景效果图.png");
       } catch (e) {
-        console.log(e,33);
+        console.log(e, 33);
         this.$message.error("创建失败");
       }
       this.changeTokenScreenShotStatus(false);
