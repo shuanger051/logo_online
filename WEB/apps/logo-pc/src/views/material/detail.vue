@@ -1,16 +1,17 @@
 <template>
   <div class="page-wrap">
-    <a-row :gutter="12" v-if="detail">
-      <!-- 文字 -->
-      <a-col :span="24" style="margin-bottom: 12px">
-        {{ detail.text }}
-      </a-col>
-      <!-- 图片 -->
-      <a-col :span="6" v-for="(val, idx) in detail.imgs" :key="idx">
-        <img class="example-img" :src="val" fit="cover" />
-      </a-col>
-    </a-row>
-    <a-empty v-else description="未找到相关内容" />
+    <template v-if="detail">
+      <div style="margin-bottom: 12px">{{ detail.text }}</div>
+      <a-list
+        :grid="{ gutter: 12, column: 4 }"
+        :data-source="detail.imgs"
+        :pagination="{ pageSize: 16, hideOnSinglePage: true }"
+      >
+        <a-list-item slot="renderItem" slot-scope="item">
+          <img class="example-img" :src="item" fit="cover" />
+        </a-list-item>
+      </a-list>
+    </template>
   </div>
 </template>
 <script>

@@ -1,12 +1,14 @@
 <template>
   <div class="page-wrap">
-    <a-row :gutter="12" v-if="detail">
-      <!-- 图片 -->
-      <a-col :span="8" v-for="(val, idx) in detail.imgs" :key="idx">
-        <img class="example-img" :src="val" fit="cover" />
-      </a-col>
-    </a-row>
-    <a-empty v-else description="未找到相关内容" />
+    <a-list
+      :grid="{ gutter: 12, column: 3 }"
+      :data-source="detail.imgs"
+      :pagination="{ pageSize: 9, hideOnSinglePage: true }"
+    >
+      <a-list-item slot="renderItem" slot-scope="item">
+        <img class="example-img" :src="item" fit="cover" />
+      </a-list-item>
+    </a-list>
   </div>
 </template>
 <script>
