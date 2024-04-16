@@ -19,6 +19,7 @@ const routes = [
 export default {
   path: "/sample",
   name: "sample",
+  meta: { name: "精品素材" },
   redirect: "/sample/list",
   component: BlankLayout,
   children: routes,

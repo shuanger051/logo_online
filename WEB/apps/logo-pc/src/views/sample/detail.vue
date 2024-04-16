@@ -12,6 +12,8 @@
   </div>
 </template>
 <script>
+import evnetBus from "@/core/eventBus";
+
 export default {
   data() {
     return {
@@ -22,7 +24,10 @@ export default {
     const { name, type } = this.$route.query;
     const list = window.pageContentJson.material[type];
     const data = list.find((item) => item.key == name);
-    if (data) this.detail = data.content;
+    if (data) {
+      evnetBus.$emit("subtitle", data.name);
+      this.detail = data.content;
+    }
   },
 };
 </script>

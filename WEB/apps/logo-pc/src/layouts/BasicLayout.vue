@@ -4,6 +4,7 @@
       :ghost="false"
       :backIcon="isCanBack"
       :title="$route.meta.title"
+      :sub-title="subtitle"
       @back="onNativeBack"
     >
       <!-- 左侧图标 -->
@@ -24,6 +25,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import evnetBus from "@/core/eventBus";
 export default {
   name: "BasicLayout",
   computed: {
@@ -34,11 +36,13 @@ export default {
   data() {
     return {
       isCanBack: false,
+      subtitle: "",
     };
   },
   watch: {
     $route: {
       handler(nRoute) {
+        this.subtitle = "";
         this.isCanBack = _.get(
           nRoute,
           "meta.isCanBack",
@@ -48,6 +52,11 @@ export default {
       immediate: true,
       deep: true,
     },
+  },
+  created() {
+    evnetBus.$on("subtitle", (val) => {
+      this.subtitle = val;
+    });
   },
   methods: {
     onNativeBack() {
@@ -82,9 +91,12 @@ export default {
     &-heading {
       max-width: 1000px;
       margin: 0 auto;
-    }
-    &-heading-title {
-      color: #fff;
+      &-title {
+        color: #fff;
+      }
+      &-sub-title {
+        color: #fff;
+      }
     }
     &-back-button {
       color: #fff;
