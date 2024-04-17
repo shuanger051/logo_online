@@ -39,8 +39,14 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
   line-height: 1.6em;
+  :deep(.ant-list) {
+    &-item {
+      text-align: center;
+    }
+  }
   .example-img {
     max-width: 100%;
+    height: 156px;
   }
 }
 </style>
