@@ -169,9 +169,9 @@ export default {
         Notify({ message: "请先上传实景图！", type: "warning" });
         return;
       } else {
+        await this.creatLivePic();
         await this.picDownload();
         await this.xlslDownload();
-        await this.creatLivePic();
       }
     },
     async xlslDownload() {

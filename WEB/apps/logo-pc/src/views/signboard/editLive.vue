@@ -163,9 +163,9 @@ export default {
           message: "请先上传实景图!",
         });
       } else {
-        await this.picDownload();
         await this.creatLivePic();
-        // await this.xlslDownload();
+        await this.picDownload();
+        await this.xlslDownload();
       }
     },
     async xlslDownload() {

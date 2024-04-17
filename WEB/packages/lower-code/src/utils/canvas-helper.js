@@ -43,7 +43,7 @@ export function takeScreenshot ({
     // 会对canvas造成污染，导致 canvas.toDataURL 无效
     html2canvas(el, {backgroundColor: null}).then(canvas => {
       // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-      const dataUrl = canvas.toDataURL('image/png', 0.6)
+      const dataUrl = canvas.toDataURL('image/png', 0.4)
       const blob = dataURItoBlob(dataUrl)
       // const blob = new Blob([ab], { type: mimeString })
       const file = new window.File([blob], fileName, { type: 'image/png' })
