@@ -1,7 +1,7 @@
 import {picCache} from './imgUrl'
 import * as XLSX from 'xlsx'
 import {appUploadExcelBase64APIOSS} from "core/api"
-
+import {convertImageToBase64} from '@editor/utils/canvas-helper.js'
 
 const parseText = {
   valid(element) {
@@ -130,11 +130,20 @@ export const downLoadXLSL = async (work) => {
 
 export const download = async (url, name, file=false) => {
   if (typeof ZWJSBridge == 'undefined') {
-    var a = document.createElement('a')
-    a.href = url
-    a.download = name
-    a.click()
-    return true
+    // var a = document.createElement('a')
+    // a.href = url
+    // a.download = name
+    // a.click()
+    // return true
+    return new Promise((r) => {
+      convertImageToBase64(url, (u) => {
+        var a = document.createElement('a')
+        a.href = u
+        a.download = name
+        a.click()
+        r()
+      })
+    })
   } else {
     if (file) {
       return ZWJSBridge.downloadFile({
