@@ -43,6 +43,7 @@ export default {
   line-height: 1.6em;
   .example-img {
     max-width: 100%;
+    height: 228px;
   }
 }
 </style>

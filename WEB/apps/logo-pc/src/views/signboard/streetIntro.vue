@@ -2,7 +2,7 @@
   <div class="page-wrap">
     <template v-if="detail">
       <a-list
-        :grid="{ gutter: 12, column: 2 }"
+        :grid="{ column: 1 }"
         :data-source="detail.imgs"
         :pagination="{ pageSize: 8, hideOnSinglePage: true }"
       >
