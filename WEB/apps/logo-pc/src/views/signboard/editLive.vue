@@ -186,6 +186,7 @@ export default {
         console.log(e, 34);
         this.$message.error("下载失败");
       }
+      await sleep(1000)
       toast();
     },
     async creatLivePic() {
@@ -204,6 +205,7 @@ export default {
         this.$message.error("创建失败");
       }
       this.changeTokenScreenShotStatus(false);
+      await sleep(1000);
       toast();
     },
     noop() {},

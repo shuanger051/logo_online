@@ -7,7 +7,7 @@
       <van-uploader
         class="upload"
         :after-read="afterRead"
-        :max-size="1024 * 1024 * 2"
+        :max-size="1024 * 1024 * 10"
         @oversize="onOversize"
       >
         <!-- <span>上传实景图</span> -->
@@ -62,7 +62,7 @@ import {
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { download, downLoadXLSL } from "core/support/download.js";
-
+import { sleep } from "@editor/utils/tool";
 import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
 import { downloadPoster } from "@editor/utils/canvas-helper.js";
@@ -156,11 +156,12 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
-        download(info.data.urlPath, "实景效果图.png");
+        await download(info.data.urlPath, "实景效果图");
       } catch (e) {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
       }
+      await sleep(1000)
       toast.clear();
     },
     async downloadInfo() {
@@ -181,7 +182,7 @@ export default {
         duration: 0,
       });
       try {
-        downLoadXLSL(this.$store.state.editor.work);
+        await downLoadXLSL(this.$store.state.editor.work);
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
@@ -194,11 +195,12 @@ export default {
         duration: 0,
       });
       try {
-        download(this.$store.state.editor.signboardPic, "店招图片.png");
+        await download(this.$store.state.editor.signboardPic, "店招图片");
       } catch (e) {
         console.log(e, 34);
         Notify({ type: "danger", message: "下载失败" });
       }
+      await sleep(1000)
       toast.clear();
     },
     handleRotationProp(angle) {
@@ -217,7 +219,7 @@ export default {
       return style;
     },
     onOversize(file) {
-      Toast("文件大小不能超过 2M");
+      Toast("文件大小不能超过 10M");
     },
     noop() {},
   },

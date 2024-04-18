@@ -26,7 +26,7 @@
       style="display: none"
       :after-read="afterRead"
       :showUploadList="false"
-      :max-size="1024 * 1024 * 2"
+      :max-size="1024 * 1024 * 10"
       @oversize="onOversize"
     >
     </van-uploader>
@@ -103,7 +103,7 @@ export default {
       this.setEditingElement(currentElement);
     },
     onOversize(file) {
-      Toast("文件大小不能超过 2M");
+      Toast("文件大小不能超过 10M");
     },
     async afterRead(file) {
       const toast = Toast.loading({

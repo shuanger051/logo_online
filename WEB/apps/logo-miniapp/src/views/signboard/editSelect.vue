@@ -17,7 +17,7 @@
       </div>
       <van-uploader
         :after-read="afterRead"
-        :max-size="1024 * 1024 * 2"
+        :max-size="1024 * 1024 * 10"
         @oversize="onOversize"
       >
         <span>已有设计上传</span>
@@ -69,7 +69,7 @@ export default {
       });
     },
     onOversize(file) {
-      Toast("文件大小不能超过 2M");
+      Toast("文件大小不能超过 10M");
     },
   },
 };

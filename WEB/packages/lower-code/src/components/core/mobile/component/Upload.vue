@@ -10,7 +10,7 @@
         id="file_upload_1"
         style="display: none;"
         :after-read="afterRead"
-        :max-size="1024 * 1024 * 2"
+        :max-size="1024 * 1024 * 10"
         @oversize="onOversize"
     >
 
@@ -93,7 +93,7 @@ export default {
       toast.clear();
     },
     onOversize(file) {
-      Toast("文件大小不能超过 2M");
+      Toast("文件大小不能超过 10M");
     },
     async getList() {
       const res = await appGetMaterialListByPageApiOSS({
