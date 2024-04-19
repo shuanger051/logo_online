@@ -1,15 +1,25 @@
 <template>
   <div class="page-wrap">
-    <van-cell
-      v-for="item in streetArr"
-      :key="item.id"
-      :border="false"
-      @click="onNext(item.id)"
-      >{{ item.name }}</van-cell
-    >
-    <van-cell :border="false" v-if="$route.query.streetType !== '2'">
-      <van-button type="primary" size="small" @click="onJump">跳过</van-button>
-    </van-cell>
+    <van-notice-bar
+      v-if="$route.query.streetType !== '2'"
+      wrapable
+      :scrollable="false"
+      text="请先阅读您商铺所在街道的一街一景介绍，如您的商铺所在街道不在列表范围内可点击跳过继续下一步"
+    />
+    <div class="content">
+      <van-cell
+        v-for="item in streetArr"
+        :key="item.id"
+        :border="false"
+        @click="onNext(item.id)"
+        >{{ item.name }}</van-cell
+      >
+      <van-cell :border="false" v-if="$route.query.streetType !== '2'">
+        <van-button type="primary" size="small" @click="onJump"
+          >跳过</van-button
+        >
+      </van-cell>
+    </div>
   </div>
 </template>
 <script>
@@ -26,16 +36,16 @@ export default {
   },
   created() {
     const { streetType } = this.$route.query;
-    let title
+    let title;
     if (streetType == 1) {
-      title = '商业街道'
+      title = "商业街道";
     } else if (streetType == 2) {
-      title = '特色街道'
+      title = "特色街道";
     } else if (streetType == 3) {
-      title = '一般街道'
+      title = "一般街道";
     }
     if (title) {
-      evnetBus.$emit('customTitle', title)
+      evnetBus.$emit("customTitle", title);
     }
     const list = window.pageContentJson.streetView;
     const data = list.find((item) => item.id == streetType);
@@ -64,6 +74,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .page-wrap {
-  padding: 24px 12px 12px;
+  .content {
+    padding: 12px;
+  }
 }
 </style>

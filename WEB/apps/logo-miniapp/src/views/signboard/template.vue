@@ -57,7 +57,7 @@ export default {
   created() {
     // 保存查询条件
     this.params = _.pick(this.$route.query, ["styles", "material"]);
-    tplArr = []
+    tplArr = [];
   },
   methods: {
     resolveList(lists) {
@@ -85,9 +85,13 @@ export default {
     doFilter(list, condition) {
       return list.filter((item) => {
         return Object.keys(condition).some((key) => {
-          const val = condition[key] || '';
+          const val = condition[key] || "";
           const arr = val.split(",");
-          return arr.some((v) => item[key].split(",").includes(v));
+          // 有条件则过滤
+          if (val.length > 0)
+            return arr.some((v) => item[key].split(",").includes(v));
+          // 其他全部返回
+          return true
         });
       });
     },

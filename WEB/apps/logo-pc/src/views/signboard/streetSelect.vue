@@ -1,5 +1,12 @@
 <template>
   <div class="page-wrap">
+    <a-alert
+      v-if="$route.query.streetType !== '2'"
+      show-icon
+      type="warning"
+      message="请先阅读您商铺所在街道的一街一景介绍，如您的商铺所在街道不在列表范围内可点击跳过继续下一步"
+      style="margin-bottom: 24px"
+    />
     <a-list :data-source="streetArr" :border="false">
       <a-list-item
         slot="renderItem"

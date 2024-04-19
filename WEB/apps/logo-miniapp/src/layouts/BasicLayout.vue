@@ -10,8 +10,10 @@
       <template slot="left">
         <!-- button：后退 -->
         <van-icon v-if="isCanBack" name="arrow-left" @click="onNativeBack" />
+      </template>
+      <template slot="right">
         <!-- button：关闭 -->
-        <van-icon name="cross" @click="onClose" />
+        <span class="btn-close" @click="onClose">退出设计</span>
       </template>
     </van-nav-bar>
     <!-- main：页面主体 -->
@@ -36,21 +38,21 @@ export default {
       isInIframe: (state) => state.app.isInIframe,
     }),
     title() {
-      console.log(11)
-      return this.customTitle || this.$route.meta.title
-    }
+      console.log(11);
+      return this.customTitle || this.$route.meta.title;
+    },
   },
   data() {
     return {
       isCanBack: true,
-      customTitle: null
+      customTitle: null,
     };
   },
   watch: {
     $route: {
       handler(nRoute) {
         this.isCanBack = _.get(nRoute, "meta.isCanBack", true);
-        this.customTitle = null
+        this.customTitle = null;
       },
       immediate: true,
       deep: true,
@@ -71,10 +73,10 @@ export default {
     },
   },
   created() {
-    evnetBus.$on('customTitle', (val) => {
-      this.customTitle = val
-    })
-  }
+    evnetBus.$on("customTitle", (val) => {
+      this.customTitle = val;
+    });
+  },
 };
 </script>
 
@@ -83,6 +85,9 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
+  .btn-close {
+    color: #fff;
+  }
   & /deep/ .van-nav-bar__left {
     .van-icon {
       font-size: 16px;

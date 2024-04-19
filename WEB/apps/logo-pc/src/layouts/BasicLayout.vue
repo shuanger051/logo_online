@@ -9,7 +9,7 @@
     >
       <!-- 左侧图标 -->
       <template slot="extra">
-        <a-button v-if="isInIframe" @click="onClose">关闭</a-button>
+        <a-button class="btn-close" @click="onClose" type="link">退出菜单式店招设计</a-button>
       </template>
     </a-page-header>
     <!-- main：页面主体 -->
@@ -69,7 +69,7 @@ export default {
         bridgeClient.close();
       }
       // 其他
-      else this.$router.push({ path: "/home" });
+      else this.$router.push({ path: "/" });
     },
   },
 };
@@ -88,6 +88,9 @@ export default {
     border-radius: 4px;
     background-color: #2f63f1;
     color: #fff;
+    .btn-close{
+      color: #fff;
+    }
     &-heading {
       max-width: 1000px;
       margin: 0 auto;
