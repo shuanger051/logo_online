@@ -61,7 +61,7 @@ export default {
       label: "内容",
       defaultValue: "双击修改文字",
       visible: true,
-      component: "tinymce-editor",
+      component: "tinymce-editor-mobile",
       hiddenLabel: true,
       props: {
         init: {
@@ -100,7 +100,7 @@ export default {
       label: "内容",
       defaultValue: "双击修改文字",
       visible: true,
-      component: "tinymce-editor",
+      component: "tinymce-editor-pc",
       hiddenLabel: true,
       props: {
         init: {

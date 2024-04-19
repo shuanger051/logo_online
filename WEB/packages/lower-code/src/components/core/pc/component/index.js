@@ -9,10 +9,12 @@ import { ColorPicker } from 'element-ui'
 import { Icon } from '@iconify/vue2';
 import Editor from '@tinymce/tinymce-vue'
 import upload from './upload'
+import TinymceEditorPc from './tinymce-editor-pc.vue'
 
 export default {
    [ColorPicker.name]:  ColorPicker,
    'icon-fa': Icon,
    'tinymce-editor': Editor,
-   'pc-upload': upload
+   'pc-upload': upload,
+   'tinymce-editor-pc': TinymceEditorPc
   }

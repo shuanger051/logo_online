@@ -37,6 +37,9 @@
       @confirm="addText"
     >
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
+      <p style="font-size: 0.3rem;color: #646566;
+">请注意，您的店招的店名需要和营业执照的名称一致或者是营业执照的名称的缩写</p>
+
     </van-dialog>
   </div>
 </template>

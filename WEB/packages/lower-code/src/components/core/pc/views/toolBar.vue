@@ -33,8 +33,11 @@
      <span>设计完成</span>
       </div>
     </div>
-    <a-modal title="加字" v-model="textDialog" @ok="textAddOk">
+    <a-modal title="加字" v-model="textDialog" @ok="textAddOk" cancelText="取消" okText="确定" >
       <textarea v-model="text" class="add-text" placeholder="请添加文字" />
+      <p style="font-size: 12px; color: #646566; padding: 10px 10px;">
+      请注意，您的店招的店名需要和营业执照的名称一致或者是营业执照的名称的缩写
+    </p>
     </a-modal>
     <a-modal v-model="tempDialog" @ok="tempDialog = false" :footer="null">
       <div style="padding: 15px 0px">

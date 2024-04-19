@@ -9,6 +9,7 @@ import 'tinymce/themes/silver/theme.min.js'
 import 'tinymce/skins/ui/oxide/skin.min.css'
 import 'tinymce/icons/default'
 import Editor from '@tinymce/tinymce-vue'
+import TinymceEditorMobile from './tinymce-editor-mobile.vue'
 
 export default {
    [ColorPicker.name]:  ColorPicker,
@@ -16,5 +17,6 @@ export default {
    'icon-fa': Icon,
    'mobile-select': MobileSelect,
    'mobile-upload': Upload,
-   'tinymce-editor': Editor
+   'tinymce-editor': Editor,
+   'tinymce-editor-mobile': TinymceEditorMobile
   }

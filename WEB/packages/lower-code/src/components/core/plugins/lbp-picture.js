@@ -137,9 +137,9 @@ export default {
     },
   },
   data: () => ({
-    src: ''
+    src: window.$editorConfig.mode == 'admin' ? placeholderImg : ''
   }),
   methods: {
     
-  },
+  }
 };
