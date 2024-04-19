@@ -65,7 +65,15 @@ export default {
       if (status === 'done' && info.file?.response?.code == '0') {
         this.loading = false
         this.$message.success(`模板图片上传成功.`)
-        this.autoSave({cover_image_url: info.file.response.data.urlPath})
+        // start
+        let url = info.file.response.data.urlPath
+        if (/img-save-dir/.test(url)) {
+          url = 'https://img-save-dir.oss-cn-hangzhou.aliyuncs.com' + url.split('img-save-dir')[1]
+        }
+        this.autoSave({cover_image_url: url})
+        // end
+        //this.autoSave({cover_image_url: info.file.response.data.urlPath})
+
       } else if (status === 'error') {
         this.$message.error(`模板图片上传失败.`)
       }

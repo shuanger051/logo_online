@@ -20,7 +20,14 @@ export default {
     uploadSuccess ({ file, fileList }) {
       const response = file.response
       if (response.code == '0')  {
-        this.items = [{ name: response.data.fileName, url: response.data.urlPath }, ...this.items]
+        // start
+        let url = response.data.urlPath
+        if (/img-save-dir/.test(url)) {
+          url = 'https://img-save-dir.oss-cn-hangzhou.aliyuncs.com' + url.split('img-save-dir')[1]
+        }
+        // end
+        this.items = [{ name: response.data.fileName, url }, ...this.items]
+        //this.items = [{ name: response.data.fileName, url: response.data.urlPath }, ...this.items]
         this.total++  
       }
 
