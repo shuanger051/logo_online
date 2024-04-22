@@ -86,12 +86,13 @@ export default {
       return list.filter((item) => {
         return Object.keys(condition).some((key) => {
           const val = condition[key] || "";
-          const arr = val.split(",");
           // 有条件则过滤
-          if (val.length > 0)
+          if (val.length > 0) {
+            const arr = val.split(",");
             return arr.some((v) => item[key].split(",").includes(v));
+          }
           // 其他全部返回
-          return true
+          return true;
         });
       });
     },
