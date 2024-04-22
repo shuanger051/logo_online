@@ -6,7 +6,7 @@ import evnetBus from "@/core/eventBus";
 // 默认配置
 axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = window.__baseUrl;
+// axios.defaults.baseURL = window.__baseUrl;
 if (/hangzhou/.test(window.href)) {
   axios.defaults.baseURL = window.__baseUrl;
 } else {
