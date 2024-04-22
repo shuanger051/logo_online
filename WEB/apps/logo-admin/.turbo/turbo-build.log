@@ -2,46 +2,52 @@
 > @shop-sign/logo-admin@0.7.4 build /Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin
 > vue-cli-service build
 
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
 
 -  Building for production...
-Extracted theme color css content length: 160492
- DONE  Compiled successfully in 44522ms2:13:27 PM
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Extracted theme color css content length: 161085
+ DONE  Compiled successfully in 41964ms3:56:34 PM
 
   File                                      Size             Gzipped
 
-  dist/static/js/chunk-vendors.c97380aa.    2858.79 KiB      842.85 KiB
+  dist/static/js/chunk-vendors.70a514b0.    3092.84 KiB      901.43 KiB
   js
-  dist/static/js/chunk-2b951d90.7a8f2381    1395.09 KiB      423.93 KiB
+  dist/static/js/chunk-0f724bd4.bc02d328    1161.46 KiB      364.57 KiB
   .js
-  dist/static/js/chunk-5dec9718.f0f9136f    256.17 KiB       59.39 KiB
+  dist/static/js/chunk-51ff3726.f8b07bc5    254.11 KiB       58.60 KiB
   .js
-  dist/static/js/app.7a3bec4f.js            101.75 KiB       29.02 KiB
+  dist/static/js/app.b189085e.js            116.81 KiB       36.30 KiB
   dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
-  dist/static/js/chunk-1cd760d4.b51d3ec4    13.61 KiB        4.72 KiB
+  dist/static/js/chunk-120e087e.0ac8bed3    10.81 KiB        3.62 KiB
   .js
-  dist/static/js/chunk-1e7037f2.02bcbe2f    11.23 KiB        3.44 KiB
+  dist/static/js/chunk-4600d305.9aba14a4    10.08 KiB        2.88 KiB
   .js
-  dist/static/js/chunk-27ee3723.c3ab2fdf    10.48 KiB        3.65 KiB
+  dist/static/js/chunk-1f1ac802.e19e9350    8.02 KiB         2.28 KiB
   .js
-  dist/static/js/chunk-39680c8c.3c524c85    10.38 KiB        3.12 KiB
+  dist/static/js/chunk-7a526638.bc67939f    7.93 KiB         2.65 KiB
   .js
-  dist/static/js/chunk-7074d9bb.f476e2fe    9.87 KiB         3.31 KiB
+  dist/static/js/chunk-f723881a.96986ea3    7.51 KiB         2.48 KiB
   .js
-  dist/static/js/chunk-4219d7fa.1707748f    9.42 KiB         3.46 KiB
+  dist/static/js/chunk-6957bafb.19b2bd15    6.88 KiB         2.48 KiB
   .js
-  dist/static/js/chunk-509fc892.02686361    8.49 KiB         3.38 KiB
+  dist/static/js/chunk-1a4b3e54.22ac732e    5.94 KiB         2.39 KiB
   .js
-  dist/static/js/chunk-94dba838.c113e122    8.00 KiB         3.25 KiB
+  dist/static/js/chunk-8f4ae504.803407df    5.72 KiB         2.11 KiB
   .js
-  dist/static/js/chunk-ac7a8d1e.e6b9e378    6.24 KiB         2.60 KiB
+  dist/static/js/chunk-6977e4f2.86f84d54    5.64 KiB         2.41 KiB
   .js
-  dist/static/js/chunk-f2f5af76.1eebe084    6.15 KiB         2.30 KiB
+  dist/static/js/chunk-7134edae.980842cb    3.92 KiB         1.76 KiB
   .js
-  dist/static/js/chunk-310c1b1c.a7841f6e    6.02 KiB         2.53 KiB
+  dist/static/js/chunk-127a8898.a4a78dff    3.70 KiB         1.71 KiB
   .js
-  dist/static/js/chunk-6776385a.015ff3cb    5.14 KiB         2.26 KiB
+  dist/static/js/chunk-866831fc.994e7a2f    2.78 KiB         1.31 KiB
   .js
-  dist/static/js/chunk-6b1624e3.1d8d66e0    1.84 KiB         0.97 KiB
+  dist/static/js/chunk-ac7d93f2.05cd8815    1.84 KiB         0.97 KiB
   .js
   dist/static/js/chunk-24c6a408.943a90b2    1.84 KiB         0.96 KiB
   .js
@@ -53,44 +59,44 @@ Extracted theme color css content length: 160492
   .js
   dist/static/js/chunk-2d0f0f76.678638ec    0.16 KiB         0.15 KiB
   .js
-  dist/config.js                            0.04 KiB         0.06 KiB
-  dist/static/css/chunk-2b951d90.b7e0276    665.88 KiB       87.56 KiB
-  b.css
-  dist/static/css/app.66432b5f.css          560.95 KiB       63.88 KiB
-  dist/css/theme-colors-448c38fd.css        156.73 KiB       17.00 KiB
+  dist/config.js                            0.03 KiB         0.04 KiB
+  dist/static/css/chunk-0f724bd4.757bf28    666.04 KiB       87.56 KiB
+  7.css
+  dist/static/css/app.56e38f04.css          560.95 KiB       63.89 KiB
+  dist/css/theme-colors-067db2f1.css        157.31 KiB       17.04 KiB
   dist/static/css/chunk-vendors.736cdba8    67.77 KiB        4.79 KiB
   .css
-  dist/static/css/chunk-5dec9718.9ebbf82    41.11 KiB        5.48 KiB
-  3.css
-  dist/static/css/chunk-f2f5af76.ae79ec4    8.92 KiB         1.58 KiB
-  b.css
-  dist/static/css/chunk-1cd760d4.fc1b731    5.32 KiB         1.05 KiB
-  4.css
-  dist/static/css/chunk-39680c8c.f73410c    4.64 KiB         0.87 KiB
+  dist/static/css/chunk-51ff3726.3b114a8    41.11 KiB        5.48 KiB
+  d.css
+  dist/static/css/chunk-8f4ae504.ba9eb1a    8.92 KiB         1.58 KiB
+  0.css
+  dist/static/css/chunk-120e087e.fbb8289    5.32 KiB         1.05 KiB
+  0.css
+  dist/static/css/chunk-7134edae.51dbfdd    4.98 KiB         0.98 KiB
+  9.css
+  dist/static/css/chunk-1f1ac802.f73410c    4.64 KiB         0.87 KiB
   2.css
   dist/static/css/chunk-24c6a408.b44a5c5    2.89 KiB         0.91 KiB
   f.css
-  dist/static/css/chunk-6b1624e3.b44a5c5    2.89 KiB         0.91 KiB
-  f.css
   dist/static/css/chunk-7f8f2094.b44a5c5    2.89 KiB         0.91 KiB
   f.css
-  dist/static/css/chunk-1e7037f2.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-ac7d93f2.b44a5c5    2.89 KiB         0.91 KiB
+  f.css
+  dist/static/css/chunk-127a8898.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-27ee3723.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-1a4b3e54.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-310c1b1c.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-4600d305.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-4219d7fa.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-6957bafb.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-509fc892.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-6977e4f2.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-6776385a.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-7a526638.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-7074d9bb.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-866831fc.361bf17    2.66 KiB         0.83 KiB
   0.css
-  dist/static/css/chunk-94dba838.361bf17    2.66 KiB         0.83 KiB
-  0.css
-  dist/static/css/chunk-ac7a8d1e.361bf17    2.66 KiB         0.83 KiB
+  dist/static/css/chunk-f723881a.361bf17    2.66 KiB         0.83 KiB
   0.css
   dist/static/css/chunk-7739bf0a.476426a    2.43 KiB         0.78 KiB
   c.css

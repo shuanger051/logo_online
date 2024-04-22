@@ -8,7 +8,7 @@ axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = window.__baseUrl;
 // axios.defaults.baseURL = process.env.VUE_APP_API_PREFIX;
-if (/hangzhou/.test(window.href)) {
+if (/hangzhou/.test(location.href)) {
   axios.defaults.baseURL = window.__baseUrl;
 } else {
    axios.defaults.baseURL = process.env.VUE_APP_API_PREFIX;

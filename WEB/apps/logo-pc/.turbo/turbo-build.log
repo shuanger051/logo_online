@@ -1,0 +1,98 @@
+
+> @shop-sign/logo-pc@0.1.1 build /Users/yangyu/智能在线/logo_online/WEB/apps/logo-pc
+> vue-cli-service build
+
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+-  Building for production...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ DONE  Compiled successfully in 32990ms3:56:25 PM
+
+  File                                      Size             Gzipped
+
+  dist/static/js/chunk-vendors.3fd6832b.    3251.69 KiB      988.31 KiB
+  js
+  dist/static/js/chunk-14e6a3a1.b48535dd    317.99 KiB       103.43 KiB
+  .js
+  dist/static/js/app.88931b07.js            129.07 KiB       40.08 KiB
+  dist/static/js/chunk-ba607004.7af195de    109.45 KiB       34.59 KiB
+  .js
+  dist/static/js/chunk-7f05d491.94bfdf78    15.93 KiB        5.61 KiB
+  .js
+  dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
+  dist/static/js/chunk-32f822d5.3fc1a67e    12.47 KiB        3.75 KiB
+  .js
+  dist/static/js/chunk-437c75d2.1cdb08d7    4.54 KiB         2.01 KiB
+  .js
+  dist/static/js/chunk-3610d3f2.d876105b    2.28 KiB         1.18 KiB
+  .js
+  dist/static/js/chunk-0986c349.d90ac3fc    2.24 KiB         1.19 KiB
+  .js
+  dist/static/js/chunk-59aa6b6f.a18c0ebe    2.00 KiB         1.07 KiB
+  .js
+  dist/static/js/chunk-18f5e254.1b5f64c2    1.81 KiB         1.03 KiB
+  .js
+  dist/static/js/chunk-2d0c152d.3e338bbc    1.78 KiB         0.77 KiB
+  .js
+  dist/static/js/chunk-49fadb25.2b7d114f    1.77 KiB         0.93 KiB
+  .js
+  dist/static/js/chunk-315b7c8c.9b2411c6    1.65 KiB         0.78 KiB
+  .js
+  dist/static/js/chunk-520d2b41.7478ac9d    1.49 KiB         0.65 KiB
+  .js
+  dist/static/js/chunk-6e7f59e2.58260be9    1.49 KiB         0.85 KiB
+  .js
+  dist/static/js/chunk-450f20a5.e6e7d5ff    1.28 KiB         0.75 KiB
+  .js
+  dist/static/js/chunk-37c23c23.3beda3d7    1.18 KiB         0.68 KiB
+  .js
+  dist/static/js/chunk-ea7769e4.b96d46eb    1.18 KiB         0.70 KiB
+  .js
+  dist/static/js/chunk-665ee154.0aeae9ac    0.96 KiB         0.58 KiB
+  .js
+  dist/config.js                            0.26 KiB         0.16 KiB
+  dist/static/css/chunk-vendors.ee427e7f    520.39 KiB       68.34 KiB
+  .css
+  dist/static/css/app.2adc51b5.css          27.51 KiB        4.23 KiB
+  dist/static/css/chunk-520d2b41.a8fd6ff    1.14 KiB         0.48 KiB
+  8.css
+  dist/static/css/chunk-665ee154.6bd18d8    1.14 KiB         0.48 KiB
+  e.css
+  dist/static/css/chunk-14e6a3a1.2ac8e53    1.03 KiB         0.39 KiB
+  1.css
+  dist/static/css/chunk-3610d3f2.b91f97d    0.92 KiB         0.39 KiB
+  8.css
+  dist/static/css/chunk-49fadb25.c61d1fe    0.71 KiB         0.29 KiB
+  e.css
+  dist/static/css/chunk-7f05d491.08405a2    0.65 KiB         0.32 KiB
+  b.css
+  dist/static/css/chunk-59aa6b6f.02e3c6d    0.51 KiB         0.30 KiB
+  9.css
+  dist/static/css/chunk-315b7c8c.096da47    0.40 KiB         0.21 KiB
+  2.css
+  dist/static/css/chunk-37c23c23.87e6762    0.40 KiB         0.21 KiB
+  9.css
+  dist/static/css/chunk-32f822d5.5cc645d    0.30 KiB         0.18 KiB
+  e.css
+  dist/static/css/chunk-6e7f59e2.6a1f355    0.26 KiB         0.15 KiB
+  8.css
+  dist/static/css/chunk-ea7769e4.0671f7f    0.25 KiB         0.17 KiB
+  c.css
+  dist/static/css/chunk-437c75d2.45aa5b1    0.24 KiB         0.17 KiB
+  3.css
+  dist/static/css/chunk-0986c349.b06b3bf    0.19 KiB         0.15 KiB
+  3.css
+  dist/static/css/chunk-450f20a5.6ecc3c8    0.19 KiB         0.15 KiB
+  1.css
+  dist/static/css/chunk-18f5e254.cbac21b    0.15 KiB         0.12 KiB
+  3.css
+
+  Images and other types of assets omitted.
+
+ DONE  Build complete. The dist directory is ready to be deployed.
+ INFO  Check out deployment instructions at https://cli.vuejs.org/guide/deployment.html
+      
