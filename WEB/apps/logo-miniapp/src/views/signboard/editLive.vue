@@ -161,7 +161,7 @@ export default {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
       }
-      await sleep(1000)
+      await sleep(1000);
       toast.clear();
     },
     async downloadInfo() {
@@ -182,7 +182,7 @@ export default {
         duration: 0,
       });
       try {
-        await downLoadXLSL(this.$store.state.editor.work);
+        await downLoadXLSL(this.$store.state.editor.work)
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
@@ -197,10 +197,9 @@ export default {
       try {
         await download(this.$store.state.editor.signboardPic, "店招图片");
       } catch (e) {
-        console.log(e, 34);
         Notify({ type: "danger", message: "下载失败" });
       }
-      await sleep(1000)
+      await sleep(1000);
       toast.clear();
     },
     handleRotationProp(angle) {
