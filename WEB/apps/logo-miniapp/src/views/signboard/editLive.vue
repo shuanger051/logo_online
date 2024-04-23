@@ -1,12 +1,6 @@
 <template>
   <div style="height: 100%">
     <div class="edit-live-header">
-      <van-button type="primary" @click="creatLivePic"
-        >1</van-button>
-        <van-button type="primary" @click="xlslDownload"
-        >2</van-button>
-        <van-button type="primary" @click="picDownload"
-        >3</van-button>
       <van-button type="primary" class="recover" @click="confirmDialog = true"
         >确认完成</van-button
       >
@@ -166,7 +160,9 @@ export default {
       } else {
         await this.creatLivePic();
         await this.picDownload();
-        await this.xlslDownload();
+        if (typeof ZWJSBridge == "undefined" || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          await this.xlslDownload();
+        }
       }
 
     },
