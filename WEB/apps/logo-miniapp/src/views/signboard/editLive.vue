@@ -135,19 +135,7 @@ export default {
       });
       toast.clear();
     },
-    async download() {
-      const toast = Toast.loading({
-        message: "生成中...",
-        forbidClick: true,
-        duration: 0,
-      });
-      try {
-        await downloadPoster({ selector: "#edit-live__wrap" });
-      } catch (e) {
-        Notify({ type: "danger", message: "创建失败" });
-      }
-      toast.clear();
-    },
+
     async creatLivePic() {
       const toast = Toast.loading({
         message: "生成实景合成图...",
@@ -162,7 +150,7 @@ export default {
         });
         Notify({ type: "success", message: "创建成功" });
         // 创建成功直接下载
-        await download(info.data.urlPath, "实景效果图");
+        download(info.data.urlPath, "实景效果图");
       } catch (e) {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
@@ -172,8 +160,7 @@ export default {
     },
     async downloadInfo() {
       // 未上传实景图弹窗提示
-      let t = !this.livePic && !/debug/.test(location.href)
-      if (t) {
+      if (!this.livePic) {
         Notify({ message: "请先上传实景图！", type: "warning" });
         return;
       } else {
@@ -190,7 +177,7 @@ export default {
         duration: 0,
       });
       try {
-        await downLoadXLSL(this.$store.state.editor.work)
+        downLoadXLSL(this.$store.state.editor.work)
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
@@ -203,7 +190,7 @@ export default {
         duration: 0,
       });
       try {
-        await download(this.$store.state.editor.signboardPic, "店招图片");
+        download(this.$store.state.editor.signboardPic, "店招图片");
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
