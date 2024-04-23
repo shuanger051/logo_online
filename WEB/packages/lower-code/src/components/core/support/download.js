@@ -151,9 +151,10 @@ export const download = async (url, name, file = false) => {
     let fn =  () => {
       t = setTimeout(() => {
         handle()
-      }, 1500)
+      }, 5000)
     }
     fn.cancel = () => {
+      console.log(55555)
       clearTimeout(t)
     }
     return fn
@@ -172,30 +173,32 @@ export const download = async (url, name, file = false) => {
     if (file) {
       return new Promise((resolve, reject) => {
         const fn = endFn(resolve)
+        fn()
         ZWJSBridge.downloadFile({
           url: url,
           fileType: file,
           onSuccess: () => {resolve(); fn.cancel()},
           onFail: () => { reject(); fn.cancel();},
         });
-        fn()
       });
     }
     return new Promise((resolve, reject) => {
       const fn = endFn(resolve)
-
+      fn()
       ZWJSBridge.saveImage({
         url: url,
         onSuccess: ()=> {
           fn.cancel()
+          console.log(555551)
           resolve()
         },
         onFail: () => {
           fn.cancel()
+          console.log(555552)
+
           reject()
         },
       });
-      fn()
     });
   }
 };

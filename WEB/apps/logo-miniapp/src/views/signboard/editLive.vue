@@ -1,6 +1,12 @@
 <template>
   <div style="height: 100%">
     <div class="edit-live-header">
+      <van-button type="primary" @click="creatLivePic"
+        >1</van-button>
+        <van-button type="primary" @click="xlslDownload"
+        >2</van-button>
+        <van-button type="primary" @click="picDownload"
+        >3</van-button>
       <van-button type="primary" class="recover" @click="confirmDialog = true"
         >确认完成</van-button
       >
@@ -166,7 +172,8 @@ export default {
     },
     async downloadInfo() {
       // 未上传实景图弹窗提示
-      if (!this.livePic) {
+      let t = !this.livePic && !/debug/.test(location.href)
+      if (t) {
         Notify({ message: "请先上传实景图！", type: "warning" });
         return;
       } else {
