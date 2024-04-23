@@ -146,12 +146,19 @@ export const downLoadXLSL = async (work) => {
 };
 
 export const download = async (url, name, file = false) => {
+  const endFn = (handle) => {
+    let t
+    let fn =  () => {
+      t = setTimeout(() => {
+        handle()
+      }, 1500)
+    }
+    fn.cancel = () => {
+      clearTimeout(t)
+    }
+    return fn
+  }
   if (typeof ZWJSBridge == "undefined") {
-    // var a = document.createElement('a')
-    // a.href = url
-    // a.download = name
-    // a.click()
-    // return true
     return new Promise((r) => {
       convertImageToBase64(url, (u) => {
         var a = document.createElement("a");
@@ -164,20 +171,31 @@ export const download = async (url, name, file = false) => {
   } else {
     if (file) {
       return new Promise((resolve, reject) => {
+        const fn = endFn(resolve)
         ZWJSBridge.downloadFile({
           url: url,
           fileType: file,
-          onSuccess: resolve,
-          onFail: reject,
+          onSuccess: () => {resolve(); fn.cancel()},
+          onFail: () => { reject(); fn.cancel();},
         });
+        fn()
       });
     }
     return new Promise((resolve, reject) => {
+      const fn = endFn(resolve)
+
       ZWJSBridge.saveImage({
         url: url,
-        onSuccess: resolve,
-        onFail: reject,
+        onSuccess: ()=> {
+          fn.cancel()
+          resolve()
+        },
+        onFail: () => {
+          fn.cancel()
+          reject()
+        },
       });
+      fn()
     });
   }
 };

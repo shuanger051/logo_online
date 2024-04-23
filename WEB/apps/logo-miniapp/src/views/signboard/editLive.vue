@@ -174,6 +174,7 @@ export default {
         await this.picDownload();
         await this.xlslDownload();
       }
+
     },
     async xlslDownload() {
       const toast = Toast.loading({
