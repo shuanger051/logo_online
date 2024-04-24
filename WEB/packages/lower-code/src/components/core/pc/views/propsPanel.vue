@@ -27,7 +27,7 @@ export default {
     editingElement: {
       handler(old, nw) {
         this.show = this.editingElement ? true : false;
-        if (old && nw) {
+        if (old && nw && old === nw) {
           this.updateCache();
         }
       },

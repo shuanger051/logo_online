@@ -66,7 +66,7 @@ export default {
     columnNum() {
       if (this.isOldVersion) return 2;
       return 4;
-    },
+    }
   }
 };
 </script>
