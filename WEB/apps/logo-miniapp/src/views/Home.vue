@@ -25,6 +25,13 @@
         text="精品素材参考"
         to="/sample/list"
       />
+      <van-grid-item
+        v-if="showCache"
+        icon-prefix="iconfont icon"
+        :icon="IconImg.icon04"
+        text="历史记录"
+        to="/signboard/editSignboard/cache"
+      />
     </van-grid>
     <!-- 首次使用提示 -->
     <dl class="tips-box">
@@ -42,6 +49,8 @@ import icon01 from "@/assets/icon-dzszgfygg.png";
 import icon02 from "@/assets/icon-cdsdzsj.png";
 import icon03 from "@/assets/icon-dzczck.png";
 import icon04 from "@/assets/icon-jpscck.png";
+import store from "core/mobile/store/index";
+
 export default {
   name: "Home",
   computed: {
@@ -50,12 +59,15 @@ export default {
     }),
     // 图标
     IconImg: () => ({ icon01, icon02, icon03, icon04 }),
+    showCache: () => {
+      return !!store.state.editor.signboardCache 
+    },
     // 宫格数
     columnNum() {
       if (this.isOldVersion) return 2;
       return 4;
     },
-  },
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -25,6 +25,12 @@
           <div class="menu-name">精品素材参考</div>
         </router-link>
       </a-col>
+      <a-col class="gutter-row" :span="12"  v-if="showCache">
+        <router-link to="/signboard/editSignboard/cache">
+          <div class="menu-icon icon-jpscck"></div>
+          <div class="menu-name">历史记录</div>
+        </router-link>
+      </a-col>
     </a-row>
     <!-- 首次使用提示 -->
     <dl class="tips-box">
@@ -37,6 +43,8 @@
 </template>
 <script>
 import { Icon } from "ant-design-vue";
+import store from "core/pc/store/index";
+
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: require("@/styles/iconfont/iconfont.js"),
   extraCommonProps: {
@@ -47,10 +55,14 @@ const IconFont = Icon.createFromIconfontCN({
 });
 export default {
   components: { IconFont },
+  computed: {
+    showCache: () => {
+      return !!store.state.editor.signboardCache 
+    }
+  },
   created() {
-    // accountService.queryCustomerByIdAPI().then((res) => {
-    //   console.log(res);
-    // });
+    window.a = store.state.editor
+    console.log(store.state.editor.signboardCache , 888)
   },
 };
 </script>

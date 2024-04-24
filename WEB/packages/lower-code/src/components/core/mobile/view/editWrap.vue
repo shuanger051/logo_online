@@ -12,11 +12,19 @@
       show-cancel-button
       @confirm="changeConfig(true)"
     >
-    <div style="padding: 10px;">
-      <p style="font-size: 0.4rem;">请确保上传的图片不侵犯他人知识产权，如有侵权，一切后果由上传人承担</p>
-      <div style="display: flex; align-items: center;"><van-switch v-model="picConfirm" @change="changeConfirm" size="24px" style="margin-right: 10px;"/><span style="font-size: 0.4rem;">下次不在提示</span></div>
-    </div>
-
+      <div style="padding: 10px">
+        <p style="font-size: 0.4rem">
+          请确保上传的图片不侵犯他人知识产权，如有侵权，一切后果由上传人承担
+        </p>
+        <div style="display: flex; align-items: center">
+          <van-switch
+            v-model="picConfirm"
+            @change="changeConfirm"
+            size="24px"
+            style="margin-right: 10px"
+          /><span style="font-size: 0.4rem">下次不在提示</span>
+        </div>
+      </div>
     </van-dialog>
     <props-panel :breforRead="showPicConfirm" />
   </div>
@@ -48,7 +56,7 @@ export default {
     return {
       showOverlay: false,
       picConfirmShow: false,
-      picConfirm: sessionStorage.getItem("picConfirm") == 'true',
+      picConfirm: sessionStorage.getItem("picConfirm") == "true",
       editPanelStyle: {
         width: "0px",
         height: "0px",
@@ -67,7 +75,7 @@ export default {
     ]),
 
     changeConfirm(value) {
-      sessionStorage.setItem('picConfirm', value)
+      sessionStorage.setItem("picConfirm", value);
     },
     showPicConfirm() {
       return new Promise((resolve, reject) => {
@@ -78,8 +86,8 @@ export default {
           this.changeConfig = (flag) => {
             this.picConfirmShow = false;
             later(() => {
-              flag ? resolve() : reject()
-            }, 200)
+              flag ? resolve() : reject();
+            }, 200);
           };
         }
       });
@@ -90,7 +98,17 @@ export default {
     },
 
     async initEdit() {
-      if (this.$route.params.id) {
+      if (this.$route.params.id == "cache") {
+        if (this.$store.state.editor.signboardCache) {
+          this.fetchWork({
+            cache: this.$store.state.editor.signboardCache,
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+          });
+        }
+      } else if (this.$route.params.id) {
         const toast = Toast.loading({
           message: "加载中...",
           forbidClick: true,

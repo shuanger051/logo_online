@@ -18,7 +18,7 @@ const state = {
   workTemplates: [],
   scaleRate: 1,
   scripts: [],
-  
+  signboardCache: null
 }
 
 // getters

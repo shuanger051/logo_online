@@ -86,6 +86,18 @@ export default {
       });
     },
     async initEdit() {
+      if (this.$route.params.id == "cache") {
+        if (this.$store.state.editor.signboardCache) {
+          this.fetchWork({
+            cache: this.$store.state.editor.signboardCache,
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+          });
+        }
+        return
+      } 
       if (this.$route.params.id) {
         const toast = this.$message.loading("加载中...", 0);
         await this.fetchWork({ id: this.$route.params.id });
