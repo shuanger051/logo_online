@@ -59,11 +59,7 @@ export default {
     showCache: () => {
       return !!store.state.editor.signboardCache 
     }
-  },
-  created() {
-    window.a = store.state.editor
-    console.log(store.state.editor.signboardCache , 888)
-  },
+  }
 };
 </script>
 <style lang="less" scoped>
