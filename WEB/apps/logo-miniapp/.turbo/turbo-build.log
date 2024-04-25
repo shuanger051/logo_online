@@ -7,16 +7,7 @@ Browserslist: caniuse-lite is outdated. Please run:
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
 
 -  Building for production...
-Browserslist: caniuse-lite is outdated. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
-Browserslist: caniuse-lite is outdated. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
-Browserslist: caniuse-lite is outdated. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
- WARNING  Compiled with 2 warnings4:33:28 PM
+ WARNING  Compiled with 2 warnings4:20:03 PM
 
  warning  
 
@@ -25,8 +16,8 @@ This can impact web performance.
 Assets: 
   img/app-footer-bg.add3fb72.png (247 KiB)
   js/chunk-2f8b66d8.1ad6bf18.js (1000 KiB)
-  js/chunk-5d5f30f9.10d5a03b.js (314 KiB)
-  js/chunk-vendors.09070b12.js (1.52 MiB)
+  js/chunk-a2fe31f8.302ba981.js (314 KiB)
+  js/chunk-vendors.de236b97.js (1.52 MiB)
 
  warning  
 
@@ -34,23 +25,23 @@ entrypoint size limit: The following entrypoint(s) combined asset size exceeds t
 Entrypoints:
   app (1.77 MiB)
       css/chunk-vendors.d15b70a4.css
-      js/chunk-vendors.09070b12.js
-      css/app.83faeaca.css
-      js/app.c105ff02.js
+      js/chunk-vendors.de236b97.js
+      css/app.894266af.css
+      js/app.598c7622.js
 
 
   File                                      Size             Gzipped
 
-  dist/js/chunk-vendors.09070b12.js         1551.85 KiB      478.43 KiB
+  dist/js/chunk-vendors.de236b97.js         1551.87 KiB      478.45 KiB
   dist/js/chunk-2f8b66d8.1ad6bf18.js        1004.25 KiB      308.14 KiB
-  dist/js/chunk-5d5f30f9.10d5a03b.js        313.83 KiB       102.39 KiB
-  dist/js/app.c105ff02.js                   54.53 KiB        20.87 KiB
+  dist/js/chunk-a2fe31f8.302ba981.js        313.67 KiB       102.38 KiB
+  dist/js/app.598c7622.js                   54.53 KiB        20.87 KiB
   dist/pageContentJson.js                   15.28 KiB        1.24 KiB
   dist/js/chunk-3d107a90.60e2602b.js        15.24 KiB        5.60 KiB
   dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
   dist/js/chunk-38675404.7513262c.js        13.92 KiB        3.91 KiB
-  dist/precache-manifest.90d67d5a9ea31da    11.75 KiB        3.28 KiB
-  06efec039da8eda43.js
+  dist/precache-manifest.48929b4de36cd70    11.75 KiB        3.27 KiB
+  ec0c5092a0c82f13e.js
   dist/js/chunk-de8a1da4.d777f554.js        10.70 KiB        3.18 KiB
   dist/js/chunk-8ef6cf16.0131308e.js        4.38 KiB         1.84 KiB
   dist/js/chunk-7cdb6c38.8874adad.js        3.40 KiB         1.72 KiB
@@ -75,12 +66,12 @@ Entrypoints:
   dist/js/chunk-1a585315.28dad820.js        0.80 KiB         0.51 KiB
   dist/js/chunk-7acb6afa.383aa8ae.js        0.75 KiB         0.50 KiB
   dist/css/chunk-vendors.d15b70a4.css       182.56 KiB       50.62 KiB
-  dist/css/app.83faeaca.css                 27.91 KiB        4.41 KiB
+  dist/css/app.894266af.css                 22.00 KiB        4.14 KiB
   dist/css/chunk-03c30dae.a7153850.css      1.19 KiB         0.47 KiB
   dist/css/chunk-1a585315.6bb6aee5.css      1.19 KiB         0.47 KiB
   dist/css/chunk-59bfefc9.b8ef0dad.css      1.09 KiB         0.43 KiB
   dist/css/chunk-8ef6cf16.d34dee6b.css      1.04 KiB         0.37 KiB
-  dist/css/chunk-5d5f30f9.0075ecf5.css      1.04 KiB         0.40 KiB
+  dist/css/chunk-a2fe31f8.a3e91c0a.css      1.04 KiB         0.40 KiB
   dist/css/chunk-68d463ab.c5a6c864.css      0.96 KiB         0.45 KiB
   dist/css/chunk-69d2cc54.9c13ceac.css      0.80 KiB         0.29 KiB
   dist/css/chunk-7e2ac254.9d342284.css      0.75 KiB         0.32 KiB
