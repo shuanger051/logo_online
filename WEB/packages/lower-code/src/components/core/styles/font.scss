@@ -1,858 +1,359 @@
 
   
     @font-face {
-      font-family: 'hongleizhuoshujianti';
-
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/鸿雷拙书简体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/鸿雷拙书简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhongqizhimanghangshu';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/钟齐志莽行书.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/钟齐志莽行书.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'meibeiheiheiti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/美呗嘿嘿体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/美呗嘿嘿体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhankucangeryuyangti-w05';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W05.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W05.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhankucangeryuyangti-w04';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W04.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W04.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhankucangeryuyangti-w03';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W03.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W03.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhankucangeryuyangti-w02';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W02.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W02.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhankucangeryuyangti-w01';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W01.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/站酷仓耳渔阳体-W01.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'biaoxiaozhilongzhuti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/标小智龙珠体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/标小智龙珠体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'biaoxiaozhiwujiehei';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/标小智无界黑.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/标小智无界黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'wendaochaohei';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/文道潮黑.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/文道潮黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'deyihei';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/得意黑.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/得意黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'pangmenzhengdaoxixianti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/庞门正道细线体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/庞门正道细线体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhaizaijiamaikebi';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家麦克笔.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家麦克笔.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zhaizaijiafentiaotian';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家粉條甜.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家粉條甜.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zihunbiantaoti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字魂扁桃体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字魂扁桃体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zibangwankuti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字帮玩酷体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字帮玩酷体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zitiquanweijunhei-w3';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W3.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W3.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zitiquanweijunhei-w2';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W2.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W2.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zitiquanweijunhei-w1';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W1.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体圈伟君黑-W1.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zitichuanqixuejiahei-fensimianfei';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体传奇雪家黑-粉丝免费.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体传奇雪家黑-粉丝免费.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'zitichuanqinananti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体传奇南安体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/字体传奇南安体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'xiachanwan';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/夏蝉丸.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/夏蝉丸.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'chuangketiejingangti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/创客贴金刚体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/创客贴金刚体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'cangjigaodeguomiaohei';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/仓迹高德国妙黑.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/仓迹高德国妙黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yunfengfeiyunti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/云峰飞云体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/云峰飞云体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yunfengjinglonghangshu';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/云峰静龙行书.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/云峰静龙行书.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'sanjihangkaijianti-cu';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极行楷简体-粗.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极行楷简体-粗.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'sanjisuxianjianti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极素纤简体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极素纤简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'sanjipomoti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极泼墨体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极泼墨体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'sanjililiangtijian-cu';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极力量体简-粗.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/三极力量体简-粗.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'kuaikanshijieti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/kuaikanshijieti.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/kuaikanshijieti.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yufanxinyu-regular';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Regular.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Regular.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yufanxinyu-medium';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Medium.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Medium.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yufanxinyu-light';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Light.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Light.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'yufanxinyu-bold';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Bold.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/YuFanXinYu-Bold.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'leefontmengheiti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Leefont蒙黑体.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Leefont蒙黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'huayuan.gothic.regular';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Huayuan.Gothic.Regular.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Huayuan.Gothic.Regular.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'huayuan.gothic.bold';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Huayuan.Gothic.Bold.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/Huayuan.Gothic.Bold.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-thin';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Thin.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Thin.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-regular';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Regular.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Regular.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-medium';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Medium.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Medium.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-light';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Light.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Light.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-heavy';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Heavy.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Heavy.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-extralight';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-ExtraLight.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-ExtraLight.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-extrabold';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-ExtraBold.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-ExtraBold.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-demibold';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-DemiBold.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-DemiBold.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'honorsanscn-bold';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Bold.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/HONORSansCN-Bold.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'dingtalk sans';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/DingTalk Sans.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/DingTalk Sans.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'dingtalk jinbuti';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/DingTalk JinBuTi.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/DingTalk JinBuTi.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'chenyuluoyan-thin';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/ChenYuluoyan-Thin.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/ChenYuluoyan-Thin.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'cktbmzl';
-      
-      src: 
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/CKTBMZL.ttf') format('truetype'),
-        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/CKTBMZL.woff2') format('woff2');
-      
-    }
-
-
-  
-    @font-face {
-      font-family: 'banmaziti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/斑马字体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'biantaoti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/扁桃体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'biaotiyuanti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/标题圆体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'chaoheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/潮黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'deyihei';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/得意黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'deyiheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/得意黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'fantifangzhuan';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/繁体方篆.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'fanxinyuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/繁新语体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'feiyunti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/飞云体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'fentiaotian';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/粉條甜.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'fumantangti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/福满堂体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'ge特ticu';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/哥特体（粗）.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'ge特ti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/哥特体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'genyoumaobijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/根友毛笔简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'gunshijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/滚石简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'guomiaohei';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/国妙黑.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'hefengti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/和风体.woff2') format('woff2');
-      
+      font-family: 'longzhuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/longzhuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/龙珠体.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'heicaoti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/黑草体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'heiheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/嘿嘿体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'jingangti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/金刚体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'jinzhuanheitijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/金砖黑体简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'jinshuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/锦书体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'jinbuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/进步体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'kuaikanshijieti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/快看世界体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'kuanheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宽黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'lanheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/澜黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'liliangtijianticu';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/力量体简体（粗）.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'longshoushuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/龙手书体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'longzhuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/龙珠体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'layantixi';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/落雁体（细）.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'maikebi';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/麦克笔.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'mengheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/蒙黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'nananti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/南安体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'pomoti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/泼墨体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'ruimaobijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/锐毛笔简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'shangweipuzhuo';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/尚巍朴拙.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'shaonianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/少年体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'shenshiheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/绅士黑体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'shuhuntijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/书魂体简体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'shuheiticu';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/数黑体（粗）.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'wankuti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/玩酷体.woff2') format('woff2');
-      
-    }
-  
-    @font-face {
-      font-family: 'weijunheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/伟君黑体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/heicaoti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/黑草体.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'weibeijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/魏碑简体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/weibeijianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/魏碑简体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'wujiehei';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/无界黑.woff2') format('woff2');
-      
+      font-family: 'feiyunti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/feiyunti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/飞云体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'xixianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/细线体.woff2') format('woff2');
-      
+      font-family: 'lishujianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/lishujianti.ttf') format('truetype');
+        
     }
   
     @font-face {
-      font-family: 'xiachanwan';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/夏蝉丸.woff2') format('woff2');
-      
+      font-family: 'jinshuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/jinshuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/锦书体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'xiaogelishujianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/笑歌隶书简体.woff2') format('woff2');
-      
+      font-family: 'ruimaobijianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/ruimaobijianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/锐毛笔简体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'jinzhuanheitijianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/jinzhuanheitijianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/金砖黑体简体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'longshoushuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/longshoushuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/龙手书体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'jingangti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/jingangti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/金刚体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'jinbuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/jinbuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/进步体.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'xingshiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/醒狮体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/xingshiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/醒狮体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'yichenghangshujianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/仪程行书简体.woff2') format('woff2');
-      
+      font-family: 'hangshujianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/hangshujianti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'hangshuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/hangshuti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'layanti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/layanti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'mengheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/mengheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/蒙黑体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'xixianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/xixianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/细线体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'shenshiheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/shenshiheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/绅士黑体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'fanxinyuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/fanxinyuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/繁新语体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'fantifangzhuan';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/fantifangzhuan.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/繁体方篆.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'fumantangti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/fumantangti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/福满堂体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'wankuti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/wankuti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/玩酷体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'lanheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/lanheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/澜黑体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'chaoheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/chaoheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/潮黑体.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'yuyangheiti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/渔阳黑体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/yuyangheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/渔阳黑体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'yuboshouxiejianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/玉波手写简体.woff2') format('woff2');
-      
+      font-family: 'pomoti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/pomoti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/泼墨体.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'zhengyati';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/正雅体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/zhengyati.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/正雅体.woff2') format('woff2');
     }
   
     @font-face {
-      font-family: 'zhimanghangshu';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/志莽行书.woff2') format('woff2');
-      
+      font-family: 'maobi0sejianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/maobi0sejianti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'puzhuoti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/puzhuoti.ttf') format('truetype');
+        
     }
   
     @font-face {
       font-family: 'zhiheijianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/智黑简体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/zhiheijianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/智黑简体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'wujiehei';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/wujiehei.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/无界黑.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'banmati';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/banmati.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'shuheiticu';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/shuheiticu.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/数黑体（粗）.woff2') format('woff2');
     }
   
     @font-face {
       font-family: 'zhuoshujianti';
-      
-      src: url('//dzfont.oss-cn-hangzhou.aliyuncs.com/拙书简体.woff2') format('woff2');
-      
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/zhuoshujianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/拙书简体.woff2') format('woff2');
     }
   
+    @font-face {
+      font-family: 'shoushujianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/shoushujianti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'biantaoti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/biantaoti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/扁桃体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'kuaikanshijieti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/kuaikanshijieti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/快看世界体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'deyihei';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/deyihei.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/得意黑.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'shaonianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/shaonianti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/少年体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'zhaizaijiamaikebi';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/zhaizaijiamaikebi.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家麦克笔.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'zhaizaijiafentiaotian';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/zhaizaijiafentiaotian.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/宅在家粉條甜.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'xiachanwan';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/xiachanwan.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/夏蝉丸.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'guomiaohei';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/guomiaohei.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/国妙黑.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'heiheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/heiheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/嘿嘿体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'ge1ticu';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/ge1ticu.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'ge2ti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/ge2ti.ttf') format('truetype');
+        
+    }
+  
+    @font-face {
+      font-family: 'hefengti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/hefengti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/和风体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'nananti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/nananti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/南安体.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'liliangtijianticu';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/liliangtijianticu.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/力量体简体（粗）.woff2') format('woff2');
+    }
+  
+    @font-face {
+      font-family: 'tijianti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/tijianti.ttf') format('truetype');
+    
+    }
+  
+    @font-face {
+      font-family: 'weijunheiti';
+      src:
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/online_ttf/weijunheiti.ttf') format('truetype'),
+        url('//dzfont.oss-cn-hangzhou.aliyuncs.com/伟君黑体.woff2') format('woff2');
+    }
   

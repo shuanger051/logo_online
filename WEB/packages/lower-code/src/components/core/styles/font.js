@@ -3,11 +3,26 @@ const pinyin = require("pinyin");
 const path = require('path')
 const fs = require('fs');
 const ejs = require('ejs')
-
+const fontMap_back = require('./fontMap_bak')
 const resolve = (str) => {
   return path.resolve(__dirname, str)
 }
 
+let backFontWoff = {}
+
+const formatBackStr = () => {
+  const backStr = fs.readFileSync('./font_bak1.scss', 'utf-8');
+  const arry = backStr.match(/@font-face.*?{[\s\S]*?}/g);
+  arry.forEach((str) => {
+    let name = /font-family:\s*'(.*?)'/.exec(str)
+    let woff = /url\('(.*?.woff2)'\)/.exec(str)
+    if (name && woff) {
+      backFontWoff[name[1]] = woff[1]
+    }
+  })
+  console.log(backFontWoff)
+}
+formatBackStr()
 const pyConfig = {
   style: 0,
   heteronym: false,
@@ -38,9 +53,9 @@ const cssTemp = `
   <% for (let item of fontList) {%>
     @font-face {
       font-family: '<%= item.value %>';
-      <% for (let ext of item.exts) {%>
-      src: url('./font/<%= item.alias+'.'+ext %>') format('<%= item.fontMeta[ext].format %>');
-      <% } %>
+      src:
+        url('./font22/<%= item.value+'.ttf' %>') format('truetype')<%= item.woff ? ',' : ';'%>
+        <%- item.woff ? "url('"+item.woff+"') format('woff2');" : ''%>
     }
   <% } %>
 `;
@@ -65,43 +80,42 @@ const fontMeta = {
     format: 'woff2'
   }
 }
+
+
+var num = 0
 const getFontList = async () => {
   let fontList = [];
-  const pyMap = new Map();
-  const aliasMap = new Map();
-  const results = await glob(resolve("./font/*.{ttf,woff2}"), {
+  const pyMap = new Set();
+  const results = await glob(resolve("./font/*.ttf"), {
     stat: true,
     withFileTypes: true,
   });
   results.forEach((path) => {
     const pathLists = path.name.split(".")
     const alias = pathLists.slice(0,-1).join('.')
-    const ext = pathLists.slice(-1)[0]
-    const py = pinyin(alias, pyConfig).join("").toLocaleLowerCase();
+    let py = pinyin(alias, pyConfig).join("").toLocaleLowerCase();
     let item;
-    let cacheAlias
-    if ((cacheAlias=pyMap.get(py)) && cacheAlias !== alias) {
-      throw new Error(`same name: ${cacheAlias}, ${alias}`);
+    py = py.replace(/\s|\(|\)|（|）/g, '')
+    py=py.replace(/[\u4e00-\u9fa5]/g,() => {
+      return num++
+  })
+    if (pyMap.has(py)) {
+      py += num++
     }
-    if (item = aliasMap.get(alias)) {
-      item.exts.push(ext)
-    } else {
+
+    fs.renameSync(`./font/${path.name}`, `./font/${py}.ttf`)
+    
+
       item = {
-        exts: [ext],
+        woff: backFontWoff[py],
         alias: alias,
         value: py,
-        fontMeta
       }
       fontList.push(item)
-      aliasMap.set(alias, item)
-      pyMap.set(py, alias)
-    }
+      pyMap.add(py)
+    
   })
 
-  fontList.forEach((item) => {
-    item.exts.sort((a, b) => item.fontMeta[a]?.priority > item.fontMeta[b]?.priority ? 1 : -1)
-  })
-  
   return fontList;
 };
 
