@@ -33,7 +33,7 @@ export default {
       this.$router.push({
         name: "intelligenceTemplate",
         query: {
-          shopId: this.$route.query.shopId,
+          ...this.$route.query,
           name: this.name
         }
       })

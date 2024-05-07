@@ -65,7 +65,7 @@ export default {
     onJump() {
       const { query } = this.$route;
       this.$router.push({
-        path: "/signboard/attribute",
+        path: "/signboard/selfEdit",
         query,
       });
     },

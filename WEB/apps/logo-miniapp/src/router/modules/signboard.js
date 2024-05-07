@@ -24,6 +24,7 @@ const routes = [
   // 店招属性选择
   {
     path: "attribute",
+    name: 'attribute',
     meta: { title: "类型选择" },
     component: () => import("@/views/signboard/attribute"),
   },

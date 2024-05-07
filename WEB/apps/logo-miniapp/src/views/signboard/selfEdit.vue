@@ -9,7 +9,7 @@
       <div
         class="line-desing"
         @click="
-          $router.push(`/signboard/intelligenceDesign?shopId=${$route.query.shopId}`)
+          $router.push({name:'intelligenceDesign', query: $route.query})
         "
       >
         <span>智能设计</span>
@@ -19,7 +19,7 @@
       <div
         class="line-desing"
         @click="
-          $router.push(`/signboard/editSelect?shopId=${$route.query.shopId}`)
+          $router.push({name:'attribute', query: $route.query})
         "
       >
         <span>自主设计</span>

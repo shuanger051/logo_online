@@ -7,7 +7,10 @@ Browserslist: caniuse-lite is outdated. Please run:
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
 
 -  Building for production...
- DONE  Compiled successfully in 28096ms4:20:05 PM
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ DONE  Compiled successfully in 31038ms3:03:38 PM
 
   File                                      Size             Gzipped
 
@@ -15,7 +18,7 @@ Browserslist: caniuse-lite is outdated. Please run:
   js
   dist/static/js/chunk-14e6a3a1.a0e1166d    317.99 KiB       103.43 KiB
   .js
-  dist/static/js/app.df78b6f0.js            129.07 KiB       40.08 KiB
+  dist/static/js/app.8b7ab329.js            125.99 KiB       39.17 KiB
   dist/static/js/chunk-ba607004.7af195de    109.45 KiB       34.59 KiB
   .js
   dist/static/js/chunk-7f05d491.94bfdf78    15.93 KiB        5.61 KiB
@@ -54,7 +57,7 @@ Browserslist: caniuse-lite is outdated. Please run:
   dist/config.js                            0.26 KiB         0.16 KiB
   dist/static/css/chunk-vendors.ee427e7f    520.39 KiB       68.34 KiB
   .css
-  dist/static/css/app.0eaaf3af.css          21.60 KiB        3.95 KiB
+  dist/static/css/app.03cec977.css          16.79 KiB        3.10 KiB
   dist/static/css/chunk-520d2b41.a8fd6ff    1.14 KiB         0.48 KiB
   8.css
   dist/static/css/chunk-665ee154.6bd18d8    1.14 KiB         0.48 KiB
