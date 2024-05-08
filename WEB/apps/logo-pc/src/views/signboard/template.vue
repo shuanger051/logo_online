@@ -79,6 +79,14 @@ export default {
     },
     // 根据条件过滤
     doFilter(list, condition) {
+      let streetType = this.$route.query.streetType;
+      if (streetType) {
+        list = list.filter((item) => {
+          if (!item.streetType || item.streetType == streetType) {
+            return true;
+          }
+        });
+      }
       return list.filter((item) => {
         return Object.keys(condition).some((key) => {
           const val = condition[key] || "";
