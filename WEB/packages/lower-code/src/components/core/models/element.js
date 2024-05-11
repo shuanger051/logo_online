@@ -296,7 +296,6 @@ export default class Element {
 
   registerGlobalComponent () {
     const basePlugin = Vue.component(this.name)
-    console.log(basePlugin, 990,this.name)
     const mixinList = this.scripts.map(script => new Function(script.content.replace('editorMethods', 'methodsConfig'))())
     basePlugin && this._mixinScript(mixinList, basePlugin)
   }

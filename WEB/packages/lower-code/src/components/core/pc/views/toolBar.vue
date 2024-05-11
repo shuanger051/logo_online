@@ -52,7 +52,7 @@
   </div>
 </template>
 <script>
-import store from "core/mobile/store/index";
+import store from "core/pc/store/index";
 import { resolveImgUrl } from "core/support/imgUrl";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
 
@@ -159,6 +159,9 @@ export default {
       this.setEditingElement(currentElement);
     },
   },
+  created() {
+    window.aa = store
+  }
 };
 </script>
 <style lang="scss" scoped>

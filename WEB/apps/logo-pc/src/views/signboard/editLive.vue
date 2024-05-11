@@ -121,6 +121,7 @@ export default {
       "setPic",
       "mCreateCover",
       "changeTokenScreenShotStatus",
+      "clearsignboardCache"
     ]),
     async upload(evt) {
       const form = new FormData();
@@ -167,6 +168,7 @@ export default {
         await this.picDownload();
         await this.xlslDownload();
       }
+      this.clearsignboardCache()
     },
     async xlslDownload() {
       const toast = this.$message.loading("下载店招素材中...", 0);

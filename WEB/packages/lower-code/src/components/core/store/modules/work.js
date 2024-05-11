@@ -89,6 +89,14 @@ export const actions = {
     } else {
       id = obj
     }
+
+    if (obj.cache) {
+      console.log(obj.cache)
+      commit("setWork", obj.cache);
+      commit("setEditingPage");
+      return
+    }
+    
     if (hasWork) {
       commit("setWork", state.mobile.currentWorkData);
       commit("setEditingPage");
@@ -136,6 +144,13 @@ export const actions = {
   downloadPoster({ commit, state, dispatch }) {
     downloadPoster();
   },
+  clearsignboardCache({commit}) {
+    commit('clearsignboardCache')
+  },
+  updateCache({commit}) {
+    commit('updateCache')
+
+  }
 };
 
 // mutations
@@ -168,6 +183,14 @@ export const mutations = {
     
 
   },
+
+  updatesignboardCache(state, payload) {
+    state.signboardCache = payload
+  },
+  clearsignboardCache(state) {
+    state.signboardCache = null
+  },
+  updateCache() {},
   previewWork(state, { type, value }) {},
   deployWork(state, { type, value }) {},
   formDetailOfWork(state, { type, value }) {

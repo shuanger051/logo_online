@@ -107,7 +107,7 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions("editor", ["setPic", "mCreateCover"]),
+    ...mapActions("editor", ["setPic", "mCreateCover", 'clearsignboardCache']),
     handleElementMove(pos) {
       this.style = {
         ...this.style,
@@ -164,7 +164,7 @@ export default {
           await this.xlslDownload();
         }
       }
-
+      this.clearsignboardCache()
     },
     async xlslDownload() {
       const toast = Toast.loading({
