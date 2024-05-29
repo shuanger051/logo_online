@@ -92,7 +92,7 @@ export default {
         });
       }
       list = list.filter((item) => {
-        return Object.keys(condition).some((key) => {
+        return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
           // 有条件则过滤
           if (val.length > 0) {

@@ -48,6 +48,7 @@ export default {
     // 保存查询条件
     this.params = _.pick(this.$route.query, ["styles", "material"]);
     tplArr = [];
+    console.log("tplArr", tplArr);
     this.queryTemplate();
   },
   methods: {
@@ -79,6 +80,7 @@ export default {
     },
     // 根据条件过滤
     doFilter(list, condition) {
+      console.log(list, condition)
       let streetType = this.$route.query.streetType;
       if (streetType) {
         list = list.filter((item) => {
@@ -88,7 +90,7 @@ export default {
         });
       }
       return list.filter((item) => {
-        return Object.keys(condition).some((key) => {
+        return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
           // 传条件则过滤
           if (val.length > 0) {
@@ -128,6 +130,7 @@ export default {
         .finally(() => (this.loading = false))
         // 实现翻页
         .then(() => {
+          console.log("tplArr-query", tplArr);
           const start = (pageNum - 1) * page.pageSize;
           const list = tplArr.slice(start, start + page.pageSize);
           this.list = this.resolveList(list);
