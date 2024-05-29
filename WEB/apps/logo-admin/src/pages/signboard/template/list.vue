@@ -105,7 +105,7 @@ export default {
     // 查询字段
     serachFields() {
       return [
-        { name: "tempName", label: "模版名称" },
+        { name: "name", label: "模版名称" },
         {
           name: "style",
           label: "模版风格",
