@@ -21,7 +21,22 @@ import Element  from 'core/models/element'
 import preview from 'core/editor/canvas/preview'
 import store from "core/mobile/store/index";
 import { mapActions } from "vuex";
-
+class BitSet {
+	constructor(arg) {
+		this.bits = [];
+    this.repeat=0
+	}
+	add(n) {
+		this.bits[n >> 5] |= 1 << (n & 31);
+	}
+	has(n) {
+		let flag= !!(this.bits[n >> 5] & (1 << (n & 31)));
+    if (flag) {
+      this.repeat++
+    }
+    return flag
+	}
+}
 export default {
   data() {
     return {
@@ -43,7 +58,14 @@ export default {
 
     resolveElement(lists) {
       let name = this.$route.query.name
-      return lists.map((item) => {
+      let clists = []
+      lists.forEach(item => {
+          if (!this._bitSet.has(item.id)) {
+            clists.push(item)
+            this._bitSet.add(item.id)
+          }
+      });
+      return clists.map((item) => {
         const ret = {
           id: item.id,
           style: {}
@@ -108,13 +130,17 @@ export default {
         })
         .then((res) => {
           page.current = pageNum;
-          const { list } = res.data;
-          this.list = oldArr.concat(this.resolveElement(list));
-          this.finished = list.length < size;
+          const { list,total } = res.data;
+          const resolveLists = this.resolveElement(list)
+          this.list = oldArr.concat(resolveLists);
+          this.finished = this.list.length + this._bitSet.repeat < total;
         })
         .finally(() => (this.loading = false));
     },
   },
+  created() {
+    this._bitSet = new BitSet()
+  }
 };
 </script>
 <style lang="scss" scoped>
