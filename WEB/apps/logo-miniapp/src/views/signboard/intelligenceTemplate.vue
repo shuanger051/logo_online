@@ -57,7 +57,8 @@ export default {
     ...mapActions("editor", ["setCurrentWorkData"]),
 
     resolveElement(lists) {
-      let name = this.$route.query.name
+      let config = this.$route.query.tp
+      config = JSON.parse(decodeURIComponent(config))
       let clists = []
       lists.forEach(item => {
           if (!this._bitSet.has(item.id)) {
@@ -79,8 +80,14 @@ export default {
           })
           if (textElement) {
             textElement.pluginProps.text = textElement.pluginProps.text.replace(/(<.*?>)?[^<]*/,(a, b) => {
-              return b ? b + name : name
+              return b ? b + config.name : config.name
             })
+            if (config.color) {
+              textElement.pluginProps.fontColor = config.color
+            }
+            if (config.font) {
+              textElement.pluginProps.fontFamily = config.font
+            }
           }
           ret.elements = lists.map((item) => {
             return new Element(item)
