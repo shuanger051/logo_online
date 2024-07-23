@@ -56,7 +56,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'el-color-picker',
+      type: 'color-select',
       label,
       // !#zh 为编辑组件指定 props
       props: {

@@ -58,7 +58,7 @@ const routes = [
   {
     path: "selfEdit",
     name: "selfEdit",
-    meta: { title: "自主设计" },
+    meta: { title: "设计模式选择" },
     component: () => import("@/views/signboard/selfEdit"),
   },
   {

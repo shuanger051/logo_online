@@ -77,13 +77,24 @@ export default {
       });
     },
     go(id) {
-      this.$router.push(
-        `/signboard/editSignboard/${id}?shopId=${this.$route.query.shopId}`
-      );
+      let query = {
+        shopId: this.$route.query.shopId
+      }
+      if (this.$route.query.styles) {
+        query.styles = this.$route.query.styles
+      }
+      this.$router.push({ path: `/signboard/editSignboard/${id}`, query });
     },
     // 根据条件过滤
     doFilter(list, condition) {
       let streetType = this.$route.query.streetType;
+      let lttpt = this.$route.query.lttpt
+      if (lttpt == 1) {
+        list = list.filter((item) => {
+          return item.id == 591
+        })
+        return list
+      }
       if (streetType) {
         list = list.filter((item) => {
           if (!item.streetType || item.streetType == streetType) {

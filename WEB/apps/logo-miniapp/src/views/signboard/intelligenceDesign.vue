@@ -13,34 +13,34 @@
         placeholder="店招名称"
         :rules="[{ required: true, message: '请填写店招名称' }]"
       />
-      <van-field
+      <!-- <van-field
         readonly
         clickable
         label="字体"
         :value="fontFamily"
         placeholder="字体"
         @click="showPicker = true"
-      />
+      /> -->
 
-      <van-popup v-model="showPicker" position="bottom">
+      <!-- <van-popup v-model="showPicker" position="bottom">
         <van-picker
           show-toolbar
           :columns="columns"
           @cancel="showPicker = false"
           @confirm="onConfirm"
         />
-      </van-popup>
+      </van-popup> -->
 
-      <van-cell-group>
+      <!-- <van-cell-group>
         <van-cell  title="颜色" class="colorTitle">
           <span :style="{'backgroundColor':color}" class="colorButton" size="small"  @click="showColor = true"></span>
         </van-cell>
-      </van-cell-group>
+      </van-cell-group> -->
       
-      <van-dialog v-model="showColor" show-confirm-button>
+      <!-- <van-dialog v-model="showColor" show-confirm-button>
 
         <compact :value="fontColor" @input="resolveColor"></compact>
-      </van-dialog>
+      </van-dialog> -->
 
       <div style="margin: 16px; margin-top: 30px;">
         <van-button round block type="info" native-type="submit"
@@ -81,8 +81,8 @@ export default {
     onSubmit() {
       let tp = {
         name: this.name,
-        font: this.fontLabel,
-        color: this.color
+        // font: this.fontLabel,
+        // color: this.color
       }
       this.$router.push({
         name: "intelligenceTemplate",
