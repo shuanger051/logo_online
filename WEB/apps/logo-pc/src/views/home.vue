@@ -13,18 +13,18 @@
           <div class="menu-name">菜单式店招设计</div>
         </router-link>
       </a-col>
-      <a-col class="gutter-row" :span="12">
+      <!-- <a-col class="gutter-row" :span="12">
         <router-link to="/material/list">
           <div class="menu-icon icon-dzczck"></div>
           <div class="menu-name">店招材质参考</div>
         </router-link>
-      </a-col>
-      <a-col class="gutter-row" :span="12">
+      </a-col> -->
+      <!-- <a-col class="gutter-row" :span="12">
         <router-link to="/sample/list">
           <div class="menu-icon icon-jpscck"></div>
           <div class="menu-name">精品素材参考</div>
         </router-link>
-      </a-col>
+      </a-col> -->
       <a-col class="gutter-row" :span="12"  v-if="showCache">
         <router-link to="/signboard/editSignboard/cache">
           <div class="menu-icon icon-jpscck"></div>

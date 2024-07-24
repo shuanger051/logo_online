@@ -16,9 +16,10 @@ export default {
     };
   },
   created() {
-    const { name, type } = this.$route.query;
+    const { name = "", type } = this.$route.query;
     const list = window.pageContentJson.material[type];
-    const data = list.find((item) => item.key == name);
+    const names = name.split(",");
+    const data = list.find((item) => names.includes(item.key));
     if (data) this.detail = data.content;
   },
 };

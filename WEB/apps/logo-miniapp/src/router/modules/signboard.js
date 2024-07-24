@@ -12,7 +12,7 @@ const routes = [
       // 根据条件跳转
       if (isRead) next({ path: "/signboard/streetTypeSelect" });
       else next();
-      return
+      return;
     },
   },
   // 店招模版选择页
@@ -24,7 +24,7 @@ const routes = [
   // 店招属性选择
   {
     path: "attribute",
-    name: 'attribute',
+    name: "attribute",
     meta: { title: "类型选择" },
     component: () => import("@/views/signboard/attribute"),
   },
@@ -42,8 +42,13 @@ const routes = [
   // 街区道路
   {
     path: "streetSelect",
-    meta: { title: "一街一景"},
+    meta: { title: "一街一景" },
     component: () => import("@/views/signboard/streetSelect"),
+  },
+  {
+    path: "sample",
+    meta: { title: "精品素材" },
+    component: () => import("@/views/signboard/sample"),
   },
   {
     path: "streetIntro",

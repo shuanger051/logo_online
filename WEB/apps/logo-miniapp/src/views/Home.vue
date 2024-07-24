@@ -13,18 +13,18 @@
         text="菜单式店招设计"
         to="/signboard/negative"
       />
-      <van-grid-item
+      <!-- <van-grid-item
         icon-prefix="iconfont icon"
         :icon="IconImg.icon03"
         text="店招材质参考"
         to="/material/list"
-      />
-      <van-grid-item
+      /> -->
+      <!-- <van-grid-item
         icon-prefix="iconfont icon"
         :icon="IconImg.icon04"
         text="精品素材参考"
         to="/sample/list"
-      />
+      /> -->
       <van-grid-item
         v-if="showCache"
         icon-prefix="iconfont icon"

@@ -18,6 +18,8 @@ import {
   Popup,
   Tabbar, 
   TabbarItem,
+  Tabs,
+  Tab,
   Toast,
   Picker,
   Stepper,
@@ -82,6 +84,8 @@ Vue.use(Col)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Switch)
+Vue.use(Tabs)
+Vue.use(Tab)
 
 
 // 自定义组件
