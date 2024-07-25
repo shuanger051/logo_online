@@ -56,7 +56,7 @@ export default {
   },
   created() {
     // 保存查询条件
-    this.params = _.pick(this.$route.query, ["styles", "material"]);
+    this.params = _.pick(this.$route.query, ["styles", "material", 'streetType']);
     tplArr = [];
   },
   methods: {
@@ -95,13 +95,14 @@ export default {
         })
         return list
       }
-      if (streetType) {
-        list = list.filter((item) => {
-          if (!item.streetType || item.streetType == streetType) {
-            return true;
-          }
-        });
-      }
+      // if (streetType) {
+      //   let arrStreetType = streetType.split(',')
+      //   list = list.filter((item) => {
+      //     if (!item.streetType || item.streetType == streetType) {
+      //       return true;
+      //     }
+      //   });
+      // }
       list = list.filter((item) => {
         return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
