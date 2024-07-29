@@ -56,7 +56,11 @@ export default {
   },
   created() {
     // 保存查询条件
-    this.params = _.pick(this.$route.query, ["styles", "material", 'streetType']);
+    this.params = _.pick(this.$route.query, [
+      "styles",
+      "material",
+      "streetType",
+    ]);
     tplArr = [];
   },
   methods: {
@@ -78,22 +82,22 @@ export default {
     },
     go(id) {
       let query = {
-        shopId: this.$route.query.shopId
-      }
+        shopId: this.$route.query.shopId,
+      };
       if (this.$route.query.styles) {
-        query.styles = this.$route.query.styles
+        query.styles = this.$route.query.styles;
       }
       this.$router.push({ path: `/signboard/editSignboard/${id}`, query });
     },
     // 根据条件过滤
     doFilter(list, condition) {
-      let streetType = this.$route.query.streetType;
-      let lttpt = this.$route.query.lttpt
+      // let streetType = this.$route.query.streetType;
+      let lttpt = this.$route.query.lttpt;
       if (lttpt == 1) {
         list = list.filter((item) => {
-          return item.id == 591
-        })
-        return list
+          return item.id == 591;
+        });
+        return list;
       }
       // if (streetType) {
       //   let arrStreetType = streetType.split(',')
@@ -123,7 +127,7 @@ export default {
     },
     // 模版查询
     queryTemplate(page) {
-      const { styles, material } = this.params;
+      const { styles, material, streetType } = this.params;
       const { size, current } = this.page;
       let pageNum = current + 1;
       // 是否存在页码参数
@@ -141,7 +145,11 @@ export default {
             .then((res) => {
               const list = _.get(res, "data.list", []);
               // 对数据做过滤
-              tplArr = this.doFilter(list, { style: styles, material });
+              tplArr = this.doFilter(list, {
+                style: styles,
+                material,
+                streetType,
+              });
               resolve();
             });
       })
