@@ -14,11 +14,7 @@
       <van-row>
         <van-col :span="12">
           <span>立面颜色</span
-          ><span
-            @click="lmpicker = true"
-            class="btn"
-            >{{ attrs.lmcolor }}</span
-          >
+          ><span @click="lmpicker = true" class="btn">{{ attrs.lmcolor }}</span>
 
           <van-popup
             v-model="lmpicker"
@@ -27,11 +23,18 @@
           >
             <van-picker
               show-toolbar
-              :columns="lmcolor"
+              :columns="lmcolorLists"
               @cancel="lmpicker = false"
               v-model="attrs.lmcolor"
               @confirm="(v) => (onConfirm('lmcolor', v), (lmpicker = false))"
-            />
+            >
+          <template #option="option">
+            <div class="lmpicker">
+             <div>{{option}}</div>
+             <span  :style="{ backgroundColor: getColorByName(option) }"></span>
+            </div>
+          </template>
+          </van-picker>
           </van-popup>
         </van-col>
 
@@ -46,20 +49,16 @@
 
           <van-dialog v-model="zppicker" show-confirm-button>
             <compact
-              :value="zpcolor"
+              :value="attrs.zpcolor"
               @input="resolveColor"
-              :palette="zpcolor"
+              :palette="zpcolorLists"
             ></compact>
           </van-dialog>
         </van-col>
 
         <van-col :span="12">
           <span>主要字体</span>
-          <span
-            @click="fontpicker = true"
-            class="btn"
-            >{{ attrs.font }}</span
-          >
+          <span @click="fontpicker = true" class="btn">{{ attrs.font }}</span>
 
           <van-popup
             v-model="fontpicker"
@@ -77,11 +76,9 @@
 
         <van-col :span="12">
           <span>店招长宽比</span>
-          <span
-            @click="whratiopicker = true"
-            class="btn"
-            >{{ attrs.whratio }}</span
-          >
+          <span @click="whratiopicker = true" class="btn">{{
+            attrs.whratio
+          }}</span>
 
           <van-popup
             v-model="whratiopicker"
@@ -101,11 +98,7 @@
 
         <van-col :span="12">
           <span>所在楼层</span>
-          <span
-            @click="floorpicker = true"
-            class="btn"
-            >{{ attrs.floor }}</span
-          >
+          <span @click="floorpicker = true" class="btn">{{ attrs.floor }}</span>
 
           <van-popup
             v-model="floorpicker"
@@ -152,21 +145,41 @@ export default {
         material: [],
         streetType: [],
         lmcolor: style.lmcolor[0].name,
-        zpcolor: style.zpcolor[0],
+        zpcolor: null,
         whratio: style.whratio[0],
         floor: style.floor[0],
         font: fonts[0].value,
       },
     };
   },
-
+  computed: {
+    zpcolorLists() {
+      let style = window.pageContentJson.style;
+      let lmcolor = this.attrs.lmcolor;
+      let ret = [];
+      style.lmcolor.some((v) => {
+        if (v.name == lmcolor) {
+          ret = v.rgb;
+          return true;
+        }
+      });
+      return ret;
+    },
+  },
+  watch: {
+    "attrs.lmcolor": {
+      handler(v) {
+        this.attrs.zpcolor = this.zpcolorLists[0]
+      },
+      immediate: true,
+    },
+  },
   created() {
     let style = window.pageContentJson.style;
 
-    this.lmcolor = style.lmcolor.map((v) => {
+    this.lmcolorLists = style.lmcolor.map((v) => {
       return v.name;
     });
-    this.zpcolor = style.zpcolor;
     this.whratio = style.whratio;
     this.floor = style.floor;
     this.font = fonts.map((v) => {
@@ -200,26 +213,35 @@ export default {
   methods: {
     onNext() {
       const { formData } = this;
-      let style = window.pageContentJson.style
+      let style = window.pageContentJson.style;
       let query = Object.assign({}, this.$route.query);
       Object.keys(formData).forEach((key) => {
         query[key] = formData[key].join(",");
       });
       style.lmcolor.some((v) => {
-          if (v.name == this.attrs.lmcolor && v.code) {
-            query.styles = v.code
-            return true
-          }
-
-      })
-      query.lttpt = this.attrs.floor == style.floor[0] ? 0 : 1
+        if (v.name == this.attrs.lmcolor && v.code) {
+          query.styles = v.code;
+          return true;
+        }
+      });
+      query.lttpt = this.attrs.floor == style.floor[0] ? 0 : 1;
       this.$router.push({ path: "/signboard/template", query });
     },
-    attrByValue(v) {},
+    getColorByName(option) {
+      let v = {
+        '1': 'rgb(196, 203, 205)',
+        '2': 'rgb(227, 223, 215)',
+        '3': 'rgb(112, 103, 96)',
+        '4': 'rgb(75, 82, 89)',
+      }
+      let c = window.pageContentJson.style.lmcolor.filter((v) => {
+        return v.name == option
+      })
+     return v[c[0].code]
+    },
     onConfirm(key, v) {
-      if (key == 'floor' && v == window.pageContentJson.style.floor[1]) {
-        Notify({ type: 'warning', message: '选择"' + v+'"只能用立体字模版' });
-
+      if (key == "floor" && v == window.pageContentJson.style.floor[1]) {
+        Notify({ type: "warning", message: '选择"' + v + '"只能用立体字模版' });
       }
       this.attrs[key] = v;
     },
@@ -257,7 +279,7 @@ export default {
   }
   .vc-compact {
     box-shadow: none;
-    padding:10px 10px;
+    padding: 10px 10px;
     width: 100%;
   }
   :deep(.vc-compact-color-item) {
@@ -268,11 +290,19 @@ export default {
     color: #2f63f1;
   }
   .van-cell__value {
-    overflow:visible;
+    overflow: visible;
   }
-
+  .lmpicker {
+    display: flex;
+    span {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #646566;
+      margin-left: 5px;
+    }
+  }
   .colorTitle {
-    color:#646566
+    color: #646566;
   }
   .style-panel .van-col {
     display: flex;

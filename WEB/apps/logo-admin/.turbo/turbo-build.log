@@ -7,18 +7,21 @@ Browserslist: caniuse-lite is outdated. Please run:
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
 
 -  Building for production...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
 Extracted theme color css content length: 161085
- DONE  Compiled successfully in 42593ms2:10:17 PM
+ DONE  Compiled successfully in 69865ms11:50:47 AM
 
   File                                      Size             Gzipped
 
   dist/static/js/chunk-vendors.70a514b0.    3092.84 KiB      901.43 KiB
   js
-  dist/static/js/chunk-0f724bd4.4e0ee45a    1158.71 KiB      363.72 KiB
+  dist/static/js/chunk-0f724bd4.d529a241    1158.71 KiB      363.72 KiB
   .js
   dist/static/js/chunk-51ff3726.f8b07bc5    254.11 KiB       58.60 KiB
   .js
-  dist/static/js/app.68a9faa3.js            116.81 KiB       36.30 KiB
+  dist/static/js/app.4fabe2e8.js            116.81 KiB       36.31 KiB
   dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
   dist/static/js/chunk-120e087e.0ac8bed3    10.81 KiB        3.62 KiB
   .js

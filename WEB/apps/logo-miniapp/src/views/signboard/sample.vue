@@ -16,7 +16,7 @@
       </van-grid-item>
     </van-grid>
     <div class="btns-wrap">
-      <van-button size="small" type="primary" @click="onJump">跳过</van-button>
+      <van-button size="big" type="primary" @click="onJump" style="padding: 0 5px">进入店招设计</van-button>
     </div>
   </div>
 </template>

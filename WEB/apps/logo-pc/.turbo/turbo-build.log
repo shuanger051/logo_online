@@ -10,7 +10,10 @@ Browserslist: caniuse-lite is outdated. Please run:
 Browserslist: caniuse-lite is outdated. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
- DONE  Compiled successfully in 32946ms2:10:07 PM
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ DONE  Compiled successfully in 45738ms11:50:23 AM
 
   File                                      Size             Gzipped
 
@@ -18,7 +21,7 @@ Browserslist: caniuse-lite is outdated. Please run:
   js
   dist/static/js/chunk-4377a3f4.9d138e39    318.57 KiB       103.54 KiB
   .js
-  dist/static/js/app.5d99602a.js            158.79 KiB       49.54 KiB
+  dist/static/js/app.24acce1a.js            158.37 KiB       49.52 KiB
   dist/static/js/chunk-358a5fca.3039cedd    16.59 KiB        5.74 KiB
   .js
   dist/tinymac/CN.js                        14.11 KiB        5.96 KiB
@@ -29,6 +32,8 @@ Browserslist: caniuse-lite is outdated. Please run:
   dist/static/js/chunk-20ae0e8f.950f5821    2.80 KiB         1.32 KiB
   .js
   dist/static/js/chunk-1d7ba36e.58d3a6fb    2.37 KiB         1.23 KiB
+  .js
+  dist/static/js/chunk-ba30e1bc.e7e0fecb    2.04 KiB         1.03 KiB
   .js
   dist/static/js/chunk-59aa6b6f.a18c0ebe    2.00 KiB         1.07 KiB
   .js
@@ -44,8 +49,6 @@ Browserslist: caniuse-lite is outdated. Please run:
   .js
   dist/static/js/chunk-7292ad01.0574dd9d    1.22 KiB         0.70 KiB
   .js
-  dist/static/js/chunk-37c23c23.3beda3d7    1.18 KiB         0.68 KiB
-  .js
   dist/static/js/chunk-34857c70.96356e77    1.01 KiB         0.61 KiB
   .js
   dist/static/js/chunk-665ee154.0aeae9ac    0.96 KiB         0.58 KiB
@@ -55,7 +58,7 @@ Browserslist: caniuse-lite is outdated. Please run:
   dist/config.js                            0.26 KiB         0.16 KiB
   dist/static/css/chunk-vendors.ee427e7f    520.39 KiB       68.34 KiB
   .css
-  dist/static/css/app.ec00c7f5.css          16.79 KiB        3.10 KiB
+  dist/static/css/app.adbd3f4a.css          16.79 KiB        3.09 KiB
   dist/static/css/chunk-520d2b41.a8fd6ff    1.14 KiB         0.48 KiB
   8.css
   dist/static/css/chunk-665ee154.6bd18d8    1.14 KiB         0.48 KiB
@@ -72,8 +75,8 @@ Browserslist: caniuse-lite is outdated. Please run:
   9.css
   dist/static/css/chunk-315b7c8c.096da47    0.40 KiB         0.21 KiB
   2.css
-  dist/static/css/chunk-37c23c23.87e6762    0.40 KiB         0.21 KiB
-  9.css
+  dist/static/css/chunk-ba30e1bc.a53d7c0    0.40 KiB         0.21 KiB
+  e.css
   dist/static/css/chunk-733222cf.5cc645d    0.30 KiB         0.18 KiB
   e.css
   dist/static/css/chunk-7292ad01.6a1f355    0.26 KiB         0.15 KiB
