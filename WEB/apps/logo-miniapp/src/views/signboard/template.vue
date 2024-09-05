@@ -82,7 +82,7 @@ export default {
     },
     go(id) {
       let query = {
-        shopId: this.$route.query.shopId,
+        
       };
       if (this.$route.query.styles) {
         query.styles = this.$route.query.styles;

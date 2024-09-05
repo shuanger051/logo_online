@@ -6,7 +6,7 @@
       size="small"
       @click="showColor = true"
     ></span>
-    <a-modal v-model="showColor" title="确认" cancelText="取消" okText="确定">
+    <a-modal v-model="showColor" class="color-select-modal" title="颜色" cancelText="取消" okText="确定" @ok="showColor=false">
       <compact :value="fontColor" @input="resolveColor" :palette = "palette"></compact>
     </a-modal>
   </div>
@@ -66,21 +66,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.color-select :deep(.vc-compact) {
+.color-select-modal .vc-compact {
   padding:10px 10px;
   width: 100%;
-  .vc-compact-color-item {
+  box-shadow: none;
+  :deep(.vc-compact-color-item) {
     width: 25px;
     height: 25px;
   }
 }
 .color-select {
-  :deep(.van-dialog__confirm) {
-    color: #2f63f1;
-  }
-  .van-cell__value {
-    overflow:visible;
-  }
   .colorButton {
     position: relative;
     z-index: 111;
@@ -89,6 +84,9 @@ export default {
     width: 30px;
     height: 30px;
   }
+}
+.color-select-modal {
+
   .colorTitle {
     color:#646566
   }
