@@ -55,6 +55,7 @@
 </template>
 <script>
 import store from "core/mobile/store/index";
+import appStore from "@/store/index";
 import {
   appUploadMaterialAttachmentBase64APIOSS,
   appUploadMaterialAttachmentOSS,
@@ -64,7 +65,7 @@ import shape from "core/support/shape_mobile";
 import { download, downLoadXLSL } from "core/support/download.js";
 import { sleep } from "@editor/utils/tool";
 import { mapActions, mapState } from "vuex";
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
 import { downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
 export default {
@@ -105,14 +106,22 @@ export default {
       signboardPic: null,
     };
   },
-  created() {},
   methods: {
-    ...mapActions("editor", ["setPic", "mCreateCover", 'clearsignboardCache']),
+    ...mapActions("editor", ["setPic", "mCreateCover", "clearsignboardCache"]),
     handleElementMove(pos) {
       this.style = {
         ...this.style,
         ...pos,
       };
+    },
+    onClose() {
+      // 在弹窗权利阳光中
+      if (appStore.state.app.isInIframe) {
+        const bridgeClient = new formbridgeClient();
+        bridgeClient.close();
+      }
+      // 其他
+      else this.$router.push({ path: "/home" });
     },
     async afterRead(file) {
       const toast = Toast.loading({
@@ -160,11 +169,21 @@ export default {
       } else {
         await this.creatLivePic();
         await this.picDownload();
-        if (typeof ZWJSBridge == "undefined" || !/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        if (
+          typeof ZWJSBridge == "undefined" ||
+          !/iPad|iPhone|iPod/.test(navigator.userAgent)
+        ) {
           await this.xlslDownload();
         }
       }
-      this.clearsignboardCache()
+      this.clearsignboardCache();
+      Dialog.alert({
+        message: "下载完成",
+        title: "提示",
+        confirmButtonText: "退出设计",
+      }).then(() => {
+        this.onClose();
+      });
     },
     async xlslDownload() {
       const toast = Toast.loading({
@@ -173,7 +192,7 @@ export default {
         duration: 0,
       });
       try {
-        downLoadXLSL(this.$store.state.editor.work)
+        downLoadXLSL(this.$store.state.editor.work);
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }

@@ -38,7 +38,6 @@ export default {
       isInIframe: (state) => state.app.isInIframe,
     }),
     title() {
-      console.log(11);
       return this.customTitle || this.$route.meta.title;
     },
   },
