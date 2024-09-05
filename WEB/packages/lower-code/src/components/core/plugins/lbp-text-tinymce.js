@@ -79,7 +79,7 @@ export default {
   },
 
   pcProps: {
-    fontColor: PropTypes.color({
+    fontColor: MobilePropTypes.color({
       label: "颜色",
       defaultValue: "#000",
       showLable: true,

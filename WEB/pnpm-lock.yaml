@@ -301,6 +301,9 @@ importers:
       vue:
         specifier: ^2.7.14
         version: 2.7.14
+      vue-color:
+        specifier: 2.8.1
+        version: 2.8.1
       vue-router:
         specifier: ^3.3.4
         version: 3.3.4(vue@2.7.14)
