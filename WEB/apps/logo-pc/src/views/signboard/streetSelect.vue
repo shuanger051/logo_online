@@ -37,12 +37,20 @@ export default {
 
   created() {
     const { streetType } = this.$route.query;
+    let title;
+    if (streetType == 1) {
+      title = "商业街道";
+    } else if (streetType == 2) {
+      title = "特色街道";
+    } else if (streetType == 3) {
+      title = "一般街道";
+    }
+    if (title) {
+      evnetBus.$emit("customTitle", title);
+    }
     const list = window.pageContentJson.streetView;
     const data = list.find((item) => item.id == streetType);
-    if (data) {
-      evnetBus.$emit("subtitle", data.name);
-      this.streetArr = data.street;
-    }
+    if (data) this.streetArr = data.street;
   },
   methods: {
     onNext(id) {

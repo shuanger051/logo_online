@@ -74,7 +74,8 @@ import shape from "core/support/shape";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
 import { sleep } from "@editor/utils/tool";
 import { download, downLoadXLSL } from "core/support/download.js";
-
+import appStore from "@/store/index";
+import { Modal } from "ant-design-vue";
 export default {
   store,
   data() {
@@ -121,8 +122,17 @@ export default {
       "setPic",
       "mCreateCover",
       "changeTokenScreenShotStatus",
-      "clearsignboardCache"
+      "clearsignboardCache",
     ]),
+    onClose() {
+      // 在弹窗权利阳光中
+      if (appStore.state.app.isInIframe) {
+        const bridgeClient = new formbridgeClient();
+        bridgeClient.close();
+      }
+      // 其他
+      else this.$router.push({ path: "/" });
+    },
     async upload(evt) {
       const form = new FormData();
       form.append("file", evt.file);
@@ -168,7 +178,12 @@ export default {
         await this.picDownload();
         await this.xlslDownload();
       }
-      this.clearsignboardCache()
+      this.clearsignboardCache();
+      Modal.success({
+        content: "下载成功",
+        okText: "退出设计",
+        onOk: () => this.onClose(),
+      });
     },
     async xlslDownload() {
       const toast = this.$message.loading("下载店招素材中...", 0);
@@ -188,7 +203,7 @@ export default {
         console.log(e, 34);
         this.$message.error("下载失败");
       }
-      await sleep(1000)
+      await sleep(1000);
       toast();
     },
     async creatLivePic() {

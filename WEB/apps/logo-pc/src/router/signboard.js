@@ -1,24 +1,30 @@
 import { BlankLayout } from "@/layouts";
 import store from "@/store";
 
-const routes = [  
+const routes = [
   // 负面清单
-{
-  path: "negative",
-  meta: { title: "户外招牌设置负面清单" },
-  component: () => import("@/views/signboard/negativeList"),
-  beforeEnter: (from, to, next) => {
-    const isRead = _.get(store.state, "app.isReadNegative");
-    // 根据条件跳转
-    if (isRead) next({ path: "/signboard/streetTypeSelect" });
-    else next();
+  {
+    path: "negative",
+    meta: { title: "户外招牌设置负面清单" },
+    component: () => import("@/views/signboard/negativeList"),
+    beforeEnter: (from, to, next) => {
+      const isRead = _.get(store.state, "app.isReadNegative");
+      // 根据条件跳转
+      if (isRead) next({ path: "/signboard/streetTypeSelect" });
+      else next();
+    },
   },
-},
   // 店招模版选择页
   {
     path: "template",
     meta: { title: "模版选择" },
     component: () => import("@/views/signboard/template"),
+  },
+  // 精品素材
+  {
+    path: "sample",
+    meta: { title: "精品素材" },
+    component: () => import("@/views/signboard/sample"),
   },
   // 街道类型选择
   {
@@ -49,22 +55,21 @@ const routes = [
     meta: { title: "编辑选择" },
     component: () => import("@/views/signboard/editSelect"),
   },
-
-  // {
-  //   path: "selfEdit",
-  //   name: 'selfEdit',
-  //   meta: { title: "自主设计" },
-  //   component: () => import("@/views/signboard/selfEdit"),
-  // },
+  {
+    path: "selfEdit",
+    name: 'selfEdit',
+    meta: { title: "自主设计" },
+    component: () => import("@/views/signboard/selfEdit"),
+  },
   {
     path: "editLive",
-    name: 'editLive',
+    name: "editLive",
     meta: { title: "实景编辑" },
     component: () => import("@/views/signboard/editLive"),
   },
   {
     path: "editConfirm",
-    name: 'editConfirm',
+    name: "editConfirm",
     meta: { title: "备案确认" },
     component: () => import("@/views/signboard/editConfirm"),
   },
@@ -84,8 +89,7 @@ const routes = [
     path: "editSignboard/:id?",
     name: "editSignboard",
     meta: { title: "店招编辑" },
-    component: () =>
-      import("@/views/signboard/editSignboard.vue"),
+    component: () => import("@/views/signboard/editSignboard.vue"),
   },
 ];
 

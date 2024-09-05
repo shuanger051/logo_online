@@ -30,7 +30,7 @@ export default {
   },
   created() {
     const getImgName = (name) => `${name}`.padStart(4, 0);
-    const arr = new Array(22).fill(0);
+    const arr = new Array(7).fill(0);
     this.list = arr.map((val, idx) =>
       require(`@/assets/doc/fmqd/${getImgName(idx + 1)}.jpg`)
     );

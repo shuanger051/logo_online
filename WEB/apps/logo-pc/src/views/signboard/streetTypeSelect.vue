@@ -87,7 +87,7 @@ export default {
       // 特色街区-进入一街一景(@todo 进入素材参考)
       else
         this.$router.push({
-          path: "/signboard/streetSelect",
+          path: "/signboard/sample",
           query: {
             streetType,
             street,

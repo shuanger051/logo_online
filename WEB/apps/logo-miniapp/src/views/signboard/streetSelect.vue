@@ -16,7 +16,7 @@
       >
       <van-cell :border="false" v-if="$route.query.streetType !== '2'">
         <van-button type="primary" size="small" @click="onJump"
-          >跳过</van-button
+          >进入店招设计</van-button
         >
       </van-cell>
     </div>
