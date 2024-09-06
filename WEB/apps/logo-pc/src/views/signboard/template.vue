@@ -46,12 +46,11 @@ export default {
   },
   created() {
     // 保存查询条件
-    this.params = _.pick(this.$route.query, ["styles", "material"]);
+    this.params = _.pick(this.$route.query, ["styles", "material", 'streetType']);
     if (this.$route.query.lttpt == 1) {
       this.params.id = 591;
     }
     tplArr = [];
-    console.log("tplArr", tplArr);
     this.queryTemplate();
   },
   methods: {
@@ -83,14 +82,6 @@ export default {
     },
     // 根据条件过滤
     doFilter(list, condition) {
-      // let streetType = this.$route.query.streetType;
-      // if (streetType) {
-      //   list = list.filter((item) => {
-      //     if (!item.streetType || item.streetType == streetType) {
-      //       return true;
-      //     }
-      //   });
-      // }
       return list.filter((item) => {
         return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
@@ -109,7 +100,7 @@ export default {
     // 模版查询
     queryTemplate(current, size) {
       const { page } = this;
-      const { styles, material, id } = this.params;
+      const { styles, material, id,streetType} = this.params;
       let pageNum = page.current + 1;
       // 是否存在页码参数
       if (current) pageNum = current;
@@ -128,7 +119,7 @@ export default {
             .then((res) => {
               const list = _.get(res, "data.list", []);
               // 对数据做过滤
-              tplArr = this.doFilter(list, { style: styles, material, id });
+              tplArr = this.doFilter(list, { style: styles, material, id,streetType });
               resolve();
             });
       })

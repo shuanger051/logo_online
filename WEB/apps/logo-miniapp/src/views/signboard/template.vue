@@ -61,6 +61,9 @@ export default {
       "material",
       "streetType",
     ]);
+    if (this.$route.query.lttpt == 1) {
+      this.params.id = 591;
+    }
     tplArr = [];
   },
   methods: {
@@ -91,27 +94,15 @@ export default {
     },
     // 根据条件过滤
     doFilter(list, condition) {
-      // let streetType = this.$route.query.streetType;
-      let lttpt = this.$route.query.lttpt;
-      if (lttpt == 1) {
-        list = list.filter((item) => {
-          return item.id == 591;
-        });
-        return list;
-      }
-      // if (streetType) {
-      //   let arrStreetType = streetType.split(',')
-      //   list = list.filter((item) => {
-      //     if (!item.streetType || item.streetType == streetType) {
-      //       return true;
-      //     }
-      //   });
-      // }
+  
       list = list.filter((item) => {
         return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
+          if (typeof val == 'number') {
+            return val === item[key]
+          }
           // 有条件则过滤
-          if (val.length > 0) {
+          if (val) {
             const arr = val.split(",");
             return arr.some((v) => item[key].split(",").includes(v));
           }
