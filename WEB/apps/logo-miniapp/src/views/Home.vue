@@ -34,10 +34,10 @@
       />
     </van-grid>
     <!-- 首次使用提示 -->
-    <dl class="tips-box">
+    <dl v-if="homeFooterTips" class="tips-box">
       <dt>温馨提示</dt>
       <dd>
-        首次使用店招在线设计的用户，请先进入信息公告，仔细阅读《店招设计使用流程》和《杭州市户外招牌设置负面清单》后再进行操作。
+        {{homeFooterTips}}
       </dd>
     </dl>
   </div>
@@ -53,6 +53,12 @@ import store from "core/mobile/store/index";
 
 export default {
   name: "Home",
+  data() {
+    const homeFooterTips = window.pageContentJson?.homeFooterTips;
+    return {
+      homeFooterTips,
+    };
+  },
   computed: {
     ...mapState({
       isOldVersion: (state) => state.app.isOldVersion,
@@ -60,14 +66,14 @@ export default {
     // 图标
     IconImg: () => ({ icon01, icon02, icon03, icon04 }),
     showCache: () => {
-      return !!store.state.editor.signboardCache 
+      return !!store.state.editor.signboardCache;
     },
     // 宫格数
     columnNum() {
       if (this.isOldVersion) return 2;
       return 4;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -121,7 +127,7 @@ export default {
     position: absolute;
     bottom: 12px;
     margin: 0;
-    dt{
+    dt {
       margin-bottom: 6px;
       font-weight: 700;
     }
