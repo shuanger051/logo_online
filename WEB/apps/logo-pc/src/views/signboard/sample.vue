@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap">
-    <a-row :gutter="24" class="grid-wrapper">
-      <a-col v-for="item in sample" class="grid-item" :span="6" :key="item.key">
+    <a-row class="grid-wrapper">
+      <a-col v-for="item in sample" class="grid-item" :flex="1" :key="item.key">
         <router-link :to="item.href">
           <i
             :class="`grid-item-icon iconfont icon-${item.icon}`"
@@ -68,11 +68,13 @@ export default {
 
 <style lang="less" scoped>
 .page-wrap {
-  padding: 12px 24px 60px;
+  padding: 60px 24px 60px;
   max-width: 1000px;
   margin: 0 auto;
   margin-top: 24px;
   .grid-wrapper {
+    display: flex;
+    width: 360px;
     .grid-item {
       text-align: center;
       &-icon {
@@ -87,7 +89,9 @@ export default {
   }
 
   .action-bar {
+    width: 360px;
     margin-top: 68px;
+    text-align: center;
   }
 }
 </style>
