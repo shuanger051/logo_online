@@ -25,7 +25,7 @@
           <div class="menu-name">精品素材参考</div>
         </router-link>
       </a-col> -->
-      <a-col class="gutter-row" :span="12"  v-if="showCache">
+      <a-col class="gutter-row" :span="12" v-if="showCache">
         <router-link to="/signboard/editSignboard/cache">
           <div class="menu-icon icon-jpscck"></div>
           <div class="menu-name">历史记录</div>
@@ -33,10 +33,10 @@
       </a-col>
     </a-row>
     <!-- 首次使用提示 -->
-    <dl class="tips-box">
+    <dl v-if="homeFooterTips" class="tips-box">
       <dt>温馨提示</dt>
       <dd>
-        首次使用店招在线设计的用户，请先进入信息公告，仔细阅读《店招设计使用流程》和《杭州市户外招牌设置负面清单》后再进行操作。
+        {{ homeFooterTips }}
       </dd>
     </dl>
   </div>
@@ -55,11 +55,17 @@ const IconFont = Icon.createFromIconfontCN({
 });
 export default {
   components: { IconFont },
+  data() {
+    const homeFooterTips = window.pageContentJson?.homeFooterTips;
+    return {
+      homeFooterTips,
+    };
+  },
   computed: {
     showCache: () => {
-      return !!store.state.editor.signboardCache 
-    }
-  }
+      return !!store.state.editor.signboardCache;
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -93,6 +99,7 @@ export default {
     color: #fff;
     bottom: 12px;
     margin: 0;
+    width: 1000px;
     dt {
       margin-bottom: 6px;
       font-weight: 700;

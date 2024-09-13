@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrap">
-    <a-row :gutter="12" class="grid-wrapper">
-      <a-col v-for="item in sample" class="grid-item" :span="4" :key="item.key">
+    <a-row class="grid-wrapper">
+      <a-col v-for="item in sample" class="grid-item" :flex="1" :key="item.key">
         <router-link :to="item.href">
           <i
             :class="`grid-item-icon iconfont icon-${item.icon}`"
@@ -12,7 +12,9 @@
       </a-col>
     </a-row>
     <div class="action-bar">
-      <a-button type="primary" @click="onJump">进入店招设计</a-button>
+      <a-button size="large" type="primary" @click="onJump"
+        >进入店招设计</a-button
+      >
     </div>
   </div>
 </template>
@@ -66,25 +68,30 @@ export default {
 
 <style lang="less" scoped>
 .page-wrap {
-  padding: 12px 24px 60px;
+  padding: 60px 24px 60px;
   max-width: 1000px;
   margin: 0 auto;
   margin-top: 24px;
   .grid-wrapper {
+    display: flex;
+    width: 360px;
     .grid-item {
       text-align: center;
       &-icon {
-        font-size: 42px;
+        font-size: 54px;
         margin-bottom: 8px;
       }
       &-title {
+        font-size: 16px;
         color: #333;
       }
     }
   }
 
   .action-bar {
-    margin-top: 24px;
+    width: 360px;
+    margin-top: 68px;
+    text-align: center;
   }
 }
 </style>
