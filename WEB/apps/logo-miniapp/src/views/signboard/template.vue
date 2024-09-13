@@ -99,6 +99,7 @@ export default {
         return Object.keys(condition).every((key) => {
           const val = condition[key] || "";
           if (typeof val == 'number') {
+            debugger
             return val === item[key]
           }
           // 有条件则过滤
@@ -118,7 +119,7 @@ export default {
     },
     // 模版查询
     queryTemplate(page) {
-      const { styles, material, streetType } = this.params;
+      const { styles, material, streetType, id } = this.params;
       const { size, current } = this.page;
       let pageNum = current + 1;
       // 是否存在页码参数
@@ -140,6 +141,7 @@ export default {
                 style: styles,
                 material,
                 streetType,
+                id
               });
               resolve();
             });
