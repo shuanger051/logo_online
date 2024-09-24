@@ -4,11 +4,11 @@
       :style="{ backgroundColor: color }"
       class="colorButton"
       size="small"
-      @click="showColor = true"
+      @click="__eventBus.$emit('showColor')"
     ></span>
-    <van-dialog v-model="showColor" show-confirm-button>
+    <!-- <van-dialog v-model="showColor" show-confirm-button>
       <compact :value="fontColor" @input="resolveColor" :palette = "palette"></compact>
-    </van-dialog>
+    </van-dialog> -->
   </div>
 </template>
 <script>
@@ -36,17 +36,26 @@ export default {
       return `rgba(${rgb.join(',')})` 
     },
   },
+  // created() {
+  //   let style = this.$route.query.styles
+  //   let lmcolor = window.pageContentJson.style.lmcolor
+  //   if (style) {
+  //     lmcolor.some((v) => {
+  //       if (style == v.code) {
+  //         this.palette = v.rgb
+  //         return true
+  //       }
+  //     })
+  //   }
+  // },
   created() {
-    let style = this.$route.query.styles
-    let lmcolor = window.pageContentJson.style.lmcolor
-    if (style) {
-      lmcolor.some((v) => {
-        if (style == v.code) {
-          this.palette = v.rgb
-          return true
-        }
-      })
-    }
+    this.__eventBus.$on('resolveColor', (e) => {
+        this.fontColor = e.rgba;
+        this.$emit("input", this.color);
+    })
+  },
+  destroyed() {
+    this.__eventBus.$off('resolveColor')
   },
   methods: {
     resolveRgb(v) {
@@ -58,10 +67,10 @@ export default {
         a: 1
       })
     },
-    resolveColor(v) {
-      this.fontColor = v.rgba;
-      this.$emit("input", this.color);
-    },
+    // resolveColor(v) {
+    //   this.fontColor = v.rgba;
+    //   this.$emit("input", this.color);
+    // },
   },
 };
 </script>

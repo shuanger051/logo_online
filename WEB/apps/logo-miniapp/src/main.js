@@ -11,9 +11,11 @@ import store from "./store";
 import appConfig from "core/appConfig";
 import * as axios from "@/utils/request";
 import { getEnvByUa } from "./utils/util";
+import evnetBus from "./core/eventBus";
+
 import vconsole from "vconsole";
 Vue.config.productionTip = false;
-
+Vue.prototype.__eventBus = evnetBus;
 appConfig.install(({ initRequest, initMode, initRouter }) => {
   initMode("app");
   initRouter(router);

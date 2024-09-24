@@ -41,6 +41,10 @@
 ">请注意，您的店招的店名需要和营业执照的名称一致或者是营业执照的名称的缩写</p>
 
     </van-dialog>
+
+    <van-dialog v-model="showColor" show-confirm-button>
+      <compact :value="fontColor" @input="resolveColor" :palette = "palette"></compact>
+    </van-dialog>
   </div>
 </template>
 <script>
@@ -51,15 +55,22 @@ import { sleep, later } from "@editor/utils/tool";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { ImagePreview } from "vant";
 import { resolveImgUrlBase64 } from "core/support/imgUrl";
+import { Compact } from "vue-color";
 
 export default {
   data() {
     return {
+      fontColor: { r: 0, g: 0, b: 0, a:1 },
       textDialog: false,
       picDialog: false,
       tempDialog: false,
       text: "",
+      palette: window.pageContentJson.style.fontColor,
+      showColor: false
     };
+  },
+  components: {
+    compact: Compact
   },
   props: ["showPicConfirm"],
   store,
@@ -69,6 +80,25 @@ export default {
       work: (state) => state.work,
     }),
   },
+  created() {
+    let style = this.$route.query.styles
+    let lmcolor = window.pageContentJson.style.lmcolor
+    if (style) {
+      lmcolor.some((v) => {
+        if (style == v.code) {
+          this.palette = v.rgb
+          return true
+        }
+      })
+    }
+
+    this.__eventBus.$on('showColor', () => {
+      this.showColor = true
+    })
+  },
+  destroyed() {
+    this.__eventBus.$off('showColor')
+  },
   methods: {
     ...mapActions("editor", [
       "elementManager",
@@ -76,6 +106,9 @@ export default {
       "setPic",
       "mCreateCover",
     ]),
+    resolveColor(v) {
+      this.__eventBus.$emit("resolveColor", v)
+    },
     beforUploader() {
       this.showPicConfirm().then(() => {
         document.getElementById("fileUploader").click();
@@ -173,6 +206,29 @@ export default {
 };
 </script>
 <style lang="less">
+
+.toolbar .vc-compact {
+  padding:10px 10px;
+  width: 100%;
+  box-shadow: none;
+  .vc-compact-color-item {
+    width: 25px;
+    height: 25px;
+  }
+}
+.toolbar {
+  .van-dialog__confirm {
+    color: #2f63f1;
+  }
+  .van-cell__value {
+    overflow:visible;
+  }
+
+  .colorTitle {
+    color:#646566
+  }
+}
+
 .toolbar .van-dialog__content {
   padding: 15px 20px;
 }
