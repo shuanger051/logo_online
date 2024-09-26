@@ -18,6 +18,8 @@
   user-select: none;
   box-shadow: 0 -2px 64px 8px rgba(100, 100, 100, 0.1);
   background-color: @white;
+  padding-bottom: calc(20px + constant(safe-area-inset-bottom)); /* 兼容 iOS < 11.2 */
+  padding-bottom: calc(20px + env(safe-area-inset-bottom)); /* 兼容 iOS >= 11.2 */
   &__tips {
     padding: 8px 12px;
     font-size: 12px;
