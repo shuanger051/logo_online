@@ -7,7 +7,7 @@
       <van-uploader
         class="upload"
         :after-read="afterRead"
-        :max-size="1024 * 1024 * 10"
+        :max-size="1024 * 1024 * 5"
         @oversize="onOversize"
       >
         <!-- <span>上传实景图</span> -->
@@ -228,7 +228,7 @@ export default {
       return style;
     },
     onOversize(file) {
-      Toast("文件大小不能超过 10M");
+      Toast("文件大小不能超过 5M");
     },
     noop() {},
   },
