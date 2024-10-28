@@ -69,7 +69,7 @@ export default {
         return arr;
       }, []);
       // 添加其他街道
-      streetArr.push({ name: "其他道路", id: "99999999" });
+      streetArr.push({ name: "其他道路", uid: "99999999" });
       return {
         value: item.value,
         label: item.label,
