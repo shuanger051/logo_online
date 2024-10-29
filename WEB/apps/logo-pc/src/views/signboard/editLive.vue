@@ -6,6 +6,7 @@
           <div class="flex">
             <a-upload
               name="file"
+              :beforeUpload="beforeUpload"
               :customRequest="upload"
               :showUploadList="false"
             >
@@ -132,6 +133,14 @@ export default {
       }
       // 其他
       else this.$router.push({ path: "/" });
+    },
+    beforeUpload(file) {
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size < maxSize) return true;
+      else {
+        this.$message.warning({ content: "文件大小不能超过 5M" });
+        return false;
+      }
     },
     async upload(evt) {
       const form = new FormData();
