@@ -50,6 +50,7 @@ export default {
   props: [
     "defaultPosition",
     "active",
+    "posIcon",
     "handleMousedownProp",
     "handleElementMoveProp",
     "handleMouseEndProp",
@@ -132,10 +133,6 @@ export default {
     handleRotationMousedown(e) {
       e.stopPropagation();
       e.preventDefault(); // Let's stop this event.
-      const pos = { ...this.position };
-      let { clientX: startX, clientY: startY } = getEventParams(e);
-      let startAngle = pos.angle;
-
       let { top, left, width, height } = this.$el.getBoundingClientRect();
       this.lastCenterX = left + width / 2;
       this.lastCenterY = top + height / 2;
@@ -146,7 +143,7 @@ export default {
         moveEvent.preventDefault();
         const x = eventParams.clientX - this.lastCenterX;
         const y = eventParams.clientY - this.lastCenterY;
-        const angle = (this.getAngle(x, y) + 90) % 360;
+        const angle = (this.getAngle(x, y) - 90) % 360;
 
         this.handleRotationProp(angle);
       };
@@ -178,10 +175,17 @@ export default {
         let hasR = /r/.test(point);
         let newHeight = +height + (hasT ? -disY : hasB ? disY : 0);
         let newWidth = +width + (hasL ? -disX : hasR ? disX : 0);
+        if ((newHeight-height) && (newWidth-width)) {
+          let idsW = newWidth - width
+          let idsH = newHeight-height
+          const scale = Math.max(idsW, idsH);
+          newWidth = width + scale
+          newHeight = newWidth*height/width
+        }
         pos.height = newHeight > 0 ? newHeight : 0;
         pos.width = newWidth > 0 ? newWidth : 0;
-        pos.left = newWidth > 0 ? +left + (hasL ? disX : 0) : pos.left;
-        pos.top = newHeight > 0 ? +top + (hasT ? disY : 0) : pos.top;
+        pos.left = newWidth > 0 ? +left + (hasL ? width-newWidth : 0) : pos.left;
+        pos.top = newHeight > 0 ? +top + (hasT ? height-newHeight : 0) : pos.top;
         this.handlePointMoveProp(pos, point);
       };
       let up = () => {
@@ -277,8 +281,46 @@ export default {
                 width="24"
               />
             ) : null}
+            {
+              this.posIcon == true ? (
+              <div>
+              <icon-fa
+                icon="ic:outline-arrow-circle-left"
+                class="icon-fa icon-fa-right"
+                rotate="2"
+                data-point="r"
+                nativeOnMousedown={this.mousedownForMark.bind(this, "r")}
+                nativeOnTouchstart={this.mousedownForMark.bind(this, "r")}
+                color="#fa7a36"
+                width="24"
+                height='24'
+              />
+              <icon-fa
+                icon="ic:outline-arrow-circle-left"
+                class="icon-fa icon-fa-top"
+                rotate="1"
+                data-point="t"
+                nativeOnMousedown={this.mousedownForMark.bind(this, "t")}
+                nativeOnTouchstart={this.mousedownForMark.bind(this, "t")}
+                color="#fa7a36"
+                width="24"
+                height='24'
+              />
+              <icon-fa
+                icon="ic:outline-arrow-circle-left"
+                class="icon-fa icon-fa-left"
+                data-point="l"
+                nativeOnMousedown={this.mousedownForMark.bind(this, "l")}
+                nativeOnTouchstart={this.mousedownForMark.bind(this, "l")}
+                color="#fa7a36"
+                width="24"
+                height='24'
+              />
+              </div>
+              ) : null
+            }
+
             <icon-fa
-              nativeOnMousedown={this.handleRotationMousedown}
               nativeOnTouchstart={this.handleRotationMousedown}
               icon="tabler:rotate"
               class="icon-fa icon-fa-rotate"

@@ -44,11 +44,11 @@
             v-if="signboardPic"
           >
             <div class="shape_content">
-              <img :src="signboardPic" width="100%" />
+              <img :src="signboardPic" width="100%" height="100%" />
             </div>
           </shape>
           <div class="live_pic" v-if="livePic">
-            <img :src="livePic" width="100%" />
+            <img :src="livePic" width="100%"/>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ import store from "core/pc/store";
 import { appUploadMaterialAttachmentOSS } from "core/api/";
 import { mapActions, mapState } from "vuex";
 import shape from "core/support/shape";
-import { resolveImgUrlBase64 } from "core/support/imgUrl";
+import { resolveImgUrlBase64, resolveImgUrlBase64RetWH } from "core/support/imgUrl";
 import { sleep } from "@editor/utils/tool";
 import { download, downLoadXLSL } from "core/support/download.js";
 import appStore from "@/store/index";
@@ -101,7 +101,10 @@ export default {
     "$store.state.editor.signboardPic": {
       async handler(n) {
         if (n) {
-          this.signboardPic = await resolveImgUrlBase64(n);
+          const {w, h, src} = await resolveImgUrlBase64RetWH(n);
+          const wOrH = w > h
+          this.style[wOrH ? 'height': 'width'] = 300*(wOrH ? h/w : w/h)
+          this.signboardPic = src
         }
       },
       immediate: true,

@@ -68,7 +68,7 @@
     "formdata-polyfill": "4.0.10",
     "glob": "^10.3.3",
     "less-loader": "^6.1.1",
-    "node-sass": "^6.0.0",
+    "node-sass": "^8.0.0",
     "pinyin": "v2.0.0",
     "sass-loader": "10.4.1",
     "stylus": "^0.54.5",

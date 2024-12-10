@@ -127,10 +127,8 @@ export default {
     },
 
     handleRotationMousedown(e) {
-      const pos = { ...this.position };
-      let { clientX: startX, clientY: startY } = getEventParams(e);
-      let startAngle = pos.angle;
-
+      e.preventDefault()
+      e.stopPropagation()
       let { top, left, width, height } = this.$el.getBoundingClientRect();
       this.lastCenterX = left + width / 2;
       this.lastCenterY = top + height / 2;
@@ -173,10 +171,19 @@ export default {
         let hasR = /r/.test(point);
         let newHeight = +height + (hasT ? -disY : hasB ? disY : 0);
         let newWidth = +width + (hasL ? -disX : hasR ? disX : 0);
+
+        if ((newHeight-height) && (newWidth-width)) {
+          let idsW = newWidth - width
+          let idsH = newHeight-height
+          const scale = Math.max(idsW, idsH);
+          newWidth = width + scale
+          newHeight = newWidth*height/width
+        }
+
         pos.height = newHeight > 0 ? newHeight : 0;
         pos.width = newWidth > 0 ? newWidth : 0;
-        pos.left = newWidth > 0 ? +left + (hasL ? disX : 0) : pos.left;
-        pos.top = newHeight > 0 ? +top + (hasT ? disY : 0) : pos.top;
+        pos.left = newWidth > 0 ? +left + (hasL ? width-newWidth : 0) : pos.left;
+        pos.top = newHeight > 0 ? +top + (hasT ? height-newHeight : 0) : pos.top;
         this.handlePointMoveProp(pos, point);
       };
       let up = () => {
@@ -218,6 +225,8 @@ export default {
     },
     handleMousedown(e) {
       if (this.handleMousedownProp) {
+        e.preventDefault()
+        e.stopPropagation()
         this.handleMousedownProp();
         this.mousedownForElement(e, this.element);
       }

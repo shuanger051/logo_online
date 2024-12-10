@@ -28,12 +28,13 @@
           :default-position="style"
           :active="active"
           :delIcon="false"
+          :posIcon = "true"
           :style="getStyle()"
           class="shape_wrap"
           v-if="signboardPic"
         >
           <div class="shape_content">
-            <img :src="signboardPic" width="100%" />
+            <img :src="signboardPic" width="100%" height="100%" />
           </div>
         </shape>
         <van-image width="100%" v-if="livePic" :src="livePic" />
@@ -60,7 +61,7 @@ import {
   appUploadMaterialAttachmentBase64APIOSS,
   appUploadMaterialAttachmentOSS,
 } from "core/api/";
-import { resolveImgUrlBase64 } from "core/support/imgUrl";
+import { resolveImgUrlBase64,resolveImgUrlBase64RetWH} from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { download, downLoadXLSL } from "core/support/download.js";
 import { sleep } from "@editor/utils/tool";
@@ -77,7 +78,11 @@ export default {
     "$store.state.editor.signboardPic": {
       async handler(n) {
         if (n) {
-          this.signboardPic = await resolveImgUrlBase64(n);
+          const {w, h, src} = await resolveImgUrlBase64RetWH(n);
+          const wOrH = w > h
+          this.style[wOrH ? 'height': 'width'] = 300*(wOrH ? h/w : w/h)
+          this.signboardPic = src
+
         }
       },
       immediate: true,
@@ -94,7 +99,7 @@ export default {
   data() {
     return {
       style: {
-        left: 20,
+        left: 30,
         top: 20,
         width: 300,
         height: 300,

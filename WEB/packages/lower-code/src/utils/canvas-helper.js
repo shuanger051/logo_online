@@ -115,7 +115,7 @@ export function convertImageToBase64(imgUrl, callback) {
     canvas.width = image.naturalWidth;
     ctx.drawImage(image, 0, 0);
     const dataUrl = canvas.toDataURL();
-    callback && callback(dataUrl)
+    callback && callback(dataUrl,  image.naturalWidth,image.naturalHeight)
   }
   image.src = imgUrl;
 }

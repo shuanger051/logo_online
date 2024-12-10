@@ -59,10 +59,22 @@ export const resolveImgUrlBase64 = async (url, flag=true, callback=() => {})=> {
     return rurl
   } 
   let ps = new Promise((r,rj) => {
-    convertImageToBase64(rurl, (src)=>{
+    convertImageToBase64(rurl, (src, w, h)=>{
       r(src)
-      callback(src)
+      callback(src, w,h)
     })
   })
   return ps
 }
+
+export const resolveImgUrlBase64RetWH =  async (url, flag=true)=> {
+  return new Promise((r) => {
+    resolveImgUrlBase64(url, flag, (src, w, h) => {
+        r({
+          src,
+          w, 
+          h
+        })
+    })
+  }) 
+} 
