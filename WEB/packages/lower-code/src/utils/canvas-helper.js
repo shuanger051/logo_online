@@ -31,21 +31,43 @@ function createWaterMark(el) {
   let postion = null
   switch(waterMark.position) {
     case 'lt':
-      postion = 'left: 10px; top: 10px';
+      postion = 'left: 10px; top: 10px;';
       break;
     case 'rt':
-      postion = 'right: 10px; top: 10px';
+      postion = 'right: 10px; top: 10px;';
       break;
     case 'lb':
-      postion = 'left: 10px; bottom: 10px';
+      postion = 'left: 10px; bottom: 10px;';
       break;
     case 'rb':
-      postion = 'right: 10px; bottom: 10px';
+      postion = 'right: 10px; bottom: 10px;';
       break;
   
   }
+  let inner = ''
+  let style = ''
+  if (waterMark.tile) {
+    const rect = el.getBoundingClientRect()
+    const wsize = Math.floor(rect.width/(waterMark.font.length*(waterMark.fontSize+10))) + 2
+    const hsize = Math.floor(rect.height/((waterMark.fontSize+10)))
+    
+    for (var i=0; i<hsize; i++) {
+      inner += '<div style=" white-space: nowrap; padding-left:10px; margin-bottom: 10px">'
+      for (var j=0; j<wsize; j++) {
+        inner+=  `<span style="transform: rotate(${waterMark.angle}deg); display:inline-block; margin-right:10px">${waterMark.font}</span>`
+      }
+      inner+="</div>"
+    }
+    style+= 'left: 0px; right:0px; top:0px;bottom:0px;';
+  } else {
+    inner += `<span style="transform: rotate(${waterMark.angle}deg); display:inline-block;">${waterMark.font}</span>`
+    style+=postion
+  }
+
   div.innerHTML = `
-  <span style="position: absolute; ${postion}; color: ${waterMark.fontColor}; font-size: ${waterMark.fontSize};opacity: ${waterMark.opacity}; transform: rotate(${waterMark.angle}deg); z-index: 1000; font-family: ${waterMark.fontFamily}; font-weight: ${waterMark.fontWeight}">${waterMark.font}</span>
+   <div style="position: absolute; ${style} color: ${waterMark.fontColor}; font-size: ${waterMark.fontSize}px;opacity: ${waterMark.opacity};  z-index: 1000; font-family: ${waterMark.fontFamily}; overflow: hidden; font-weight: ${waterMark.fontWeight}">
+      ${inner}
+  </div>
   `
   el.appendChild(div)
   return div
@@ -79,7 +101,7 @@ export function takeScreenshot ({
       // const blob = new Blob([ab], { type: mimeString })
       const file = new window.File([blob], fileName, { type: 'image/png' })
       if (waterMarkEl) {
-       // el.removeChild(waterMarkEl)
+       el.removeChild(waterMarkEl)
       }
       switch (type) {
         case 'canvas':

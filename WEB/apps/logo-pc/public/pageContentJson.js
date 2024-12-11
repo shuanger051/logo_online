@@ -1053,11 +1053,13 @@ window.pageContentJson = {
   //水印
   waterMark: {
     // 字体大小
-    fontSize: '26px',
+    fontSize: 26,
     // 字体颜色
     fontColor: '#fff',
     // 字体透明度
     opacity: '20%',
+    // 水印是否平铺
+    tile: false,
     // 字体位置 lt：左上, rt: 右上,lb: 左下, rb: 右下
     position: 'rb',
     // 字体倾斜度: -360-360
