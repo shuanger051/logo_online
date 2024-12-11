@@ -3,8 +3,8 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build"
   },
   "dependencies": {
     "ant-design-vue": "1.7.2",

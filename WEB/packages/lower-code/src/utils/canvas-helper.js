@@ -25,6 +25,32 @@ function dataURItoBlob (dataURI) {
   return blob
 }
 
+function createWaterMark(el) {
+  const waterMark = window.pageContentJson.waterMark
+  const div = document.createElement('div')
+  let postion = null
+  switch(waterMark.position) {
+    case 'lt':
+      postion = 'left: 10px; top: 10px';
+      break;
+    case 'rt':
+      postion = 'right: 10px; top: 10px';
+      break;
+    case 'lb':
+      postion = 'left: 10px; bottom: 10px';
+      break;
+    case 'rb':
+      postion = 'right: 10px; bottom: 10px';
+      break;
+  
+  }
+  div.innerHTML = `
+  <span style="position: absolute; ${postion}; color: ${waterMark.fontColor}; font-size: ${waterMark.fontSize};opacity: ${waterMark.opacity}; transform: rotate(${waterMark.angle}deg); z-index: 1000; font-family: ${waterMark.fontFamily}; font-weight: ${waterMark.fontWeight}">${waterMark.font}</span>
+  `
+  el.appendChild(div)
+  return div
+} 
+
 /**
  * 生成作品封面图(截图)
  * @param {String} selector
@@ -33,9 +59,14 @@ function dataURItoBlob (dataURI) {
 export function takeScreenshot ({
   selector = '#content_edit',
   fileName = `${+new Date()}.png`,
-  type = 'file'
+  type = 'file',
+  waterMark = false
 } = {}) {
   const el = document.querySelector(selector)
+  let waterMarkEl = null
+  if (waterMark) {
+    waterMarkEl = createWaterMark(el)
+  }
   return new Promise((resolve, reject) => {
     // html2canvas document: https://html2canvas.hertzen.com/configuration
     // allowTaint: Whether to allow cross-origin images to taint the canvas
@@ -47,7 +78,9 @@ export function takeScreenshot ({
       const blob = dataURItoBlob(dataUrl)
       // const blob = new Blob([ab], { type: mimeString })
       const file = new window.File([blob], fileName, { type: 'image/png' })
-
+      if (waterMarkEl) {
+       // el.removeChild(waterMarkEl)
+      }
       switch (type) {
         case 'canvas':
           resolve(canvas)

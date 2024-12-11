@@ -2,9 +2,9 @@ import { takeScreenshot} from "@editor/utils/canvas-helper.js";
 import {appUploadMaterialAttachmentBase64APIOSS} from "core/api"
 
 export const actions = {
-  async mCreateCover({}, {el}) {
+  async mCreateCover({}, {el, waterMark}) {
 
-      const base64 = await takeScreenshot({selector: el, type: 'dataUrl'});
+      const base64 = await takeScreenshot({selector: el, type: 'dataUrl', waterMark});
 
       return await appUploadMaterialAttachmentBase64APIOSS({
         base64

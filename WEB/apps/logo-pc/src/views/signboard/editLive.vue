@@ -223,7 +223,7 @@ export default {
       this.changeTokenScreenShotStatus(true);
       await sleep(1000);
       try {
-        const info = await this.mCreateCover({ el: "#edit-live__container" });
+        const info = await this.mCreateCover({ el: "#edit-live__container", waterMark: true});
         this.setPic({
           type: "composePic",
           value: info.data.urlPath,

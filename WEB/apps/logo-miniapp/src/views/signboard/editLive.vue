@@ -151,7 +151,7 @@ export default {
         duration: 0,
       });
       try {
-        const info = await this.mCreateCover({ el: "#edit-live__wrap" });
+        const info = await this.mCreateCover({ el: "#edit-live__wrap", waterMark: true });
         this.setPic({
           type: "composePic",
           value: info.data.urlPath,
@@ -163,7 +163,7 @@ export default {
         console.log(e);
         Notify({ type: "danger", message: "创建失败" });
       }
-      await sleep(1000);
+      await sleep(2000);
       toast.clear();
     },
     async downloadInfo() {
@@ -214,7 +214,7 @@ export default {
       } catch (e) {
         Notify({ type: "danger", message: "下载失败" });
       }
-      await sleep(1000);
+      await sleep(2000);
       toast.clear();
     },
     handleRotationProp(angle) {
