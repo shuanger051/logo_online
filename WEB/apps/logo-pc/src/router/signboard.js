@@ -47,6 +47,7 @@ const routes = [
   // 店招属性选择
   {
     path: "attribute",
+    name: 'attribute',
     meta: { title: "类型选择" },
     component: () => import("@/views/signboard/attribute"),
   },
@@ -73,18 +74,18 @@ const routes = [
     meta: { title: "备案确认" },
     component: () => import("@/views/signboard/editConfirm"),
   },
-  // {
-  //   path: "intelligenceTemplate",
-  //   name: 'intelligenceTemplate',
-  //   meta: { title: "模板选择" },
-  //   component: () => import("@/views/signboard/intelligenceTemplate"),
-  // },
-  // {
-  //   path: "intelligenceDesign",
-  //   name: 'intelligenceDesign',
-  //   meta: { title: "智能设计" },
-  //   component: () => import("@/views/signboard/intelligenceDesign"),
-  // },
+  {
+    path: "intelligenceTemplate",
+    name: 'intelligenceTemplate',
+    meta: { title: "模板选择" },
+    component: () => import("@/views/signboard/intelligenceTemplate"),
+  },
+  {
+    path: "intelligenceDesign",
+    name: 'intelligenceDesign',
+    meta: { title: "智能设计" },
+    component: () => import("@/views/signboard/intelligenceDesign"),
+  },
   {
     path: "editSignboard/:id?",
     name: "editSignboard",

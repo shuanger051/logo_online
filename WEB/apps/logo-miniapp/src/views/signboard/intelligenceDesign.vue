@@ -64,7 +64,7 @@ export default {
     };
   },
   components: {
-    compact: Compact,
+    // compact: Compact,
   },
   computed: {
     color() {

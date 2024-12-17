@@ -15,7 +15,13 @@
       ></tool-bar>
       <edit-panel :elements="elements" :style="getEditStyle()"></edit-panel>
     </div>
-    <a-modal v-model:visible="picConfirmShow" title="确认" cancelText="取消" okText="确定" @ok="changeConfig(true)">
+    <a-modal
+      v-model:visible="picConfirmShow"
+      title="确认"
+      cancelText="取消"
+      okText="确定"
+      @ok="changeConfig(true)"
+    >
       <div style="padding: 10px">
         <p style="font-size: 14px">
           请确保上传的图片不侵犯他人知识产权，如有侵权，一切后果由上传人承担
@@ -25,7 +31,7 @@
             v-model="picConfirm"
             @change="changeConfirm"
             style="margin-right: 10px"
-          /><span style="font-size:14px">下次不在提示</span>
+          /><span style="font-size: 14px">下次不在提示</span>
         </div>
       </div>
     </a-modal>
@@ -96,11 +102,14 @@ export default {
             path: "/",
           });
         }
-        return
-      } 
+        return;
+      }
       if (this.$route.params.id) {
         const toast = this.$message.loading("加载中...", 0);
-        await this.fetchWork({ id: this.$route.params.id });
+        await this.fetchWork({
+          id: this.$route.params.id,
+          hasWork: this.$route.query.hasWork,
+        });
         toast();
       }
     },
