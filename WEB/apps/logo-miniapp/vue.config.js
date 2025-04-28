@@ -4,7 +4,8 @@ const themePath = path.resolve(__dirname, "./src/styles/theme/var.less");
 const webpackMixin = require("@shop-sign/editor/webpackMixIn");
 
 module.exports = {
-  publicPath: process.env.VUE_APP_PUBLIC_PATH,
+  publicPath:
+    process.env.NODE_ENV == "production" ? process.env.VUE_APP_PUBLIC_PATH : "",
   productionSourceMap: false,
   css: {
     loaderOptions: {
