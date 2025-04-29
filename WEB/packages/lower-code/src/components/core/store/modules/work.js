@@ -105,6 +105,7 @@ export const actions = {
     return getTemplateByID({
       id,
     }).then((entry) => {
+      console.log(entry,8888)
       const { data } = entry;
       try {
         const str = data.domItem;

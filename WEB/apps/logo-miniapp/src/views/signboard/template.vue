@@ -145,6 +145,11 @@ export default {
               });
               resolve();
             });
+
+            const list = _.get(window.template, "data.list", []);
+          // 对数据做过滤
+          tplArr = this.doFilter(list, { style: styles, material, id,streetType });
+          resolve();
       })
         // 实现翻页
         .then(() => {

@@ -13,4 +13,11 @@ export const encrypt = axiosPost("logo/app/crypto/encrypt");
 /**
  * == 获取字典项 ==
  */
-export const getItemsByDictKeyInDB = axiosGet("logo/app/getItemsByDictKeyInDB");
+// export const getItemsByDictKeyInDB = axiosGet("logo/app/getItemsByDictKeyInDB");
+
+export const getItemsByDictKeyInDB = (params) => {
+  let data = window.dicts[params.dictKey];
+  return Promise.resolve({
+    data: data || []
+  })
+}

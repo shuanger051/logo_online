@@ -6,6 +6,20 @@ const wrapRequest = (url, isPost, config) => {
     return request[isPost ? "axiosPost" : "axiosGet"](url, config)(...args);
   };
 };
+
+const getLocalTemplateByID = (id) => {
+  id = +id
+  const template = window.template.data.list.find((item) => item.id === id);
+  return Promise.resolve({
+    data: template
+  })
+}
+export const getlocalDictsKey = (params) => {
+  let data = window.dicts[params.dictKey];
+  return Promise.resolve({
+    data: data.data || []
+  })
+}
 export const saveMaterial = wrapRequest("/logo/material/saveMaterial", true);
 export const getMaterialListByPage = wrapRequest(
   "/logo/material/getMaterialListByPage",
@@ -34,6 +48,7 @@ export const getDictById = wrapRequest(
   "/logo/sys/dict-item/getItemsByDictKey",
   false
 );
+
 export const getTemplateByID = async (...arg) => {
   if (window.$editorConfig.mode !='admin') {
     return appQueryTemplate(...arg);
@@ -46,10 +61,14 @@ export const appGetMaterial = wrapRequest(
   "/logo/app/getMaterialListByPageAPI?fileType=1",
   false
 );
-export const appQueryTemplate = wrapRequest(
-  "logo/app/queryTemplateByIdAPI",
-  false
-);
+
+// export const appQueryTemplate = wrapRequest(
+//   "logo/app/queryTemplateByIdAPI",
+//   false
+// );
+export const appQueryTemplate = (data) => {
+  return getLocalTemplateByID(data.id)
+}
 export const appSaveLogoInfoAPIOSS = wrapRequest(
   "/logo/app/saveLogoInfoAPIOSS",
   true
@@ -80,10 +99,13 @@ export const appGetLogoInfoByShopsIdOSS = wrapRequest(
   "/logo/app/getLogoInfoByShopsIdAPIOSS",
   false
 );
-export const appGetItemsByDictKeyInDB = wrapRequest(
-  "/logo/app/getItemsByDictKeyInDB",
-  false
-);
+// export const appGetItemsByDictKeyInDB = wrapRequest(
+//   "/logo/app/getItemsByDictKeyInDB",
+//   false
+// );
+export const appGetItemsByDictKeyInDB = (params) => {
+  return getlocalDictsKey(params)
+}
 export const appGetCustomerInfoByUserNameAPI = wrapRequest(
   "/logo/app/getCustomerInfoByUserNameAPI",
   false
