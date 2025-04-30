@@ -70,7 +70,10 @@ export default {
     //   this.loginType = "2";
     //   this.zlbAuthLogin(accesstoken);
     // }
-    this.qlygAuthLogin()
+
+    /////////////////////////// this.qlygAuthLogin()
+    // this.qlygAuthLogin()
+
     // 未登录提示
     eventBus.$on("login", () => {
       // this.onSubmit();

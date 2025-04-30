@@ -1,7 +1,10 @@
 import { picCache } from "./imgUrl";
 import * as XLSX from "xlsx";
-import { appUploadExcelBase64APIOSS } from "core/api";
-import { convertImageToBase64 } from "@editor/utils/canvas-helper.js";
+import { appUploadMaterialAttachmentOSS } from "core/api";
+import {
+  convertImageToBase64,
+  dataURItoBlob,
+} from "@editor/utils/canvas-helper.js";
 
 const parseText = {
   valid(element) {
@@ -114,7 +117,7 @@ export const parse = (work, obj = {}) => {
   return obj;
 };
 
-export const createXLSL = (work, config = { type: "base64" }) => {
+export const createXLSL = (work, isWrite) => {
   const json = parse(work);
   const workbook = XLSX.utils.book_new();
 
@@ -125,8 +128,8 @@ export const createXLSL = (work, config = { type: "base64" }) => {
       origin: "A1",
     });
   });
-  if (config.type == "base64") {
-    return XLSX.write(workbook, { bookType: "xlsx", type: "base64" });
+  if (isWrite) {
+    return XLSX.write(workbook, { type: "base64", bookType: "xlsx" });
   } else {
     return XLSX.writeFile(workbook, "店招.xlsx");
   }
@@ -134,12 +137,17 @@ export const createXLSL = (work, config = { type: "base64" }) => {
 
 export const downLoadXLSL = async (work) => {
   if (typeof ZWJSBridge == "undefined") {
-    return createXLSL(work, { type: "file" });
+    return createXLSL(work, false);
   } else {
-    let base64 = createXLSL(work);
-    base64 = "data:application/vnd.ms-excel;base64," + base64;
-    const info = await appUploadExcelBase64APIOSS({
-      base64,
+    const base64 =
+      "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
+      createXLSL(work, true);
+    const blob = dataURItoBlob(base64);
+    const file = new File([blob], "店招.xlsx", {
+      type: blob.type,
+    });
+    const info = await appUploadMaterialAttachmentOSS(file, {
+      name: "店招.xlsx",
     });
     return download(info.data.urlPath, "店招.xlsx", ".xlsx");
   }
@@ -148,23 +156,31 @@ export const downLoadXLSL = async (work) => {
 export const download = async (url, name, file = false) => {
   if (typeof ZWJSBridge == "undefined") {
     return new Promise((r) => {
-      convertImageToBase64(url, (u) => {
+      if (file) {
         var a = document.createElement("a");
-        a.href = u;
+        a.href = url;
         a.download = name;
         a.click();
         r();
-      });
+      } else {
+        convertImageToBase64(url, (u) => {
+          var a = document.createElement("a");
+          a.href = u;
+          a.download = name;
+          a.click();
+          r();
+        });
+      }
     });
   } else {
     if (file) {
       return ZWJSBridge.downloadFile({
         url: url,
-        fileType: file
+        fileType: file,
       });
     }
     return ZWJSBridge.saveImage({
-      url: url
-    })
+      url: url,
+    });
   }
 };

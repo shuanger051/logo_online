@@ -148,9 +148,7 @@ export default {
         duration: 0,
       });
       try {
-        const form = new FormData();
-        form.append("file", file.file);
-        const info = await appUploadMaterialAttachmentOSS(form);
+        const info = await appUploadMaterialAttachmentOSS( file.file);
         this.addElement({
           name: "lbp-picture",
           shortcutProps: {

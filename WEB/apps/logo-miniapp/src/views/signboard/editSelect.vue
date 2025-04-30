@@ -52,9 +52,7 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      const form = new FormData();
-      form.append("file", file.file);
-      const info = await appUploadMaterialAttachmentOSS(form);
+      const info = await appUploadMaterialAttachmentOSS(file.file);
       this.setPic({
         type: "signboardPic",
         value: info.data.urlPath,

@@ -58,16 +58,14 @@
 import store from "core/mobile/store/index";
 import appStore from "@/store/index";
 import {
-  appUploadMaterialAttachmentBase64APIOSS,
   appUploadMaterialAttachmentOSS,
 } from "core/api/";
 import { resolveImgUrlBase64,resolveImgUrlBase64RetWH} from "core/support/imgUrl";
 import shape from "core/support/shape_mobile";
 import { download, downLoadXLSL } from "core/support/download.js";
 import { sleep } from "@editor/utils/tool";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { Toast, Dialog } from "vant";
-import { downloadPoster } from "@editor/utils/canvas-helper.js";
 import { Notify } from "vant";
 export default {
   store,
@@ -134,9 +132,7 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      const form = new FormData();
-      form.append("file", file.file);
-      const info = await appUploadMaterialAttachmentOSS(form);
+      const info = await appUploadMaterialAttachmentOSS(file.file);
       this.setPic({
         type: "livePic",
         value: info.data.urlPath,

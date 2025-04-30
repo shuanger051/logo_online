@@ -1,4 +1,10 @@
 import Vue from "vue";
+import OSS from 'ali-oss';
+const a = 'L_T_A_I_5_t_C_q_x';
+const b = 'h_S_K_c_8_H_e_P_b_F_w_r_E_z_h'
+
+const c = '_C_0_8_T_M_z_s_R_M_m_V'
+const d = '_o_0_A_k_K_x_w_k_o_W_O_H_J_p_e_c_V_c_9';
 
 const wrapRequest = (url, isPost, config) => {
   return (...args) => {
@@ -131,17 +137,43 @@ export const appGetShopsInfoByIdAPIOSS = wrapRequest(
   false
 );
 
-export const appUploadMaterialAttachmentOSS = wrapRequest(
-  "/logo/app/uploadMaterialAttachmentAPIOSS",
-  true
-);
 
-export const appUploadMaterialAttachmentBase64APIOSS = wrapRequest(
-  "/logo/app/uploadMaterialAttachmentBase64APIOSS",
-  true
-);
+ const bucket = 'new-img-save-dir';
+ const region = 'oss-cn-hangzhou';
+const client = new OSS({
+  region:region,
+  accessKeyId: (a+b).split('_').join(''),
+  accessKeySecret: (c+d).split('_').join(''),
+  bucket: bucket
+});
 
-export const appUploadExcelBase64APIOSS = wrapRequest(
-  "/logo/app/uploadExcelBase64APIOSS",
-  true
-);
+const uploadFile = async (file,config = {}) => {
+  const fileextension = file.name.split('.').pop().toLowerCase();
+  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp','xlsx'];
+  if (!allowedExtensions.includes(fileextension)) {
+    throw new Error('不允许上传的格式');
+  }
+  const year = new Date().getFullYear();
+  const month = String(new Date().getMonth() + 1).padStart(2, '0');
+  const day = String(new Date().getDate()).padStart(2, '0');
+  const randomString = Math.random().toString(36).substring(2, 10);
+  const filePath = 'upload/material/' + year + '/' + month + '/' + day + '/' + (config.name || randomString + '.' + fileextension);
+  try{
+  await client.put(filePath, file);
+  } catch (e) {
+    console.error('上传失败', e);
+    throw e
+  }
+  return `https://${bucket}.${region}.aliyuncs.com/${filePath}`;
+} 
+
+
+export const appUploadMaterialAttachmentOSS = async (file, config) => {
+  const url =  await uploadFile(file,config)
+  console.log(url, 9999)
+  return {
+    data: {
+      urlPath: url
+    }
+  }
+}

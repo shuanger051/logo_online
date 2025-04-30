@@ -1,14 +1,12 @@
 import { takeScreenshot} from "@editor/utils/canvas-helper.js";
-import {appUploadMaterialAttachmentBase64APIOSS} from "core/api"
+import {appUploadMaterialAttachmentOSS} from "core/api"
 
 export const actions = {
   async mCreateCover({}, {el, waterMark}) {
 
-      const base64 = await takeScreenshot({selector: el, type: 'dataUrl', waterMark});
+      const file = await takeScreenshot({selector: el, type: 'file', waterMark});
 
-      return await appUploadMaterialAttachmentBase64APIOSS({
-        base64
-      })
+      return await appUploadMaterialAttachmentOSS(file)
   },
   setCurrentWorkData({commit}, payload) {
     commit('setCurrentWorkData', payload)
@@ -44,7 +42,6 @@ export const state = {
   livePic: null,
   // 店招实景合成图
   composePic: null,
-  // 店招图base64,
   
   
 }

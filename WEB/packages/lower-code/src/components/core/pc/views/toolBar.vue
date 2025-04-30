@@ -92,9 +92,7 @@ export default {
     async upload(evt) {
       let toast = this.$message.loading("上传中...", 0);
       try {
-        const form = new FormData();
-        form.append("file", evt.file);
-        const info = await appUploadMaterialAttachmentOSS(form);
+        const info = await appUploadMaterialAttachmentOSS(evt.file);
         this.addElement({
           name: "lbp-picture",
           shortcutProps: {

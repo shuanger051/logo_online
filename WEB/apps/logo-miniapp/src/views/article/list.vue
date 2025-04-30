@@ -11,7 +11,7 @@
       <template v-else>
         <van-cell
           v-for="item in list"
-          :to="`/article/${item.channelId}/detail?pid=${item.id}`"
+          :to="`/article/${params.channelId}/detail?pid=${item.id}`"
           :key="item.id"
           :title="item.contentExt.title"
         >

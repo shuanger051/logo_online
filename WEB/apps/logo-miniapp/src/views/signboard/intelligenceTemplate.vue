@@ -140,7 +140,7 @@ export default {
           const { list,total } = res.data;
           const resolveLists = this.resolveElement(list)
           this.list = oldArr.concat(resolveLists);
-          this.finished = this.list.length + this._bitSet.repeat < total;
+          this.finished = this.list.length + this._bitSet.repeat >= total;
         })
         .finally(() => (this.loading = false));
     },

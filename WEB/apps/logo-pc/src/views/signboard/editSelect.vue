@@ -57,9 +57,7 @@ export default {
         return;
       }
       try {
-        const form = new FormData();
-        form.append("file", file);
-        const info = await appUploadMaterialAttachmentOSS(form);
+        const info = await appUploadMaterialAttachmentOSS(file);
         this.setPic({
           type: "signboardPic",
           value: info.data.urlPath,

@@ -146,9 +146,7 @@ export default {
       }
     },
     async upload(evt) {
-      const form = new FormData();
-      form.append("file", evt.file);
-      const info = await appUploadMaterialAttachmentOSS(form);
+      const info = await appUploadMaterialAttachmentOSS(evt.file);
       this.setPic({
         type: "livePic",
         value: info.data.urlPath,

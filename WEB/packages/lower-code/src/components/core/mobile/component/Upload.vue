@@ -1,8 +1,8 @@
 <template>
   <div>
-    <van-button color="#1989fa" plain @click="show = true" class="btn"
+    <!-- <van-button color="#1989fa" plain @click="show = true" class="btn"
       >素材库</van-button
-    >
+    > -->
     <van-button color="#07c160" plain @click="readBefore" class="btn"
         >本地上传</van-button
       >
@@ -54,12 +54,12 @@ export default {
   },
   props: ['beforeRead'],
   watch: {
-    "page.current": {
-      handler() {
-        this.getList();
-      },
-      immediate: true,
-    },
+    // "page.current": {
+    //   handler() {
+    //     this.getList();
+    //   },
+    //   immediate: true,
+    // },
   },
   methods: {
     resolveImgUrl,
@@ -85,9 +85,7 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      const form = new FormData()
-      form.append('file', file.file)
-      const info = await appUploadMaterialAttachmentOSS(form);
+      const info = await appUploadMaterialAttachmentOSS(file.file);
       const url = info.data.urlPath
       this.$emit('input', url)
       toast.clear();

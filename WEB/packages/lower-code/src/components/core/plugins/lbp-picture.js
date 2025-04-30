@@ -98,11 +98,11 @@ export default {
       label: '透明度',
       showLable: true
     }),
-    imgSrc: PropTypes.image({
-      type: 'pc-upload',
-      label: '图片',
-      showLable: true
-    }),
+    // imgSrc: PropTypes.image({
+    //   type: 'pc-upload',
+    //   label: '图片',
+    //   showLable: true
+    // }),
   },
 
 

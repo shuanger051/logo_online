@@ -60,7 +60,7 @@ export default {
     },
   },
   created() {
-    this.qlygAuthLogin();
+    // this.qlygAuthLogin();
     // 未登录提示
     eventBus.$on("login", () => {
       this.qlygAuthLogin();
