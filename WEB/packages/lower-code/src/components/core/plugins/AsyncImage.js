@@ -31,6 +31,6 @@ export default {
     }
   },
   render() {
-    return <img src={this.realSrc} onClick={this.handlerClick}/>
+    return (<img src={this.realSrc} onClick={this.handlerClick}/>)
   }
 }

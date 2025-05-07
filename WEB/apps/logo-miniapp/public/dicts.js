@@ -90,5 +90,23 @@ window.dicts = {
             "dictKey": "streetType"
         }
     ]
+  },
+  //文章栏目
+  channel: {
+    data: [
+      {
+          "id": 2,
+          "name": "新闻公告",
+      },
+      {
+          "id": 3,
+          "name": "政策法规",
+      },
+      {
+          "id": 4,
+
+          "name": "APP信息发布",
+      }
+  ]
   }
 };

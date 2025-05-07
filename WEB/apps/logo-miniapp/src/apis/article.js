@@ -6,7 +6,8 @@ import { axiosGet } from "../utils/request";
 // export const getContentByIDAPI = axiosGet("logo/app/getContentByIDAPI");
 export const getContentByIDAPI = ({id}) => {
   let news = window.news;
-  let content = news.data.articles.reduce((lists, article) => lists.concat(article.list), []).find((item) => item.id === +id) || {};
+
+    let content = news.data.find((item) => item.id === +id) || {};
   return Promise.resolve({
     data: {
       ...content
@@ -21,7 +22,7 @@ export const getContentByIDAPI = ({id}) => {
 export const getContentByChannelIdAPI = (params) => {
   let news = window.news;
   let channelId = params.channelId;
-  let chanelList = news.data.articles.find((item) => item.article === +channelId) || {
+  let chanelList = news.data.filter((item) => item.channelId === +channelId) || {
     list: [],
   };
 

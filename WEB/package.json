@@ -17,5 +17,7 @@
     "turbo": "1.10.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+  }
 }
