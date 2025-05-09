@@ -61,7 +61,6 @@ export default {
         <a-spin tip="Loading..." spinning={this.loading}>
           <a-card>
             <Uploader
-              slot="extra"
               beforeUpload={file => this.beforeUpload(file)}
               uploadSuccess={info => this.uploadSuccess(info)}
             />

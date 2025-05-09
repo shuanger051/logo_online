@@ -48,6 +48,9 @@ const options = {
               path: "article",
               name: "文章管理",
               component: () => import("@/pages/affiche/article/list"),
+              meta: {
+                icon: "notification",
+              },
             },
         //   ],
         // },

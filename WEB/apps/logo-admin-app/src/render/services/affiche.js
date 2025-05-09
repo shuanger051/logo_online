@@ -18,7 +18,7 @@ export const getChannelList = axiosGet("/logo/channel/getChannelList");
 /** 分页获取文章列表信息 */
 export const getContentListByPage = async ({
   pageNum,
-  pageSize,
+  pageSize=30,
   channelId,
   title,
 }) => {
@@ -34,7 +34,6 @@ export const getContentListByPage = async ({
       );
     }) || [];
   list = list.slice((pageNum - 1) * pageSize, pageNum * pageSize);
-  console.log(list,44)
   return {
     data: {
       total: list.length,

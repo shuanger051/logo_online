@@ -2,7 +2,7 @@
   <common-layout>
     <div class="top">
       <div class="header">
-        <img alt="logo" class="logo" src="@/assets/img/logo.png" />
+        <img alt="logo" class="logo" src="@/assets/img/logo3.png" />
         <span class="title">{{ systemName }}</span>
       </div>
       <div class="desc">杭州城管菜单式店招备案系统</div>
@@ -35,14 +35,10 @@
             <a-icon slot="prefix" type="user" />
           </a-input>
         </a-form-item>
-
-        <div>
-          <a-checkbox :checked="true">自动登录</a-checkbox>
-        </div>
         <a-form-item>
           <a-button
             :loading="logging"
-            style="width: 100%; margin-top: 24px"
+            style="width: 100%; margin-top: 0px"
             size="large"
             htmlType="submit"
             type="primary"
@@ -188,14 +184,15 @@ export default {
   .top {
     text-align: center;
     .header {
-      height: 44px;
-      line-height: 44px;
+      height: 100px;
+      line-height: 100px;
       a {
         text-decoration: none;
       }
       .logo {
-        height: 44px;
-        vertical-align: top;
+        height: 60px;
+        // border-radius: 4px;
+        vertical-align: middle;
         margin-right: 16px;
       }
       .title {

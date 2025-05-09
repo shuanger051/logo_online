@@ -1,13 +1,10 @@
 
-/**
- * 编辑器中间的画布
- */
-
 $cellSize: 35.6px;
 $designerWidth: 320px;
 $designerHeight: 300px;
 $designerWidthHalf: ($designerWidth/2);
-
+#name {  margin: 0 auto;
+}
 .canvas-wrapper {
   position: relative;
   top: 0px;
@@ -23,7 +20,6 @@ $designerWidthHalf: ($designerWidth/2);
   }
 }
 
-// 切换编辑、预览模式 的按钮组
 .mode-toggle-wrapper {
   position: fixed;
   z-index: 999;

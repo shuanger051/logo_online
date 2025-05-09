@@ -22,14 +22,12 @@ export const getContentByIDAPI = ({id}) => {
 export const getContentByChannelIdAPI = (params) => {
   let news = window.news;
   let channelId = params.channelId;
-  let chanelList = news.data.filter((item) => item.channelId === +channelId) || {
-    list: [],
-  };
+  let chanelList = news.data.filter((item) => item.channelId === +channelId) || []
 
   return Promise.resolve({
     data: {
-      list: chanelList.list,
-      total: chanelList.list.length,
+      list: chanelList,
+      total: chanelList.length,
     },
   });
 };

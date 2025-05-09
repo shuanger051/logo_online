@@ -1,4 +1,5 @@
-import {saveMaterial} from 'core/api'
+import { appUploadMaterialAttachmentOSS } from "core/api/";
+
 export default {
   props: {
     visible: {
@@ -24,45 +25,24 @@ export default {
     loading: false
   }),
   methods: {
+    async upload(evt) {
+        const {data} = await appUploadMaterialAttachmentOSS(evt.file);
+       this.uploadSuccess({url: data.urlPath});
+    },
     handleBeforeUpload (file) {
       return this.beforeUpload(file)
     },
-    async saveMaterial(info) {
-      return saveMaterial({
-        fileName: info.attachmentName,
-        filePath: info.attachmentPath,
-        name: info.fileName,
-        fileType: '1'
-      })
-    },
-    async handleChange(info){
-      this.loading = true
-      const status = info.file.status
 
-      if (status !== 'uploading') {
-      }
-      if (status === 'done' && info.file?.response?.code == '0') {
-        this.loading = false
-        await this.saveMaterial(info.file.response.data)
-        this.uploadSuccess(info)
-        this.$message.success(`${info.file.name} 上传成功.`)
-      } else if (status === 'error') {
-        this.$message.error(`${info.file.name} 上传失败.`)
-      }
-    }
   },
   render (h) {
     return (
       <a-upload
         name="file"
-        action={`${window.__baseUrl}/logo/attachment/uploadMaterialAttachmentOSS`}
+        showUploadList={false}
+        customRequest={this.upload}
         beforeUpload={this.handleBeforeUpload}
-        onChange={this.handleChange}>
-        <slot>
-          <a-button>
-            <a-icon type="upload" /> Click to Upload
-          </a-button>
-        </slot>
+       >
+        {this.$slots.default &&  this.$slots.default}
       </a-upload>
     )
   },

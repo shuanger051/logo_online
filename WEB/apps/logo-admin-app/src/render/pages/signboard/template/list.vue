@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrap" :style="`min-height: 0px`">
+  <div class="page-wrap" :style="`min-height: 0px; padding:24px 24px 0`">
     <!-- 搜索条件栏 -->
     <form-serach :fields="serachFields" @serach="onSerach">
       <a-button type="primary" @click="onAdd">新增模板</a-button>
@@ -36,12 +36,12 @@
         <a-button type="link" size="small" @click="onDel({ record, index })"
           >删除</a-button
         >
-        <a-button
+        <!-- <a-button
           type="link"
           size="small"
           @click="onPublish({ record, index })"
           >{{ record.releaseStatus == "1" ? "取消发布" : "发布" }}</a-button
-        >
+        > -->
       </template>
     </a-table>
   </div>
@@ -81,12 +81,12 @@ export default {
             }
           },
         },
-        {
-          title: "是否发布",
-          dataIndex: "releaseStatus",
-          key: "releaseStatus",
-          scopedSlots: { customRender: "releaseStatus" },
-        },
+        // {
+        //   title: "是否发布",
+        //   dataIndex: "releaseStatus",
+        //   key: "releaseStatus",
+        //   scopedSlots: { customRender: "releaseStatus" },
+        // },
         {
           title: "缩略图",
           key: "shortImage",
@@ -112,17 +112,17 @@ export default {
             options: this.styleMap,
           },
         },
-        {
-          name: "releaseStatus",
-          label: "发布状态",
-          component: "select",
-          props: {
-            options: [
-              { value: "1", label: "已发布" },
-              { value: "2", label: "未发布" },
-            ],
-          },
-        },
+        // {
+        //   name: "releaseStatus",
+        //   label: "发布状态",
+        //   component: "select",
+        //   props: {
+        //     options: [
+        //       { value: "1", label: "已发布" },
+        //       { value: "2", label: "未发布" },
+        //     ],
+        //   },
+        // },
       ];
     },
   },

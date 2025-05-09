@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrap" :style="`min-height: 0px`">
+  <div class="page-wrap" :style="`min-height: 0px; padding:24px 24px 0`">
     <!-- 搜索条件栏 -->
     <form-serach :fields="serachFields" @serach="onSerach">
       <a-button type="primary" @click="onAdd">新增</a-button>

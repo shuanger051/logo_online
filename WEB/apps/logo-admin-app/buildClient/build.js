@@ -18,7 +18,7 @@ const build = {
         // 打包preload和渲染进程
         Promise.all([preloadBuilder(), viewBuilder()]).then((resolve) => {
             const viewRenderConfig = require('./webpack.render.config.js');
-            resolve.forEach(res => console.log('打包输出===>', res));
+            resolve.forEach(res => console.log('打包输出==2=>', res));
             let outpath = path.join(__dirname, '../pack/');
             console.log(`打包渲染进程完毕！压缩小版本!`);
             try {
@@ -51,7 +51,7 @@ const build = {
         mainBuilder().then(res => {
             const electronBuilder = require('electron-builder');
             const packageJson = require('../package.json');
-            console.log('打包输出===>', res)
+            console.log('打包输出==1=>', res)
             packageJson.version = version.slice(0, 3).join('.');
             fs.writeFileSync(path.join(__dirname, '../package.json'), JSON.stringify(packageJson, null, 4));
             electronBuilder.build().then(() => {

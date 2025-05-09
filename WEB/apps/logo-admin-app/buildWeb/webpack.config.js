@@ -56,6 +56,15 @@ var webpackBaseConfig = {
             options: {
               cacheDirectory: true,
               presets: ["@babel/preset-env", "@vue/babel-preset-jsx"],
+              plugins: [
+                [
+                  "component",
+                  {
+                    libraryName: "element-ui",
+                    styleLibraryName: "theme-chalk",
+                  },
+                ],
+              ],
             },
           },
           {
@@ -91,6 +100,7 @@ var webpackBaseConfig = {
       {
         test: /\.(scss|sass)$/,
         use: (devMode ? ["css-hot-loader"] : []).concat([
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -105,6 +115,10 @@ var webpackBaseConfig = {
           },
           {
             loader: "sass-loader",
+            options: {
+              // Prefer `dart-sass`
+              implementation: require("sass"),
+            },
           },
         ]),
       },
@@ -211,12 +225,16 @@ var webpackBaseConfig = {
       favicon: false,
     }),
     new MiniCssExtractPlugin({
-        filename: `.${context.page}/css/[name]${devMode ? '' : '-[contenthash:8]'}.css`,
-        chunkFilename: `.${context.page}/css/[name]${devMode ? '' : '-[contenthash:8]'}.css`,
-        ignoreOrder: true
+      filename: `.${context.page}/css/[name]${
+        devMode ? "" : "-[contenthash:8]"
+      }.css`,
+      chunkFilename: `.${context.page}/css/[name]${
+        devMode ? "" : "-[contenthash:8]"
+      }.css`,
+      ignoreOrder: true,
     }),
     new webpack.ProvidePlugin({
-      _: "lodash"
+      _: "lodash",
     }),
     new dotenv({
       path: path.resolve(__dirname, "../.env"),

@@ -18,10 +18,13 @@ export const defaultLang = "CN";
 let i18n;
 
 if (Vue.prototype.$i18nInstance) {
+  console.log(555)
   i18n = Vue.prototype.$i18nInstance;
   i18n.mergeLocaleMessage("US", enUSLang);
   i18n.mergeLocaleMessage("CN", zhCNLang);
 } else {
+  console.log(9999999)
+
   Vue.use(VueI18n);
 
   i18n = new VueI18n({

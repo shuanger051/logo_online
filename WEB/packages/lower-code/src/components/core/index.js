@@ -97,7 +97,7 @@ const CoreEditor = {
     return (
       <a-spin spinning = {this.saveWork_loading} tip={this.saveWork_tip}>
         <a-layout>
-          <a-layout style={{paddingTop: '20px'}}>
+          <a-layout>
             <AdjustLeftPanel />
             <EditorCanvas />
             <AdjustLineV
@@ -106,7 +106,7 @@ const CoreEditor = {
               }}
             />
             <FixedTools />
-            <EditorRightPanel width={this.propsPanelWidth} />
+            <EditorRightPanel width={this.propsPanelWidth}/>
           </a-layout>
       </a-layout>
       </a-spin>

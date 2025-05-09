@@ -23,7 +23,7 @@ export default {
       <a-layout-sider
         width="40"
         theme='light'
-        style={{ background: '#fff', border: '1px solid #eee' }}
+        style={{ background: '#fff' }}
       >
         <a-button-group style={{ display: 'flex', flexDirection: 'column' }}>
           {

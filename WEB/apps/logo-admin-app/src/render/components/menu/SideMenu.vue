@@ -2,7 +2,7 @@
   <a-layout-sider :theme="sideTheme" :class="['side-menu', 'beauty-scroll', isMobile ? null : 'shadow']" width="256px" :collapsible="collapsible" v-model="collapsed" :trigger="null">
     <div :class="['logo', theme]">
       <router-link to="/dashboard/workplace">
-        <img src="@/assets/img/logo.png">
+        <img src="@/assets/img/logo3.png">
         <h1>{{systemName}}</h1>
       </router-link>
     </div>
@@ -51,6 +51,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "index";
 </style>

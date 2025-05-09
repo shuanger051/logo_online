@@ -1,6 +1,6 @@
 <template>
   <div class="new-page">
-    <h1>demo</h1>
+    <h1>店招首页</h1>
   </div>
 </template>
 

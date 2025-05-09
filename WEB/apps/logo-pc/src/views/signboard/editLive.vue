@@ -138,7 +138,7 @@ export default {
       else this.$router.push({ path: "/" });
     },
     beforeUpload(file) {
-      const maxSize = 5 * 1024 * 1024;
+      const maxSize = 20 * 1024 * 1024;
       if (file.size < maxSize) return true;
       else {
         this.$message.warning({ content: "文件大小不能超过 5M" });

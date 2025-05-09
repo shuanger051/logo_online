@@ -2,9 +2,8 @@ require('./libs/runCheck.js')();
 require('./libs/compress.js');
 const shortcut = require('./libs/shortcut.js');
 const { app, BrowserWindow, ipcMain } = require('electron');
-import { addVueDevtool } from '@/main/libs/extensions.js';
-const remote = require('@electron/remote/main');
-remote.initialize();
+// const remote = require('@electron/remote/main');
+// remote.initialize();
 
 const MainWindow = require('./win/index.js');
 
@@ -16,7 +15,7 @@ app.allowRendererProcessReuse = false;
 
 // 禁用硬件加速
 app.disableHardwareAcceleration();
-
+console.log(__dirname, 4444)
 //注册全局变量
 Object.assign(global, {
     // 页面跟路径配置，优先使用此配置，考虑到小版本更新时，版本之间的切换

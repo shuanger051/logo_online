@@ -1,6 +1,8 @@
 import { mapState, mapActions } from "vuex";
 import "./share-info.scss";
 import { getDictById, getMaterialByID } from "core/api";
+import Uploader from "core/support/image-gallery/components/uploader.js";
+
 const debounce = function debounce(func, wait) {
   let timerId = 0;
   return function (...args) {
@@ -59,24 +61,8 @@ export default {
     beforeUpload () {
       this.loading = true
     },
-    async handleChange(info){
-      const status = info.file.status
-
-      if (status === 'done' && info.file?.response?.code == '0') {
-        this.loading = false
-        this.$message.success(`模板图片上传成功.`)
-        // start
-        let url = info.file.response.data.urlPath
-        if (/img-save-dir/.test(url)) {
-          url = 'https://img-save-dir.oss-cn-hangzhou.aliyuncs.com' + url.split('img-save-dir')[1]
-        }
+    async handleChange({url}){
         this.autoSave({cover_image_url: url})
-        // end
-        //this.autoSave({cover_image_url: info.file.response.data.urlPath})
-
-      } else if (status === 'error') {
-        this.$message.error(`模板图片上传失败.`)
-      }
     }
   },
   mounted() {
@@ -186,14 +172,9 @@ export default {
               ></el-color-picker>
             </a-form-item>
             <a-form-item label="模板图片">
-              <a-upload
+              <Uploader
                 class="avatar-uploader"
-                show-upload-list={false}
-                beforeUpload = {this.beforeUpload}
-                list-type="picture-card"
-                name="file"
-                action={`${window.__baseUrl}/logo/attachment/uploadMaterialAttachmentOSS`}
-                onChange={this.handleChange}
+                uploadSuccess={this.handleChange}
               >
                 {this.work.cover_image_url ? (
                   <async-image  class="cover_image_url" src={this.work.cover_image_url} />
@@ -202,7 +183,7 @@ export default {
                     <a-icon type={this.loading ? "loading" : "plus"} />
                   </div>
                 )}
-              </a-upload>
+              </Uploader>
             </a-form-item>
           </a-form>
         </div>

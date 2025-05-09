@@ -139,7 +139,7 @@ export default {
       }
     }
     .admin-layout-content{
-      padding: 24px 24px 0;
+      padding: 0;
       background-color: @gray-1;
       /*overflow-x: hidden;*/
       /*min-height: calc(100vh - 64px - 122px);*/

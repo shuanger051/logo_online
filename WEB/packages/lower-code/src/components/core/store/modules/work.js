@@ -71,7 +71,7 @@ export const actions = {
       await updateTemplate(data);
       message.success("保存成功");
     } else {
-      await saveTemplate(data);
+      await updateTemplate(data);
       message.success("保存成功");
       await sleep(2);
       handlerSaveSucessJump();

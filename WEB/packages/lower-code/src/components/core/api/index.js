@@ -36,24 +36,20 @@ export const getMaterialListByPageOSS = wrapRequest(
   false
 );
 export const saveTemplate = wrapRequest("/logo/template/saveTemplate", true);
-export const updateTemplate = wrapRequest(
-  "/logo/template/updateTemplate",
-  true
-);
+
+export const updateTemplate = (data) => {
+  return window.$editorConfig.getExtraObj().updateTemplateById(data)
+}
 
 export const getMaterialByID =  wrapRequest("/logo/material/getMaterialByID", false)
-export const adminGetTemplateByID = wrapRequest(
-  "/logo/template/getTemplateByID",
-  false
-);
+export const adminGetTemplateByID = (data) => {
+  return window.$editorConfig.getExtraObj().getTemplateByID(data)
+};
 export const uploadMaterialAttachment = wrapRequest(
   "logo/attachment/uploadMaterialAttachmentOSS",
   true
 );
-export const getDictById = wrapRequest(
-  "/logo/sys/dict-item/getItemsByDictKey",
-  false
-);
+export const getDictById = (data) => window.$editorConfig.getExtraObj().getItemsByDictKey(data)
 
 export const getTemplateByID = async (...arg) => {
   if (window.$editorConfig.mode !='admin') {
@@ -105,10 +101,7 @@ export const appGetLogoInfoByShopsIdOSS = wrapRequest(
   "/logo/app/getLogoInfoByShopsIdAPIOSS",
   false
 );
-// export const appGetItemsByDictKeyInDB = wrapRequest(
-//   "/logo/app/getItemsByDictKeyInDB",
-//   false
-// );
+
 export const appGetItemsByDictKeyInDB = (params) => {
   return getlocalDictsKey(params)
 }

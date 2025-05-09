@@ -1,122 +1,104 @@
-import './gallery.scss'
-import PersonalTab from './tabs/personal.js'
-import {resolveImgUrl} from 'core/support/imgUrl'
+import "./gallery.scss";
+import { resolveImgUrl } from "core/support/imgUrl";
+import Uploader from "core/support/image-gallery/components/uploader.js";
 
 export default {
-  name: 'lbs-image-gallery',
-  components: {
-  },
+  name: "lbs-image-gallery",
+  components: {},
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     value: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
   data: () => ({
     tabs: [
       {
-        value: 'personal',
-        label: '我的图库'
-      }
+        value: "personal",
+        label: "我的图库",
+      },
     ],
-    activeTab: 'personal',
+    activeTab: "personal",
     innerVisible: false,
-    pixabayList: []
+    pixabayList: [],
   }),
-  computed: {
-  },
+  computed: {},
   watch: {
-    visible (value) {
-      this.innerVisible = value
-    }
+    visible(value) {
+      this.innerVisible = value;
+    },
   },
   methods: {
-    showGallery () {
-      this.innerVisible = true
+    showGallery() {
+      this.innerVisible = true;
     },
-    handleClose () {
-      this.innerVisible = false
+    handleClose() {
+      this.innerVisible = false;
     },
-    changeTab ({ key }) {
-      this.activeTab = key
+    changeTab({ key }) {
+      this.activeTab = key;
     },
-    handleSelectImage (item) {
-      this.handleClose()
-      console.log(item, 9999)
-      this.$emit('change', item.url)
+    handleSelectImage(item) {
+      this.handleClose();
+      this.$emit("change", item.url);
     },
-    renderContent () {
-      return <PersonalTab onChangeItem={item => {
-        this.handleSelectImage(item)
-      }}/>
-    },
-    renderDefaultActivator () {
+    handlerUploadImg() {},
+    renderDefaultActivator() {
       const activatorWithoutImg = (
-        <div
-          class="default-activator cursor-pointer empty-bg-activator"
-          onClick={this.showGallery}
-        >
-          <a-icon type="plus" />
-        </div>
-      )
-
+        <Uploader uploadSuccess={this.handleSelectImage} style='display: block'>
+          <div
+            class="default-activator cursor-pointer empty-bg-activator"
+            onClick={this.showGallery}
+          >
+            <a-icon type="plus" />
+          </div>
+        </Uploader>
+      );
       const activatorWithImg = (
-        <div onClick={this.showGallery}>
-          <div class="default-activator cursor-pointer "><img src={resolveImgUrl(this.value, true)} width="50%" style={{ margin: 'auto' }} /></div>
+        <div>
+          <div class="default-activator cursor-pointer ">
+            <img
+              src={resolveImgUrl(this.value, true)}
+              width="50%"
+              style={{ margin: "auto" }}
+            />
+          </div>
           <div class="flex-space-between" style="margin-top: 8px;">
-            <a-button size="small">更换</a-button>
-            {/* <a-button size="small" onClick={e => {
-              e.stopPropagation()
-            }}>裁剪</a-button> */}
-            <a-button size="small" onClick={(e) => {
-              e.stopPropagation()
-              this.handleSelectImage({ url: '' })
-            }}>移除</a-button>
+            <Uploader uploadSuccess={this.handleSelectImage}>
+              <a-button size="small">更换</a-button>
+            </Uploader>
+            <a-button
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                this.handleSelectImage({ url: "" });
+              }}
+            >
+              移除
+            </a-button>
           </div>
         </div>
-      )
-      return (this.value ? activatorWithImg : activatorWithoutImg)
-    }
+      );
+      return this.value ? activatorWithImg : activatorWithoutImg;
+      // return (this.value ? activatorWithImg : activatorWithoutImg)
+    },
   },
-  render (h) {
+  render(h) {
     return (
       <div>
-        <a-input value={this.value} onChange={e => {
-          this.$emit('change', e) // #309
-        }} placeholder="输入图片链接/上传"></a-input>
-        <slot>{this.renderDefaultActivator()}</slot>
-        <a-modal
-          closable
-          title="图片库"
-          width="65%"
-          visible={this.innerVisible}
-          onOk={this.handleClose}
-          onCancel={this.handleClose}
-          bodyStyle={{ margin: 0, padding: 0 }}
-        >
-          <a-layout style="height: 500px; position: relative;">
-            <a-layout-sider width="200px" style="background-color: white;">
-              <a-menu mode="inline" defaultSelectedKeys={['personal']} onClick={this.changeTab}>
-                {
-                  this.tabs.map((tab, index) => (
-                    <a-menu-item key={tab.value} >
-                      <a-icon type="user" />
-                      <span>{tab.label}</span>
-                    </a-menu-item>
-                  ))
-                }
-              </a-menu>
-            </a-layout-sider>
-            <a-layout-content>
-              {this.renderContent()}
-            </a-layout-content>
-          </a-layout>
-        </a-modal>
+        <a-input
+          value={this.value}
+          onChange={(e) => {
+            this.$emit("change", e); // #309
+          }}
+          placeholder="输入图片链接/上传1"
+        ></a-input>
+        {this.renderDefaultActivator()}
       </div>
-    )
-  }
-}
+    );
+  },
+};

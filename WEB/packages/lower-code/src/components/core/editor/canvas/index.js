@@ -46,7 +46,7 @@ export default {
   },
   render (h) {
     return (
-      <a-layout id="canvas-outer-wrapper">
+      <a-layout id="canvas-outer-wrapper" style="height:calc(100vh - 64px);">
         {/* <a-radio-group
           class="mode-toggle-wrapper"
           size="small"
@@ -56,7 +56,7 @@ export default {
           <a-radio-button label={false} value={false}>{this.$t('editor.centerPanel.mode.edit')}</a-radio-button>
           <a-radio-button label={true} value={true}>{this.$t('editor.centerPanel.mode.preview')}</a-radio-button>
         </a-radio-group> */}
-        <a-layout-content style={{ transform: `scale(${this.scaleRate})`, 'transform-origin': 'center top' }}>
+        <a-layout-content style={{ transform: `scale(${this.scaleRate})`, 'transform-origin': 'center top', paddingTop:'20px'}}>
           <div
             class='canvas-wrapper'
             style={{

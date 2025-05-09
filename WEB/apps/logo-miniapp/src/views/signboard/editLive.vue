@@ -7,7 +7,7 @@
       <van-uploader
         class="upload"
         :after-read="afterRead"
-        :max-size="1024 * 1024 * 5"
+        :max-size="1024 * 1024 * 20"
         @oversize="onOversize"
       >
         <!-- <span>上传实景图</span> -->

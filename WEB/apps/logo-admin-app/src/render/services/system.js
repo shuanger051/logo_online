@@ -104,9 +104,12 @@ export const deleteDictItemById = axiosPost(
   "/logo/sys/dict-item/deleteDictItemById"
 );
 /** 查询字典子项 */
-export const getItemsByDictKeyInDB = axiosGet(
-  "/logo/sys/dict-item/getItemsByDictKeyInDB"
-);
+export const getItemsByDictKeyInDB = async ({dictKey}) => {
+  if (!window.dicts) {
+    await loadScript('https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/dicts.js')
+  }
+  return window.dicts[dictKey]
+}
 
 /** 根据ID查询角色权限信息 */
 export const getSysRolePermissionById = axiosGet(

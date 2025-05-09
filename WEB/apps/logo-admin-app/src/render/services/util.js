@@ -70,3 +70,4 @@ export const uploadJsFile = async (str, name) => {
     throw e
   }
 }
+
