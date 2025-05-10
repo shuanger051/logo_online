@@ -49,18 +49,18 @@ const build = {
     packMainAndUpdate() {
         const { mainBuilder } = require('./child/buildMain.js');
         mainBuilder().then(res => {
-            const electronBuilder = require('electron-builder');
-            const packageJson = require('../package.json');
+            // const electronBuilder = require('electron-builder');
+            // const packageJson = require('../package.json');
             console.log('打包输出==1=>', res)
-            packageJson.version = version.slice(0, 3).join('.');
-            fs.writeFileSync(path.join(__dirname, '../package.json'), JSON.stringify(packageJson, null, 4));
-            electronBuilder.build().then(() => {
-                // 输出运行环境
-                consoleInfo.runTime(process.env.PROXY_ENV);
-                this.buildEnd();
-            }).catch(error => {
-                console.error(error);
-            });
+            // packageJson.version = version.slice(0, 3).join('.');
+            // fs.writeFileSync(path.join(__dirname, '../package.json'), JSON.stringify(packageJson, null, 4));
+            // electronBuilder.build().then(() => {
+            //     // 输出运行环境
+            //     consoleInfo.runTime(process.env.PROXY_ENV);
+            //     this.buildEnd();
+            // }).catch(error => {
+            //     console.error(error);
+            // });
         }).catch(err => {
             console.error('打包【main】-【update】错误输出===>', err);
             process.exit(2);

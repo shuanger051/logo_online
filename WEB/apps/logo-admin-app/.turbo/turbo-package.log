@@ -1,0 +1,47 @@
+
+> @shop-sign/logo-admin-app@1.0.0 package /Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app
+> electron-forge package
+
+❯ Checking your system
+❯ Checking package manager version
+✔ Found pnpm@9.15.0
+✔ Checking your system
+[?25h❯ Preparing to package application
+✔ Preparing to package application
+❯ Running packaging hooks
+❯ Running generateAssets hook
+✔ Running generateAssets hook
+❯ Running prePackage hook
+✔ Running prePackage hook
+✔ Running packaging hooks
+❯ Packaging application
+› Determining targets...
+❯ Packaging for x64 on darwin
+❯ Copying files
+❯ Preparing native dependencies
+❯ Finalizing package
+
+✖ Copying files [FAILED: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.]
+✖ Preparing native dependencies [FAILED: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.]
+✖ Finalizing package [FAILED: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.]
+✖ Packaging for x64 on darwin [FAILED: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.]
+✖ Packaging application [FAILED: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.]
+
+An unhandled rejection has occurred inside Forge:
+Error: Failed to locate module "ali-oss" from "/Users/yangyu/智能在线/logo_online/WEB/apps/logo-admin-app"
+
+        This normally means that either you have deleted this package already somehow (check your ignore settings if using electron-packager).  Or your module installation failed.
+at Walker.walkDependenciesForModuleInModule (/Users/yangyu/智能在线/logo_online/WEB/node_modules/flora-colossus/lib/Walker.js:57:19)
+    at async Walker.walkDependenciesForModule (/Users/yangyu/智能在线/logo_online/WEB/node_modules/flora-colossus/lib/Walker.js:113:13)
+    at async /Users/yangyu/智能在线/logo_online/WEB/node_modules/flora-colossus/lib/Walker.js:133:21
+[?25h ELIFECYCLE  Command failed with exit code 1.

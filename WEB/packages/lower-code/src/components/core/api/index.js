@@ -15,7 +15,7 @@ const wrapRequest = (url, isPost, config) => {
 
 const getLocalTemplateByID = (id) => {
   id = +id
-  const template = window.template.data.list.find((item) => item.id === id);
+  const template = window.template.data.list.find((item) => item.id == id);
   return Promise.resolve({
     data: template
   })

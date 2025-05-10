@@ -71,7 +71,7 @@ const CoreEditor = {
   },
   data: () => ({
     previewDialogVisible: false,
-    propsPanelWidth: 320,
+    propsPanelWidth: 280,
   }),
   computed: {
     ...mapState("editor", {

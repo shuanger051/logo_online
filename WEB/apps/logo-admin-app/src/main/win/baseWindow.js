@@ -1,11 +1,11 @@
 const { BrowserWindow } = require('electron');
 const process = require('process');
 const url = require('url');
-const path = require('path');
+const path = require('path'); 
 const EventEmitter = require('events');
-const libCookie = require('cookie');
+// const libCookie = require('cookie');
 const { devServer, context, hostMap } = require('@config/index.js');
-const remote = require('@electron/remote/main');
+// const remote = require('@electron/remote/main');
 
 const devMode = process.env.NODE_ENV === 'development';
 
@@ -22,6 +22,8 @@ class BaseWindow extends EventEmitter {
         this.partition = options.partition;
         this.wwwroot = options.wwwroot || __dirname;
         this.preloadJsPath = path.join(this.wwwroot, 'preload.js');
+        // this.preloadJsPath = MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY;
+
     }
 
     create() {
@@ -41,7 +43,7 @@ class BaseWindow extends EventEmitter {
             minWidth: 1240,
             minHeight: 720,
             offscreen: true,
-            resizable: false,
+            resizable: true,
             show: true,
             center: true,
             frame: true,
@@ -72,7 +74,7 @@ class BaseWindow extends EventEmitter {
                 nodeIntegrationInSubFrames: true,
                 allowDisplayingInsecureContent: true, //允许一个使用 https的界面来展示由 http URLs 传过来的资源
                 allowRunningInsecureContent: true, //允许一个 https 页面运行 http url 里的资源
-                preload: this.preloadJsPath, //预加载客户端js
+               preload: this.preloadJsPath, //预加载客户端js
                 nodeIntegration: true, //5.x以上版本，默认无法在渲染进程引入node模块，需要这里设置为true
                 contextIsolation: false, //11.x以上版本，需要把此项设置为false，才可以在渲染进程使用node模块
                 enableRemoteModule: true
@@ -80,7 +82,7 @@ class BaseWindow extends EventEmitter {
         };
         const window = new BrowserWindow(config);
         window.loadURL(this.getPageUrl());
-        remote.enable(window.webContents);
+        // remote.enable(window.webContents);
         window.webContents.session.setCertificateVerifyProc((req, cb) => {
             // 不验证服务器证书
             cb(0);
@@ -94,6 +96,8 @@ class BaseWindow extends EventEmitter {
         const { host, port } = devServer;
         const indexUrl = `http://${host}:${port}${context.page}/index.html`;
         return devMode ? encodeURI(indexUrl) : fileUrl;
+        // return 'http://www.baidu.com';
+
     }
 
     // 给窗口添加事件监听
@@ -165,8 +169,8 @@ class BaseWindow extends EventEmitter {
             //     SameSite: 'Lax'
             // }
             // 只取cookie值（SESSION），其他限制字段不要
-            const o = libCookie.parse(k.split(';')[0]);
-            Object.assign(incomingCookie, o);
+            // const o = libCookie.parse(k.split(';')[0]);
+            // Object.assign(incomingCookie, o);
         });
         Object.assign(global.cookie[hostname], incomingCookie);
         callback({ response: responseHeaders, statusLine: details.statusLine });

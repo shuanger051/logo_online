@@ -26,9 +26,9 @@ const dev = {
             {
                 hot: true,
                 compress: true,
-                historyApiFallback: {
-                    disableDotRule: true
-                },
+                // historyApiFallback: {
+                //     disableDotRule: true
+                // },
                 open: true,
                 port,
                 host,

@@ -167,7 +167,7 @@ export default {
     onDel(record) {
       afficheService
         .deleteContentById(_.pick(record, ["id"]))
-        .then(() => this.$message.success("删除成功"), this.onRefresh())
+        .then(() => this.$message.success("删除成功"), this.onSerach())
         .catch((err) =>
           this.$message.error(`删除失败：${_.get(err, "msg", "未知错误")}`)
         );

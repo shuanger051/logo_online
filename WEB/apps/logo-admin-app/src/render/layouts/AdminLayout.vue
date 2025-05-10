@@ -58,7 +58,7 @@ export default {
       'fixedTabs', 'hideSetting', 'multiPage']),
     ...mapGetters('setting', ['firstMenu',  'menuData']),
     sideMenuWidth() {
-      return this.collapsed ? '80px' : '256px'
+      return this.collapsed ? '80px' : '226px'
     },
     headerStyle() {
       let width = (this.fixedHeader && this.layout !== 'head' && !this.isMobile) ? `calc(100% - ${this.sideMenuWidth})` : '100%'

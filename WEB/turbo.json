@@ -21,6 +21,10 @@
     "font": {
       "cache": false
     },
+    "package": {
+      "outputs": [
+      ]
+    },
     "test": {
       "outputs": []
     }
