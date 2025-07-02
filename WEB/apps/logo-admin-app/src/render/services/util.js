@@ -5,21 +5,18 @@ const b = 'h_S_K_c_8_H_e_P_b_F_w_r_E_z_h'
 const c = '_C_0_8_T_M_z_s_R_M_m_V'
 const d = '_o_0_A_k_K_x_w_k_o_W_O_H_J_p_e_c_V_c_9';
 
-export const loadScript = async (url) =>  {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  var resolve, reject
-  var later = new Promise((rs, rj) => {resolve = rs; reject = rj});
-  // 对于确保脚本按顺序加载，可以使用这种方法
-    script.onload = function() {
-        document.head.removeChild(script); // 移除脚本
-        resolve();
-    };
-    script.onerror = function() {reject(new Error('加载脚本失败'))};
-  
-  script.src = url+'?' + new Date().getTime(); // 添加时间戳以避免缓存
-  document.head.appendChild(script);
-  return later;
+export const loadScript = async (...args) =>  {
+  return window.electronAPI.getOssAssert(...args).then((data) => {
+    console.log(data)
+    if (data) {
+      const script = document.createElement('script');
+      script.textContent = data;
+      document.head.appendChild(script);
+      script.remove();
+    } else {
+      throw new Error('加载脚本失败');
+    }
+  })
 }
 
 const createOssClient = (bucket) => {
@@ -58,13 +55,9 @@ const uploadFile = async (file, clientStr, config = {
  return `https://${client.options.bucket}.${client.options.region}.aliyuncs.com/${filePath}`;
 } 
 
-export const uploadJsFile = async (str, name) => {
-  const blob = new Blob([str], { type: 'text/javascript' });
-  const file = new File([blob], name + ".js", {
-    type: blob.type
-  });
+export const uploadJsFile = async (...args) => {
   try {
-    return await uploadFile(file, 'dzfont', {path: 'public-resource/', name: name + '.js'});
+    return window.electronAPI.saveOssAssert(...args);
   } catch (e) {
     console.error('上传失败', e);
     throw e

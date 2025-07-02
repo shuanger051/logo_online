@@ -87,7 +87,7 @@ export const getDictItemListByPage = axiosGet(
 /** 根据数据字典KEY查询子项列表 */
 export const getItemsByDictKey = async ({dictKey}) => {
   if (!window.dicts) {
-    await loadScript('https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/dicts.js')
+    await loadScript('dicts')
   }
   return window.dicts[dictKey]
 }
@@ -106,7 +106,7 @@ export const deleteDictItemById = axiosPost(
 /** 查询字典子项 */
 export const getItemsByDictKeyInDB = async ({dictKey}) => {
   if (!window.dicts) {
-    await loadScript('https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/dicts.js')
+    await loadScript('dicts')
   }
   return window.dicts[dictKey]
 }

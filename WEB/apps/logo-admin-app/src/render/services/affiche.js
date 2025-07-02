@@ -23,7 +23,7 @@ export const getContentListByPage = async ({
   title,
 }) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/news.js"
+    "news"
   );
   const news = window.news;
   let list =
@@ -46,7 +46,7 @@ export const getContentById = axiosGet("/logo/content/getContentById");
 /** 保存文章信息 */
 export const saveContent = async (data) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/news.js"
+    "news"
   );
   const news = window.news;
   let id = 0
@@ -58,7 +58,7 @@ export const saveContent = async (data) => {
   id++
   data.id = id
   news.data.push(data);
-  return uploadJsFile(`window.news = ${JSON.stringify(news)}`, "news")
+  return uploadJsFile('news', `window.news = ${JSON.stringify(news)}`, "news")
 };
 
 /** 上传文章附件 */
@@ -80,13 +80,13 @@ export const auditContent = axiosPost("/logo/content/auditContent");
 /** 根据ID删除文章信息 */
 export const deleteContentById = async ({id}) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/news.js"
+    "news"
   );
   const news = window.news;
   const index = news.data.findIndex((item) => item.id == id);
   if (index > -1) {
     news.data.splice(index,1)
-    return uploadJsFile(`window.news = ${JSON.stringify(news)}`, "news")
+    return uploadJsFile('news', `window.news = ${JSON.stringify(news)}`)
   }
 };
 
@@ -97,7 +97,7 @@ export const deleteAttachmentByName = axiosPost(
 /** 根据ID更新文章信息 */
 export const updateContentById = async (data) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/news.js"
+    "news"
   );
   const news = window.news;
   const { id } = data;
@@ -105,5 +105,5 @@ export const updateContentById = async (data) => {
   if (index > -1) {
     news.data[index] = data;
   }
-  return uploadJsFile(`window.news = ${JSON.stringify(news)}`, "news")
+  return uploadJsFile('news', `window.news = ${JSON.stringify(news)}`)
 };

@@ -76,7 +76,7 @@ class BaseWindow extends EventEmitter {
                 allowRunningInsecureContent: true, //允许一个 https 页面运行 http url 里的资源
                preload: this.preloadJsPath, //预加载客户端js
                 nodeIntegration: true, //5.x以上版本，默认无法在渲染进程引入node模块，需要这里设置为true
-                contextIsolation: false, //11.x以上版本，需要把此项设置为false，才可以在渲染进程使用node模块
+                contextIsolation: true, //11.x以上版本，需要把此项设置为false，才可以在渲染进程使用node模块
                 enableRemoteModule: true
             }
         };
@@ -93,9 +93,12 @@ class BaseWindow extends EventEmitter {
     // 本地调试时，从devServer加载页面。打包后从本地文件加载页面。
     getPageUrl() {
         const fileUrl = url.pathToFileURL(path.join(this.wwwroot, 'index.html')).href;
+        // const fileUrl = "http://47.120.65.162:8080/logo-admin-app"
         const { host, port } = devServer;
         const indexUrl = `http://${host}:${port}${context.page}/index.html`;
         return devMode ? encodeURI(indexUrl) : fileUrl;
+        // return fileUrl
+
         // return 'http://www.baidu.com';
 
     }

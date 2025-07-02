@@ -60,7 +60,7 @@ const options = {
           meta: {
             icon: "setting",
           },
-          component: PageView,
+          component:  () => import("@/pages/system"),
           // children: [
           // ],
         },

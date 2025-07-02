@@ -12,21 +12,21 @@ module.exports = {
     }
   ],
   plugins: [
-    new WebpackPlugin({
-      // 主进程 Webpack 配置
-      mainConfig: 'buildClient/webpack.main.config.js',
-      // 渲染进程 Webpack 配置
-      renderer: {
-        config: 'buildClient/webpack.render.config.js',
-        entryPoints: [{
-          html: './src/render/electron.ejs', // 渲染进程 HTML 入口
-          js: './src/render/electron.js',  // 渲染进程 JS 入口
-          name: 'main_window',
-          preload: {
-            js: './src/preload/index.js'   // Preload 脚本入口
-          }
-        }]
-      }
-    })
+    // new WebpackPlugin({
+    //   // 主进程 Webpack 配置
+    //   mainConfig: 'buildClient/webpack.main.config.js',
+    //   // 渲染进程 Webpack 配置
+    //   renderer: {
+    //     config: 'buildClient/webpack.render.config.js',
+    //     entryPoints: [{
+    //       html: './src/render/electron.ejs', // 渲染进程 HTML 入口
+    //       js: './src/render/electron.js',  // 渲染进程 JS 入口
+    //       name: 'main_window',
+    //       preload: {
+    //         js: './src/preload/index.js'   // Preload 脚本入口
+    //       }
+    //     }]
+    //   }
+    // })
   ]
 };

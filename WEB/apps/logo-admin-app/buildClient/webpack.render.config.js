@@ -221,5 +221,5 @@ module.exports = {
     }),
     new VueLoaderPlugin(),
   ],
-  target: "electron-renderer",
+  //target: "electron-renderer",
 };

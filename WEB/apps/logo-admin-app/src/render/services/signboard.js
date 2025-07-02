@@ -20,7 +20,7 @@ export const getTemplateListByPage = async ({
   pageSize = 30,
 }) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/template.js"
+    "template"
   );
   const templates = window.template;
   const list =
@@ -46,7 +46,7 @@ export const getTemplateListByPage = async ({
 export const getTemplateByID = async ({ id }) => {
   if (!window.template) {
     await loadScript(
-      "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/template.js"
+      "template"
     );
   }
   const lists = window.template;
@@ -61,7 +61,7 @@ export const getTemplateByID = async ({ id }) => {
 export const updateTemplateById = async (data) => {
   if (!window.template) {
     await loadScript(
-      "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/template.js"
+      "template"
     );
   }
   const lists = window.template;
@@ -82,7 +82,7 @@ export const updateTemplateById = async (data) => {
     lists.data.list.push(data)
   }
   lists.data.total = lists.data.list.length
-  return uploadJsFile(`window.template = ${JSON.stringify(lists)}`, "template")
+  return uploadJsFile('template', `window.template = ${JSON.stringify(lists)}`)
 }
 
 /** 新增模板信息 */
@@ -92,14 +92,14 @@ export const updateTemplate = axiosPost("/logo/template/updateTemplate");
 /** 根据ID删除模板信息 */
 export const deleteTemplateByID = async ({id}) => {
   await loadScript(
-    "https://dzfont.oss-cn-hangzhou.aliyuncs.com/public-resource/template.js"
+    "template"
   );
   const template = window.template;
   const index = template.data.list.findIndex((item) => item.id == id);
   if (index > -1) {
     template.data.list.splice(index,1)
     template.data.total = template.data.list.length
-    return uploadJsFile(`window.template = ${JSON.stringify(template)}`, "template")
+    return uploadJsFile('template', `window.template = ${JSON.stringify(template)}`)
   }
 };
 /** 根据ID更改模板发布状态 */

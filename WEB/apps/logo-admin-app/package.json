@@ -1,6 +1,6 @@
 {
   "name": "@shop-sign/logo-admin-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "logo-admin-app",
   "appName": "logo-admin-app",
   "main": "app/main.js",

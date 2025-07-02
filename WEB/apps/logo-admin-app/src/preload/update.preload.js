@@ -1,6 +1,7 @@
 const fse = require('fs-extra');
 const path = require('path');
 const url = require('url');
+const axios = require('axios');
 const { app, getCurrentWindow } = require('@electron/remote');
 const StreamZip = require('node-stream-zip');
 const pkgPath = path.join(app.getPath('userData'), 'pkg');
@@ -67,3 +68,25 @@ Event.addEventListener('preload-update-install-exe', ({ versionInfo }) => {
     app.relaunch({ execPath });
     app.exit(1);
 });
+
+const filePath = 'df'
+
+const getOssAssert = (url, isover = false) => {
+    let filename = path.basename(url);
+    if (fse.existsSync(filePath, filename) && !isover) {
+        // 如果文件存在，直接返回
+        return url; 
+    } else {
+        // 如果文件不存在，下载文件
+        return axios.get(url, { responseType: 'arraybuffer' })
+            .then(response => {
+                fse.writeFileSync(filePath, response.data);
+                return url;
+            })
+            .catch(error => {
+                console.error('下载文件失败:', error);
+                throw error;
+            });  
+    }
+}   
+
